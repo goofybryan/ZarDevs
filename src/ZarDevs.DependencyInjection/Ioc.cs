@@ -1,0 +1,99 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using ZarDevs.Core;
+
+namespace ZarDevs.DependencyInjection
+{
+    public static class Ioc
+    {
+        #region Fields
+
+        [ThreadStatic]
+        private static IIocContainer _container;
+
+        private static IIocKernelContainer _kernel;
+        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+
+        #endregion Fields
+
+        #region Properties
+
+        public static IIocContainer Container
+        {
+            get => _container ?? (_container = new IocContainer(_kernel));
+        }
+
+        public static IDependencyBuilder InitializeWithBuilder(IIocKernelContainer container)
+        {
+            var dependencyContainer = Initialize(container).CreateDependencyContainer();
+            return new DependencyBuilder(dependencyContainer);
+        }
+
+        public static IIocKernelContainer Initialize(IIocKernelContainer container)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                _kernel = Check.IsNotNull(container, nameof(container));
+                return _kernel;
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public static void Dispose()
+        {
+            _kernel?.Dispose();
+            _kernel = null;
+        }
+
+        public static T Resolve<T>(params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.Resolve<T>(parameters);
+        }
+
+        public static T Resolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.Resolve<T>(name, parameters);
+        }
+
+        public static T Resolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.Resolve<T>(enumValue, parameters);
+        }
+
+        public static T Resolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.Resolve<T>(key, parameters);
+        }
+
+        public static T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.TryResolve<T>(parameters);
+        }
+
+        public static T TryResolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.TryResolve<T>(name, parameters);
+        }
+
+        public static T TryResolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.TryResolve<T>(enumValue, parameters);
+        }
+
+        public static T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        {
+            return Container.TryResolve<T>(key, parameters);
+        }
+
+        #endregion Methods
+    }
+}
