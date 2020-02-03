@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ZarDevs.Core.Tests
@@ -54,7 +55,83 @@ namespace ZarDevs.Core.Tests
             object returnValue = Check.IsNotNull(value, "param");
 
             // Assert
-            Assert.Same(value, value);
+            Assert.Same(value, returnValue);
+        }
+
+        [Fact]
+        public void TestThatIsNotNullOrEmptyWithNullStringThrows()
+        {
+            //Assert
+            const string param = "param";
+
+            // Act
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => Check.IsNotNullOrEmpty(null, param));
+
+            // Assert
+            Assert.Equal(param, exception.ParamName);
+        }
+
+        [Fact]
+        public void TestThatIsNotNullOrEmptyWithEmptyStringThrows()
+        {
+            //Assert
+            const string param = "param";
+
+            // Act
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => Check.IsNotNullOrEmpty(string.Empty, param));
+
+            // Assert
+            Assert.Equal(param, exception.ParamName);
+        }
+
+        [Fact]
+        public void TestThatIsNotNullOrEmptyWithStringDoesNotThrow()
+        {
+            // Act
+            string returnValue = Check.IsNotNullOrEmpty("value", "param");
+
+            // Assert
+            Assert.Equal("value", returnValue);
+        }
+
+        [Fact]
+        public void TestThatIsNotNullOrEmptyWithNullIEnumerableThrows()
+        {
+            //Assert
+            const string param = "param";
+
+            // Act
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => Check.IsNotNullOrEmpty<object>(null, param));
+
+            // Assert
+            Assert.Equal(param, exception.ParamName);
+        }
+
+        [Fact]
+        public void TestThatIsNotNullOrEmptyWithEmptyIEnumerableThrows()
+        {
+            //Assert
+            const string param = "param";
+            IEnumerable<object> enumerable = new object[0];
+
+            // Act
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => Check.IsNotNullOrEmpty(enumerable, param));
+
+            // Assert
+            Assert.Equal(param, exception.ParamName);
+        }
+
+        [Fact]
+        public void TestThatIsNotNullOrEmptyWithIEnumerableDoesNotThrow()
+        {
+            // Arrange
+            IEnumerable<object> enumerable = new []{ new object() };
+
+            // Act
+            IEnumerable<object> returnValue = Check.IsNotNullOrEmpty(enumerable, "param");
+
+            // Assert
+            Assert.Same(enumerable, returnValue);
         }
 
         #endregion Methods

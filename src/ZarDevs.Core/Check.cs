@@ -29,10 +29,10 @@ namespace ZarDevs.Core
             return !string.IsNullOrEmpty(value) ? value : throw new ArgumentException(paramName);
         }
 
-        public static IEnumerable<T> IsNotNullOrEmpty<T>(IEnumerable<T> enumable, string paramName)
+        public static IEnumerable<T> IsNotNullOrEmpty<T>(IEnumerable<T> enumerable, string paramName)
         {
-            IsNotNull(enumable, paramName);
-            return enumable.Any() ? enumable : throw new InvalidOperationException($"{paramName} cannot be an empty enumerable".ToString(CultureInfo.CurrentCulture));
+            IsNotNull(enumerable, paramName);
+            return enumerable.Any() ? enumerable : throw new InvalidOperationException($"{paramName} cannot be an empty enumerable".ToString(CultureInfo.CurrentCulture));
         }
 
         public static bool IsNumber(object Expression)
