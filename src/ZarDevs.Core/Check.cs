@@ -14,7 +14,7 @@ namespace ZarDevs.Core
         {
             if (Equals(value, null))
             {
-                throw Create.New<TException>(exceptionArgs);
+                throw Create.Instance.New<TException>(exceptionArgs);
             }
         }
 
@@ -26,13 +26,13 @@ namespace ZarDevs.Core
         public static string IsNotNullOrEmpty(string value, string paramName)
         {
             IsNotNull(value, paramName);
-            return !string.IsNullOrEmpty(value) ? value : throw new ArgumentException(paramName);
+            return !string.IsNullOrEmpty(value) ? value : throw new ArgumentException($"{paramName} cannot be an empty string".ToString(CultureInfo.CurrentCulture), paramName);
         }
 
         public static IEnumerable<T> IsNotNullOrEmpty<T>(IEnumerable<T> enumerable, string paramName)
         {
             IsNotNull(enumerable, paramName);
-            return enumerable.Any() ? enumerable : throw new InvalidOperationException($"{paramName} cannot be an empty enumerable".ToString(CultureInfo.CurrentCulture));
+            return enumerable.Any() ? enumerable : throw new ArgumentException($"{paramName} cannot be an empty enumerable".ToString(CultureInfo.CurrentCulture), paramName);
         }
 
         public static bool IsNumber(object Expression)
@@ -73,7 +73,7 @@ namespace ZarDevs.Core
                 return;
             }
 
-            var exception = Create.New<TException>(exceptionArgs);
+            var exception = Create.Instance.New<TException>(exceptionArgs);
             throw exception;
         }
 

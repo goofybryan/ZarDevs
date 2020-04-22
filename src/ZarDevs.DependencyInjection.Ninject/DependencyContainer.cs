@@ -66,7 +66,7 @@ namespace ZarDevs.DependencyInjection
         {
             if (info is IDependencyMethodInfo methodInfo)
             {
-                return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Request.Target.Type, ctx.Request.Target.Member.DeclaringType), info.Name));
+                return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Request.Target.Member.DeclaringType, ctx.Request.Target.Type), info.Name));
             }
 
             if (info is IDependencyTypeInfo typeInfo)

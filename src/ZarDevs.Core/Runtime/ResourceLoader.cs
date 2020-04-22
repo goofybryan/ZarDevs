@@ -3,11 +3,16 @@ using System.Reflection;
 
 namespace ZarDevs.Core.Runtime
 {
-    public static class ResourceLoader
+    public interface IResourceLoader
+    {
+        string GetTextEmbeddedResource(string resourceName, Assembly assembly);
+    }
+
+    public class ResourceLoader : IResourceLoader
     {
         #region Methods
 
-        public static string GetEmbeddedResource(string resourceName, Assembly assembly)
+        public string GetTextEmbeddedResource(string resourceName, Assembly assembly)
         {
             resourceName = FormatResourceName(assembly, resourceName);
             using (Stream resourceStream = assembly.GetManifestResourceStream(resourceName))
@@ -24,7 +29,7 @@ namespace ZarDevs.Core.Runtime
             }
         }
 
-        private static string FormatResourceName(Assembly assembly, string resourceName)
+        private string FormatResourceName(Assembly assembly, string resourceName)
         {
             return assembly.GetName().Name + "." + resourceName.Replace(" ", "_")
                                                                .Replace("\\", ".")

@@ -106,6 +106,11 @@ namespace ZarDevs.DependencyInjection
             return this;
         }
 
+        public IDependencyBuilderInfo ToMethod<T>(Func<DepencyBuilderInfoContext, string, T> method)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion Methods
     }
 }

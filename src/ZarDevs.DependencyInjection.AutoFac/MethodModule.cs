@@ -42,7 +42,7 @@ namespace ZarDevs.DependencyInjection
 
         protected override void Load(ContainerBuilder builder)
         {
-            IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> binding = builder.Register((c, p) => _info.MethodTo(new DepencyBuilderInfoContext(_info.TypeFrom, p.TypedAs<Type>()), _info.Name));
+            IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> binding = builder.Register((c, p) => _info.MethodTo(new DepencyBuilderInfoContext(p.TypedAs<Type>(), _info.TypeFrom), _info.Name));
 
             DependencyContainer.Build(_info, binding);
         }

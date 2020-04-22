@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
-    <PackageReference Include="NSubstitute" Version="4.2.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ZarDevs.Core\ZarDevs.Core.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.AutoFac\ZarDevs.DependencyInjection.AutoFac.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.Tests\ZarDevs.DependencyInjection.Tests.csproj" />
   </ItemGroup>
 
 </Project>
