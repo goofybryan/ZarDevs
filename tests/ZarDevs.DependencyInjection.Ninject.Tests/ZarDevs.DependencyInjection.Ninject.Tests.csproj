@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\ZarDevs.DependencyInjection.Ninject\ZarDevs.DependencyInjection.Ninject.csproj" />
-    <ProjectReference Include="..\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
-    <ProjectReference Include="..\tests\ZarDevs.DependencyInjection.Tests\ZarDevs.DependencyInjection.Tests.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.Ninject\ZarDevs.DependencyInjection.Ninject.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.Tests\ZarDevs.DependencyInjection.Tests.csproj" />
   </ItemGroup>
 
 </Project>
