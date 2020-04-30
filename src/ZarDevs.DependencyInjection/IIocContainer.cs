@@ -15,6 +15,14 @@ namespace ZarDevs.DependencyInjection
 
         T Resolve<T>(object key, params KeyValuePair<string, object>[] parameters);
 
+        T Resolve<T>();
+
+        T Resolve<T>(string name);
+
+        T Resolve<T>(Enum enumValue);
+
+        T Resolve<T>(object key);
+
         T TryResolve<T>(params KeyValuePair<string, object>[] parameters);
 
         T TryResolve<T>(string name, params KeyValuePair<string, object>[] parameters);
@@ -22,6 +30,14 @@ namespace ZarDevs.DependencyInjection
         T TryResolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters);
 
         T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters);
+
+        T TryResolve<T>();
+
+        T TryResolve<T>(string name);
+
+        T TryResolve<T>(Enum enumValue);
+
+        T TryResolve<T>(object key);
 
         #endregion Methods
     }

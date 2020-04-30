@@ -32,6 +32,8 @@ namespace ZarDevs.DependencyInjection
         {
             Check.IsNotNull(definitions, nameof(definitions));
 
+            Kernel.Bind<IIocContainer>().ToConstant(Ioc.Container);
+
 #pragma warning disable CA1062 // Validate arguments of public methods
             foreach (var info in definitions)
 #pragma warning restore CA1062 // Validate arguments of public methods

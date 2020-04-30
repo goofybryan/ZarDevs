@@ -43,6 +43,26 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Resolve<T>(key, parameters);
         }
 
+        public T Resolve<T>()
+        {
+            return Kernel.Resolve<T>();
+        }
+
+        public T Resolve<T>(string name)
+        {
+            return Kernel.Resolve<T>(name);
+        }
+
+        public T Resolve<T>(Enum enumValue)
+        {
+            return Kernel.Resolve<T>(enumValue);
+        }
+
+        public T Resolve<T>(object key)
+        {
+            return Kernel.Resolve<T>(key);
+        }
+
         public T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
         {
             return Kernel.TryResolve<T>(parameters);
@@ -61,6 +81,26 @@ namespace ZarDevs.DependencyInjection
         public T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters)
         {
             return Kernel.TryResolve<T>(key, parameters);
+        }
+
+        public T TryResolve<T>()
+        {
+            return TryResolve<T>();
+        }
+
+        public T TryResolve<T>(string name)
+        {
+            return TryResolve<T>(name);
+        }
+
+        public T TryResolve<T>(Enum enumValue)
+        {
+            return TryResolve<T>(enumValue);
+        }
+
+        public T TryResolve<T>(object key)
+        {
+            return TryResolve<T>(key);
         }
 
         #endregion Methods

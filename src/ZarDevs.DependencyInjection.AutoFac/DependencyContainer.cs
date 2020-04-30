@@ -58,6 +58,8 @@ namespace ZarDevs.DependencyInjection
         {
             Check.IsNotNull(definitions, nameof(definitions));
 
+            Builder.RegisterInstance(Ioc.Container).SingleInstance();
+
 #pragma warning disable CA1062 // Validate arguments of public methods
             foreach (IDependencyInfo info in definitions)
 #pragma warning restore CA1062 // Validate arguments of public methods

@@ -64,6 +64,26 @@ namespace ZarDevs.DependencyInjection
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
+        public T Resolve<T>()
+        {
+            return Resolve<T>(new KeyValuePair<string, object>[0]);
+        }
+
+        public T Resolve<T>(string name)
+        {
+            return Resolve<T>(name, new KeyValuePair<string, object>[0]);
+        }
+
+        public T Resolve<T>(Enum enumValue)
+        {
+            return Resolve<T>(enumValue, new KeyValuePair<string, object>[0]);
+        }
+
+        public T Resolve<T>(object key)
+        {
+            return Resolve<T>(key, new KeyValuePair<string, object>[0]);
+        }
+
         public T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
         {
             return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
@@ -82,6 +102,26 @@ namespace ZarDevs.DependencyInjection
         public T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters)
         {
             return Kernel.IsRegisteredWithKey<T>(key) ? Resolve<T>(key, parameters) : default;
+        }
+
+        public T TryResolve<T>()
+        {
+            return TryResolve<T>(new KeyValuePair<string, object>[0]);
+        }
+
+        public T TryResolve<T>(string name)
+        {
+            return TryResolve<T>(name, new KeyValuePair<string, object>[0]);
+        }
+
+        public T TryResolve<T>(Enum enumValue)
+        {
+            return TryResolve<T>(enumValue, new KeyValuePair<string, object>[0]);
+        }
+
+        public T TryResolve<T>(object key)
+        {
+            return TryResolve<T>(key, new KeyValuePair<string, object>[0]);
         }
 
         protected virtual void Dispose(bool disposing)

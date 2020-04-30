@@ -1,9 +1,9 @@
-﻿using ZarDevs.Core;
-using Ninject;
+﻿using Ninject;
 using Ninject.Modules;
 using Ninject.Parameters;
 using System;
 using System.Collections.Generic;
+using ZarDevs.Core;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -43,6 +43,17 @@ namespace ZarDevs.DependencyInjection
             GC.SuppressFinalize(this);
         }
 
+        public bool HasModule(string name)
+        {
+            return Kernel.HasModule(name);
+        }
+
+        public void Load(IDependencyModule module)
+        {
+            if (module is INinjectModule ninjectModule)
+                Kernel.Load(ninjectModule);
+        }
+
         public T Resolve<T>(params KeyValuePair<string, object>[] parameters)
         {
             return Kernel.Get<T>(CreateParameters(parameters));
@@ -60,18 +71,32 @@ namespace ZarDevs.DependencyInjection
 
         public T Resolve<T>(object key, params KeyValuePair<string, object>[] parameters)
         {
-            throw new NotImplementedException();
+            if (key is null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            return Resolve<T>(key.ToString(), parameters);
         }
 
-        public bool HasModule(string name)
+        public T Resolve<T>()
         {
-            return Kernel.HasModule(name);
+            return Resolve<T>(new KeyValuePair<string, object>[0]);
         }
 
-        public void Load(IDependencyModule module)
+        public T Resolve<T>(string name)
         {
-            if (module is INinjectModule ninjectModule)
-                Kernel.Load(ninjectModule);
+            return Resolve<T>(name, new KeyValuePair<string, object>[0]);
+        }
+
+        public T Resolve<T>(Enum enumValue)
+        {
+            return Resolve<T>(enumValue, new KeyValuePair<string, object>[0]);
+        }
+
+        public T Resolve<T>(object key)
+        {
+            return Resolve<T>(key, new KeyValuePair<string, object>[0]);
         }
 
         public T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
@@ -92,6 +117,26 @@ namespace ZarDevs.DependencyInjection
         public T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters)
         {
             return TryResolve<T>(key.GetType().FullName, parameters);
+        }
+
+        public T TryResolve<T>()
+        {
+            return TryResolve<T>(new KeyValuePair<string, object>[0]);
+        }
+
+        public T TryResolve<T>(string name)
+        {
+            return TryResolve<T>(name, new KeyValuePair<string, object>[0]);
+        }
+
+        public T TryResolve<T>(Enum enumValue)
+        {
+            return TryResolve<T>(enumValue, new KeyValuePair<string, object>[0]);
+        }
+
+        public T TryResolve<T>(object key)
+        {
+            return TryResolve<T>(key, new KeyValuePair<string, object>[0]);
         }
 
         protected virtual void Dispose(bool disposing)
