@@ -10,7 +10,7 @@ namespace ZarDevs.Commands.Api
 
         public static TResponse Create<TResponse>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage) where TResponse : ApiCommandResponse
         {
-            var response = Runtime.Create.New<TResponse>(httpResponseMessage);
+            var response = Core.Runtime.Create.Instance.New<TResponse>(httpResponseMessage);
             response.RequestId = originalRequest?.Id;
             return response;
         }

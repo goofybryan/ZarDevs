@@ -18,6 +18,7 @@ namespace ZarDevs.Core
             }
         }
 
+        [Obsolete("Make use of the variable ?? throw new ArgumentNullException(nameof(param))")]
         public static T IsNotNull<T>(T value, string paramName)
         {
             return !Equals(value, null) ? value : throw new ArgumentNullException(paramName);

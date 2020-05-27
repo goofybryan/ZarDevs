@@ -37,6 +37,7 @@ namespace ZarDevs.DependencyInjection
     internal class DependencyContainer : IDependencyContainer
     {
         private readonly IServiceCollection _services;
+        // TODO BM: Continue Microsoft Support
         private readonly INamedServiceConfiguration _namedConfiguration;
 
         public DependencyContainer(IServiceCollection services, INamedServiceConfiguration namedConfiguration)
@@ -72,6 +73,7 @@ namespace ZarDevs.DependencyInjection
             return true;
         }
 
+        // TODO BM: Continue Microsoft Support
         private static object FactoryMethod(IServiceProvider provider)
         {
             throw new NotImplementedException();

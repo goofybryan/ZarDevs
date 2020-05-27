@@ -19,8 +19,8 @@ namespace ZarDevs.Commands.Http
 
         public ApiHttpClient(IApiHttpRequestHandler requestHandler, HttpClient httpClient)
         {
-            _httpClient = Check.IsNotNull(httpClient, nameof(httpClient));
-            _requestHandler = Check.IsNotNull(requestHandler, nameof(requestHandler));
+            _requestHandler = requestHandler ?? throw new ArgumentNullException(nameof(requestHandler));
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         #endregion Constructors

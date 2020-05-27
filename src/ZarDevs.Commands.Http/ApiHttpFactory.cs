@@ -1,31 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.Commands.Http
 {
-    public static class ApiHttpFactory
+    public interface IApiHttpFactory
     {
+        #region Methods
+
+        IApiHttpRequestHandlerBinding AddRequestHandler<TFor, THandler>(string name = "") where THandler : IApiHttpRequestHandler;
+
+        IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler;
+
+        IApiHttpClient NewClientFor(Type type, string name = "");
+
+        IApiHttpClient NewClientFor<T>(string name = "");
+
+        #endregion Methods
+    }
+
+    public class ApiHttpFactory : IApiHttpFactory
+    {
+        #region Fields
+
+        private readonly Dictionary<Type, ApiHttpRequestHandlerBindingMap> _handlerMappings;
+        private readonly HttpClient _httpClient;
+        private readonly IIocContainer _ioc;
+
+        #endregion Fields
+
         #region Constructors
 
-        static ApiHttpFactory()
+        public ApiHttpFactory(IIocContainer ioc, HttpClient httpClient)
         {
-            HandlerMappings = new Dictionary<Type, ApiHttpRequestHandlerBindingMap>();
-            HttpClient = new HttpClient();
+            _handlerMappings = new Dictionary<Type, ApiHttpRequestHandlerBindingMap>();
+            _ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        internal static Dictionary<Type, ApiHttpRequestHandlerBindingMap> HandlerMappings { get; }
-        internal static HttpClient HttpClient { get; }
+        [Obsolete("Here for legacy purposes")]
+        public static IApiHttpFactory Instance => Ioc.Resolve<IApiHttpFactory>();
 
         #endregion Properties
 
         #region Methods
 
-        public static IApiHttpRequestHandlerBinding AddRequestHandler<TFor, THandler>(string name = "") where THandler : IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding AddRequestHandler<TFor, THandler>(string name = "") where THandler : IApiHttpRequestHandler
         {
             var type = typeof(TFor);
             var binding = GetOrCreateBinding<THandler>(type, name);
@@ -33,34 +58,39 @@ namespace ZarDevs.Commands.Http
             return binding;
         }
 
-        public static IApiHttpClient NewClientFor<T>(string name = "")
+        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler
+        {
+            return _ioc.Resolve<THandler>();
+        }
+
+        public IApiHttpClient NewClientFor<T>(string name = "")
         {
             return NewClientFor(typeof(T), name);
         }
 
-        public static IApiHttpClient NewClientFor(Type type, string name = "")
+        public IApiHttpClient NewClientFor(Type type, string name = "")
         {
             var binding = GetOrCreateBinding<ApiHttpRequestHandler>(type, name);
             return NewClient(binding?.Build());
         }
 
-        private static IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(Type type, string name) where THandler : IApiHttpRequestHandler
+        private IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(Type type, string name) where THandler : IApiHttpRequestHandler
         {
-            HandlerMappings.TryGetValue(type, out ApiHttpRequestHandlerBindingMap map);
-            return map?.TryGetBinding(name) ?? new ApiHttpRequestHandlerBinding<THandler>();
+            _handlerMappings.TryGetValue(type, out ApiHttpRequestHandlerBindingMap map);
+            return map?.TryGetBinding(name) ?? new ApiHttpRequestHandlerBinding<THandler>(this);
         }
 
-        private static IApiHttpClient NewClient(IApiHttpRequestHandler handler = null)
+        private IApiHttpClient NewClient(IApiHttpRequestHandler handler = null)
         {
-            return new ApiHttpClient(handler ?? new ApiHttpRequestHandler(), HttpClient);
+            return new ApiHttpClient(handler ?? new ApiHttpRequestHandler(), _httpClient);
         }
 
-        private static void SetOrUpdateBinding(Type type, string name, IApiHttpRequestHandlerBinding binding)
+        private void SetOrUpdateBinding(Type type, string name, IApiHttpRequestHandlerBinding binding)
         {
-            if (!HandlerMappings.TryGetValue(type, out ApiHttpRequestHandlerBindingMap map))
+            if (!_handlerMappings.TryGetValue(type, out ApiHttpRequestHandlerBindingMap map))
             {
                 map = new ApiHttpRequestHandlerBindingMap();
-                HandlerMappings[type] = map;
+                _handlerMappings[type] = map;
             }
 
             map[name] = binding;

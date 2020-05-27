@@ -30,7 +30,10 @@ namespace ZarDevs.DependencyInjection
 
         public void Build(IList<IDependencyInfo> definitions)
         {
-            Check.IsNotNull(definitions, nameof(definitions));
+            if (definitions is null)
+            {
+                throw new ArgumentNullException(nameof(definitions));
+            }
 
             Kernel.Bind<IIocContainer>().ToConstant(Ioc.Container);
 

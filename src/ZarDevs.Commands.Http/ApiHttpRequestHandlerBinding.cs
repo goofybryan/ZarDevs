@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.Commands.Http
 {
     internal class ApiHttpRequestHandlerBinding<THandler> : IApiHttpRequestHandlerBinding where THandler : IApiHttpRequestHandler
     {
+        private readonly IApiHttpFactory _factory;
         #region Constructors
 
-        public ApiHttpRequestHandlerBinding()
+        public ApiHttpRequestHandlerBinding(IApiHttpFactory factory)
         {
             Name = "";
+            _factory = factory ?? throw new System.ArgumentNullException(nameof(factory));
         }
 
         #endregion Constructors
@@ -26,14 +29,14 @@ namespace ZarDevs.Commands.Http
 
         public IApiHttpRequestHandlerBinding Add<TBinding>() where TBinding : IApiHttpRequestHandler
         {
-            var binding = new ApiHttpRequestHandlerBinding<TBinding>();
+            var binding = new ApiHttpRequestHandlerBinding<TBinding>(_factory);
             Bindings.Add(binding);
             return binding;
         }
 
         public IApiHttpRequestHandler Build()
         {
-            var handler = Ioc.Get<THandler>();
+            var handler = _factory.GetHandler<THandler>();
 
             if (Next != null)
             {
@@ -50,7 +53,7 @@ namespace ZarDevs.Commands.Http
 
         public IApiHttpRequestHandlerBinding Chain<TNext>() where TNext : IApiHttpRequestHandler
         {
-            var binding = new ApiHttpRequestHandlerBinding<TNext>();
+            var binding = new ApiHttpRequestHandlerBinding<TNext>(_factory);
             Next = binding;
             return binding;
         }

@@ -35,7 +35,7 @@ namespace ZarDevs.DependencyInjection
             _lock.EnterWriteLock();
             try
             {
-                _kernel = Check.IsNotNull(container, nameof(container));
+                _kernel = container ?? throw new ArgumentNullException(nameof(container));
                 return _kernel;
             }
             finally

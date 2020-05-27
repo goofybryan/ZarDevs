@@ -1,4 +1,5 @@
-﻿using ZarDevs.Commands.Http;
+﻿using System;
+using ZarDevs.Commands.Http;
 
 namespace ZarDevs.Commands.Api
 {
@@ -6,24 +7,28 @@ namespace ZarDevs.Commands.Api
     {
         #region Methods
 
+        [Obsolete("Need to refactor to ioc binding.")]
         public static IApiHttpRequestHandlerBinding ConfigureDeleteApi<THandler>() where THandler : IApiHttpRequestHandler
         {
-            return ApiHttpFactory.AddRequestHandler<ApiDeleteCommandAsync, THandler>().Named(HttpRequestType.Delete.GetBindingName());
+            return ApiHttpFactory.Instance.AddRequestHandler<ApiDeleteCommandAsync, THandler>().Named(HttpRequestType.Delete.ToString());
         }
 
+        [Obsolete("Need to refactor to ioc binding.")]
         public static IApiHttpRequestHandlerBinding ConfigureGetApi<THandler>() where THandler : IApiHttpRequestHandler
         {
-            return ApiHttpFactory.AddRequestHandler<ApiGetCommandAsync, THandler>().Named(HttpRequestType.Get.GetBindingName());
+            return ApiHttpFactory.Instance.AddRequestHandler<ApiGetCommandAsync, THandler>().Named(HttpRequestType.Get.ToString());
         }
 
+        [Obsolete("Need to refactor to ioc binding.")]
         public static IApiHttpRequestHandlerBinding ConfigurePostApi<THandler>() where THandler : IApiHttpRequestHandler
         {
-            return ApiHttpFactory.AddRequestHandler<ApiPostCommandAsync, THandler>().Named(HttpRequestType.Post.GetBindingName());
+            return ApiHttpFactory.Instance.AddRequestHandler<ApiPostCommandAsync, THandler>().Named(HttpRequestType.Post.ToString());
         }
 
+        [Obsolete("Need to refactor to ioc binding.")]
         public static IApiHttpRequestHandlerBinding ConfigurePutApi<THandler>() where THandler : IApiHttpRequestHandler
         {
-            return ApiHttpFactory.AddRequestHandler<ApiPutCommandAsync, THandler>().Named(HttpRequestType.Put.GetBindingName());
+            return ApiHttpFactory.Instance.AddRequestHandler<ApiPutCommandAsync, THandler>().Named(HttpRequestType.Put.ToString());
         }
 
         #endregion Methods
