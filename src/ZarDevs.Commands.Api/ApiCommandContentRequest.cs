@@ -1,5 +1,4 @@
 ﻿using System;
-using ZarDevs.Core;
 
 namespace ZarDevs.Commands.Api
 {
@@ -15,7 +14,7 @@ namespace ZarDevs.Commands.Api
         public ApiCommandContentRequest(HttpRequestType requestType, Uri requestUri, object payload)
             : base(requestType, requestUri)
         {
-            Content = Check.IsNotNull(payload, nameof(payload));
+            Content = payload ?? throw new ArgumentNullException(nameof(payload));
         }
 
         #endregion Constructors

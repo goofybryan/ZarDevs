@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
-using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.Commands.Http
 {
     internal class ApiHttpRequestHandlerBinding<THandler> : IApiHttpRequestHandlerBinding where THandler : IApiHttpRequestHandler
     {
+        #region Fields
+
         private readonly IApiHttpFactory _factory;
+
+        #endregion Fields
+
         #region Constructors
 
         public ApiHttpRequestHandlerBinding(IApiHttpFactory factory)

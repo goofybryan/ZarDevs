@@ -1,5 +1,4 @@
-﻿using ZarDevs.Core.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace ZarDevs.Core.Models
 {

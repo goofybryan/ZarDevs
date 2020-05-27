@@ -10,10 +10,7 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ZarDevs Core</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>0.0.1</Version>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ZarDevs.Core\ZarDevs.Core.csproj" />
-  </ItemGroup>
 
 </Project>

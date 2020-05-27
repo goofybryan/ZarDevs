@@ -7,15 +7,19 @@ namespace ZarDevs.Commands.Api
 {
     public class ApiPostCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandResponse>, IApiPostCommandAsync
     {
+        #region Constructors
+
         public ApiPostCommandAsync(IApiHttpClient httpClient) : base(httpClient)
         {
         }
+
+        #endregion Constructors
 
         #region Methods
 
         protected override async Task<ApiCommandResponse> CreateResponse(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
         {
-            ApiCommandResponse response = await HttpResponseFactory.CreateWithJsonContent(originalRequest, httpResponseMessage);
+            ApiCommandResponse response = await HttpResponseFactory.Instance.CreateWithJsonContent(originalRequest, httpResponseMessage);
             return response;
         }
 

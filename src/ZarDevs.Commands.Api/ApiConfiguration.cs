@@ -1,10 +1,18 @@
 ﻿using System;
 using ZarDevs.Commands.Http;
+using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.Commands.Api
 {
-    public static class ConfigureApi
+    public static class ApiConfiguration
     {
+        public static IDependencyBuilder ConfigureApi(this IDependencyBuilder builder)
+        {
+            builder.Bind<IHttpResponseFactory>().To<HttpResponseFactory>().InSingletonScope();
+
+            return builder;
+        }
+
         #region Methods
 
         [Obsolete("Need to refactor to ioc binding.")]

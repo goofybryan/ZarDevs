@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace ZarDevs.DependencyInjection
 {
     public static class ConfigureIoc
     {
+        #region Methods
+
         public static IServiceCollection ConfigureIocBindings(this IServiceCollection services, Action<IDependencyBuilder> builder)
         {
             var namedConfiguration = new NamedServiceConfiguration();
@@ -32,13 +33,22 @@ namespace ZarDevs.DependencyInjection
 
             iocKernelService.ConfigureServiceProvider(serviceProvider);
         }
+
+        #endregion Methods
     }
 
     internal class DependencyContainer : IDependencyContainer
     {
-        private readonly IServiceCollection _services;
+        #region Fields
+
         // TODO BM: Continue Microsoft Support
         private readonly INamedServiceConfiguration _namedConfiguration;
+
+        private readonly IServiceCollection _services;
+
+        #endregion Fields
+
+        #region Constructors
 
         public DependencyContainer(IServiceCollection services, INamedServiceConfiguration namedConfiguration)
         {
@@ -46,14 +56,25 @@ namespace ZarDevs.DependencyInjection
             _namedConfiguration = namedConfiguration ?? throw new ArgumentNullException(nameof(namedConfiguration));
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         public void Build(IList<IDependencyInfo> definitions)
         {
-            foreach(var info in definitions)
+            foreach (var info in definitions)
             {
                 if (!TryRegisterTypeTo(info as IDependencyTypeInfo) && !TryRegisterMethod(info as IDependencyMethodInfo))
                     throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.TypeFrom));
             }
         }
+
+        // TODO BM: Continue Microsoft Support
+        private static object FactoryMethod(IServiceProvider provider)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool TryRegisterMethod(IDependencyMethodInfo info)
         {
             if (info == null)
@@ -63,20 +84,16 @@ namespace ZarDevs.DependencyInjection
             {
                 case DependyBuilderScope.Transient:
                     break;
+
                 case DependyBuilderScope.Singleton:
                     break;
+
                 case DependyBuilderScope.Request:
                     _services.AddScoped(info.TypeFrom, provider => info.MethodTo(new DepencyBuilderInfoContext(), info.Name));
                     break;
             }
 
             return true;
-        }
-
-        // TODO BM: Continue Microsoft Support
-        private static object FactoryMethod(IServiceProvider provider)
-        {
-            throw new NotImplementedException();
         }
 
         private bool TryRegisterTypeTo(IDependencyTypeInfo info)
@@ -86,5 +103,7 @@ namespace ZarDevs.DependencyInjection
 
             return true;
         }
+
+        #endregion Methods
     }
 }

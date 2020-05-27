@@ -1,5 +1,4 @@
 ﻿using System;
-using ZarDevs.Core;
 
 namespace ZarDevs.Commands.Api
 {
@@ -16,7 +15,7 @@ namespace ZarDevs.Commands.Api
         {
             Id = Guid.NewGuid();
             RequestType = requestType;
-            ApiUri = Check.IsNotNull(apiUri, nameof(apiUri));
+            ApiUri = apiUri ?? throw new ArgumentNullException(nameof(apiUri));
         }
 
         #endregion Constructors

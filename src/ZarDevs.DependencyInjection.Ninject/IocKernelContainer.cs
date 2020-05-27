@@ -3,7 +3,6 @@ using Ninject.Modules;
 using Ninject.Parameters;
 using System;
 using System.Collections.Generic;
-using ZarDevs.Core;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -19,7 +18,7 @@ namespace ZarDevs.DependencyInjection
 
         public IocKernelContainer(IKernel kernel)
         {
-            Kernel = Check.IsNotNull(kernel, nameof(kernel));
+            Kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
         }
 
         #endregion Constructors

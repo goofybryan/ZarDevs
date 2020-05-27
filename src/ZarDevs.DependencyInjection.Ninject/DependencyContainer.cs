@@ -1,5 +1,4 @@
-﻿using ZarDevs.Core;
-using Ninject;
+﻿using Ninject;
 using Ninject.Syntax;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace ZarDevs.DependencyInjection
 
         private DependencyContainer(IKernel kernel)
         {
-            Kernel = Check.IsNotNull(kernel, nameof(kernel));
+            Kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
         }
 
         #endregion Constructors

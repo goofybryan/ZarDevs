@@ -26,12 +26,19 @@ namespace ZarDevs.DependencyInjection
 
     public interface IResolverFactory<TRequest, TResolve> where TResolve : TRequest
     {
+        #region Methods
+
         IResolverFactory<TRequest, TResolve> Bind<TFor>();
+
         IResolverFactory<TRequest, TResolve> Bind(Type forType);
+
+        #endregion Methods
     }
 
     internal class ResolverFactory<TRequest, TResolve> : IResolverFactory<TRequest, TResolve> where TResolve : TRequest
     {
+        #region Methods
+
         public IResolverFactory<TRequest, TResolve> Bind<TFor>()
         {
             return Bind(typeof(TFor));
@@ -41,5 +48,7 @@ namespace ZarDevs.DependencyInjection
         {
             throw new NotImplementedException();
         }
+
+        #endregion Methods
     }
 }

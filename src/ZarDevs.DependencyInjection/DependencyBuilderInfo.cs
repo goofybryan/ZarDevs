@@ -1,5 +1,4 @@
 ﻿using System;
-using ZarDevs.Core;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -21,7 +20,7 @@ namespace ZarDevs.DependencyInjection
 
         public IDependencyBuilderInfo Bind(Type type)
         {
-            _info.TypeFrom = Check.IsNotNull(type, nameof(type));
+            _info.TypeFrom = type ?? throw new ArgumentNullException(nameof(type));
             return this;
         }
 

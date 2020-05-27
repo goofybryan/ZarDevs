@@ -2,7 +2,6 @@
 using Autofac.Builder;
 using Autofac.Core;
 using Autofac.Core.Registration;
-using ZarDevs.Core;
 using System;
 using System.Linq;
 
@@ -20,7 +19,7 @@ namespace ZarDevs.DependencyInjection
 
         public MethodModule(IDependencyMethodInfo info)
         {
-            _info = Check.IsNotNull(info, nameof(info));
+            _info = info ?? throw new ArgumentNullException(nameof(info));
         }
 
         #endregion Constructors

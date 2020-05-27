@@ -3,7 +3,6 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using ZarDevs.Core;
 
 namespace ZarDevs.Commands.Api
 {
@@ -13,8 +12,8 @@ namespace ZarDevs.Commands.Api
 
         public ApiCommandException(ApiCommandResponse response, string message) : base(message)
         {
-            Response = Check.IsNotNull(response, nameof(response));
             StatusCode = Response.StatusCode;
+            Response = response ?? throw new ArgumentNullException(nameof(response));
         }
 
         protected ApiCommandException(SerializationInfo info, StreamingContext context) : base(info, context)

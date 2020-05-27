@@ -1,5 +1,4 @@
 ﻿using System;
-using ZarDevs.Core;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -9,7 +8,7 @@ namespace ZarDevs.DependencyInjection
 
         public DependencyMethodInfo(Func<DepencyBuilderInfoContext, string, object> methodTo, DependencyInfo info) : base(info)
         {
-            MethodTo = Check.IsNotNull(methodTo, nameof(methodTo));
+            MethodTo = methodTo ?? throw new ArgumentNullException(nameof(methodTo));
         }
 
         #endregion Constructors

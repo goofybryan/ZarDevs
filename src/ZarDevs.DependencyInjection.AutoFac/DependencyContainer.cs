@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Builder;
-using ZarDevs.Core;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -56,7 +55,10 @@ namespace ZarDevs.DependencyInjection
 
         public void Build(IList<IDependencyInfo> definitions)
         {
-            Check.IsNotNull(definitions, nameof(definitions));
+            if (definitions is null)
+            {
+                throw new ArgumentNullException(nameof(definitions));
+            }
 
             Builder.RegisterInstance(Ioc.Container).SingleInstance();
 

@@ -16,9 +16,9 @@ namespace ZarDevs.DependencyInjection
 
         IDependencyBuilderInfo Bind<T>() where T : class;
 
-        IDependencyBuilderInfo InSingletonScope();
-
         IDependencyBuilderInfo InRequestScope();
+
+        IDependencyBuilderInfo InSingletonScope();
 
         IDependencyBuilderInfo InTransientScope();
 

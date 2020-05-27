@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Autofac.Builder;
+﻿using Autofac.Builder;
 
 namespace ZarDevs.DependencyInjection
 {

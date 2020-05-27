@@ -13,15 +13,15 @@ namespace ZarDevs.Core.Models
 
         #region Methods
 
-        protected void SetValue<T>(ref T oldValue, T newValue, [CallerMemberName]string propertyName = "")
-        {
-            oldValue = newValue;
-            OpPropertyChanged(propertyName);
-        }
-
         protected void OpPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected void SetValue<T>(ref T oldValue, T newValue, [CallerMemberName] string propertyName = "")
+        {
+            oldValue = newValue;
+            OpPropertyChanged(propertyName);
         }
 
         #endregion Methods

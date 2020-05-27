@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -10,6 +10,8 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ZarDevs Core</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>This assembly is the core component with regards to the ZarDevs packages. It house a few base functionality that has become obsolete. Here for legacy and will be removed.</Description>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
 </Project>

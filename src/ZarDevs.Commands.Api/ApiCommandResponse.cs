@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using ZarDevs.Core;
 
 namespace ZarDevs.Commands.Api
 {
@@ -11,7 +10,7 @@ namespace ZarDevs.Commands.Api
 
         public ApiCommandResponse(HttpResponseMessage response)
         {
-            Response = Check.IsNotNull(response, nameof(response));
+            Response = response ?? throw new ArgumentNullException(nameof(response));
         }
 
         #endregion Constructors

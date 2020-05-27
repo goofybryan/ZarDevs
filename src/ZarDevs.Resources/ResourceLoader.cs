@@ -1,11 +1,15 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace ZarDevs.Core.Runtime
+namespace ZarDevs.Resources
 {
     public interface IResourceLoader
     {
+        #region Methods
+
         string GetTextEmbeddedResource(string resourceName, Assembly assembly);
+
+        #endregion Methods
     }
 
     public class ResourceLoader : IResourceLoader

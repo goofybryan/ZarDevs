@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Core", "src\ZarDevs.Core\ZarDevs.Core.csproj", "{5B1B0D9C-2210-4486-9883-DAA65D617B94}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Core.Models", "src\ZarDevs.Core.Models\ZarDevs.Core.Models.csproj", "{013D4102-B003-4B7A-928D-77F09B635420}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection", "src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj", "{F39ABCF7-00ED-4444-9FCF-D1CEDF1C5007}"
@@ -17,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CC0DE82B-B12
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Core.Tests", "tests\ZarDevs.Core.Tests\ZarDevs.Core.Tests.csproj", "{A88D0E67-0BF7-4DD6-B020-9D7C981044B3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.AutoFac.Tests", "tests\ZarDevs.DependencyInjection.AutoFac.Tests\ZarDevs.DependencyInjection.AutoFac.Tests.csproj", "{89922F45-8462-410C-A817-F17640CDEC7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Tests", "tests\ZarDevs.DependencyInjection.Tests\ZarDevs.DependencyInjection.Tests.csproj", "{FE886EB9-AB23-47E5-98D6-526F6A315A7D}"
@@ -27,11 +23,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Microsoft", "src\ZarDevs.DependencyInjection.Microsoft\ZarDevs.DependencyInjection.Microsoft.csproj", "{566F52B4-AC6F-40DF-9D2F-0C32BF23B5F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Commands.Abstractions", "src\ZarDevs.Commands.Abstractions\ZarDevs.Commands.Abstractions.csproj", "{50BA1813-544B-4A3C-BD52-36095442ABFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Abstractions", "src\ZarDevs.Commands.Abstractions\ZarDevs.Commands.Abstractions.csproj", "{50BA1813-544B-4A3C-BD52-36095442ABFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Commands.Http", "src\ZarDevs.Commands.Http\ZarDevs.Commands.Http.csproj", "{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Http", "src\ZarDevs.Commands.Http\ZarDevs.Commands.Http.csproj", "{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Commands.Api", "src\ZarDevs.Commands.Api\ZarDevs.Commands.Api.csproj", "{633439A7-5836-48E7-810A-FE578A450848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Api", "src\ZarDevs.Commands.Api\ZarDevs.Commands.Api.csproj", "{633439A7-5836-48E7-810A-FE578A450848}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Runtime", "src\ZarDevs.Runtime\ZarDevs.Runtime.csproj", "{2D26F10A-360D-4497-A9AC-2F46DC2C8550}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Resources", "src\ZarDevs.Resources\ZarDevs.Resources.csproj", "{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Validations", "ZarDevs.Validations\ZarDevs.Validations.csproj", "{6FC807C1-37FF-4CDB-A087-046CB9C251C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5B1B0D9C-2210-4486-9883-DAA65D617B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B1B0D9C-2210-4486-9883-DAA65D617B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B1B0D9C-2210-4486-9883-DAA65D617B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B1B0D9C-2210-4486-9883-DAA65D617B94}.Release|Any CPU.Build.0 = Release|Any CPU
 		{013D4102-B003-4B7A-928D-77F09B635420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{013D4102-B003-4B7A-928D-77F09B635420}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{013D4102-B003-4B7A-928D-77F09B635420}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,10 +57,6 @@ Global
 		{7CD803C2-E7C8-437A-903C-56622CA5BA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD803C2-E7C8-437A-903C-56622CA5BA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CD803C2-E7C8-437A-903C-56622CA5BA50}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A88D0E67-0BF7-4DD6-B020-9D7C981044B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A88D0E67-0BF7-4DD6-B020-9D7C981044B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A88D0E67-0BF7-4DD6-B020-9D7C981044B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A88D0E67-0BF7-4DD6-B020-9D7C981044B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89922F45-8462-410C-A817-F17640CDEC7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89922F45-8462-410C-A817-F17640CDEC7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89922F45-8462-410C-A817-F17640CDEC7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -91,17 +85,27 @@ Global
 		{633439A7-5836-48E7-810A-FE578A450848}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{633439A7-5836-48E7-810A-FE578A450848}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{633439A7-5836-48E7-810A-FE578A450848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D26F10A-360D-4497-A9AC-2F46DC2C8550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D26F10A-360D-4497-A9AC-2F46DC2C8550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D26F10A-360D-4497-A9AC-2F46DC2C8550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D26F10A-360D-4497-A9AC-2F46DC2C8550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5B1B0D9C-2210-4486-9883-DAA65D617B94} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{013D4102-B003-4B7A-928D-77F09B635420} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{F39ABCF7-00ED-4444-9FCF-D1CEDF1C5007} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{033AF347-0A9F-4ECD-B6A6-90C722E93E70} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{7CD803C2-E7C8-437A-903C-56622CA5BA50} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{A88D0E67-0BF7-4DD6-B020-9D7C981044B3} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
 		{89922F45-8462-410C-A817-F17640CDEC7B} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
 		{FE886EB9-AB23-47E5-98D6-526F6A315A7D} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
 		{3BC2BB36-1FE5-4778-BA0C-B8546F843D29} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
@@ -109,6 +113,9 @@ Global
 		{50BA1813-544B-4A3C-BD52-36095442ABFC} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{633439A7-5836-48E7-810A-FE578A450848} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
+		{2D26F10A-360D-4497-A9AC-2F46DC2C8550} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
+		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
+		{6FC807C1-37FF-4CDB-A087-046CB9C251C2} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BBC94B1-CE12-4692-BE35-086344F06179}

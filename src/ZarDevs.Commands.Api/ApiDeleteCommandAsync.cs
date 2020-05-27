@@ -6,15 +6,19 @@ namespace ZarDevs.Commands.Api
 {
     public class ApiDeleteCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandResponse>, IApiDeleteCommandAsync
     {
+        #region Constructors
+
         public ApiDeleteCommandAsync(IApiHttpClient httpClient) : base(httpClient)
         {
         }
+
+        #endregion Constructors
 
         #region Methods
 
         protected override Task<ApiCommandResponse> CreateResponse(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
         {
-            return Task.FromResult(HttpResponseFactory.CreateDefault(originalRequest, httpResponseMessage));
+            return Task.FromResult(HttpResponseFactory.Instance.CreateDefault(originalRequest, httpResponseMessage));
         }
 
         protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandRequest request)

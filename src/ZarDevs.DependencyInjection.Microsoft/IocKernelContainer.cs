@@ -1,20 +1,27 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.DependencyInjection
 {
     public interface IIocKernelServiceProvider
     {
+        #region Methods
+
         void ConfigureServiceProvider(IServiceProvider serviceProvider);
+
+        #endregion Methods
     }
 
     internal sealed class IocKernelContainer : IIocKernelContainer, IIocKernelServiceProvider
     {
+        #region Fields
+
         private readonly IDependencyContainer _container;
-        private IServiceProvider _serviceProvider;
         private INamedResolver _namedResolver;
+        private IServiceProvider _serviceProvider;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -23,15 +30,15 @@ namespace ZarDevs.DependencyInjection
             _container = container ?? throw new ArgumentNullException(nameof(container));
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         public void ConfigureServiceProvider(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _namedResolver = serviceProvider.GetRequiredService<INamedResolver>();
         }
-
-        #endregion Constructors
-
-        #region Methods
 
         public IDependencyContainer CreateDependencyContainer()
         {

@@ -1,16 +1,25 @@
 ﻿using System;
 
-namespace ZarDevs.Core.Runtime
+namespace ZarDevs.Runtime
 {
     public interface ICreate
     {
+        #region Methods
+
         T New<T>(params object[] constructorArgs);
+
         object New(Type type, params object[] constructorArgs);
+
+        #endregion Methods
     }
 
     public class Create : ICreate
     {
+        #region Properties
+
         public static ICreate Instance { get; } = new Create();
+
+        #endregion Properties
 
         #region Methods
 

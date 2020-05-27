@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZarDevs.Core;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -11,7 +10,7 @@ namespace ZarDevs.DependencyInjection
 
         public DependencyBuilder(IDependencyContainer container)
         {
-            Container = Check.IsNotNull(container, nameof(container));
+            Container = container ?? throw new ArgumentNullException(nameof(container));
         }
 
         #endregion Constructors

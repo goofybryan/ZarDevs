@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZarDevs.Core.Models
+﻿namespace ZarDevs.Core.Models
 {
     public class ViewModelBase<T> : ModelBase
     {

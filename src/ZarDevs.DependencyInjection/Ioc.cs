@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using ZarDevs.Core;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -9,11 +8,12 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
+        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+
         [ThreadStatic]
         private static IIocContainer _container;
 
         private static IIocKernelContainer _kernel;
-        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         #endregion Fields
 
@@ -24,10 +24,14 @@ namespace ZarDevs.DependencyInjection
             get => _container ?? (_container = new IocContainer(_kernel));
         }
 
-        public static IDependencyBuilder InitializeWithBuilder(IIocKernelContainer container)
+        #endregion Properties
+
+        #region Methods
+
+        public static void Dispose()
         {
-            var dependencyContainer = Initialize(container).CreateDependencyContainer();
-            return new DependencyBuilder(dependencyContainer);
+            _kernel?.Dispose();
+            _kernel = null;
         }
 
         public static IIocKernelContainer Initialize(IIocKernelContainer container)
@@ -44,14 +48,10 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        #endregion Properties
-
-        #region Methods
-
-        public static void Dispose()
+        public static IDependencyBuilder InitializeWithBuilder(IIocKernelContainer container)
         {
-            _kernel?.Dispose();
-            _kernel = null;
+            var dependencyContainer = Initialize(container).CreateDependencyContainer();
+            return new DependencyBuilder(dependencyContainer);
         }
 
         public static T Resolve<T>(params KeyValuePair<string, object>[] parameters)
