@@ -1,50 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using ZarDevs.DependencyInjection;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.Commands.Http
 {
-    public interface IApiHttpFactory
-    {
-        #region Methods
-
-        IApiHttpRequestHandlerBinding AddRequestHandler<TFor, THandler>(string name = "") where THandler : IApiHttpRequestHandler;
-
-        IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler;
-
-        IApiHttpClient NewClientFor(Type type, string name = "");
-
-        IApiHttpClient NewClientFor<T>(string name = "");
-
-        #endregion Methods
-    }
-
     public class ApiHttpFactory : IApiHttpFactory
     {
         #region Fields
 
-        private readonly Dictionary<Type, ApiHttpRequestHandlerBindingMap> _handlerMappings;
+        private readonly IDictionary<Type, ApiHttpRequestHandlerBindingMap> _handlerMappings;
+        private readonly IApiHttpHandlerFactory _handlerFactory;
         private readonly HttpClient _httpClient;
-        private readonly IIocContainer _ioc;
 
         #endregion Fields
 
         #region Constructors
 
-        public ApiHttpFactory(IIocContainer ioc, HttpClient httpClient)
+        public ApiHttpFactory(HttpClient httpClient, IApiHttpHandlerFactory handlerFactory)
         {
             _handlerMappings = new Dictionary<Type, ApiHttpRequestHandlerBindingMap>();
-            _ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _handlerFactory = handlerFactory ?? new DefaultHttpHandlerFactor();
         }
 
         #endregion Constructors
 
         #region Properties
-
-        [Obsolete("Here for legacy purposes")]
-        public static IApiHttpFactory Instance => Ioc.Resolve<IApiHttpFactory>();
 
         #endregion Properties
 
@@ -56,11 +38,6 @@ namespace ZarDevs.Commands.Http
             var binding = GetOrCreateBinding<THandler>(type, name);
             SetOrUpdateBinding(type, name, binding);
             return binding;
-        }
-
-        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler
-        {
-            return _ioc.Resolve<THandler>();
         }
 
         public IApiHttpClient NewClientFor<T>(string name = "")
@@ -77,7 +54,7 @@ namespace ZarDevs.Commands.Http
         private IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(Type type, string name) where THandler : IApiHttpRequestHandler
         {
             _handlerMappings.TryGetValue(type, out ApiHttpRequestHandlerBindingMap map);
-            return map?.TryGetBinding(name) ?? new ApiHttpRequestHandlerBinding<THandler>(this);
+            return map?.TryGetBinding(name) ?? new ApiHttpRequestHandlerBinding<THandler>(_handlerFactory);
         }
 
         private IApiHttpClient NewClient(IApiHttpRequestHandler handler = null)
@@ -97,5 +74,13 @@ namespace ZarDevs.Commands.Http
         }
 
         #endregion Methods
+    }
+
+    public class DefaultHttpHandlerFactor : IApiHttpHandlerFactory
+    {
+        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler
+        {
+            return Create.Instance.New<THandler>();
+        }
     }
 }

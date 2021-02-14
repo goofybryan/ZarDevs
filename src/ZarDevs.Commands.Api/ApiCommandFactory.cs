@@ -1,18 +1,23 @@
 ﻿using System;
-using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.Commands.Api
 {
-    public static class ApiCommandFactory
+    public interface IApiCommandFactory
+    {
+        IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse;
+        IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse;
+    }
+
+    public class ApiCommandFactory : IApiCommandFactory
     {
         #region Methods
 
-        public static IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
+        public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
         {
             return Create<TRequest, TResponse>(name);
         }
 
-        public static IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
+        public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
         {
             return Ioc.Resolve<IApiCommandAsync<TRequest, TResponse>>(name);
         }

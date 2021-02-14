@@ -8,7 +8,7 @@ namespace ZarDevs.Commands.Http
 
         public static IDependencyBuilder ConfigureHttp(this IDependencyBuilder builder)
         {
-            builder.Bind<IApiHttpFactory>().To((ctx, name) => ApiHttpFactory.Instance).InSingletonScope();
+            builder.Bind<IApiHttpFactory>().To<ApiHttpFactory>().InSingletonScope();
 
             return builder;
         }

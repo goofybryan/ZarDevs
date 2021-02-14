@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.Commands.Api
 {
     public class HttpResponseFactory : IHttpResponseFactory
     {
-        [Obsolete("Legacy")]
-        public static IHttpResponseFactory Instance => Ioc.Resolve<IHttpResponseFactory>();
-
         #region Methods
 
         public TResponse Create<TResponse>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage) where TResponse : ApiCommandResponse

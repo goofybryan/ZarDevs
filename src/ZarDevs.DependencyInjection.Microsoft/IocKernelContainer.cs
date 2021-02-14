@@ -72,22 +72,22 @@ namespace ZarDevs.DependencyInjection
 
         public T Resolve<T>()
         {
-            throw new NotImplementedException();
+            return (T)_serviceProvider.GetRequiredService(typeof(T));
         }
 
         public T Resolve<T>(string name)
         {
-            throw new NotImplementedException();
+            return _namedResolver.Resolve<T>(name);
         }
 
         public T Resolve<T>(Enum enumValue)
         {
-            throw new NotImplementedException();
+            return _namedResolver.Resolve<T>(enumValue);
         }
 
         public T Resolve<T>(object key)
         {
-            throw new NotImplementedException();
+            return _namedResolver.Resolve<T>(key);
         }
 
         public T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
@@ -112,22 +112,22 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolve<T>()
         {
-            throw new NotImplementedException();
+            return (T)_serviceProvider.GetService(typeof(T));
         }
 
         public T TryResolve<T>(string name)
         {
-            throw new NotImplementedException();
+            return _namedResolver.TryResolve<T>(name);
         }
 
         public T TryResolve<T>(Enum enumValue)
         {
-            return TryResolve<T>();
+            return _namedResolver.TryResolve<T>(enumValue);
         }
 
         public T TryResolve<T>(object key)
         {
-            return TryResolve<T>();
+            return _namedResolver.TryResolve<T>(key);
         }
 
         #endregion Methods

@@ -6,13 +6,13 @@ namespace ZarDevs.Commands.Http
     {
         #region Fields
 
-        private readonly IApiHttpFactory _factory;
+        private readonly IApiHttpHandlerFactory _factory;
 
         #endregion Fields
 
         #region Constructors
 
-        public ApiHttpRequestHandlerBinding(IApiHttpFactory factory)
+        public ApiHttpRequestHandlerBinding(IApiHttpHandlerFactory factory)
         {
             Name = "";
             _factory = factory ?? throw new System.ArgumentNullException(nameof(factory));

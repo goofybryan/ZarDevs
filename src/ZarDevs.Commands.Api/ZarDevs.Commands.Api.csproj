@@ -21,7 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ZarDevs.Commands.Abstractions\ZarDevs.Commands.Abstractions.csproj" />
     <ProjectReference Include="..\ZarDevs.Commands.Http\ZarDevs.Commands.Http.csproj" />
-    <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>

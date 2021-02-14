@@ -17,7 +17,7 @@ namespace ZarDevs.Runtime
     {
         #region Properties
 
-        public static ICreate Instance { get; } = new Create();
+        public static ICreate Instance { get; set; } = new Create();
 
         #endregion Properties
 
