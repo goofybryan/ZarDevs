@@ -29,13 +29,13 @@ namespace ZarDevs.Commands.Http
         {
             if (handlerFactory is null)
             {
-                throw new System.ArgumentNullException(nameof(handlerFactory));
+                throw new ArgumentNullException(nameof(handlerFactory));
             }
 
             ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory);
 
-            builder.Bind<IApiHttpFactory>().To((ctx, name) => ApiHttpFactory.Instance).InSingletonScope();
-            builder.Bind<IApiHttpClient>().To((ctx, name) => ctx.Ioc.Resolve<IApiHttpFactory>().NewClient(name)).InTransientScope();
+            builder.Bind<IApiHttpFactory>().To((ctx, key) => ApiHttpFactory.Instance).InSingletonScope();
+            builder.Bind<IApiHttpClient>().To((ctx, key) => ctx.Ioc.Resolve<IApiHttpFactory>().NewClient(key)).InTransientScope();
 
             return builder;
         }

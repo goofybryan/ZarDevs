@@ -41,26 +41,49 @@ namespace ZarDevs.DependencyInjection
                 IBindingToSyntax<object> initial = Kernel.Bind(info.RequestType);
 
                 IBindingWhenInNamedWithOrOnSyntax<object> binding = BuildTo(info, initial);
+                BindScope(info, binding);
+                BindNamedIfConfigured(info, binding);
+            }
+        }
 
-                switch (info.Scope)
-                {
-                    case DependyBuilderScope.Transient:
-                        binding.InTransientScope();
-                        break;
+        private static void BindScope(IDependencyInfo info, IBindingWhenInNamedWithOrOnSyntax<object> binding)
+        {
+            switch (info.Scope)
+            {
+                case DependyBuilderScope.Transient:
+                    binding.InTransientScope();
+                    break;
 
-                    case DependyBuilderScope.Request:
-                        binding.InThreadScope();
-                        break;
+                case DependyBuilderScope.Request:
+                    binding.InThreadScope();
+                    break;
 
-                    case DependyBuilderScope.Singleton:
-                        binding.InSingletonScope();
-                        break;
-                }
+                case DependyBuilderScope.Singleton:
+                    binding.InSingletonScope();
+                    break;
+            }
+        }
 
-                if (!string.IsNullOrEmpty(info.Name))
-                {
-                    binding.Named(info.Name);
-                }
+        private static void BindNamedIfConfigured(IDependencyInfo info, IBindingWhenInNamedWithOrOnSyntax<object> binding)
+        {
+            string named;
+
+            if (info.Key is Enum enumKey)
+            {
+                named = enumKey.GetBindingName();
+            }
+            else if (info.Key is string name)
+            {
+                named = name;
+            }
+            else
+            {
+                named = info.Key?.ToString();
+            }
+
+            if (!string.IsNullOrWhiteSpace(named))
+            {
+                binding.Named(named);
             }
         }
 
@@ -69,7 +92,7 @@ namespace ZarDevs.DependencyInjection
             if (info is IDependencyMethodInfo methodInfo)
             {
                 return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Kernel.Get<IIocContainer>(), 
-                    ctx.Request.Target.Type), info.Name));
+                    ctx.Request.Target.Type), info.Key));
             }
 
             if (info is IDependencyTypeInfo typeInfo)

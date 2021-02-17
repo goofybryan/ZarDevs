@@ -7,7 +7,7 @@ namespace ZarDevs.Commands.Http
     {
         #region Fields
 
-        private readonly Dictionary<string, IApiHttpRequestHandlerBinding> _map;
+        private readonly Dictionary<object, IApiHttpRequestHandlerBinding> _map;
 
         #endregion Fields
 
@@ -15,32 +15,32 @@ namespace ZarDevs.Commands.Http
 
         public ApiHttpRequestHandlerBindingMap()
         {
-            _map = new Dictionary<string, IApiHttpRequestHandlerBinding>(StringComparer.OrdinalIgnoreCase);
+            _map = new Dictionary<object, IApiHttpRequestHandlerBinding>();
         }
 
         #endregion Constructors
 
         #region Indexers
 
-        public IApiHttpRequestHandlerBinding this[string name]
+        public IApiHttpRequestHandlerBinding this[object key]
         {
-            get => TryGetBinding(name);
-            set => TrySetBinding(name, value);
+            get => TryGetBinding(key);
+            set => TrySetBinding(key, value);
         }
 
         #endregion Indexers
 
         #region Methods
 
-        public IApiHttpRequestHandlerBinding TryGetBinding(string name)
+        public IApiHttpRequestHandlerBinding TryGetBinding(object key)
         {
-            _map.TryGetValue(name ?? string.Empty, out IApiHttpRequestHandlerBinding value);
+            _map.TryGetValue(key ?? string.Empty, out IApiHttpRequestHandlerBinding value);
             return value;
         }
 
-        public void TrySetBinding(string name, IApiHttpRequestHandlerBinding binding)
+        public void TrySetBinding(object key, IApiHttpRequestHandlerBinding binding)
         {
-            _map[name ?? ""] = binding;
+            _map[key ?? ""] = binding;
         }
 
         #endregion Methods

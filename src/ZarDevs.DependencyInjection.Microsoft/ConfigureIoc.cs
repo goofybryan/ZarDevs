@@ -77,15 +77,15 @@ namespace ZarDevs.DependencyInjection
             switch (info.Scope)
             {
                 case DependyBuilderScope.Transient:
-                    _services.AddTransient(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Name));
+                    _services.AddTransient(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Key));
                     break;
 
                 case DependyBuilderScope.Singleton:
-                    _services.AddSingleton(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Name));
+                    _services.AddSingleton(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Key));
                     break;
 
                 case DependyBuilderScope.Request:
-                    _services.AddScoped(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Name));
+                    _services.AddScoped(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Key));
                     break;
             }
 
@@ -97,13 +97,13 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            if (string.IsNullOrEmpty(info.Name))
+            if (info.Key == null || info.Key.ToString() == string.Empty)
             {
                 RegisterInstances(info.RequestType, info.ResolvedType, info.Scope);
                 return true;
             }
 
-            _namedConfiguration.Configure(info.RequestType, info.ResolvedType, info.Name);
+            _namedConfiguration.Configure(info.RequestType, info.ResolvedType, info.Key);
             RegisterInstances(info.ResolvedType, info.ResolvedType, info.Scope);
 
             return true;

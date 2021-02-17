@@ -117,7 +117,7 @@ namespace ZarDevs.DependencyInjection
 
         public T Resolve<T>(object key, params object[] parameters)
         {
-            return Resolve<T>(key.GetType().FullName, parameters);
+            return Resolve<T>(key.ToString(), parameters);
         }
 
         public T TryResolve<T>(params (string, object)[] parameters)
@@ -137,7 +137,7 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolve<T>(object key, params (string, object)[] parameters)
         {
-            return TryResolve<T>(key.GetType().FullName, parameters);
+            return TryResolve<T>(key.ToString(), parameters);
         }
 
         public T TryResolve<T>()
@@ -177,7 +177,7 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolve<T>(object key, params object[] parameters)
         {
-            return TryResolve<T>(key.GetType().FullName, parameters);
+            return TryResolve<T>(key.ToString(), parameters);
         }
 
         protected virtual void Dispose(bool disposing)

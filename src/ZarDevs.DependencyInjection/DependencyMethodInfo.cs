@@ -6,7 +6,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Constructors
 
-        public DependencyMethodInfo(Func<DepencyBuilderInfoContext, string, object> methodTo, DependencyInfo info) : base(info)
+        public DependencyMethodInfo(Func<DepencyBuilderInfoContext, object, object> methodTo, DependencyInfo info) : base(info)
         {
             MethodTo = methodTo ?? throw new ArgumentNullException(nameof(methodTo));
         }
@@ -15,7 +15,7 @@ namespace ZarDevs.DependencyInjection
 
         #region Properties
 
-        public Func<DepencyBuilderInfoContext, string, object> MethodTo { get; }
+        public Func<DepencyBuilderInfoContext, object, object> MethodTo { get; }
 
         #endregion Properties
     }

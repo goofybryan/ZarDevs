@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using ZarDevs.Runtime;
 
@@ -34,21 +33,21 @@ namespace ZarDevs.Commands.Http
 
         #region Methods
 
-        public IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(string name = "") where THandler : IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key= null) where THandler : IApiHttpRequestHandler
         {
-            var binding = GetOrCreateBinding<THandler>(name);
+            var binding = GetOrCreateBinding<THandler>(key);
             return binding;
         }
 
-        public IApiHttpClient NewClient(string name = "")
+        public IApiHttpClient NewClient(object key = null)
         {
-            var binding = GetOrCreateBinding<ApiHttpRequestHandler>(name);
+            var binding = GetOrCreateBinding<ApiHttpRequestHandler>(key);
             return NewClient(binding?.Build());
         }
 
-        private IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(string name) where THandler : IApiHttpRequestHandler
+        private IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(object key) where THandler : IApiHttpRequestHandler
         {
-            return _handlerMappings?.TryGetBinding(name) ?? new ApiHttpRequestHandlerBinding<THandler>(_handlerFactory);
+            return _handlerMappings?.TryGetBinding(key) ?? new ApiHttpRequestHandlerBinding<THandler>(_handlerFactory);
         }
 
         private IApiHttpClient NewClient(IApiHttpRequestHandler handler = null)

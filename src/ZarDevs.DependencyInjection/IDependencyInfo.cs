@@ -7,9 +7,9 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <summary>
-        /// Specify the name of the dependency.
+        /// Specify the key of the dependency.
         /// </summary>
-        string Name { get; }
+        object Key { get; }
 
         /// <summary>
         /// Specify the scope that this dependency is active in.

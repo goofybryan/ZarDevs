@@ -54,42 +54,42 @@ namespace ZarDevs.DependencyInjection
             return new DependencyBuilder(dependencyContainer);
         }
 
-        public static T Resolve<T>(params KeyValuePair<string, object>[] parameters)
+        public static T Resolve<T>(params (string, object)[] parameters)
         {
             return Container.Resolve<T>(parameters);
         }
 
-        public static T Resolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        public static T Resolve<T>(string name, params (string, object)[] parameters)
         {
             return Container.Resolve<T>(name, parameters);
         }
 
-        public static T Resolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        public static T Resolve<T>(Enum enumValue, params (string, object)[] parameters)
         {
             return Container.Resolve<T>(enumValue, parameters);
         }
 
-        public static T Resolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        public static T Resolve<T>(object key, params (string, object)[] parameters)
         {
             return Container.Resolve<T>(key, parameters);
         }
 
-        public static T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
+        public static T TryResolve<T>(params (string, object)[] parameters)
         {
             return Container.TryResolve<T>(parameters);
         }
 
-        public static T TryResolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        public static T TryResolve<T>(string name, params (string, object)[] parameters)
         {
             return Container.TryResolve<T>(name, parameters);
         }
 
-        public static T TryResolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        public static T TryResolve<T>(Enum enumValue, params (string, object)[] parameters)
         {
             return Container.TryResolve<T>(enumValue, parameters);
         }
 
-        public static T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        public static T TryResolve<T>(object key, params (string, object)[] parameters)
         {
             return Container.TryResolve<T>(key, parameters);
         }

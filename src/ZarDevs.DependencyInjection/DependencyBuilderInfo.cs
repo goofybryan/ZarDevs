@@ -47,9 +47,9 @@ namespace ZarDevs.DependencyInjection
             return this;
         }
 
-        public IDependencyBuilderInfo Named(string name)
+        public IDependencyBuilderInfo Named(object key)
         {
-            _info.Name = name ?? "";
+            _info.Key = key;
             return this;
         }
 
@@ -64,7 +64,7 @@ namespace ZarDevs.DependencyInjection
             return To(typeof(T));
         }
 
-        public IDependencyBuilderInfo To(Func<DepencyBuilderInfoContext, string, object> method)
+        public IDependencyBuilderInfo To(Func<DepencyBuilderInfoContext, object, object> method)
         {
             _info = new DependencyMethodInfo(method, _info);
             return this;

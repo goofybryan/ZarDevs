@@ -6,7 +6,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Properties
 
-        Func<DepencyBuilderInfoContext, string, object> MethodTo { get; }
+        Func<DepencyBuilderInfoContext, object, object> MethodTo { get; }
 
         #endregion Properties
     }

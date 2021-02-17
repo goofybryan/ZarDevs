@@ -101,7 +101,7 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            var binding = builder.Register((c) => info.MethodTo(new DepencyBuilderInfoContext(c.Resolve<IIocContainer>(), info.RequestType), info.Name));
+            var binding = builder.Register((c) => info.MethodTo(new DepencyBuilderInfoContext(c.Resolve<IIocContainer>(), info.RequestType), info.Key));
 
             Build(info, binding);
 
@@ -113,12 +113,24 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            var binding = builder.RegisterType(info.ResolvedType);
+            IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> binding = builder.RegisterType(info.ResolvedType);
 
-            if (!string.IsNullOrWhiteSpace(info.Name))
-                binding.Named(info.Name, info.ResolvedType);
+            if (!TryRegisterNamedTypeTo(binding, info) && info.Key != null)
+                binding.Keyed(info.Key, info.ResolvedType);
 
             Build(info, binding);
+
+            return true;
+        }
+
+        private bool TryRegisterNamedTypeTo(IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> binding, IDependencyTypeInfo info)
+        {
+            if (!(info.Key is string name)) return false;
+
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                binding.Named(name, info.ResolvedType);
+            }
 
             return true;
         }

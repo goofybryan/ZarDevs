@@ -12,7 +12,7 @@ namespace ZarDevs.DependencyInjection
 
         public DependencyInfo(DependencyInfo copy)
         {
-            Name = copy.Name;
+            Key = copy.Key;
             Scope = copy.Scope;
             RequestType = copy.RequestType;
         }
@@ -21,7 +21,7 @@ namespace ZarDevs.DependencyInjection
 
         #region Properties
 
-        public string Name { get; set; } = "";
+        public object Key { get; set; } = "";
         public DependyBuilderScope Scope { get; set; }
         public Type RequestType { get; set; }
 
