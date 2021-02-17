@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
   </ItemGroup>
 
 </Project>

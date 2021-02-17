@@ -62,12 +62,10 @@ namespace ZarDevs.DependencyInjection
 
             Builder.RegisterInstance(Ioc.Container).SingleInstance();
 
-#pragma warning disable CA1062 // Validate arguments of public methods
             foreach (IDependencyInfo info in definitions)
-#pragma warning restore CA1062 // Validate arguments of public methods
             {
                 if (!TryRegisterTypeTo(Builder, info as IDependencyTypeInfo) && !TryRegisterMethod(Builder, info as IDependencyMethodInfo))
-                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.TypeFrom));
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
             }
 
             Container = Builder.Build(_buildOptions);
@@ -80,7 +78,7 @@ namespace ZarDevs.DependencyInjection
 
         internal static void Build<TActivatorData, TRegistrationStyle>(IDependencyInfo info, IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> binding)
         {
-            binding.As(info.TypeFrom);
+            binding.As(info.RequestType);
 
             switch (info.Scope)
             {
@@ -103,9 +101,9 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            var module = new MethodModule(info);
-            builder.RegisterModule(module);
-            Modules.Add(module);
+            var binding = builder.Register((c) => info.MethodTo(new DepencyBuilderInfoContext(c.Resolve<IIocContainer>(), info.RequestType), info.Name));
+
+            Build(info, binding);
 
             return true;
         }
@@ -115,10 +113,10 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            var binding = builder.RegisterType(info.TypeTo);
+            var binding = builder.RegisterType(info.ResolvedType);
 
             if (!string.IsNullOrWhiteSpace(info.Name))
-                binding.Named(info.Name, info.TypeTo);
+                binding.Named(info.Name, info.ResolvedType);
 
             Build(info, binding);
 

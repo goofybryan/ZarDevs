@@ -6,11 +6,9 @@ namespace ZarDevs.Commands.Http
     {
         #region Methods
 
-        IApiHttpRequestHandlerBinding AddRequestHandler<TFor, THandler>(string name = "") where THandler : IApiHttpRequestHandler;
+        IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(string name = "") where THandler : IApiHttpRequestHandler;
 
-        IApiHttpClient NewClientFor(Type type, string name = "");
-
-        IApiHttpClient NewClientFor<T>(string name = "");
+        IApiHttpClient NewClient(string name = "");
 
         #endregion Methods
     }

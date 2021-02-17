@@ -65,14 +65,8 @@ namespace ZarDevs.DependencyInjection
             foreach (var info in definitions)
             {
                 if (!TryRegisterTypeTo(info as IDependencyTypeInfo) && !TryRegisterMethod(info as IDependencyMethodInfo))
-                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.TypeFrom));
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
             }
-        }
-
-        // TODO BM: Continue Microsoft Support
-        private static object FactoryMethod(IServiceProvider provider)
-        {
-            throw new NotImplementedException();
         }
 
         private bool TryRegisterMethod(IDependencyMethodInfo info)
@@ -83,13 +77,15 @@ namespace ZarDevs.DependencyInjection
             switch (info.Scope)
             {
                 case DependyBuilderScope.Transient:
+                    _services.AddTransient(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Name));
                     break;
 
                 case DependyBuilderScope.Singleton:
+                    _services.AddSingleton(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Name));
                     break;
 
                 case DependyBuilderScope.Request:
-                    _services.AddScoped(info.TypeFrom, provider => info.MethodTo(new DepencyBuilderInfoContext(), info.Name));
+                    _services.AddScoped(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Name));
                     break;
             }
 
@@ -101,7 +97,32 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
+            if (string.IsNullOrEmpty(info.Name))
+            {
+                RegisterInstances(info.RequestType, info.ResolvedType, info.Scope);
+                return true;
+            }
+
+            _namedConfiguration.Configure(info.RequestType, info.ResolvedType, info.Name);
+            RegisterInstances(info.ResolvedType, info.ResolvedType, info.Scope);
+
             return true;
+        }
+
+        private void RegisterInstances(Type requestType, Type resolvedType, DependyBuilderScope scope)
+        {
+            switch (scope)
+            {
+                case DependyBuilderScope.Transient:
+                    _services.AddTransient(requestType, resolvedType);
+                    break;
+                case DependyBuilderScope.Singleton:
+                    _services.AddSingleton(requestType, resolvedType);
+                    break;
+                case DependyBuilderScope.Request:
+                    _services.AddScoped(requestType, resolvedType);
+                    break;
+            }
         }
 
         #endregion Methods

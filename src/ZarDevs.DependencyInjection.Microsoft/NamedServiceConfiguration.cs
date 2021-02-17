@@ -9,6 +9,8 @@ namespace ZarDevs.DependencyInjection
 
         void Configure<TService, TInstance>(object name) where TInstance : TService;
 
+        void Configure(Type requestType, Type resolvedType, object name);
+
         Type ResolveInstanceType<TService>(object name);
 
         #endregion Methods
@@ -35,14 +37,17 @@ namespace ZarDevs.DependencyInjection
 
         public void Configure<TService, TInstance>(object name) where TInstance : TService
         {
-            Type keyType = typeof(TService);
+            Configure(typeof(TService), typeof(TInstance), name);
+        }
 
-            if (!_bindings.ContainsKey(keyType))
+        public void Configure(Type requestType, Type resolvedType, object name)
+        {
+            if (!_bindings.ContainsKey(requestType))
             {
-                _bindings[keyType] = new Dictionary<object, Type>();
+                _bindings[requestType] = new Dictionary<object, Type>();
             }
 
-            _bindings[keyType].Add(name, typeof(TInstance));
+            _bindings[requestType].Add(name, resolvedType);
         }
 
         public Type ResolveInstanceType<TService>(object name)

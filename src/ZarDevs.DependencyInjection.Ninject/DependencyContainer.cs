@@ -36,11 +36,9 @@ namespace ZarDevs.DependencyInjection
 
             Kernel.Bind<IIocContainer>().ToConstant(Ioc.Container);
 
-#pragma warning disable CA1062 // Validate arguments of public methods
             foreach (var info in definitions)
-#pragma warning restore CA1062 // Validate arguments of public methods
             {
-                IBindingToSyntax<object> initial = Kernel.Bind(info.TypeFrom);
+                IBindingToSyntax<object> initial = Kernel.Bind(info.RequestType);
 
                 IBindingWhenInNamedWithOrOnSyntax<object> binding = BuildTo(info, initial);
 
@@ -70,15 +68,16 @@ namespace ZarDevs.DependencyInjection
         {
             if (info is IDependencyMethodInfo methodInfo)
             {
-                return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Request.Target.Member.DeclaringType, ctx.Request.Target.Type), info.Name));
+                return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Kernel.Get<IIocContainer>(), 
+                    ctx.Request.Target.Type), info.Name));
             }
 
             if (info is IDependencyTypeInfo typeInfo)
             {
-                return initial.To(typeInfo.TypeTo);
+                return initial.To(typeInfo.ResolvedType);
             }
 
-            throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.TypeFrom));
+            throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
         }
 
         #endregion Methods

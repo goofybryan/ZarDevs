@@ -14,7 +14,7 @@ namespace ZarDevs.DependencyInjection
         {
             Name = copy.Name;
             Scope = copy.Scope;
-            TypeFrom = copy.TypeFrom;
+            RequestType = copy.RequestType;
         }
 
         #endregion Constructors
@@ -23,7 +23,7 @@ namespace ZarDevs.DependencyInjection
 
         public string Name { get; set; } = "";
         public DependyBuilderScope Scope { get; set; }
-        public Type TypeFrom { get; set; }
+        public Type RequestType { get; set; }
 
         #endregion Properties
     }

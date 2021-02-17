@@ -8,14 +8,14 @@ namespace ZarDevs.DependencyInjection
 
         public DependencyTypeInfo(Type typeTo, DependencyInfo info) : base(info)
         {
-            TypeTo = typeTo ?? throw new ArgumentNullException(nameof(typeTo));
+            ResolvedType = typeTo ?? throw new ArgumentNullException(nameof(typeTo));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public Type TypeTo { get; set; }
+        public Type ResolvedType { get; set; }
 
         #endregion Properties
     }

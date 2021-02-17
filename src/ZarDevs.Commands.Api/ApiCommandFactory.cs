@@ -1,4 +1,5 @@
 ﻿using System;
+using ZarDevs.DependencyInjection;
 
 namespace ZarDevs.Commands.Api
 {
@@ -10,6 +11,13 @@ namespace ZarDevs.Commands.Api
 
     public class ApiCommandFactory : IApiCommandFactory
     {
+        private readonly IIocContainer _ioc;
+
+        public ApiCommandFactory(IIocContainer ioc)
+        {
+            _ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+        }
+
         #region Methods
 
         public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
@@ -19,7 +27,7 @@ namespace ZarDevs.Commands.Api
 
         public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
         {
-            return Ioc.Resolve<IApiCommandAsync<TRequest, TResponse>>(name);
+            return _ioc.Resolve<IApiCommandAsync<TRequest, TResponse>>(name);
         }
 
         #endregion Methods

@@ -6,8 +6,6 @@ namespace ZarDevs.DependencyInjection.Tests
     {
         #region Methods
 
-        IChildClass CreateChildClass(Type callingClassType);
-
         IChildClass ResolveChildClass(Type parameter);
 
         #endregion Methods
@@ -22,11 +20,6 @@ namespace ZarDevs.DependencyInjection.Tests
         #endregion Properties
 
         #region Methods
-
-        public IChildClass CreateChildClass(Type callingClassType)
-        {
-            return new ChildClass(callingClassType);
-        }
 
         public IChildClass ResolveChildClass(Type parameter)
         {

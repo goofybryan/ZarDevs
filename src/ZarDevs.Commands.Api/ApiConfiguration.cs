@@ -8,22 +8,22 @@ namespace ZarDevs.Commands.Api
 
         public static IApiHttpRequestHandlerBinding ConfigureDeleteApi<THandler>(this IApiHttpFactory factory) where THandler : IApiHttpRequestHandler
         {
-            return factory.AddRequestHandler<ApiDeleteCommandAsync, THandler>().Named(HttpRequestType.Delete.ToString());
+            return factory.AddRequestHandler<THandler>().Named(HttpRequestType.Delete.ToString());
         }
 
         public static IApiHttpRequestHandlerBinding ConfigureGetApi<THandler>(this IApiHttpFactory factory) where THandler : IApiHttpRequestHandler
         {
-            return factory.AddRequestHandler<ApiGetCommandAsync, THandler>().Named(HttpRequestType.Get.ToString());
+            return factory.AddRequestHandler<THandler>().Named(HttpRequestType.Get.ToString());
         }
 
         public static IApiHttpRequestHandlerBinding ConfigurePostApi<THandler>(this IApiHttpFactory factory) where THandler : IApiHttpRequestHandler
         {
-            return factory.AddRequestHandler<ApiPostCommandAsync, THandler>().Named(HttpRequestType.Post.ToString());
+            return factory.AddRequestHandler<THandler>().Named(HttpRequestType.Post.ToString());
         }
 
         public static IApiHttpRequestHandlerBinding ConfigurePutApi<THandler>(this IApiHttpFactory factory) where THandler : IApiHttpRequestHandler
         {
-            return factory.AddRequestHandler<ApiPutCommandAsync, THandler>().Named(HttpRequestType.Put.ToString());
+            return factory.AddRequestHandler<THandler>().Named(HttpRequestType.Put.ToString());
         }
 
         #endregion Methods

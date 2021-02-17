@@ -1,20 +1,25 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
     public interface IIocKernelServiceProvider
     {
+
         #region Methods
 
         void ConfigureServiceProvider(IServiceProvider serviceProvider);
 
         #endregion Methods
+
     }
 
     internal sealed class IocKernelContainer : IIocKernelContainer, IIocKernelServiceProvider
     {
+
         #region Fields
 
         private readonly IDependencyContainer _container;
@@ -50,24 +55,24 @@ namespace ZarDevs.DependencyInjection
             _serviceProvider = null;
         }
 
-        public T Resolve<T>(params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(params (string, object)[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return Resolve<T>(GetOrderedParameterValuesFromMap(typeof(T), parameters));
         }
 
-        public T Resolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(string name, params (string, object)[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return Resolve<T>(name, GetOrderedParameterValuesFromMap(typeof(T), parameters));
         }
 
-        public T Resolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(Enum enumValue, params (string, object)[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return Resolve<T>(enumValue, GetOrderedParameterValuesFromMap(typeof(T), parameters));
         }
 
-        public T Resolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(object key, params (string, object)[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return Resolve<T>(key, GetOrderedParameterValuesFromMap(typeof(T), parameters));
         }
 
         public T Resolve<T>()
@@ -90,24 +95,44 @@ namespace ZarDevs.DependencyInjection
             return _namedResolver.Resolve<T>(key);
         }
 
-        public T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(params object[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return ActivatorUtilities.CreateInstance<T>(_serviceProvider, parameters);
         }
 
-        public T TryResolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(string name, params object[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return _namedResolver.Resolve<T>(name, parameters);
         }
 
-        public T TryResolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(Enum enumValue, params object[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return _namedResolver.Resolve<T>(enumValue, parameters);
         }
 
-        public T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(object key, params object[] parameters)
         {
-            throw new NotSupportedException("Runtime parameters declaration is not supported for Microsoft dependency injection. Recommended to make use of factory pattern instead.");
+            return _namedResolver.Resolve<T>(key, parameters);
+        }
+
+        public T TryResolve<T>(params (string, object)[] parameters)
+        {
+            return TryResolve<T>(GetOrderedParameterValuesFromMap(typeof(T), parameters));
+        }
+
+        public T TryResolve<T>(string name, params (string, object)[] parameters)
+        {
+            return TryResolve<T>(name, GetOrderedParameterValuesFromMap(typeof(T), parameters));
+        }
+
+        public T TryResolve<T>(Enum enumValue, params (string, object)[] parameters)
+        {
+            return TryResolve<T>(enumValue, GetOrderedParameterValuesFromMap(typeof(T), parameters));
+        }
+
+        public T TryResolve<T>(object key, params (string, object)[] parameters)
+        {
+            return TryResolve<T>(key, GetOrderedParameterValuesFromMap(typeof(T), parameters));
         }
 
         public T TryResolve<T>()
@@ -130,6 +155,32 @@ namespace ZarDevs.DependencyInjection
             return _namedResolver.TryResolve<T>(key);
         }
 
+        public T TryResolve<T>(params object[] parameters)
+        {
+            return ActivatorUtilities.CreateInstance<T>(_serviceProvider, parameters);
+        }
+
+        public T TryResolve<T>(string name, params object[] parameters)
+        {
+            return _namedResolver.TryResolve<T>(name, parameters);
+        }
+
+        public T TryResolve<T>(Enum enumValue, params object[] parameters)
+        {
+            return _namedResolver.TryResolve<T>(enumValue, parameters);
+        }
+
+        public T TryResolve<T>(object key, params object[] parameters)
+        {
+            return _namedResolver.TryResolve<T>(key, parameters);
+        }
+
+        private object[] GetOrderedParameterValuesFromMap(Type type, IList<(string, object)> map)
+        {
+            return Inspect.Instance.OrderConstructorParameters(type, map.ToDictionary(key => key.Item1, value => value.Item2)).ToArray();
+        }
+
         #endregion Methods
+
     }
 }

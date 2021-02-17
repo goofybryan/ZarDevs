@@ -6,10 +6,12 @@ namespace ZarDevs.Commands.Api
 {
     public class ApiGetCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandJsonResponse>, IApiGetCommandAsync
     {
+        private readonly IHttpResponseFactory _responseFactory;
         #region Constructors
 
-        public ApiGetCommandAsync(IApiHttpClient httpClient) : base(httpClient)
+        public ApiGetCommandAsync(IApiHttpClient httpClient, IHttpResponseFactory responseFactory) : base(httpClient)
         {
+            _responseFactory = responseFactory ?? throw new System.ArgumentNullException(nameof(responseFactory));
         }
 
         #endregion Constructors
@@ -18,7 +20,7 @@ namespace ZarDevs.Commands.Api
 
         protected override async Task<ApiCommandJsonResponse> CreateResponse(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
         {
-            return await HttpResponseFactory.Instance.CreateWithJsonContent(originalRequest, httpResponseMessage);
+            return await _responseFactory.CreateWithJsonContent(originalRequest, httpResponseMessage);
         }
 
         protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandRequest request)

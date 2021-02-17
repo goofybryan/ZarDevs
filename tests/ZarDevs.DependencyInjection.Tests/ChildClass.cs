@@ -15,9 +15,8 @@ namespace ZarDevs.DependencyInjection.Tests
     {
         #region Constructors
 
-        public ChildClass(Type callingClassType)
+        public ChildClass()
         {
-            CallingClassType = callingClassType ?? throw new System.ArgumentNullException(nameof(callingClassType));
         }
 
         #endregion Constructors

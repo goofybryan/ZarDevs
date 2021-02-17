@@ -3,6 +3,8 @@ using Ninject.Modules;
 using Ninject.Parameters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -53,22 +55,22 @@ namespace ZarDevs.DependencyInjection
                 Kernel.Load(ninjectModule);
         }
 
-        public T Resolve<T>(params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(params (string, object)[] parameters)
         {
             return Kernel.Get<T>(CreateParameters(parameters));
         }
 
-        public T Resolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.Get<T>(name, CreateParameters(parameters));
         }
 
-        public T Resolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(Enum enumValue, params (string, object)[] parameters)
         {
             return Kernel.Get<T>(enumValue.GetBindingName(), CreateParameters(parameters));
         }
 
-        public T Resolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(object key, params (string, object)[] parameters)
         {
             if (key is null)
             {
@@ -80,62 +82,102 @@ namespace ZarDevs.DependencyInjection
 
         public T Resolve<T>()
         {
-            return Resolve<T>(new KeyValuePair<string, object>[0]);
+            return Resolve<T>(new (string, object)[0]);
         }
 
         public T Resolve<T>(string name)
         {
-            return Resolve<T>(name, new KeyValuePair<string, object>[0]);
+            return Resolve<T>(name, new (string, object)[0]);
         }
 
         public T Resolve<T>(Enum enumValue)
         {
-            return Resolve<T>(enumValue, new KeyValuePair<string, object>[0]);
+            return Resolve<T>(enumValue, new (string, object)[0]);
         }
 
         public T Resolve<T>(object key)
         {
-            return Resolve<T>(key, new KeyValuePair<string, object>[0]);
+            return Resolve<T>(key, new (string, object)[0]);
         }
 
-        public T TryResolve<T>(params KeyValuePair<string, object>[] parameters)
+        public T Resolve<T>(params object[] parameters)
+        {
+            return Kernel.Get<T>(CreateParameters(typeof(T), parameters));
+        }
+
+        public T Resolve<T>(string name, params object[] parameters)
+        {
+            return Kernel.Get<T>(name, CreateParameters(typeof(T), parameters));
+        }
+
+        public T Resolve<T>(Enum enumValue, params object[] parameters)
+        {
+            return Resolve<T>(enumValue.GetBindingName(), parameters);
+        }
+
+        public T Resolve<T>(object key, params object[] parameters)
+        {
+            return Resolve<T>(key.GetType().FullName, parameters);
+        }
+
+        public T TryResolve<T>(params (string, object)[] parameters)
         {
             return Kernel.TryGet<T>(CreateParameters(parameters));
         }
 
-        public T TryResolve<T>(string name, params KeyValuePair<string, object>[] parameters)
+        public T TryResolve<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.TryGet<T>(name, CreateParameters(parameters));
         }
 
-        public T TryResolve<T>(Enum enumValue, params KeyValuePair<string, object>[] parameters)
+        public T TryResolve<T>(Enum enumValue, params (string, object)[] parameters)
         {
             return TryResolve<T>(enumValue.GetBindingName(), parameters);
         }
 
-        public T TryResolve<T>(object key, params KeyValuePair<string, object>[] parameters)
+        public T TryResolve<T>(object key, params (string, object)[] parameters)
         {
             return TryResolve<T>(key.GetType().FullName, parameters);
         }
 
         public T TryResolve<T>()
         {
-            return TryResolve<T>(new KeyValuePair<string, object>[0]);
+            return TryResolve<T>(new (string, object)[0]);
         }
 
         public T TryResolve<T>(string name)
         {
-            return TryResolve<T>(name, new KeyValuePair<string, object>[0]);
+            return TryResolve<T>(name, new (string, object)[0]);
         }
 
         public T TryResolve<T>(Enum enumValue)
         {
-            return TryResolve<T>(enumValue, new KeyValuePair<string, object>[0]);
+            return TryResolve<T>(enumValue, new (string, object)[0]);
         }
 
         public T TryResolve<T>(object key)
         {
-            return TryResolve<T>(key, new KeyValuePair<string, object>[0]);
+            return TryResolve<T>(key, new (string, object)[0]);
+        }
+
+        public T TryResolve<T>(params object[] parameters)
+        {
+            return Kernel.TryGet<T>(CreateParameters(typeof(T), parameters));
+        }
+
+        public T TryResolve<T>(string name, params object[] parameters)
+        {
+            return TryResolve<T>(name, parameters);
+        }
+
+        public T TryResolve<T>(Enum enumValue, params object[] parameters)
+        {
+            return TryResolve<T>(enumValue.GetBindingName(), parameters);
+        }
+
+        public T TryResolve<T>(object key, params object[] parameters)
+        {
+            return TryResolve<T>(key.GetType().FullName, parameters);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -151,20 +193,27 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        private IParameter[] CreateParameters(KeyValuePair<string, object>[] parameters)
+        private IParameter[] CreateParameters(IList<(string, object)> parameters)
         {
             if (parameters == null)
                 return null;
 
             var list = new List<IParameter>();
 
-            foreach (var parameter in parameters)
+            foreach (var (name, value) in parameters)
             {
-                var constructorArg = new ConstructorArgument(parameter.Key, parameter.Value);
+                var constructorArg = new ConstructorArgument(name, value);
                 list.Add(constructorArg);
             }
 
             return list.ToArray();
+        }
+
+        private IParameter[] CreateParameters(Type targetType, object[] values)
+        {
+            var constructorArgs = Inspect.Instance.FindConstructParameterNames(targetType, values.Select(v => v.GetType()).ToArray());
+
+            return CreateParameters(constructorArgs);
         }
 
         #endregion Methods

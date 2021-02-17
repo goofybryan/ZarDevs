@@ -7,17 +7,17 @@ namespace ZarDevs.DependencyInjection
     {
         #region Methods
 
-        T Resolve<T>(Enum enumVale);
+        T Resolve<T>(Enum enumVale, params object[] values);
 
-        T Resolve<T>(string enumVale);
+        T Resolve<T>(string enumVale, params object[] values);
 
-        T Resolve<T>(object enumVale);
+        T Resolve<T>(object enumVale, params object[] values);
 
-        T TryResolve<T>(Enum enumValue);
+        T TryResolve<T>(Enum enumValue, params object[] values);
 
-        T TryResolve<T>(string enumValue);
+        T TryResolve<T>(string enumValue, params object[] values);
 
-        T TryResolve<T>(object enumValue);
+        T TryResolve<T>(object enumValue, params object[] values);
 
         #endregion Methods
     }
@@ -43,46 +43,51 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public T Resolve<T>(Enum enumVale)
+        public T Resolve<T>(Enum enumVale, params object[] values)
         {
-            Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(enumVale);
+            Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(enumVale) ?? throw new InvalidOperationException($"The type '{typeof(T)}' with enum value '{enumVale}' cannot be found.");
 
-            return (T)_serviceProvider.GetRequiredService(instanceType);
+            return (T)ActivatorUtilities.CreateInstance(_serviceProvider, instanceType, values);
         }
 
-        public T Resolve<T>(string enumVale)
+        public T Resolve<T>(string name, params object[] values)
         {
-            Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(enumVale);
+            Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(name) ?? throw new InvalidOperationException($"The type '{typeof(T)}' with name '{name}' cannot be found.");
 
-            return (T)_serviceProvider.GetRequiredService(instanceType);
+            return (T)ActivatorUtilities.CreateInstance(_serviceProvider, instanceType, values);
         }
 
-        public T Resolve<T>(object enumVale)
+        public T Resolve<T>(object key, params object[] values)
         {
-            Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(enumVale);
+            if (key is null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
 
-            return (T)_serviceProvider.GetRequiredService(instanceType);
+            Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(key) ?? throw new InvalidOperationException($"The type '{typeof(T)}' with key object '{key}' cannot be found.");
+
+            return (T)ActivatorUtilities.CreateInstance(_serviceProvider, instanceType, values);
         }
 
-        public T TryResolve<T>(Enum enumValue)
+        public T TryResolve<T>(Enum enumValue, params object[] values)
         {
             Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(enumValue);
 
-            return (T)_serviceProvider.GetService(instanceType);
+            return instanceType == null ? default : Resolve<T>(values);
         }
 
-        public T TryResolve<T>(string enumValue)
+        public T TryResolve<T>(string enumValue, params object[] values)
         {
             Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(enumValue);
 
-            return (T)_serviceProvider.GetService(instanceType);
+            return instanceType == null ? default : Resolve<T>(values);
         }
 
-        public T TryResolve<T>(object enumValue)
+        public T TryResolve<T>(object enumValue, params object[] values)
         {
             Type instanceType = _namedServiceConfiguration.ResolveInstanceType<T>(enumValue);
 
-            return (T)_serviceProvider.GetService(instanceType);
+            return instanceType == null ? default : Resolve<T>(values);
         }
 
         #endregion Methods
