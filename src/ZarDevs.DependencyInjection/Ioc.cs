@@ -24,6 +24,8 @@ namespace ZarDevs.DependencyInjection
             get => _container ?? (_container = new IocContainer(_kernel));
         }
 
+        public static IIocKernelContainer GetIocKernel() => _kernel;
+
         #endregion Properties
 
         #region Methods

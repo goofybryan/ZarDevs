@@ -21,6 +21,7 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
 
         public void Dispose()
         {
+            Ioc.Dispose();
         }
 
         #endregion Methods

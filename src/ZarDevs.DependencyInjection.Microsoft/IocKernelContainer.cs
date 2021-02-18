@@ -17,7 +17,7 @@ namespace ZarDevs.DependencyInjection
 
     }
 
-    internal sealed class IocKernelContainer : IIocKernelContainer, IIocKernelServiceProvider
+    public sealed class IocKernelContainer : IIocKernelContainer, IIocKernelServiceProvider
     {
 
         #region Fields

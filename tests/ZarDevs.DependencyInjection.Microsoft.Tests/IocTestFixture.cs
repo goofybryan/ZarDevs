@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.AutoFac.Tests
 {
     public sealed class IocTestFixture : IDisposable
     {
+        private IServiceCollection _services;
         #region Constructors
 
         public IocTestFixture()
         {
-            var builder = Ioc.InitializeWithBuilder(IocNinject.Initialize());
-
-            Bindings.ConfigureTest(builder);
-            builder.Build();
+            _services = new ServiceCollection();
+            _services.ConfigureIocBindings(Bindings.ConfigureTest);
+            _services.BuildServiceProvider().ConfigureIocProvider();
         }
 
         #endregion Constructors
