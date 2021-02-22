@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>ZarDevs.Commands.Api.DependencyInjection</AssemblyName>
     <RootNamespace>ZarDevs.Commands.Api</RootNamespace>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

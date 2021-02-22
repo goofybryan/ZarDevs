@@ -1,16 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace ZarDevs.DependencyInjection
-{    internal class DependencyContainer : IDependencyContainer
+{
+    internal class DependencyContainer : DependencyContainerBase
     {
         #region Fields
 
         // TODO BM: Continue Microsoft Support
-        private readonly INamedServiceConfiguration _namedConfiguration;
+        private readonly IDependencyInstanceConfiguration _configuration;
 
         private readonly IServiceCollection _services;
 
@@ -18,25 +17,22 @@ namespace ZarDevs.DependencyInjection
 
         #region Constructors
 
-        public DependencyContainer(IServiceCollection services, INamedServiceConfiguration namedConfiguration)
+        public DependencyContainer(IServiceCollection services, IDependencyInstanceConfiguration configuration)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
-            _namedConfiguration = namedConfiguration ?? throw new ArgumentNullException(nameof(namedConfiguration));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public static IDependencyContainer Create(IServiceCollection services) => new DependencyContainer(services, new NamedServiceConfiguration());
+        public static IDependencyContainer Create(IServiceCollection services) => new DependencyContainer(services, new DependencyResolutionConfiguration());
 
-        public void Build(IList<IDependencyInfo> definitions)
+        protected override void OnBuild(IDependencyInfo definition)
         {
-            foreach (var info in definitions)
-            {
-                if (!TryRegisterTypeTo(info as IDependencyTypeInfo) && !TryRegisterMethod(info as IDependencyMethodInfo))
-                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
-            }
+            if (!TryRegisterTypeTo(definition as IDependencyTypeInfo) && !TryRegisterMethod(definition as IDependencyMethodInfo))
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", definition.RequestType));
         }
 
         private bool TryRegisterMethod(IDependencyMethodInfo info)
@@ -46,17 +42,17 @@ namespace ZarDevs.DependencyInjection
 
             switch (info.Scope)
             {
+                case DependyBuilderScope.Request:
                 case DependyBuilderScope.Transient:
-                    _services.AddTransient(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Key));
+                    _configuration.Configure(info.RequestType, new DependencyMethodResolution(info));
                     break;
 
                 case DependyBuilderScope.Singleton:
-                    _services.AddSingleton(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Key));
+                    _configuration.Configure(info.RequestType, new DependencyMethodSingletonResolution(info));
                     break;
 
-                case DependyBuilderScope.Request:
-                    _services.AddScoped(info.RequestType, provider => info.MethodTo(new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>(), info.RequestType), info.Key));
-                    break;
+                default:
+                    throw new NotSupportedException($"{info.Scope} scope not currently supported for {info}.");
             }
 
             return true;
@@ -67,32 +63,26 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            if (info.Key == null || info.Key.ToString() == string.Empty)
+            switch (info.Scope)
             {
-                RegisterInstances(info.RequestType, info.ResolvedType, info.Scope);
-                return true;
-            }
+                case DependyBuilderScope.Request:
+                case DependyBuilderScope.Transient:
+                    _services.AddTransient(info.ResolvedType);
+                    _services.AddTransient(info.RequestType, info.ResolvedType);
+                    _configuration.Configure(info.RequestType, new DependencyTypeResolution(info));
+                    break;
 
-            _namedConfiguration.Configure(info.RequestType, info.ResolvedType, info.Key);
-            RegisterInstances(info.ResolvedType, info.ResolvedType, info.Scope);
+                case DependyBuilderScope.Singleton:
+                    _services.AddSingleton(info.ResolvedType);
+                    _services.AddSingleton(info.RequestType, info.ResolvedType);
+                    _configuration.Configure(info.RequestType, new DependencyTypeSingletonResolution(info));
+                    break;
+
+                default:
+                    throw new NotSupportedException($"{info.Scope} scope not currently supported for {info}.");
+            }
 
             return true;
-        }
-
-        private void RegisterInstances(Type requestType, Type resolvedType, DependyBuilderScope scope)
-        {
-            switch (scope)
-            {
-                case DependyBuilderScope.Transient:
-                    _services.AddTransient(requestType, resolvedType);
-                    break;
-                case DependyBuilderScope.Singleton:
-                    _services.AddSingleton(requestType, resolvedType);
-                    break;
-                case DependyBuilderScope.Request:
-                    _services.AddScoped(requestType, resolvedType);
-                    break;
-            }
         }
 
         #endregion Methods

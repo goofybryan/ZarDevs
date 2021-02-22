@@ -26,5 +26,10 @@ namespace ZarDevs.DependencyInjection
         public Type RequestType { get; set; }
 
         #endregion Properties
+
+        public override string ToString()
+        {
+            return $"Dependency Info: Key={Key}, Scope={Scope}, RequestType={RequestType}";
+        }
     }
 }

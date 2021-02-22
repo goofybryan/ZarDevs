@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Api.Depend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.DependencyInjection.Microsoft.Tests", "tests\ZarDevs.DependencyInjection.Microsoft.Tests\ZarDevs.DependencyInjection.Microsoft.Tests.csproj", "{D29EBC23-AF29-45ED-B7D2-410F046AF597}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Runtime.Tests", "tests\ZarDevs.Runtime.Tests\ZarDevs.Runtime.Tests.csproj", "{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,10 @@ Global
 		{D29EBC23-AF29-45ED-B7D2-410F046AF597}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D29EBC23-AF29-45ED-B7D2-410F046AF597}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D29EBC23-AF29-45ED-B7D2-410F046AF597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +143,7 @@ Global
 		{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{B542BDDD-BC5D-43AF-9E2E-1B1FBDA09E7B} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
 		{D29EBC23-AF29-45ED-B7D2-410F046AF597} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
+		{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BBC94B1-CE12-4692-BE35-086344F06179}

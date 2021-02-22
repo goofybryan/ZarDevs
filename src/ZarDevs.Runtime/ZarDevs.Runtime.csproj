@@ -12,6 +12,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>This assembly is used for runtime manipulation.</Description>
     <Version>0.0.1</Version>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
 </Project>

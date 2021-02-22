@@ -12,6 +12,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>This assembly contains an useful resource loader functionality used by the ZarDevs apps.</Description>
     <Version>0.0.1</Version>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
 </Project>

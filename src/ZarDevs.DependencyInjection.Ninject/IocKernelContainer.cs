@@ -211,7 +211,7 @@ namespace ZarDevs.DependencyInjection
 
         private IParameter[] CreateParameters(Type targetType, object[] values)
         {
-            var constructorArgs = Inspect.Instance.FindConstructParameterNames(targetType, values.Select(v => v.GetType()).ToArray());
+            var constructorArgs = InspectConstructor.Instance.FindParameterNames(targetType, values.Select(v => v.GetType()).ToArray());
 
             return CreateParameters(constructorArgs);
         }

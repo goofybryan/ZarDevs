@@ -1,9 +1,25 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace ZarDevs.DependencyInjection.Tests
 {
-    public abstract class IocTestsConstruct
+    public abstract class IocTestsConstruct<T> where T : class
     {
+        #region Constructors
+
+        public IocTestsConstruct(T fixture)
+        {
+            Fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        protected T Fixture { get; }
+
+        #endregion Properties
+
         #region Methods
 
         [Fact]

@@ -9,13 +9,13 @@ namespace ZarDevs.DependencyInjection
 
         public static IServiceCollection ConfigureIocBindings(this IServiceCollection services, Action<IDependencyBuilder> builder)
         {
-            var namedConfiguration = new NamedServiceConfiguration();
-            var dependencyContainer = new DependencyContainer(services, namedConfiguration);
+            var resolutionConfiguration = new DependencyResolutionConfiguration();
+            var dependencyContainer = new DependencyContainer(services, resolutionConfiguration);
             var iocContainer = new IocKernelContainer(dependencyContainer);
             var dependencyBuilder = Ioc.InitializeWithBuilder(iocContainer);
 
-            services.AddSingleton<INamedServiceConfiguration>(namedConfiguration);
-            services.AddSingleton<INamedResolver, NamedResolver>();
+            services.AddSingleton<IDependencyInstanceResolution>(resolutionConfiguration);
+            services.AddSingleton<IDependencyResolver, DependencyResolver>();
             services.AddSingleton<IIocContainer>(iocContainer);
 
             builder(dependencyBuilder);

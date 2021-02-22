@@ -8,6 +8,8 @@ namespace ZarDevs.DependencyInjection
 
         void Build(IList<IDependencyInfo> definitions);
 
+        IDependencyInfo GetBinding<T>(object key);
+
         #endregion Methods
     }
 }

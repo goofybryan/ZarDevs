@@ -9,11 +9,14 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
 
         public IocTestFixture()
         {
-            var builder = Ioc.InitializeWithBuilder(IocNinject.Initialize());
+            Kernel = (IocKernelContainer)IocNinject.Initialize();
+            var builder = Ioc.InitializeWithBuilder(Kernel);
 
             Bindings.ConfigureTest(builder);
             builder.Build();
         }
+
+        public IocKernelContainer Kernel { get; }
 
         #endregion Constructors
 

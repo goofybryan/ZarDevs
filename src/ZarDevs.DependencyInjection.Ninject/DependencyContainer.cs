@@ -1,12 +1,12 @@
 ﻿using Ninject;
 using Ninject.Syntax;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class DependencyContainer : IDependencyContainer
+    public class DependencyContainer : DependencyContainerBase
     {
         #region Constructors
 
@@ -27,41 +27,20 @@ namespace ZarDevs.DependencyInjection
 
         public static IDependencyContainer Create(IKernel kernel) => new DependencyContainer(kernel);
 
-        public void Build(IList<IDependencyInfo> definitions)
+        protected override void OnBuild(IDependencyInfo info)
         {
-            if (definitions is null)
-            {
-                throw new ArgumentNullException(nameof(definitions));
-            }
+            IBindingToSyntax<object> initial = Kernel.Bind(info.RequestType);
 
-            Kernel.Bind<IIocContainer>().ToConstant(Ioc.Container);
+            IBindingWhenInNamedWithOrOnSyntax<object> binding = BuildTo(info, initial);
+            BindScope(info, binding);
+            BindNamedIfConfigured(info, binding);
 
-            foreach (var info in definitions)
-            {
-                IBindingToSyntax<object> initial = Kernel.Bind(info.RequestType);
-
-                IBindingWhenInNamedWithOrOnSyntax<object> binding = BuildTo(info, initial);
-                BindScope(info, binding);
-                BindNamedIfConfigured(info, binding);
-            }
+            Definitions.Add(info);
         }
 
-        private static void BindScope(IDependencyInfo info, IBindingWhenInNamedWithOrOnSyntax<object> binding)
+        protected override void OnBuildStart()
         {
-            switch (info.Scope)
-            {
-                case DependyBuilderScope.Transient:
-                    binding.InTransientScope();
-                    break;
-
-                case DependyBuilderScope.Request:
-                    binding.InThreadScope();
-                    break;
-
-                case DependyBuilderScope.Singleton:
-                    binding.InSingletonScope();
-                    break;
-            }
+            Kernel.Bind<IIocContainer>().ToConstant(Ioc.Container);
         }
 
         private static void BindNamedIfConfigured(IDependencyInfo info, IBindingWhenInNamedWithOrOnSyntax<object> binding)
@@ -87,12 +66,30 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
+        private static void BindScope(IDependencyInfo info, IBindingWhenInNamedWithOrOnSyntax<object> binding)
+        {
+            switch (info.Scope)
+            {
+                case DependyBuilderScope.Transient:
+                    binding.InTransientScope();
+                    break;
+
+                case DependyBuilderScope.Request:
+                    binding.InThreadScope();
+                    break;
+
+                case DependyBuilderScope.Singleton:
+                    binding.InSingletonScope();
+                    break;
+            }
+        }
+
         private IBindingWhenInNamedWithOrOnSyntax<object> BuildTo(IDependencyInfo info, IBindingToSyntax<object> initial)
         {
             if (info is IDependencyMethodInfo methodInfo)
             {
-                return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Kernel.Get<IIocContainer>(), 
-                    ctx.Request.Target.Type), info.Key));
+                return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Kernel.Get<IIocContainer>(),
+                    ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray()), info.Key));
             }
 
             if (info is IDependencyTypeInfo typeInfo)
