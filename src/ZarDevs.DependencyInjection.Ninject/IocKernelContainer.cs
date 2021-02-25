@@ -1,5 +1,4 @@
 ﻿using Ninject;
-using Ninject.Modules;
 using Ninject.Parameters;
 using System;
 using System.Collections.Generic;
@@ -12,8 +11,8 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private bool _disposed = false;
         private IDependencyContainer _dependencyContainer;
+        private bool _disposed = false;
 
         #endregion Fields
 
@@ -55,9 +54,29 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Get<T>(CreateParameters(parameters));
         }
 
+        public T Resolve<T>()
+        {
+            return Resolve<T>(new (string, object)[0]);
+        }
+
+        public T Resolve<T>(params object[] parameters)
+        {
+            return Resolve<T>(CreateParameters(null, typeof(T), parameters));
+        }
+
         public T ResolveNamed<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.Get<T>(name, CreateParameters(parameters));
+        }
+
+        public T ResolveNamed<T>(string name)
+        {
+            return ResolveNamed<T>(name, new (string, object)[0]);
+        }
+
+        public T ResolveNamed<T>(string name, params object[] parameters)
+        {
+            return ResolveNamed<T>(name, CreateParameters(name, typeof(T), parameters));
         }
 
         public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
@@ -75,16 +94,6 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Get<T>(key.ToString(), CreateParameters(parameters));
         }
 
-        public T Resolve<T>()
-        {
-            return Resolve<T>(new (string, object)[0]);
-        }
-
-        public T ResolveNamed<T>(string name)
-        {
-            return ResolveNamed<T>(name, new (string, object)[0]);
-        }
-
         public T ResolveWithKey<T>(Enum key)
         {
             return ResolveWithKey<T>(key, new (string, object)[0]);
@@ -93,16 +102,6 @@ namespace ZarDevs.DependencyInjection
         public T ResolveWithKey<T>(object key)
         {
             return ResolveWithKey<T>(key, new (string, object)[0]);
-        }
-
-        public T Resolve<T>(params object[] parameters)
-        {
-            return Resolve<T>(CreateParameters(null, typeof(T), parameters));
-        }
-
-        public T ResolveNamed<T>(string name, params object[] parameters)
-        {
-            return ResolveNamed<T>(name, CreateParameters(name, typeof(T), parameters));
         }
 
         public T ResolveWithKey<T>(Enum key, params object[] parameters)
@@ -120,29 +119,39 @@ namespace ZarDevs.DependencyInjection
             return Kernel.TryGet<T>(CreateParameters(parameters));
         }
 
-        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
-        {
-            return Kernel.TryGet<T>(name, CreateParameters(parameters));
-        }
-
-        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
-        {
-            return TryResolveWithKey<T>(key.GetBindingName(), parameters);
-        }
-
-        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
-        {
-            return TryResolveWithKey<T>(key.ToString(), parameters);
-        }
-
         public T TryResolve<T>()
         {
             return TryResolve<T>(new (string, object)[0]);
         }
 
+        public T TryResolve<T>(params object[] parameters)
+        {
+            return TryResolve<T>(CreateParameters(null, typeof(T), parameters));
+        }
+
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
+        {
+            return Kernel.TryGet<T>(name, CreateParameters(parameters));
+        }
+
         public T TryResolveNamed<T>(string name)
         {
             return TryResolveNamed<T>(name, new (string, object)[0]);
+        }
+
+        public T TryResolveNamed<T>(string name, params object[] parameters)
+        {
+            return TryResolveNamed<T>(name, CreateParameters(name, typeof(T), parameters));
+        }
+
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        {
+            return TryResolveNamed<T>(key.GetBindingName(), parameters);
+        }
+
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
+        {
+            return TryResolveNamed<T>(key.ToString(), parameters);
         }
 
         public T TryResolveWithKey<T>(Enum key)
@@ -155,24 +164,14 @@ namespace ZarDevs.DependencyInjection
             return TryResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T TryResolve<T>(params object[] parameters)
-        {
-            return TryResolve<T>(CreateParameters(null, typeof(T), parameters));
-        }
-
-        public T TryResolveNamed<T>(string name, params object[] parameters)
-        {
-            return TryResolveNamed<T>(name, CreateParameters(name, typeof(T), parameters));
-        }
-
         public T TryResolveWithKey<T>(Enum key, params object[] parameters)
         {
-            return TryResolveWithKey<T>(key, CreateParameters(key, typeof(T), parameters));
+            return TryResolveNamed<T>(key.GetBindingName(), CreateParameters(key, typeof(T), parameters));
         }
 
         public T TryResolveWithKey<T>(object key, params object[] parameters)
         {
-            return TryResolveWithKey<T>(key.ToString(), parameters);
+            return TryResolveNamed<T>(key.ToString(), parameters);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -211,7 +210,7 @@ namespace ZarDevs.DependencyInjection
 
             var binding = _dependencyContainer.GetBinding(requestType, key);
 
-            if(binding is IDependencyTypeInfo typeInfo)
+            if (binding is IDependencyTypeInfo typeInfo)
                 return InspectConstructor.Instance.FindParameterNames(typeInfo.ResolvedType, values).ToArray();
 
             var orderedParams = new (string, object)[values.Length];

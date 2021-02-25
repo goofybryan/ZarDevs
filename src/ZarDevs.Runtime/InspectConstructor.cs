@@ -18,19 +18,19 @@ namespace ZarDevs.Runtime
 
         #region Methods
 
-        public IList<(string, object)> FindParameterNames(Type target, IList<object> orderedValues)
+        public (string, object)[] FindParameterNames(Type target, IList<object> orderedValues)
         {
             var constructors = target.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 
             foreach (var constructor in constructors)
             {
-                if (TryGetConstructorArgs(constructor, orderedValues, out IList<(string, object)> arguments)) return arguments;
+                if (TryGetConstructorArgs(constructor, orderedValues, out (string, object)[] arguments)) return arguments;
             }
 
             throw new InvalidOperationException($"The is no constructors with constructor argument count as the requested count or matches the object types in order.");
         }
 
-        public IList<object> OrderParameters(Type target, IDictionary<string, object> unorderedValueMapping)
+        public object[] OrderParameters(Type target, IDictionary<string, object> unorderedValueMapping)
         {
             var constructors = target.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 
@@ -52,18 +52,18 @@ namespace ZarDevs.Runtime
                     orderedList.Add(value);
                 }
 
-                if (orderedList != null && orderedList.Count == unorderedValueMapping.Count) return orderedList;
+                if (orderedList != null && orderedList.Count == unorderedValueMapping.Count) return orderedList.ToArray();
             }
 
             throw new InvalidOperationException($"The is no constructors with constructor argument count as the requested count or matches the object types.");
         }
 
-        public IList<object> OrderParameters(Type target, IList<(string, object)> unorderedValueMapping)
+        public object[] OrderParameters(Type target, IList<(string, object)> unorderedValueMapping)
         {
             return OrderParameters(target, unorderedValueMapping.ToDictionary(key => key.Item1, value => value.Item2));
         }
 
-        private bool TryGetConstructorArgs(ConstructorInfo info, IList<object> argumentsTypesInOrder, out IList<(string, object)> arguments)
+        private bool TryGetConstructorArgs(ConstructorInfo info, IList<object> argumentsTypesInOrder, out (string, object)[] arguments)
         {
             arguments = null;
             var parameters = info.GetParameters();
@@ -83,7 +83,7 @@ namespace ZarDevs.Runtime
                 internalArguments.Add(ValueTuple.Create(parameter.Name, value));
             }
 
-            arguments = internalArguments;
+            arguments = internalArguments.ToArray();
 
             return true;
         }

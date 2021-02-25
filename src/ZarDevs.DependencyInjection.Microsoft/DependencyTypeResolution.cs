@@ -33,7 +33,8 @@ namespace ZarDevs.DependencyInjection
             if (args == null || args.Length == 0)
                 return ActivatorUtilities.GetServiceOrCreateInstance(serviceProvider, Info.RequestType);
 
-            return ActivatorUtilities.CreateInstance(serviceProvider, Info.ResolvedType, InspectConstructor.Instance.OrderParameters(Info.ResolvedType, args));
+            var orderedParameters = InspectConstructor.Instance.OrderParameters(Info.ResolvedType, args);
+            return ActivatorUtilities.CreateInstance(serviceProvider, Info.ResolvedType, orderedParameters);
         }
 
         #endregion Methods

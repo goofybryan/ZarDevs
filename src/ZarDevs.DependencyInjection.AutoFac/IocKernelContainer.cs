@@ -111,17 +111,17 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
         {
-            return Kernel.IsRegisteredWithName<T>(name) ? Resolve<T>(name) : default;
+            return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
         }
 
         public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
         {
-            return Kernel.IsRegisteredWithKey<T>(key) ? Resolve<T>(key, parameters) : default;
+            return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
         public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
         {
-            return Kernel.IsRegisteredWithKey<T>(key) ? Resolve<T>(key, parameters) : default;
+            return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
         public T TryResolve<T>()
