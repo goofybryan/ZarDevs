@@ -10,29 +10,29 @@ namespace ZarDevs.DependencyInjection
 
         T Resolve<T>(params (string, object)[] args);
 
-        T Resolve<T>(Enum key, params object[] args);
+        T ResolveWithKey<T>(Enum key, params object[] args);
 
-        T Resolve<T>(string key, params object[] args);
+        T ResolveWithKey<T>(object key, params object[] args);
 
-        T Resolve<T>(object key, params object[] args);
+        T ResolveWithKey<T>(Enum key, params (string, object)[] args);
 
-        T Resolve<T>(Enum key, params (string, object)[] args);
+        T ResolveWithKey<T>(object key, params (string, object)[] args);
 
-        T Resolve<T>(string key, params (string, object)[] args);
+        T ResolveNamed<T>(string key, params object[] args);
 
-        T Resolve<T>(object key, params (string, object)[] args);
+        T ResolveNamed<T>(string key, params (string, object)[] args);
 
-        T TryResolve<T>(Enum key, params object[] args);
+        T TryResolveWithKey<T>(Enum key, params object[] args);
 
-        T TryResolve<T>(string key, params object[] args);
+        T TryResolveWithKey<T>(object key, params object[] args);
 
-        T TryResolve<T>(object key, params object[] args);
+        T TryResolveWithKey<T>(Enum key, params (string, object)[] args);
 
-        T TryResolve<T>(Enum key, params (string, object)[] args);
+        T TryResolveWithKey<T>(object key, params (string, object)[] args);
 
-        T TryResolve<T>(string key, params (string, object)[] args);
+        T TryResolveNamed<T>(string key, params object[] args);
 
-        T TryResolve<T>(object key, params (string, object)[] args);
+        T TryResolveNamed<T>(string key, params (string, object)[] args);
 
         #endregion Methods
     }
@@ -58,36 +58,6 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public T Resolve<T>(Enum key, params object[] args)
-        {
-            return (T)Resolve(key, typeof(T), args);
-        }
-
-        public T Resolve<T>(string key, params object[] args)
-        {
-            return (T)Resolve(key, typeof(T), args);
-        }
-
-        public T Resolve<T>(object key, params object[] args)
-        {
-            return (T)Resolve(key, typeof(T), args);
-        }
-
-        public T Resolve<T>(Enum key, params (string, object)[] args)
-        {
-            return (T)Resolve(key, typeof(T), args);
-        }
-
-        public T Resolve<T>(string key, params (string, object)[] args)
-        {
-            return (T)Resolve(key, typeof(T), args);
-        }
-
-        public T Resolve<T>(object key, params (string, object)[] args)
-        {
-            return (T)Resolve(key, typeof(T), args);
-        }
-
         public T Resolve<T>(params object[] args)
         {
             return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(_ioc, args);
@@ -98,32 +68,62 @@ namespace ZarDevs.DependencyInjection
             return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(_ioc, args);
         }
 
-        public T TryResolve<T>(Enum key, params object[] args)
+        public T ResolveWithKey<T>(Enum key, params object[] args)
+        {
+            return (T)Resolve(key, typeof(T), args);
+        }
+
+        public T ResolveWithKey<T>(object key, params object[] args)
+        {
+            return (T)Resolve(key, typeof(T), args);
+        }
+
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] args)
+        {
+            return (T)Resolve(key, typeof(T), args);
+        }
+
+        public T ResolveWithKey<T>(object key, params (string, object)[] args)
+        {
+            return (T)Resolve(key, typeof(T), args);
+        }
+
+        public T ResolveNamed<T>(string key, params object[] args)
+        {
+            return (T)Resolve(key, typeof(T), args);
+        }
+
+        public T ResolveNamed<T>(string key, params (string, object)[] args)
+        {
+            return (T)Resolve(key, typeof(T), args);
+        }
+
+        public T TryResolveWithKey<T>(Enum key, params object[] args)
         {
             return (T)TryResolve(key, typeof(T), args);
         }
 
-        public T TryResolve<T>(string key, params object[] args)
+        public T TryResolveWithKey<T>(object key, params object[] args)
         {
             return (T)TryResolve(key, typeof(T), args);
         }
 
-        public T TryResolve<T>(object key, params object[] args)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] args)
         {
             return (T)TryResolve(key, typeof(T), args);
         }
 
-        public T TryResolve<T>(Enum key, params (string, object)[] args)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] args)
         {
             return (T)TryResolve(key, typeof(T), args);
         }
 
-        public T TryResolve<T>(string key, params (string, object)[] args)
+        public T TryResolveNamed<T>(string key, params object[] args)
         {
             return (T)TryResolve(key, typeof(T), args);
         }
 
-        public T TryResolve<T>(object key, params (string, object)[] args)
+        public T TryResolveNamed<T>(string key, params (string, object)[] args)
         {
             return (T)TryResolve(key, typeof(T), args);
         }

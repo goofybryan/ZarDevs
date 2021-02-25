@@ -10,13 +10,13 @@ namespace ZarDevs.Commands.Api
         {
             builder.Bind<IHttpResponseFactory>().To<HttpResponseFactory>().InSingletonScope();
 
-            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandJsonResponse>>().To<ApiGetCommandAsync>().Named(HttpRequestType.Get);
-            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandResponse>>().To<ApiDeleteCommandAsync>().Named(HttpRequestType.Delete);
-            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandResponse>>().To<ApiPutCommandAsync>().Named(HttpRequestType.Put);
-            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandResponse>>().To<ApiPostCommandAsync>().Named(HttpRequestType.Post);
-            builder.Bind<IApiGetCommandAsync>().To<ApiGetCommandAsync>().Named(HttpRequestType.Delete);
-            builder.Bind<IApiPutCommandAsync>().To<ApiPutCommandAsync>().Named(HttpRequestType.Put);
-            builder.Bind<IApiPostCommandAsync>().To<ApiPostCommandAsync>().Named(HttpRequestType.Post);
+            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandJsonResponse>>().To<ApiGetCommandAsync>().WithKey(HttpRequestType.Get);
+            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandResponse>>().To<ApiDeleteCommandAsync>().WithKey(HttpRequestType.Delete);
+            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandResponse>>().To<ApiPutCommandAsync>().WithKey(HttpRequestType.Put);
+            builder.Bind<ICommandAsync<ApiCommandRequest, ApiCommandResponse>>().To<ApiPostCommandAsync>().WithKey(HttpRequestType.Post);
+            builder.Bind<IApiGetCommandAsync>().To<ApiGetCommandAsync>().WithKey(HttpRequestType.Delete);
+            builder.Bind<IApiPutCommandAsync>().To<ApiPutCommandAsync>().WithKey(HttpRequestType.Put);
+            builder.Bind<IApiPostCommandAsync>().To<ApiPostCommandAsync>().WithKey(HttpRequestType.Post);
             //builder.Bind<IHttpMessageBuilder>().To<HttpMessageBuilder>();
 
             return builder;

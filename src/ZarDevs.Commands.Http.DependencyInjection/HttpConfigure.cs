@@ -15,7 +15,7 @@ namespace ZarDevs.Commands.Http
         /// <returns></returns>
         public static IDependencyBuilder ConfigureHttp(this IDependencyBuilder builder, bool useIocHttpHandlerFactory)
         {
-            if (useIocHttpHandlerFactory) builder.ConfigureHttp(new DependencyApiHttpFactoryHandler());
+            if (useIocHttpHandlerFactory) builder.ConfigureHttp(new DependencyApiHttpFactoryHandler(Ioc.Container));
             else builder.ConfigureHttp(new DefaultHttpHandlerFactory());
             return builder;
         }

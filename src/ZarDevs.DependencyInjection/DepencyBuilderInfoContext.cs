@@ -88,7 +88,7 @@ namespace ZarDevs.DependencyInjection
         {
             if (args is null)
             {
-                throw new ArgumentNullException(nameof(args));
+                return;
             }
 
             _arguments.Clear();

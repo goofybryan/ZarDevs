@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -57,39 +54,9 @@ namespace ZarDevs.DependencyInjection
             return _dependencyResolver.Resolve<T>(parameters);
         }
 
-        public T Resolve<T>(string name, params (string, object)[] parameters)
-        {
-            return Resolve<T>(name, parameters);
-        }
-
-        public T Resolve<T>(Enum enumValue, params (string, object)[] parameters)
-        {
-            return Resolve<T>(enumValue, parameters);
-        }
-
-        public T Resolve<T>(object key, params (string, object)[] parameters)
-        {
-            return Resolve<T>(key, parameters);
-        }
-
         public T Resolve<T>()
         {
             return (T)_serviceProvider.GetRequiredService(typeof(T));
-        }
-
-        public T Resolve<T>(string name)
-        {
-            return _dependencyResolver.Resolve<T>(name, (object[])null);
-        }
-
-        public T Resolve<T>(Enum enumValue)
-        {
-            return _dependencyResolver.Resolve<T>(enumValue, (object[])null);
-        }
-
-        public T Resolve<T>(object key)
-        {
-            return _dependencyResolver.Resolve<T>(key, (object[])null);
         }
 
         public T Resolve<T>(params object[] parameters)
@@ -97,19 +64,49 @@ namespace ZarDevs.DependencyInjection
             return _dependencyResolver.Resolve<T>(parameters);
         }
 
-        public T Resolve<T>(string name, params object[] parameters)
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
         {
-            return _dependencyResolver.Resolve<T>(name, parameters);
+            return ResolveWithKey<T>(key, parameters);
         }
 
-        public T Resolve<T>(Enum enumValue, params object[] parameters)
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters)
         {
-            return _dependencyResolver.Resolve<T>(enumValue, parameters);
+            return ResolveWithKey<T>(key, parameters);
         }
 
-        public T Resolve<T>(object key, params object[] parameters)
+        public T ResolveWithKey<T>(Enum key)
         {
-            return _dependencyResolver.Resolve<T>(key, parameters);
+            return _dependencyResolver.ResolveWithKey<T>(key, (object[])null);
+        }
+
+        public T ResolveWithKey<T>(object key)
+        {
+            return _dependencyResolver.ResolveWithKey<T>(key, (object[])null);
+        }
+
+        public T ResolveWithKey<T>(Enum key, params object[] parameters)
+        {
+            return _dependencyResolver.ResolveWithKey<T>(key, parameters);
+        }
+
+        public T ResolveWithKey<T>(object key, params object[] parameters)
+        {
+            return _dependencyResolver.ResolveWithKey<T>(key, parameters);
+        }
+
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters)
+        {
+            return ResolveNamed<T>(name, parameters);
+        }
+
+        public T ResolveNamed<T>(string name)
+        {
+            return _dependencyResolver.ResolveNamed<T>(name, (object[])null);
+        }
+
+        public T ResolveNamed<T>(string name, params object[] parameters)
+        {
+            return _dependencyResolver.ResolveNamed<T>(name, parameters);
         }
 
         public T TryResolve<T>(params (string, object)[] parameters)
@@ -117,39 +114,9 @@ namespace ZarDevs.DependencyInjection
             return TryResolve<T>(parameters);
         }
 
-        public T TryResolve<T>(string name, params (string, object)[] parameters)
-        {
-            return TryResolve<T>(name, parameters);
-        }
-
-        public T TryResolve<T>(Enum enumValue, params (string, object)[] parameters)
-        {
-            return TryResolve<T>((object)enumValue, parameters);
-        }
-
-        public T TryResolve<T>(object key, params (string, object)[] parameters)
-        {
-            return _dependencyResolver.TryResolve<T>(key, parameters);
-        }
-
         public T TryResolve<T>()
         {
             return (T)_serviceProvider.GetService(typeof(T));
-        }
-
-        public T TryResolve<T>(string name)
-        {
-            return _dependencyResolver.TryResolve<T>(name, (object[])null);
-        }
-
-        public T TryResolve<T>(Enum enumValue)
-        {
-            return _dependencyResolver.TryResolve<T>(enumValue, (object[])null);
-        }
-
-        public T TryResolve<T>(object key)
-        {
-            return _dependencyResolver.TryResolve<T>(key, (object[])null);
         }
 
         public T TryResolve<T>(params object[] parameters)
@@ -157,19 +124,49 @@ namespace ZarDevs.DependencyInjection
             return ActivatorUtilities.CreateInstance<T>(_serviceProvider, parameters);
         }
 
-        public T TryResolve<T>(string name, params object[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
         {
-            return _dependencyResolver.TryResolve<T>(name, parameters);
+            return TryResolve<T>((object)key, parameters);
         }
 
-        public T TryResolve<T>(Enum enumValue, params object[] parameters)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
         {
-            return _dependencyResolver.TryResolve<T>(enumValue, parameters);
+            return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
         }
 
-        public T TryResolve<T>(object key, params object[] parameters)
+        public T TryResolveWithKey<T>(Enum key)
         {
-            return _dependencyResolver.TryResolve<T>(key, parameters);
+            return _dependencyResolver.TryResolveWithKey<T>(key, (object[])null);
+        }
+
+        public T TryResolveWithKey<T>(object key)
+        {
+            return _dependencyResolver.TryResolveWithKey<T>(key, (object[])null);
+        }
+
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters)
+        {
+            return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
+        }
+
+        public T TryResolveWithKey<T>(object key, params object[] parameters)
+        {
+            return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
+        }
+
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
+        {
+            return TryResolveNamed<T>(name, parameters);
+        }
+
+        public T TryResolveNamed<T>(string name)
+        {
+            return _dependencyResolver.TryResolveNamed<T>(name, (object[])null);
+        }
+
+        public T TryResolveNamed<T>(string name, params object[] parameters)
+        {
+            return _dependencyResolver.TryResolveNamed<T>(name, parameters);
         }
 
         #endregion Methods

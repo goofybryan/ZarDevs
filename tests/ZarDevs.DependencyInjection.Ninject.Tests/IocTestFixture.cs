@@ -3,20 +3,22 @@ using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.AutoFac.Tests
 {
-    public sealed class IocTestFixture : IDisposable
+    public sealed class IocTestFixture : IIocTests, IDisposable
     {
         #region Constructors
 
         public IocTestFixture()
         {
-            Kernel = (IocKernelContainer)IocNinject.Initialize();
-            var builder = Ioc.InitializeWithBuilder(Kernel);
+            var kernel = (IocKernelContainer)IocNinject.Initialize();
+            var builder = Ioc.Instance.InitializeWithBuilder(kernel);
 
             Bindings.ConfigureTest(builder);
             builder.Build();
+
+            Container = kernel;
         }
 
-        public IocKernelContainer Kernel { get; }
+        public IIocContainer Container { get; }
 
         #endregion Constructors
 
@@ -24,7 +26,7 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
 
         public void Dispose()
         {
-            Ioc.Dispose();
+            Ioc.Instance.Dispose();
         }
 
         #endregion Methods

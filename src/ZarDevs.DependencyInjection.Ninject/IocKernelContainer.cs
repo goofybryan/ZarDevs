@@ -13,6 +13,7 @@ namespace ZarDevs.DependencyInjection
         #region Fields
 
         private bool _disposed = false;
+        private IDependencyContainer _dependencyContainer;
 
         #endregion Fields
 
@@ -35,7 +36,7 @@ namespace ZarDevs.DependencyInjection
 
         public IDependencyContainer CreateDependencyContainer()
         {
-            return DependencyContainer.Create(Kernel);
+            return _dependencyContainer = DependencyContainer.Create(Kernel);
         }
 
         public void Dispose()
@@ -49,35 +50,29 @@ namespace ZarDevs.DependencyInjection
             return Kernel.HasModule(name);
         }
 
-        public void Load(IDependencyModule module)
-        {
-            if (module is INinjectModule ninjectModule)
-                Kernel.Load(ninjectModule);
-        }
-
         public T Resolve<T>(params (string, object)[] parameters)
         {
             return Kernel.Get<T>(CreateParameters(parameters));
         }
 
-        public T Resolve<T>(string name, params (string, object)[] parameters)
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.Get<T>(name, CreateParameters(parameters));
         }
 
-        public T Resolve<T>(Enum enumValue, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
         {
-            return Kernel.Get<T>(enumValue.GetBindingName(), CreateParameters(parameters));
+            return Kernel.Get<T>(key.GetBindingName(), CreateParameters(parameters));
         }
 
-        public T Resolve<T>(object key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters)
         {
             if (key is null)
             {
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return Resolve<T>(key.ToString(), parameters);
+            return ResolveWithKey<T>(key.ToString(), parameters);
         }
 
         public T Resolve<T>()
@@ -85,39 +80,39 @@ namespace ZarDevs.DependencyInjection
             return Resolve<T>(new (string, object)[0]);
         }
 
-        public T Resolve<T>(string name)
+        public T ResolveNamed<T>(string name)
         {
-            return Resolve<T>(name, new (string, object)[0]);
+            return ResolveNamed<T>(name, new (string, object)[0]);
         }
 
-        public T Resolve<T>(Enum enumValue)
+        public T ResolveWithKey<T>(Enum key)
         {
-            return Resolve<T>(enumValue, new (string, object)[0]);
+            return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T Resolve<T>(object key)
+        public T ResolveWithKey<T>(object key)
         {
-            return Resolve<T>(key, new (string, object)[0]);
+            return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
         public T Resolve<T>(params object[] parameters)
         {
-            return Kernel.Get<T>(CreateParameters(typeof(T), parameters));
+            return Resolve<T>(CreateParameters(null, typeof(T), parameters));
         }
 
-        public T Resolve<T>(string name, params object[] parameters)
+        public T ResolveNamed<T>(string name, params object[] parameters)
         {
-            return Kernel.Get<T>(name, CreateParameters(typeof(T), parameters));
+            return ResolveNamed<T>(name, CreateParameters(name, typeof(T), parameters));
         }
 
-        public T Resolve<T>(Enum enumValue, params object[] parameters)
+        public T ResolveWithKey<T>(Enum key, params object[] parameters)
         {
-            return Resolve<T>(enumValue.GetBindingName(), parameters);
+            return ResolveWithKey<T>(key.GetBindingName(), parameters);
         }
 
-        public T Resolve<T>(object key, params object[] parameters)
+        public T ResolveWithKey<T>(object key, params object[] parameters)
         {
-            return Resolve<T>(key.ToString(), parameters);
+            return ResolveWithKey<T>(key.ToString(), parameters);
         }
 
         public T TryResolve<T>(params (string, object)[] parameters)
@@ -125,19 +120,19 @@ namespace ZarDevs.DependencyInjection
             return Kernel.TryGet<T>(CreateParameters(parameters));
         }
 
-        public T TryResolve<T>(string name, params (string, object)[] parameters)
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.TryGet<T>(name, CreateParameters(parameters));
         }
 
-        public T TryResolve<T>(Enum enumValue, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
         {
-            return TryResolve<T>(enumValue.GetBindingName(), parameters);
+            return TryResolveWithKey<T>(key.GetBindingName(), parameters);
         }
 
-        public T TryResolve<T>(object key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
         {
-            return TryResolve<T>(key.ToString(), parameters);
+            return TryResolveWithKey<T>(key.ToString(), parameters);
         }
 
         public T TryResolve<T>()
@@ -145,39 +140,39 @@ namespace ZarDevs.DependencyInjection
             return TryResolve<T>(new (string, object)[0]);
         }
 
-        public T TryResolve<T>(string name)
+        public T TryResolveNamed<T>(string name)
         {
-            return TryResolve<T>(name, new (string, object)[0]);
+            return TryResolveNamed<T>(name, new (string, object)[0]);
         }
 
-        public T TryResolve<T>(Enum enumValue)
+        public T TryResolveWithKey<T>(Enum key)
         {
-            return TryResolve<T>(enumValue, new (string, object)[0]);
+            return TryResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T TryResolve<T>(object key)
+        public T TryResolveWithKey<T>(object key)
         {
-            return TryResolve<T>(key, new (string, object)[0]);
+            return TryResolveWithKey<T>(key, new (string, object)[0]);
         }
 
         public T TryResolve<T>(params object[] parameters)
         {
-            return Kernel.TryGet<T>(CreateParameters(typeof(T), parameters));
+            return TryResolve<T>(CreateParameters(null, typeof(T), parameters));
         }
 
-        public T TryResolve<T>(string name, params object[] parameters)
+        public T TryResolveNamed<T>(string name, params object[] parameters)
         {
-            return TryResolve<T>(name, parameters);
+            return TryResolveNamed<T>(name, CreateParameters(name, typeof(T), parameters));
         }
 
-        public T TryResolve<T>(Enum enumValue, params object[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters)
         {
-            return TryResolve<T>(enumValue.GetBindingName(), parameters);
+            return TryResolveWithKey<T>(key, CreateParameters(key, typeof(T), parameters));
         }
 
-        public T TryResolve<T>(object key, params object[] parameters)
+        public T TryResolveWithKey<T>(object key, params object[] parameters)
         {
-            return TryResolve<T>(key.ToString(), parameters);
+            return TryResolveWithKey<T>(key.ToString(), parameters);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -209,11 +204,23 @@ namespace ZarDevs.DependencyInjection
             return list.ToArray();
         }
 
-        private IParameter[] CreateParameters(Type targetType, object[] values)
+        private (string, object)[] CreateParameters(object key, Type requestType, object[] values)
         {
-            var constructorArgs = InspectConstructor.Instance.FindParameterNames(targetType, values.Select(v => v.GetType()).ToArray());
+            if (values == null) return null;
+            if (values.Length == 0) return new (string, object)[0];
 
-            return CreateParameters(constructorArgs);
+            var binding = _dependencyContainer.GetBinding(requestType, key);
+
+            if(binding is IDependencyTypeInfo typeInfo)
+                return InspectConstructor.Instance.FindParameterNames(typeInfo.ResolvedType, values).ToArray();
+
+            var orderedParams = new (string, object)[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                orderedParams[i] = ValueTuple.Create(i.ToString(), values[i]);
+            }
+
+            return orderedParams;
         }
 
         #endregion Methods

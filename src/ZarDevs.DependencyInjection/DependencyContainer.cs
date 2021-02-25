@@ -45,6 +45,11 @@ namespace ZarDevs.DependencyInjection
             return Definitions.Get<T>(key);
         }
 
+        public IDependencyInfo GetBinding(Type requestType, object key)
+        {
+            return Definitions.Get(requestType, key);
+        }
+
         protected abstract void OnBuild(IDependencyInfo definition);
 
         protected virtual void OnBuildEnd()

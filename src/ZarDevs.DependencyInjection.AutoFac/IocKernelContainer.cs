@@ -49,17 +49,17 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Resolve<T>(CreateParameters(parameters));
         }
 
-        public T Resolve<T>(string name, params (string, object)[] parameters)
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));
         }
 
-        public T Resolve<T>(Enum enumValue, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
         {
-            return Kernel.ResolveKeyed<T>(enumValue, CreateParameters(parameters));
+            return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
-        public T Resolve<T>(object key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters)
         {
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
@@ -69,19 +69,19 @@ namespace ZarDevs.DependencyInjection
             return Resolve<T>(new (string, object)[0]);
         }
 
-        public T Resolve<T>(string name)
+        public T ResolveNamed<T>(string name)
         {
-            return Resolve<T>(name, new (string, object)[0]);
+            return ResolveNamed<T>(name, new (string, object)[0]);
         }
 
-        public T Resolve<T>(Enum enumValue)
+        public T ResolveWithKey<T>(Enum key)
         {
-            return Resolve<T>(enumValue, new (string, object)[0]);
+            return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T Resolve<T>(object key)
+        public T ResolveWithKey<T>(object key)
         {
-            return Resolve<T>(key, new (string, object)[0]);
+            return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
         public T Resolve<T>(params object[] parameters)
@@ -89,17 +89,17 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Resolve<T>(CreateParameters(parameters));
         }
 
-        public T Resolve<T>(string name, params object[] parameters)
+        public T ResolveNamed<T>(string name, params object[] parameters)
         {
             return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));
         }
 
-        public T Resolve<T>(Enum enumValue, params object[] parameters)
+        public T ResolveWithKey<T>(Enum key, params object[] parameters)
         {
-            return Kernel.ResolveKeyed<T>(enumValue, CreateParameters(parameters));
+            return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
-        public T Resolve<T>(object key, params object[] parameters)
+        public T ResolveWithKey<T>(object key, params object[] parameters)
         {
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
@@ -109,17 +109,17 @@ namespace ZarDevs.DependencyInjection
             return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
         }
 
-        public T TryResolve<T>(string name, params (string, object)[] parameters)
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.IsRegisteredWithName<T>(name) ? Resolve<T>(name) : default;
         }
 
-        public T TryResolve<T>(Enum enumValue, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
         {
-            return Kernel.IsRegisteredWithKey<T>(enumValue) ? Resolve<T>(enumValue, parameters) : default;
+            return Kernel.IsRegisteredWithKey<T>(key) ? Resolve<T>(key, parameters) : default;
         }
 
-        public T TryResolve<T>(object key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
         {
             return Kernel.IsRegisteredWithKey<T>(key) ? Resolve<T>(key, parameters) : default;
         }
@@ -129,19 +129,19 @@ namespace ZarDevs.DependencyInjection
             return TryResolve<T>(new (string, object)[0]);
         }
 
-        public T TryResolve<T>(string name)
+        public T TryResolveNamed<T>(string name)
         {
-            return TryResolve<T>(name, new (string, object)[0]);
+            return TryResolveNamed<T>(name, new (string, object)[0]);
         }
 
-        public T TryResolve<T>(Enum enumValue)
+        public T TryResolveWithKey<T>(Enum key)
         {
-            return TryResolve<T>(enumValue, new (string, object)[0]);
+            return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T TryResolve<T>(object key)
+        public T TryResolveWithKey<T>(object key)
         {
-            return TryResolve<T>(key, new (string, object)[0]);
+            return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
         public T TryResolve<T>(params object[] parameters)
@@ -149,19 +149,19 @@ namespace ZarDevs.DependencyInjection
             return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
         }
 
-        public T TryResolve<T>(string name, params object[] parameters)
+        public T TryResolveNamed<T>(string name, params object[] parameters)
         {
-            return Kernel.IsRegistered<T>() ? Resolve<T>(name, parameters) : default;
+            return Kernel.IsRegistered<T>() ? ResolveNamed<T>(name, parameters) : default;
         }
 
-        public T TryResolve<T>(Enum enumValue, params object[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters)
         {
-            return Kernel.IsRegistered<T>() ? Resolve<T>(enumValue, parameters) : default;
+            return Kernel.IsRegistered<T>() ? ResolveWithKey<T>(key, parameters) : default;
         }
 
-        public T TryResolve<T>(object key, params object[] parameters)
+        public T TryResolveWithKey<T>(object key, params object[] parameters)
         {
-            return Kernel.IsRegistered<T>() ? Resolve<T>(key, parameters) : default;
+            return Kernel.IsRegistered<T>() ? ResolveWithKey<T>(key, parameters) : default;
         }
 
         protected virtual void Dispose(bool disposing)

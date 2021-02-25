@@ -2,6 +2,7 @@
 
 namespace ZarDevs.DependencyInjection
 {
+    [Obsolete("Not needed, if service locator pattern is required, just inject IocContainer into constructor.")]
     public class IocContainer : IIocContainer
     {
         #region Constructors
@@ -26,39 +27,9 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Resolve<T>(parameters);
         }
 
-        public T Resolve<T>(string name, params (string, object)[] parameters)
-        {
-            return Kernel.Resolve<T>(name, parameters);
-        }
-
-        public T Resolve<T>(Enum enumValue, params (string, object)[] parameters)
-        {
-            return Kernel.Resolve<T>(enumValue, parameters);
-        }
-
-        public T Resolve<T>(object key, params (string, object)[] parameters)
-        {
-            return Kernel.Resolve<T>(key, parameters);
-        }
-
         public T Resolve<T>()
         {
             return Kernel.Resolve<T>();
-        }
-
-        public T Resolve<T>(string name)
-        {
-            return Kernel.Resolve<T>(name);
-        }
-
-        public T Resolve<T>(Enum enumValue)
-        {
-            return Kernel.Resolve<T>(enumValue);
-        }
-
-        public T Resolve<T>(object key)
-        {
-            return Kernel.Resolve<T>(key);
         }
 
         public T Resolve<T>(params object[] parameters)
@@ -66,19 +37,49 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Resolve<T>(parameters);
         }
 
-        public T Resolve<T>(string name, params object[] parameters)
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters)
         {
-            return Kernel.Resolve<T>(name, parameters);
+            return Kernel.ResolveNamed<T>(name, parameters);
         }
 
-        public T Resolve<T>(Enum enumValue, params object[] parameters)
+        public T ResolveNamed<T>(string name)
         {
-            return Kernel.Resolve<T>(enumValue, parameters);
+            return Kernel.ResolveNamed<T>(name);
         }
 
-        public T Resolve<T>(object key, params object[] parameters)
+        public T ResolveNamed<T>(string name, params object[] parameters)
         {
-            return Kernel.Resolve<T>(key, parameters);
+            return Kernel.ResolveNamed<T>(name, parameters);
+        }
+
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        {
+            return Kernel.ResolveWithKey<T>(key, parameters);
+        }
+
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters)
+        {
+            return Kernel.ResolveWithKey<T>(key, parameters);
+        }
+
+        public T ResolveWithKey<T>(Enum key)
+        {
+            return Kernel.ResolveWithKey<T>(key);
+        }
+
+        public T ResolveWithKey<T>(object key)
+        {
+            return Kernel.ResolveWithKey<T>(key);
+        }
+
+        public T ResolveWithKey<T>(Enum key, params object[] parameters)
+        {
+            return Kernel.ResolveWithKey<T>(key, parameters);
+        }
+
+        public T ResolveWithKey<T>(object key, params object[] parameters)
+        {
+            return Kernel.ResolveWithKey<T>(key, parameters);
         }
 
         public T TryResolve<T>(params (string, object)[] parameters)
@@ -86,39 +87,9 @@ namespace ZarDevs.DependencyInjection
             return Kernel.TryResolve<T>(parameters);
         }
 
-        public T TryResolve<T>(string name, params (string, object)[] parameters)
-        {
-            return Kernel.TryResolve<T>(name, parameters);
-        }
-
-        public T TryResolve<T>(Enum enumValue, params (string, object)[] parameters)
-        {
-            return Kernel.TryResolve<T>(enumValue, parameters);
-        }
-
-        public T TryResolve<T>(object key, params (string, object)[] parameters)
-        {
-            return Kernel.TryResolve<T>(key, parameters);
-        }
-
         public T TryResolve<T>()
         {
-            return TryResolve<T>();
-        }
-
-        public T TryResolve<T>(string name)
-        {
-            return TryResolve<T>(name);
-        }
-
-        public T TryResolve<T>(Enum enumValue)
-        {
-            return TryResolve<T>(enumValue);
-        }
-
-        public T TryResolve<T>(object key)
-        {
-            return TryResolve<T>(key);
+            return Kernel.TryResolve<T>();
         }
 
         public T TryResolve<T>(params object[] parameters)
@@ -126,19 +97,49 @@ namespace ZarDevs.DependencyInjection
             return Kernel.TryResolve<T>(parameters);
         }
 
-        public T TryResolve<T>(string name, params object[] parameters)
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
         {
-            return Kernel.TryResolve<T>(name, parameters);
+            return Kernel.TryResolveNamed<T>(name, parameters);
         }
 
-        public T TryResolve<T>(Enum enumValue, params object[] parameters)
+        public T TryResolveNamed<T>(string name)
         {
-            return Kernel.TryResolve<T>(enumValue, parameters);
+            return TryResolveNamed<T>(name);
         }
 
-        public T TryResolve<T>(object key, params object[] parameters)
+        public T TryResolveNamed<T>(string name, params object[] parameters)
         {
-            return Kernel.TryResolve<T>(key, parameters);
+            return Kernel.TryResolveNamed<T>(name, parameters);
+        }
+
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        {
+            return Kernel.TryResolveWithKey<T>(key, parameters);
+        }
+
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
+        {
+            return Kernel.TryResolveWithKey<T>(key, parameters);
+        }
+
+        public T TryResolveWithKey<T>(Enum key)
+        {
+            return TryResolveWithKey<T>(key);
+        }
+
+        public T TryResolveWithKey<T>(object key)
+        {
+            return TryResolveWithKey<T>(key);
+        }
+
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters)
+        {
+            return Kernel.TryResolveWithKey<T>(key, parameters);
+        }
+
+        public T TryResolveWithKey<T>(object key, params object[] parameters)
+        {
+            return Kernel.TryResolveWithKey<T>(key, parameters);
         }
 
         #endregion Methods

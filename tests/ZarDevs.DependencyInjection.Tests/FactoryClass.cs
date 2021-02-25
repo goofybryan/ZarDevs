@@ -6,24 +6,40 @@ namespace ZarDevs.DependencyInjection.Tests
     {
         #region Methods
 
-        IChildClass ResolveChildClass(Type parameter);
+        IMultipleConstructorClass ResolveMultipleConstructorClass();
+
+        IMultipleConstructorClass ResolveMultipleConstructorClass(object[] constructorArgs);
 
         #endregion Methods
     }
 
     internal class FactoryClass : IFactoryClass
     {
+        #region Constructors
+
+        public FactoryClass(IIocContainer ioc)
+        {
+            Ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+        }
+
+        #endregion Constructors
+
         #region Properties
 
-        public static IFactoryClass Instance { get; } = new FactoryClass();
+        public IIocContainer Ioc { get; }
 
         #endregion Properties
 
         #region Methods
 
-        public IChildClass ResolveChildClass(Type parameter)
+        public IMultipleConstructorClass ResolveMultipleConstructorClass(object[] constructorArgs)
         {
-            return Ioc.Resolve<IChildClass>(new System.Collections.Generic.KeyValuePair<string, object>("callingClassType", parameter));
+            return Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.NotMethod, constructorArgs);
+        }
+
+        public IMultipleConstructorClass ResolveMultipleConstructorClass()
+        {
+            return Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.NotMethod);
         }
 
         #endregion Methods

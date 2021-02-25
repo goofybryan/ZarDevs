@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace ZarDevs.Runtime.Tests
 {
-    public class InspectTests
+    public class InspectConstructorTests
     {
+        #region Methods
+
         [Theory]
         [InlineData(false, false, false, false)]
         [InlineData(true, true, true, true)]
@@ -45,7 +46,7 @@ namespace ZarDevs.Runtime.Tests
         [InlineData(false, false, true, false)]
         [InlineData(true, true, false, false)]
         [InlineData(true, false, true, true)]
-        public void TestOrderConstructorParameters(bool hasInteger, bool hasValue, bool hasGeneric, bool hasInterface)
+        public void TestOrderConstructorParametersWithDictionary(bool hasInteger, bool hasValue, bool hasGeneric, bool hasInterface)
         {
             // Arrange
             const string value = "Value";
@@ -62,6 +63,38 @@ namespace ZarDevs.Runtime.Tests
             IList<object> orderedList = InspectConstructor.Instance.OrderParameters(typeof(TestClass), parameters);
 
             // Assert
+            OrderParametersAssert(hasInteger, hasValue, hasGeneric, hasInterface, value, intValue, testInterface, orderedList);
+        }
+
+        [Theory]
+        [InlineData(false, false, false, false)]
+        [InlineData(true, true, true, true)]
+        [InlineData(false, false, true, false)]
+        [InlineData(true, true, false, false)]
+        [InlineData(true, false, true, true)]
+        public void TestOrderConstructorParametersWithValueType(bool hasInteger, bool hasValue, bool hasGeneric, bool hasInterface)
+        {
+            // Arrange
+            const string value = "Value";
+            int intValue = new Random().Next(1, 100);
+            ITestInterface testInterface = new TestClass();
+            IList<(string, object)> parameters = new List<(string, object)>();
+
+            if (hasGeneric) parameters.Add(ValueTuple.Create("generic", this));
+            if (hasInteger) parameters.Add(ValueTuple.Create("integer", intValue));
+            if (hasInterface) parameters.Add(ValueTuple.Create("test", testInterface));
+            if (hasValue) parameters.Add(ValueTuple.Create("value", value));
+
+            // Act
+            IList<object> orderedList = InspectConstructor.Instance.OrderParameters(typeof(TestClass), parameters);
+
+            // Assert
+            OrderParametersAssert(hasInteger, hasValue, hasGeneric, hasInterface, value, intValue, testInterface, orderedList);
+        }
+
+        private void OrderParametersAssert(bool hasInteger, bool hasValue, bool hasGeneric, bool hasInterface, string value, int intValue, ITestInterface testInterface, IList<object> orderedList)
+        {
+            // Assert
             int index = 0;
             if (hasInteger) index = AssertOrder(intValue, index, orderedList);
             if (hasValue) index = AssertOrder(value, index, orderedList);
@@ -71,24 +104,36 @@ namespace ZarDevs.Runtime.Tests
             Assert.Equal(orderedList.Count, index);
         }
 
+        private int AssertOrder<T>(T expectedValue, int index, IList<object> orderedParameters)
+        {
+            Assert.Equal(expectedValue, orderedParameters[index]);
+
+            return index + 1;
+        }
+
         private int AssertParam<T>(string expectedName, T expectedValue, IList<(string, object)> namedParameters)
         {
             Assert.Contains(ValueTuple.Create(expectedName, expectedValue), namedParameters);
             return 1;
         }
 
-        private int AssertOrder<T>(T expectedValue, int index, IList<object> orderedParameters)
-        {
-            Assert.Equal(expectedValue, orderedParameters[index]);
+        #endregion Methods
 
-            return index+1;
-        }
+        #region Interfaces
+
+        private interface ITestInterface
+        { }
+
+        #endregion Interfaces
+
+        #region Classes
 
         private class TestClass : ITestInterface
         {
+            #region Constructors
+
             public TestClass()
             {
-
             }
 
             public TestClass(object generic) : this(null, null, generic, null)
@@ -107,10 +152,6 @@ namespace ZarDevs.Runtime.Tests
             {
             }
 
-            private TestClass(int integer, string value, object generic, ITestInterface test) : this((int?)integer, value, generic, test)
-            {
-            }
-
             public TestClass(int? integer, string value, object generic, ITestInterface test)
             {
                 Integer = integer;
@@ -119,13 +160,22 @@ namespace ZarDevs.Runtime.Tests
                 Test = test;
             }
 
-            public int? Integer { get; }
-            public string Value { get; }
+            private TestClass(int integer, string value, object generic, ITestInterface test) : this((int?)integer, value, generic, test)
+            {
+            }
+
+            #endregion Constructors
+
+            #region Properties
+
             public object Generic { get; }
+            public int? Integer { get; }
             public ITestInterface Test { get; }
+            public string Value { get; }
+
+            #endregion Properties
         }
 
-        private interface ITestInterface
-        { }
+        #endregion Classes
     }
 }

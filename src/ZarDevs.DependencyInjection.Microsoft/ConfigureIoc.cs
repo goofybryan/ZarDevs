@@ -12,7 +12,7 @@ namespace ZarDevs.DependencyInjection
             var resolutionConfiguration = new DependencyResolutionConfiguration();
             var dependencyContainer = new DependencyContainer(services, resolutionConfiguration);
             var iocContainer = new IocKernelContainer(dependencyContainer);
-            var dependencyBuilder = Ioc.InitializeWithBuilder(iocContainer);
+            var dependencyBuilder = Ioc.Instance.InitializeWithBuilder(iocContainer);
 
             services.AddSingleton<IDependencyInstanceResolution>(resolutionConfiguration);
             services.AddSingleton<IDependencyResolver, DependencyResolver>();
@@ -27,7 +27,7 @@ namespace ZarDevs.DependencyInjection
 
         public static IServiceProvider ConfigureIocProvider(this IServiceProvider serviceProvider)
         {
-            IIocKernelServiceProvider iocKernelService = (IIocKernelServiceProvider)Ioc.GetIocKernel();
+            IIocKernelServiceProvider iocKernelService = (IIocKernelServiceProvider)Ioc.Container;
 
             iocKernelService.ConfigureServiceProvider(serviceProvider);
 

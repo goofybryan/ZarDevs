@@ -3,7 +3,16 @@ using Xunit;
 
 namespace ZarDevs.DependencyInjection.Tests
 {
-    public abstract class IocTestsConstruct<T> where T : class
+    public interface IIocTests : IDisposable
+    {
+        #region Properties
+
+        IIocContainer Container { get; }
+
+        #endregion Properties
+    }
+
+    public abstract class IocTestsConstruct<T> where T : class, IIocTests
     {
         #region Constructors
 
@@ -17,6 +26,7 @@ namespace ZarDevs.DependencyInjection.Tests
         #region Properties
 
         protected T Fixture { get; }
+        protected IIocContainer Ioc => Fixture.Container;
 
         #endregion Properties
 
@@ -34,6 +44,39 @@ namespace ZarDevs.DependencyInjection.Tests
             Assert.NotNull(instance2);
             Assert.Same(instance1, instance2);
             Assert.IsType<SingletonClass>(instance1);
+        }
+
+        [Fact]
+        public void Resolve_ToMethodWithNoParameters_ReturnsInstance()
+        {
+            // Act
+            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithNoArgs);
+
+            // Assert
+            Assert.NotNull(constructorClass);
+            Assert.Equal(0, constructorClass.Args.Count);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(1, "2")]
+        [InlineData(1, "2", typeof(MultipleConstructorClass))]
+        [InlineData(1, "2", 3)]
+        public void Resolve_ToMethodWithOrderedParameters_ReturnsInstance(params object[] values)
+        {
+            // Act
+            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithArgs, values);
+
+            // Assert
+            Assert.NotNull(constructorClass);
+            Assert.Equal(values.Length, constructorClass.Args.Count);
+            for (int i = 0; i < values.Length; )
+            {
+                object expectedValue = values[i];
+                object actualValue = constructorClass.Args[$"value{++i}"];
+
+                Assert.Equal(expectedValue, actualValue);
+            }
         }
 
         [Fact]
@@ -63,6 +106,39 @@ namespace ZarDevs.DependencyInjection.Tests
             Assert.NotNull(childClass);
             Assert.IsType<CallingClass>(callingClass);
             Assert.IsType<ChildClass>(childClass);
+        }
+
+        [Fact]
+        public void Resolve_WithNoParameters_ReturnsInstance()
+        {
+            // Act
+            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithNoArgs);
+
+            // Assert
+            Assert.NotNull(constructorClass);
+            Assert.Equal(0, constructorClass.Args.Count);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(1, "2")]
+        [InlineData(1, "2", typeof(MultipleConstructorClass))]
+        [InlineData(1, "2", 3)]
+        public void Resolve_WithOrderedParameters_ReturnsInstance(params object[] values)
+        {
+            // Act
+            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithArgs, values);
+
+            // Assert
+            Assert.NotNull(constructorClass);
+            Assert.Equal(values.Length, constructorClass.Args.Count);
+            for (int i = 0; i < values.Length; )
+            {
+                object expectedValue = values[i];
+                object actualValue = constructorClass.Args[$"value{++i}"];
+
+                Assert.Equal(expectedValue, actualValue);
+            }
         }
 
         #endregion Methods

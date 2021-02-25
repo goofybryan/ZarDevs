@@ -47,7 +47,7 @@ namespace ZarDevs.DependencyInjection
             return this;
         }
 
-        public IDependencyBuilderInfo Named(object key)
+        public IDependencyBuilderInfo WithKey(object key)
         {
             _info.Key = key;
             return this;

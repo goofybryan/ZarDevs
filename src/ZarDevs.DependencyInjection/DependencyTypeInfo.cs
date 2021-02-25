@@ -17,6 +17,21 @@ namespace ZarDevs.DependencyInjection
 
         public Type ResolvedType { get; set; }
 
+        public Type[] ConstructorArgumentTypes { get; set; }
+
+        public bool HasConstructor { get; set; }
+
+        public IDependencyTypeInfo WithConstructor(params Type[] constructorArgs)
+        {
+            if (constructorArgs is not null && constructorArgs.Length > 0)
+            {
+                HasConstructor = true;
+                ConstructorArgumentTypes = constructorArgs;
+            }
+
+            return this;
+        }
+
         #endregion Properties
     }
 }

@@ -43,9 +43,9 @@ namespace ZarDevs.DependencyInjection
         IDependencyBuilderInfo InTransientScope();
 
         /// <summary>
-        /// Create the binding in Request Scope resolution.
+        /// Create the binding with the key value.
         /// </summary>
-        IDependencyBuilderInfo Named(object key);
+        IDependencyBuilderInfo WithKey(object key);
 
         /// <summary>
         /// Bind the specified type to

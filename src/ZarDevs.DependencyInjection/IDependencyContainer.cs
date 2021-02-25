@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -9,6 +10,8 @@ namespace ZarDevs.DependencyInjection
         void Build(IList<IDependencyInfo> definitions);
 
         IDependencyInfo GetBinding<T>(object key);
+
+        IDependencyInfo GetBinding(Type requestType, object key);
 
         #endregion Methods
     }

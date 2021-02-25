@@ -8,7 +8,9 @@ namespace ZarDevs.DependencyInjection
     {
         void Add(IDependencyInfo dependency);
         IDependencyInfo Get<T>(object key);
+        IDependencyInfo Get(Type requestType, object key);
         IEnumerable<IDependencyInfo> GetAll<T>(object key);
+        IEnumerable<IDependencyInfo> GetAll(Type requestType, object key);
     }
 
     public class DependencyDefinitions : IDependencyDefinitions
@@ -37,9 +39,19 @@ namespace ZarDevs.DependencyInjection
             return GetAll<T>(key).First();
         }
 
+        public IDependencyInfo Get(Type requestType, object key)
+        {
+            return GetAll(requestType, key).First();
+        }
+
         public IEnumerable<IDependencyInfo> GetAll<T>(object key)
         {
-            return Definitions[typeof(T)].Where(d => d.Key == key);
+            return GetAll(typeof(T), key);
+        }
+
+        public IEnumerable<IDependencyInfo> GetAll(Type requestType, object key)
+        {
+            return Definitions[requestType].Where(d => d.Key == (key ?? string.Empty));
         }
     }
 }

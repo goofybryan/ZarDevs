@@ -4,7 +4,7 @@ using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.AutoFac.Tests
 {
-    public sealed class IocTestFixture : IDisposable
+    public sealed class IocTestFixture : IIocTests
     {
         #region Constructors
 
@@ -12,10 +12,11 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
         {
             var services = new ServiceCollection();
             services.ConfigureIocBindings(Bindings.ConfigureTest);
-            Services = services.BuildServiceProvider().ConfigureIocProvider();
+            services.BuildServiceProvider().ConfigureIocProvider();
+            Container = Ioc.Container;
         }
 
-        public IServiceProvider Services { get; }
+        public IIocContainer Container { get; }
 
         #endregion Constructors
 
@@ -23,7 +24,7 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
 
         public void Dispose()
         {
-            Ioc.Dispose();
+            Ioc.Instance.Dispose();
         }
 
         #endregion Methods
