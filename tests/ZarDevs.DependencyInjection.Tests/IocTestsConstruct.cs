@@ -40,17 +40,35 @@ namespace ZarDevs.DependencyInjection.Tests
             ISingletonClass instance2 = Ioc.Resolve<ISingletonClass>();
 
             // Assert
-            Assert.NotNull(instance1);
-            Assert.NotNull(instance2);
-            Assert.Same(instance1, instance2);
+            AssertInstanceIsSame(instance1, instance2);
             Assert.IsType<SingletonClass>(instance1);
+        }
+
+        [Fact]
+        public void Resolve_SingletonKeyTest_ReturnsSameInstanceForEachKey()
+        {
+            // Act
+            ISingletonNamedClass instance1 = Ioc.ResolveNamed<ISingletonNamedClass>(nameof(ISingletonNamedClass));
+            ISingletonNamedClass instance2 = Ioc.ResolveNamed<ISingletonNamedClass>(nameof(ISingletonNamedClass));
+            ISingletonEnumClass instance3 = Ioc.ResolveWithKey<ISingletonEnumClass>(Bindings.EnumAsKey.Key);
+            ISingletonEnumClass instance4 = Ioc.ResolveWithKey<ISingletonEnumClass>(Bindings.EnumAsKey.Key);
+            ISingletonKeyClass instance5 = Ioc.ResolveWithKey<ISingletonKeyClass>(typeof(ISingletonKeyClass));
+            ISingletonKeyClass instance6 = Ioc.ResolveWithKey<ISingletonKeyClass>(typeof(ISingletonKeyClass));
+
+            // Assert
+            AssertInstanceIsSame(instance1, instance2);
+            AssertInstanceIsSame(instance3, instance4);
+            AssertInstanceIsSame(instance5, instance6);
+            AssertInstanceIsNotSame(instance1, instance3);
+            AssertInstanceIsNotSame(instance1, instance5);
+            AssertInstanceIsNotSame(instance3, instance5);
         }
 
         [Fact]
         public void Resolve_ToMethodWithNoParameters_ReturnsInstance()
         {
             // Act
-            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithNoArgs);
+            IFactoryResolutionClass constructorClass = Ioc.ResolveNamed<IFactoryResolutionClass>(Bindings.MethodWithNoArgs);
 
             // Assert
             Assert.NotNull(constructorClass);
@@ -65,12 +83,12 @@ namespace ZarDevs.DependencyInjection.Tests
         public void Resolve_ToMethodWithOrderedParameters_ReturnsInstance(params object[] values)
         {
             // Act
-            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithArgs, values);
+            IFactoryResolutionClass constructorClass = Ioc.ResolveNamed<IFactoryResolutionClass>(Bindings.MethodWithArgs, values);
 
             // Assert
             Assert.NotNull(constructorClass);
             Assert.Equal(values.Length, constructorClass.Args.Count);
-            for (int i = 0; i < values.Length; )
+            for (int i = 0; i < values.Length;)
             {
                 object expectedValue = values[i];
                 object actualValue = constructorClass.Args[$"value{++i}"];
@@ -87,9 +105,7 @@ namespace ZarDevs.DependencyInjection.Tests
             INormalClass instance2 = Ioc.Resolve<INormalClass>();
 
             // Assert
-            Assert.NotNull(instance1);
-            Assert.NotNull(instance2);
-            Assert.NotSame(instance1, instance2);
+            AssertInstanceIsNotSame(instance1, instance2);
             Assert.IsType<NormalClass>(instance1);
             Assert.IsType<NormalClass>(instance2);
         }
@@ -112,7 +128,7 @@ namespace ZarDevs.DependencyInjection.Tests
         public void Resolve_WithNoParameters_ReturnsInstance()
         {
             // Act
-            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithNoArgs);
+            IMultipleConstructorClass constructorClass = Ioc.Resolve<IMultipleConstructorClass>();
 
             // Assert
             Assert.NotNull(constructorClass);
@@ -127,18 +143,32 @@ namespace ZarDevs.DependencyInjection.Tests
         public void Resolve_WithOrderedParameters_ReturnsInstance(params object[] values)
         {
             // Act
-            IMultipleConstructorClass constructorClass = Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.MethodWithArgs, values);
+            IMultipleConstructorClass constructorClass = Ioc.Resolve<IMultipleConstructorClass>(values);
 
             // Assert
             Assert.NotNull(constructorClass);
             Assert.Equal(values.Length, constructorClass.Args.Count);
-            for (int i = 0; i < values.Length; )
+            for (int i = 0; i < values.Length;)
             {
                 object expectedValue = values[i];
                 object actualValue = constructorClass.Args[$"value{++i}"];
 
                 Assert.Equal(expectedValue, actualValue);
             }
+        }
+
+        private static void AssertInstanceIsNotSame(object instance1, object instance2)
+        {
+            Assert.NotNull(instance1);
+            Assert.NotNull(instance2);
+            Assert.NotSame(instance1, instance2);
+        }
+
+        private static void AssertInstanceIsSame(object instance1, object instance2)
+        {
+            Assert.NotNull(instance1);
+            Assert.NotNull(instance2);
+            Assert.Same(instance1, instance2);
         }
 
         #endregion Methods

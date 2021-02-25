@@ -6,9 +6,9 @@ namespace ZarDevs.DependencyInjection.Tests
     {
         #region Methods
 
-        IMultipleConstructorClass ResolveMultipleConstructorClass();
+        IFactoryResolutionClass ResolveFactoryResolutionClass();
 
-        IMultipleConstructorClass ResolveMultipleConstructorClass(object[] constructorArgs);
+        IFactoryResolutionClass ResolveFactoryResolutionClass(object[] constructorArgs);
 
         #endregion Methods
     }
@@ -32,14 +32,14 @@ namespace ZarDevs.DependencyInjection.Tests
 
         #region Methods
 
-        public IMultipleConstructorClass ResolveMultipleConstructorClass(object[] constructorArgs)
+        public IFactoryResolutionClass ResolveFactoryResolutionClass(object[] constructorArgs)
         {
-            return Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.NotMethod, constructorArgs);
+            return Ioc.ResolveNamed<IFactoryResolutionClass>(Bindings.NotMethod, constructorArgs);
         }
 
-        public IMultipleConstructorClass ResolveMultipleConstructorClass()
+        public IFactoryResolutionClass ResolveFactoryResolutionClass()
         {
-            return Ioc.ResolveNamed<IMultipleConstructorClass>(Bindings.NotMethod);
+            return Ioc.ResolveNamed<IFactoryResolutionClass>(Bindings.NotMethod);
         }
 
         #endregion Methods

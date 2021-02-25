@@ -5,6 +5,7 @@ namespace ZarDevs.DependencyInjection.Tests
         public const string MethodWithArgs = nameof(MethodWithArgs);
         public const string MethodWithNoArgs = nameof(MethodWithNoArgs);
         public const string NotMethod = nameof(NotMethod);
+        public enum EnumAsKey { Key }
 
         public static void ConfigureTest(this IDependencyBuilder builder)
         {
@@ -13,10 +14,14 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<IChildClass>().To<ChildClass>();
             builder.Bind<IRequestClass>().To<RequestClass>().InRequestScope();
             builder.Bind<ISingletonClass>().To<SingletonClass>().InSingletonScope();
+            builder.Bind<ISingletonNamedClass>().To<SingletonClass>().InSingletonScope().WithKey(nameof(ISingletonNamedClass));
+            builder.Bind<ISingletonEnumClass>().To<SingletonClass>().InSingletonScope().WithKey(EnumAsKey.Key);
+            builder.Bind<ISingletonKeyClass>().To<SingletonClass>().InSingletonScope().WithKey(typeof(ISingletonKeyClass));
+            builder.Bind<IMultipleConstructorClass>().To<MultipleConstructorClass>();
             builder.Bind<IFactoryClass>().To<FactoryClass>().InSingletonScope();
-            builder.Bind<IMultipleConstructorClass>().To<MultipleConstructorClass>().WithKey(NotMethod);
-            builder.Bind<IMultipleConstructorClass>().To((ctx, key) => ctx.Ioc.Resolve<IFactoryClass>().ResolveMultipleConstructorClass(ctx.GetArguments())).WithKey(MethodWithArgs);
-            builder.Bind<IMultipleConstructorClass>().To((ctx, key) => ctx.Ioc.Resolve<IFactoryClass>().ResolveMultipleConstructorClass()).WithKey(MethodWithNoArgs);
+            builder.Bind<IFactoryResolutionClass>().To((ctx, key) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass(ctx.GetArguments())).WithKey(MethodWithArgs);
+            builder.Bind<IFactoryResolutionClass>().To((ctx, key) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass()).WithKey(MethodWithNoArgs);
+            builder.Bind<IFactoryResolutionClass>().To<FactoryResolutionClass>().WithKey(NotMethod);
         }
     }
 }

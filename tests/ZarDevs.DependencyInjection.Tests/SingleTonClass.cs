@@ -2,6 +2,12 @@
 {
     public interface ISingletonClass { }
 
-    internal class SingletonClass : ISingletonClass
+    public interface ISingletonNamedClass { }
+
+    public interface ISingletonKeyClass { }
+
+    public interface ISingletonEnumClass { }
+
+    internal class SingletonClass : ISingletonClass, ISingletonEnumClass, ISingletonKeyClass, ISingletonNamedClass
     { }
 }

@@ -72,7 +72,7 @@ namespace ZarDevs.DependencyInjection
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return ResolveWithKey<T>(key.ToString(), parameters);
+            return Kernel.Get<T>(key.ToString(), CreateParameters(parameters));
         }
 
         public T Resolve<T>()
