@@ -40,14 +40,14 @@ namespace ZarDevs.DependencyInjection
             OnBuildEnd();
         }
 
-        public IDependencyInfo GetBinding<T>(object key)
+        public IDependencyInfo TryGetBinding<T>(object key)
         {
-            return Definitions.Get<T>(key);
+            return Definitions.TryGet<T>(key);
         }
 
-        public IDependencyInfo GetBinding(Type requestType, object key)
+        public IDependencyInfo TryGetBinding(Type requestType, object key)
         {
-            return Definitions.Get(requestType, key);
+            return Definitions.TryGet(requestType, key);
         }
 
         protected abstract void OnBuild(IDependencyInfo definition);

@@ -220,6 +220,63 @@ namespace ZarDevs.DependencyInjection.Tests
         }
 
         [Fact]
+        public void TryResolve_NotBinded_ReturnsNull()
+        {
+            // Act
+            var instance1 = Ioc.TryResolve<INotBindedClass>();
+            var instance2 = Ioc.TryResolve<INotBindedClass>("value1");
+
+            // Assert
+            Assert.Null(instance1);
+            Assert.Null(instance2);
+        }
+
+        [Fact]
+        public void TryResolve_NotBindedEnum_ReturnsNull()
+        {
+            // Arrange
+            var key = Bindings.EnumAsKey.DifferentKey;
+
+            // Act
+            var instance1 = Ioc.TryResolveWithKey<INotBindedKeyed>(key);
+            var instance2 = Ioc.TryResolveWithKey<INotBindedKeyed>(key, "value1");
+
+            // Assert
+            Assert.Null(instance1);
+            Assert.Null(instance2);
+        }
+
+        [Fact]
+        public void TryResolve_NotBindedKeyed_ReturnsNull()
+        {
+            // Arrange
+            var key = new object();
+
+            // Act
+            var instance1 = Ioc.TryResolveWithKey<INotBindedKeyed>(key);
+            var instance2 = Ioc.TryResolveWithKey<INotBindedKeyed>(key, "value1");
+
+            // Assert
+            Assert.Null(instance1);
+            Assert.Null(instance2);
+        }
+
+        [Fact]
+        public void TryResolve_NotBindedNamed_ReturnsNull()
+        {
+            // Arrange
+            var key = "Some Name";
+
+            // Act
+            var instance1 = Ioc.TryResolveNamed<INotBindedKeyed>(key);
+            var instance2 = Ioc.TryResolveNamed<INotBindedKeyed>(key, "value1");
+
+            // Assert
+            Assert.Null(instance1);
+            Assert.Null(instance2);
+        }
+
+        [Fact]
         public void TryResolve_Singleton_ReturnsSameInstance()
         {
             // Act

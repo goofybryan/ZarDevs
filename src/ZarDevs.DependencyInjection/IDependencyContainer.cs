@@ -9,9 +9,9 @@ namespace ZarDevs.DependencyInjection
 
         void Build(IList<IDependencyInfo> definitions);
 
-        IDependencyInfo GetBinding<T>(object key);
+        IDependencyInfo TryGetBinding<T>(object key);
 
-        IDependencyInfo GetBinding(Type requestType, object key);
+        IDependencyInfo TryGetBinding(Type requestType, object key);
 
         #endregion Methods
     }

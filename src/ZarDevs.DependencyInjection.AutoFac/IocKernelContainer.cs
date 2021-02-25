@@ -136,12 +136,12 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveWithKey<T>(Enum key)
         {
-            return ResolveWithKey<T>(key, new (string, object)[0]);
+            return TryResolveWithKey<T>(key, new (string, object)[0]);
         }
 
         public T TryResolveWithKey<T>(object key)
         {
-            return ResolveWithKey<T>(key, new (string, object)[0]);
+            return TryResolveWithKey<T>(key, new (string, object)[0]);
         }
 
         public T TryResolve<T>(params object[] parameters)
@@ -151,17 +151,17 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveNamed<T>(string name, params object[] parameters)
         {
-            return Kernel.IsRegistered<T>() ? ResolveNamed<T>(name, parameters) : default;
+            return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
         }
 
         public T TryResolveWithKey<T>(Enum key, params object[] parameters)
         {
-            return Kernel.IsRegistered<T>() ? ResolveWithKey<T>(key, parameters) : default;
+            return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
         public T TryResolveWithKey<T>(object key, params object[] parameters)
         {
-            return Kernel.IsRegistered<T>() ? ResolveWithKey<T>(key, parameters) : default;
+            return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
         protected virtual void Dispose(bool disposing)

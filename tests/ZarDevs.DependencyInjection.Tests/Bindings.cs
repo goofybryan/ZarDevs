@@ -2,10 +2,16 @@ namespace ZarDevs.DependencyInjection.Tests
 {
     public static class Bindings
     {
+        #region Fields
+
         public const string MethodWithArgs = nameof(MethodWithArgs);
         public const string MethodWithNoArgs = nameof(MethodWithNoArgs);
         public const string NotMethod = nameof(NotMethod);
-        public enum EnumAsKey { Key }
+        public const string NotResolvedName = nameof(NotResolvedName);
+
+        #endregion Fields
+
+        #region Methods
 
         public static void ConfigureTest(this IDependencyBuilder builder)
         {
@@ -22,6 +28,17 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<IFactoryResolutionClass>().To((ctx, key) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass(ctx.GetArguments())).WithKey(MethodWithArgs);
             builder.Bind<IFactoryResolutionClass>().To((ctx, key) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass()).WithKey(MethodWithNoArgs);
             builder.Bind<IFactoryResolutionClass>().To<FactoryResolutionClass>().WithKey(NotMethod);
+            builder.Bind<INotBindedKeyed>().To<NotBindedClass>().WithKey(NotResolvedName);
+            builder.Bind<INotBindedKeyed>().To<NotBindedClass>().WithKey(EnumAsKey.Key);
+            builder.Bind<INotBindedKeyed>().To<NotBindedClass>().WithKey(typeof(INormalClass));
         }
+
+        #endregion Methods
+
+        #region Enums
+
+        public enum EnumAsKey { Key, DifferentKey }
+
+        #endregion Enums
     }
 }
