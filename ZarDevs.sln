@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Runtime", "src\ZarD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Resources", "src\ZarDevs.Resources\ZarDevs.Resources.csproj", "{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Validations", "ZarDevs.Validations\ZarDevs.Validations.csproj", "{6FC807C1-37FF-4CDB-A087-046CB9C251C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Validations", "src\ZarDevs.Validations\ZarDevs.Validations.csproj", "{6FC807C1-37FF-4CDB-A087-046CB9C251C2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Http.DependencyInjection", "src\ZarDevs.Commands.Http.DependencyInjection\ZarDevs.Commands.Http.DependencyInjection.csproj", "{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}"
 EndProject
