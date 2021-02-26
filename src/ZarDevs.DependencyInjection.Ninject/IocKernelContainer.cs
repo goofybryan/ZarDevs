@@ -7,20 +7,49 @@ using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
+
+
     public class IocKernelContainer : IIocKernelContainer
+    {
+        private readonly IKernel _kernel;
+        private readonly IDependencyContainer _container;
+
+        public IocKernelContainer(IKernel kernel)
+        {
+            _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+            _container = DependencyContainer.Create(_kernel);
+        }
+
+        public IIocContainer CreateIocContainer()
+        {
+            return new IocContainer(_kernel, _container);
+        }
+
+        public IDependencyBuilder CreateDependencyBuilder()
+        {
+            var builder = new DependencyBuilder(_container);
+
+            builder.Bind<IDependencyContainer>().To(_container);
+
+            return builder;
+        }
+    }
+
+    public class IocContainer : IIocContainer
     {
         #region Fields
 
-        private IDependencyContainer _dependencyContainer;
+        private readonly IDependencyContainer _dependencyContainer;
         private bool _disposed = false;
 
         #endregion Fields
 
         #region Constructors
 
-        public IocKernelContainer(IKernel kernel)
+        public IocContainer(IKernel kernel, IDependencyContainer dependencyContainer)
         {
             Kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+            _dependencyContainer = dependencyContainer ?? throw new ArgumentNullException(nameof(dependencyContainer));
         }
 
         #endregion Constructors
@@ -32,11 +61,6 @@ namespace ZarDevs.DependencyInjection
         #endregion Properties
 
         #region Methods
-
-        public IDependencyContainer CreateDependencyContainer()
-        {
-            return _dependencyContainer = DependencyContainer.Create(Kernel);
-        }
 
         public void Dispose()
         {

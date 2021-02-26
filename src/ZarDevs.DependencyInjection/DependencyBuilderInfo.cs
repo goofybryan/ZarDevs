@@ -47,12 +47,6 @@ namespace ZarDevs.DependencyInjection
             return this;
         }
 
-        public IDependencyBuilderInfo WithKey(object key)
-        {
-            _info.Key = key;
-            return this;
-        }
-
         public IDependencyBuilderInfo To(Type type)
         {
             _info = new DependencyTypeInfo(type, _info);
@@ -67,6 +61,18 @@ namespace ZarDevs.DependencyInjection
         public IDependencyBuilderInfo To(Func<DepencyBuilderInfoContext, object, object> method)
         {
             _info = new DependencyMethodInfo(method, _info);
+            return this;
+        }
+
+        public IDependencyBuilderInfo To<T>(T instance)
+        {
+            _info = new DependencyInstanceInfo(instance, _info);
+            return this;
+        }
+
+        public IDependencyBuilderInfo WithKey(object key)
+        {
+            _info.Key = key;
             return this;
         }
 

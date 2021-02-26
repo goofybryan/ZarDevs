@@ -59,7 +59,6 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnBuildStart()
         {
-            Builder.RegisterInstance(Ioc.Container).SingleInstance();
         }
 
         private static void Build<TActivatorData, TRegistrationStyle>(IDependencyInfo info, IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> binding)
@@ -82,8 +81,10 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        private DepencyBuilderInfoContext CreateBuilderContext(IComponentContext componentContext, IList<Parameter> parameters)
+        private DepencyBuilderInfoContext CreateBuilderContext(IComponentContext componentContext, IList<Parameter> parameters, Type requestType)
         {
+            if (requestType == typeof(IIocContainer)) return null;
+
             IIocContainer container = componentContext.Resolve<IIocContainer>();
             if (parameters == null || parameters.Count == 0) return new DepencyBuilderInfoContext(container);
             if (TryGetNamedParameters(parameters, out (string, object)[] namedParameters)) return new DepencyBuilderInfoContext(container, namedParameters);
@@ -130,7 +131,7 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            var binding = builder.Register((c, p) => info.MethodTo(CreateBuilderContext(c, p?.ToList()), info.Key));
+            var binding = builder.Register((c, p) => info.MethodTo(CreateBuilderContext(c, p?.ToList(), info.RequestType), info.Key));
 
             RegisterNamedDependency(binding, info);
 

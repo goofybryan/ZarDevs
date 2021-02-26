@@ -2,11 +2,13 @@
 
 namespace ZarDevs.DependencyInjection
 {
-    public interface IIocKernelContainer : IIocContainer, IDisposable
+    public interface IIocKernelContainer
     {
         #region Methods
 
-        IDependencyContainer CreateDependencyContainer();
+        IIocContainer CreateIocContainer();
+
+        IDependencyBuilder CreateDependencyBuilder();
 
         #endregion Methods
     }

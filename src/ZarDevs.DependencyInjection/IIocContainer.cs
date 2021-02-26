@@ -5,7 +5,7 @@ namespace ZarDevs.DependencyInjection
     // TODO BM: Add methods for getting all services e.g. IEnumerable<T> ResolveAll<T>(); TODO BM:
     // Add methods for partial parameters and resolve rest (constructor matching to nearest
     // parameter size)
-    public interface IIocContainer
+    public interface IIocContainer : IDisposable
     {
         #region Methods
 

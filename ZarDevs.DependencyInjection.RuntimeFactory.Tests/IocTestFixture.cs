@@ -1,7 +1,7 @@
 ﻿using System;
 using ZarDevs.DependencyInjection.Tests;
 
-namespace ZarDevs.DependencyInjection.Ninject.Tests
+namespace ZarDevs.DependencyInjection.AutoFac.Tests
 {
     public sealed class IocTestFixture : IIocTests, IDisposable
     {
@@ -9,9 +9,7 @@ namespace ZarDevs.DependencyInjection.Ninject.Tests
 
         public IocTestFixture()
         {
-            var kernel = (IocKernelContainer)IocNinject.Initialize();
-
-            Container = Ioc.Initialize(kernel, builder =>
+            Container = Ioc.Initialize(IocRuntimeFactory.Initialize(), builder =>
             {
                 builder.ConfigureTest();
             });

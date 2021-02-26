@@ -6,7 +6,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private static IIocKernelContainer _kernel;
+        private static IIocContainer _kernel;
 
         #endregion Fields
 
@@ -38,19 +38,28 @@ namespace ZarDevs.DependencyInjection
             _kernel = null;
         }
 
-        public IIocKernelContainer Initialize(IIocKernelContainer container)
+        public static IIocContainer Initialize(IIocKernelContainer container, Action<IDependencyBuilder> buildDependencies=null, Action afterBuild=null) => Instance.InitializeInternal(container, buildDependencies, afterBuild);
+
+        public IIocContainer InitializeInternal(IIocKernelContainer container, Action<IDependencyBuilder> buildDependencies, Action afterBuild)
         {
             lock (this)
             {
-                _kernel = container ?? throw new ArgumentNullException(nameof(container));
+                var builder = container.CreateDependencyBuilder();
+
+                builder.Bind<IIocContainer>()
+                    .To((ctx, key) => 
+                    Container).InSingletonScope();
+
+                buildDependencies?.Invoke(builder);
+
+                builder.Build();
+
+                afterBuild?.Invoke();
+
+                _kernel = container.CreateIocContainer();
+
                 return _kernel;
             }
-        }
-
-        public IDependencyBuilder InitializeWithBuilder(IIocKernelContainer container)
-        {
-            var dependencyContainer = Initialize(container).CreateDependencyContainer();
-            return new DependencyBuilder(dependencyContainer);
         }
 
         #endregion Methods

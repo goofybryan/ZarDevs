@@ -22,6 +22,11 @@
             return Info.MethodTo(new DepencyBuilderInfoContext(ioc, args), Key);
         }
 
+        public override object Resolve(IIocContainer ioc)
+        {
+            return Info.MethodTo(new DepencyBuilderInfoContext(ioc), Key);
+        }
+
         #endregion Methods
     }
 }

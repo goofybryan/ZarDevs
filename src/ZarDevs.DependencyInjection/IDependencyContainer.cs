@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
-    public interface IDependencyContainer
+    public interface IDependencyContainer : IDisposable
     {
         #region Methods
 

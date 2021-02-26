@@ -15,6 +15,8 @@ namespace ZarDevs.DependencyInjection
 
         public TInfo Info { get; }
 
+        public abstract object Resolve(IIocContainer ioc);
+
         public abstract object Resolve(IIocContainer ioc, params object[] args);
 
         public abstract object Resolve(IIocContainer ioc, params (string, object)[] args);

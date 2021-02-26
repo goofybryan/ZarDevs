@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -7,12 +8,14 @@ namespace ZarDevs.DependencyInjection
     {
         #region Methods
 
+        void AddInstanceResolution<T>(T instance, object key);
+
         void Configure(Type requestType, IDependencyResolution info);
 
         #endregion Methods
     }
 
-    public interface IDependencyInstanceResolution
+    public interface IDependencyInstanceResolution : IDisposable
     {
         #region Methods
 
@@ -27,11 +30,12 @@ namespace ZarDevs.DependencyInjection
         #endregion Methods
     }
 
-    internal class DependencyResolutionConfiguration : IDependencyInstanceConfiguration, IDependencyInstanceResolution
+    public class DependencyResolutionConfiguration : IDependencyInstanceConfiguration, IDependencyInstanceResolution
     {
         #region Fields
 
         private readonly IDictionary<Type, IDictionary<object, IDependencyResolution>> _bindings;
+        private bool _disposed;
 
         #endregion Fields
 
@@ -46,6 +50,12 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
+        public void AddInstanceResolution<T>(T instance, object key)
+        {
+            Type requestType = typeof(T);
+            Configure(requestType, new DependencySingletonInstance(new DependencyInstanceInfo(instance, key)));
+        }
+
         public void Configure(Type requestType, IDependencyResolution info)
         {
             if (!_bindings.ContainsKey(requestType))
@@ -53,13 +63,20 @@ namespace ZarDevs.DependencyInjection
                 _bindings[requestType] = new Dictionary<object, IDependencyResolution>();
             }
 
-            _bindings[requestType].Add(info.Key, info);
+            _bindings[requestType].Add(info.Key ?? string.Empty, info);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         public IDependencyResolution GetResolution(object key, Type requestType)
         {
             return TryGetResolution(key, requestType) ??
-                throw new InvalidOperationException("Cannot resolve typed instance for method binding, must be typeof(IDependencyTypeInfo).");
+                throw new InvalidOperationException($"Cannot get resolution for {requestType} for key {key}.");
         }
 
         public IDependencyResolution GetResolution(Type requestType)
@@ -69,7 +86,8 @@ namespace ZarDevs.DependencyInjection
 
         public IDependencyResolution TryGetResolution(object key, Type requestType)
         {
-            if (!_bindings.TryGetValue(requestType, out IDictionary<object, IDependencyResolution> binding) || !binding.TryGetValue(key ?? string.Empty, out IDependencyResolution instanceType))
+            if (!_bindings.TryGetValue(requestType, out IDictionary<object, IDependencyResolution> binding)
+                || !binding.TryGetValue(key ?? string.Empty, out IDependencyResolution instanceType))
                 return null;
 
             return instanceType;
@@ -78,6 +96,26 @@ namespace ZarDevs.DependencyInjection
         public IDependencyResolution TryGetResolution(Type requestType)
         {
             return TryGetResolution(null, requestType);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                foreach (var resolutions in _bindings.Values)
+                {
+                    foreach (var disposable in resolutions.OfType<IDisposable>())
+                    {
+                        disposable.Dispose();
+                    }
+                }
+
+                _bindings.Clear();
+            }
+
+            _disposed = true;
         }
 
         #endregion Methods

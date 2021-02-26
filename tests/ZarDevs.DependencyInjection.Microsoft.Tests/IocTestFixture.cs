@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using ZarDevs.DependencyInjection.Tests;
 
-namespace ZarDevs.DependencyInjection.AutoFac.Tests
+namespace ZarDevs.DependencyInjection.Microsoft.Tests
 {
     public sealed class IocTestFixture : IIocTests
     {
@@ -11,14 +10,22 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
         public IocTestFixture()
         {
             var services = new ServiceCollection();
-            services.ConfigureIocBindings(Bindings.ConfigureTest);
-            services.BuildServiceProvider().ConfigureIocProvider();
-            Container = Ioc.Container;
+
+            var kernel = new IocKernelContainer(services);
+
+            Container = Ioc.Initialize(kernel,
+                builder => builder.ConfigureTest(),
+                () => kernel.ConfigureServiceProvider(services.BuildServiceProvider())
+            );
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         public IIocContainer Container { get; }
 
-        #endregion Constructors
+        #endregion Properties
 
         #region Methods
 

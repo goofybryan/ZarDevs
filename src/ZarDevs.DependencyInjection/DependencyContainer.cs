@@ -5,6 +5,7 @@ namespace ZarDevs.DependencyInjection
 {
     public abstract class DependencyContainerBase : IDependencyContainer
     {
+        private bool _isDisposed;
         #region Constructors
 
         protected DependencyContainerBase()
@@ -57,6 +58,23 @@ namespace ZarDevs.DependencyInjection
 
         protected virtual void OnBuildStart()
         { }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+            }
+
+            _isDisposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
 
         #endregion Methods
     }

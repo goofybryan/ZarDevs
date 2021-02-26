@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -7,31 +8,11 @@ namespace ZarDevs.DependencyInjection
     {
         #region Methods
 
-        public static IServiceCollection ConfigureIocBindings(this IServiceCollection services, Action<IDependencyBuilder> builder)
+        public static IServiceCollection ConfigureIocBindings(this IServiceCollection services)
         {
-            var resolutionConfiguration = new DependencyResolutionConfiguration();
-            var dependencyContainer = new DependencyContainer(services, resolutionConfiguration);
-            var iocContainer = new IocKernelContainer(dependencyContainer);
-            var dependencyBuilder = Ioc.Instance.InitializeWithBuilder(iocContainer);
-
-            services.AddSingleton<IDependencyInstanceResolution>(resolutionConfiguration);
-            services.AddSingleton<IDependencyResolver, DependencyResolver>();
-            services.AddSingleton<IIocContainer>(iocContainer);
-
-            builder(dependencyBuilder);
-
-            dependencyBuilder.Build();
+            services.AddSingleton(p => Ioc.Container);
 
             return services;
-        }
-
-        public static IServiceProvider ConfigureIocProvider(this IServiceProvider serviceProvider)
-        {
-            IIocKernelServiceProvider iocKernelService = (IIocKernelServiceProvider)Ioc.Container;
-
-            iocKernelService.ConfigureServiceProvider(serviceProvider);
-
-            return serviceProvider;
         }
 
         #endregion Methods

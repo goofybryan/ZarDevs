@@ -1,34 +1,54 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
-    public interface IIocKernelServiceProvider
+    public sealed class IocKernelContainer : IIocKernelContainer
     {
-        #region Methods
+        public IocKernelContainer()
+        {
+            DependencyResolutionConfiguration configuration = new DependencyResolutionConfiguration();
+            InstanceResolution = configuration;
+            Activator = new RuntimeDependencyActivator(InspectConstructor.Instance, Create.Instance);
+            Container = new DependencyContainer(configuration, Activator);
+        }
 
-        void ConfigureServiceProvider(IServiceProvider serviceProvider);
+        public IDependencyTypeActivator Activator { get; }
+        public IDependencyContainer Container { get; }
+        public IDependencyInstanceResolution InstanceResolution { get; }
 
-        #endregion Methods
+        public IDependencyBuilder CreateDependencyBuilder()
+        {
+            var builder = new DependencyBuilder(Container);
+
+            builder.Bind<IDependencyTypeActivator>().To(Activator)
+                .Bind<IInspectConstructor>().To(InspectConstructor.Instance)
+                .Bind<ICreate>().To(Create.Instance)
+                .Bind<IDependencyInstanceResolution>().To(InstanceResolution);
+
+            return builder;
+        }
+
+        public IIocContainer CreateIocContainer()
+        {
+            return new DependencyResolver(InstanceResolution);
+        }
     }
 
-    public class IocContainer : IIocContainer
-    {
+    internal class IocContainer : IIocContainer
+    { 
         #region Fields
 
-        private IDependencyResolver _dependencyResolver;
+        private readonly IDependencyResolver _dependencyResolver;
         private bool _isDisposed;
-        private IServiceProvider _serviceProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public IocContainer(IDependencyResolver dependencyResolver, IServiceProvider serviceProvider)
+        public IocContainer(IDependencyResolver dependencyResolver)
         {
             _dependencyResolver = dependencyResolver ?? throw new ArgumentNullException(nameof(dependencyResolver));
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         #endregion Constructors
@@ -48,7 +68,7 @@ namespace ZarDevs.DependencyInjection
 
         public T Resolve<T>()
         {
-            return (T)_serviceProvider.GetRequiredService(typeof(T));
+            return _dependencyResolver.Resolve<T>();
         }
 
         public T Resolve<T>(params object[] parameters)
@@ -63,7 +83,7 @@ namespace ZarDevs.DependencyInjection
 
         public T ResolveNamed<T>(string name)
         {
-            return _dependencyResolver.ResolveNamed<T>(name);
+            return _dependencyResolver.ResolveNamed<T>(name, (object[])null);
         }
 
         public T ResolveNamed<T>(string name, params object[] parameters)
@@ -83,12 +103,12 @@ namespace ZarDevs.DependencyInjection
 
         public T ResolveWithKey<T>(Enum key)
         {
-            return _dependencyResolver.ResolveWithKey<T>(key);
+            return _dependencyResolver.ResolveWithKey<T>(key, (object[])null);
         }
 
         public T ResolveWithKey<T>(object key)
         {
-            return _dependencyResolver.ResolveWithKey<T>(key);
+            return _dependencyResolver.ResolveWithKey<T>(key, (object[])null);
         }
 
         public T ResolveWithKey<T>(Enum key, params object[] parameters)
@@ -108,7 +128,7 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolve<T>()
         {
-            return (T)_serviceProvider.GetService(typeof(T));
+            return _dependencyResolver.TryResolve<T>();
         }
 
         public T TryResolve<T>(params object[] parameters)
@@ -123,7 +143,7 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveNamed<T>(string name)
         {
-            return _dependencyResolver.TryResolveNamed<T>(name);
+            return _dependencyResolver.TryResolveNamed<T>(name, (object[])null);
         }
 
         public T TryResolveNamed<T>(string name, params object[] parameters)
@@ -143,12 +163,12 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveWithKey<T>(Enum key)
         {
-            return _dependencyResolver.TryResolveWithKey<T>(key);
+            return _dependencyResolver.TryResolveWithKey<T>(key, (object[])null);
         }
 
         public T TryResolveWithKey<T>(object key)
         {
-            return _dependencyResolver.TryResolveWithKey<T>(key);
+            return _dependencyResolver.TryResolveWithKey<T>(key, (object[])null);
         }
 
         public T TryResolveWithKey<T>(Enum key, params object[] parameters)
@@ -163,70 +183,13 @@ namespace ZarDevs.DependencyInjection
 
         private void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (_isDisposed) return;
+
+            if (disposing)
             {
-                if (disposing)
-                {
-                    _dependencyResolver.Dispose();
-                    _dependencyResolver = null;
-
-                    _serviceProvider = null;
-                }
-
-                _isDisposed = true;
+                _dependencyResolver.Dispose();
             }
-        }
-
-        #endregion Methods
-    }
-
-    public sealed class IocKernelContainer : IIocKernelContainer, IIocKernelServiceProvider
-    {
-        #region Fields
-
-        private readonly IServiceCollection _serviceCollection;
-        private readonly IDependencyInstanceConfiguration _resolutionConfiguration;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public IocKernelContainer(IServiceCollection serviceCollection)
-        {
-            _serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
-            _resolutionConfiguration = new DependencyResolutionConfiguration();
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public void ConfigureServiceProvider(IServiceProvider serviceProvider)
-        {
-            _resolutionConfiguration.AddInstanceResolution(serviceProvider, null);
-        }
-
-        public IDependencyBuilder CreateDependencyBuilder()
-        {
-            var activator = new MicrosoftUtilitiesActivator(InspectConstructor.Instance);
-            var dependencyContainer = new MicrosoftDependencyContainer(_serviceCollection, _resolutionConfiguration, activator);
-            var builder = new DependencyBuilder(dependencyContainer);
-
-            builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
-            builder.Bind<ICreate>().To(Create.Instance);
-            builder.Bind<IDependencyInstanceResolution>().To(_resolutionConfiguration);
-            builder.Bind<IDependencyTypeActivator>().To(activator);
-            builder.Bind<IDependencyResolver>().To<DependencyResolver>();
-
-            return builder;
-        }
-
-        public IIocContainer CreateIocContainer()
-        {
-            var resolution = (IDependencyInstanceResolution)_resolutionConfiguration;
-            var serviceProvider = (IServiceProvider)resolution.GetResolution(typeof(IServiceProvider)).Resolve(null);
-            var activator = serviceProvider.GetRequiredService<IDependencyResolver>();
-            return new IocContainer(activator, serviceProvider);
+            _isDisposed = true;
         }
 
         #endregion Methods

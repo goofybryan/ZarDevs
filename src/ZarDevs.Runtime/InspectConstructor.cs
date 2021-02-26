@@ -5,14 +5,17 @@ using System.Reflection;
 
 namespace ZarDevs.Runtime
 {
-    public class InspectConstructor : IInspect
+    public interface IInspectConstructor : IInspect
+    { }
+
+    public class InspectConstructor : IInspectConstructor
     {
         #region Properties
 
         /// <summary>
         /// Get and instance of the Inpect class.
         /// </summary>
-        public static IInspect Instance { get; set; } = new InspectConstructor();
+        public static IInspectConstructor Instance { get; set; } = new InspectConstructor();
 
         #endregion Properties
 

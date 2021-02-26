@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using Ninject.Activation;
 using Ninject.Syntax;
 using System;
 using System.Globalization;
@@ -40,7 +41,6 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnBuildStart()
         {
-            Kernel.Bind<IIocContainer>().ToConstant(Ioc.Container);
         }
 
         private static void BindNamedIfConfigured(IDependencyInfo info, IBindingWhenInNamedWithOrOnSyntax<object> binding)
@@ -88,8 +88,7 @@ namespace ZarDevs.DependencyInjection
         {
             if (info is IDependencyMethodInfo methodInfo)
             {
-                return initial.ToMethod(ctx => methodInfo.MethodTo(new DepencyBuilderInfoContext(ctx.Kernel.Get<IIocContainer>(),
-                    ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray()), info.Key));
+                return initial.ToMethod(ctx => methodInfo.MethodTo(CreateContext(ctx), info.Key));
             }
 
             if (info is IDependencyTypeInfo typeInfo)
@@ -97,7 +96,20 @@ namespace ZarDevs.DependencyInjection
                 return initial.To(typeInfo.ResolvedType);
             }
 
+            if(info is IDependencyInstanceInfo instanceInfo)
+            {
+                return initial.ToConstant(instanceInfo.Instance);
+            }
+
             throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
+        }
+
+        private DepencyBuilderInfoContext CreateContext(IContext ctx)
+        {
+            if (ctx.Request.Service == typeof(IIocContainer)) return null;
+
+            return new DepencyBuilderInfoContext(ctx.Kernel.Get<IIocContainer>(),
+                      ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray());
         }
 
         #endregion Methods
