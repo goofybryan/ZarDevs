@@ -21,10 +21,10 @@ namespace ZarDevs.DependencyInjection
         {
             var builder = new DependencyBuilder(Container);
 
-            builder.Bind<IDependencyTypeActivator>().To(Activator)
-                .Bind<IInspectConstructor>().To(InspectConstructor.Instance)
-                .Bind<ICreate>().To(Create.Instance)
-                .Bind<IDependencyInstanceResolution>().To(InstanceResolution);
+            builder.Bind<IDependencyTypeActivator>().To(Activator);
+            builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
+            builder.Bind<ICreate>().To(Create.Instance);
+            builder.Bind<IDependencyInstanceResolution>().To(InstanceResolution);
 
             return builder;
         }

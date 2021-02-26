@@ -85,7 +85,5 @@ namespace ZarDevs.Commands.Http
         }
 
         #endregion Methods
-
-        // To detect redundant calls
     }
 }

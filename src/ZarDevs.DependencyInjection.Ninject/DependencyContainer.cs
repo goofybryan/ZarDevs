@@ -74,10 +74,6 @@ namespace ZarDevs.DependencyInjection
                     binding.InTransientScope();
                     break;
 
-                case DependyBuilderScope.Request:
-                    binding.InThreadScope();
-                    break;
-
                 case DependyBuilderScope.Singleton:
                     binding.InSingletonScope();
                     break;
@@ -88,7 +84,7 @@ namespace ZarDevs.DependencyInjection
         {
             if (info is IDependencyMethodInfo methodInfo)
             {
-                return initial.ToMethod(ctx => methodInfo.MethodTo(CreateContext(ctx), info.Key));
+                return initial.ToMethod(ctx => methodInfo.Method(CreateContext(ctx), info.Key));
             }
 
             if (info is IDependencyTypeInfo typeInfo)

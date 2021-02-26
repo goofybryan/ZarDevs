@@ -12,28 +12,32 @@ namespace ZarDevs.DependencyInjection
     {
         #region Properties
 
+        /// <summary>
+        /// Get the argument count
+        /// </summary>
         int ArgumentCount { get; }
+
+        /// <summary>
+        /// Get the IOC constainer
+        /// </summary>
         IIocContainer Ioc { get; }
 
         #endregion Properties
 
-        #region Indexers
-
-        object this[string name] { get; }
-
-        #endregion Indexers
-
         #region Methods
 
+        /// <summary>
+        /// Get the arguments associated with this context
+        /// </summary>
+        /// <returns></returns>
         object[] GetArguments();
-
-        void SetArguments(IList<(string, object)> namedArgs);
-
-        void SetArguments(object[] args);
 
         #endregion Methods
     }
 
+    /// <summary>
+    /// Dependency builder information context used for resolving instances.
+    /// </summary>
     public class DepencyBuilderInfoContext : IDepencyBuilderInfoContext
     {
         #region Fields
@@ -54,11 +58,21 @@ namespace ZarDevs.DependencyInjection
             _arguments = new Dictionary<string, object>();
         }
 
+        /// <summary>
+        /// Create a new instance of the context class.
+        /// </summary>
+        /// <param name="ioc">Specify the IOC container.</param>
+        /// <param name="args">A list of ordered args.</param>
         public DepencyBuilderInfoContext(IIocContainer ioc, object[] args) : this(ioc)
         {
             SetArguments(args);
         }
 
+        /// <summary>
+        /// Create a new instance of the context class.
+        /// </summary>
+        /// <param name="ioc">Specify the IOC container</param>
+        /// <param name="args">A list of named arguments.</param>
         public DepencyBuilderInfoContext(IIocContainer ioc, (string, object)[] args) : this(ioc)
         {
             SetArguments(args);
@@ -68,23 +82,32 @@ namespace ZarDevs.DependencyInjection
 
         #region Properties
 
+        /// <summary>
+        /// Get the argument count
+        /// </summary>
         public int ArgumentCount => _arguments.Count;
 
+        /// <summary>
+        /// Get the IOC constainer
+        /// </summary>
         public IIocContainer Ioc { get; }
 
         #endregion Properties
 
-        #region Indexers
-
-        public object this[string name] => _arguments[name];
-
-        #endregion Indexers
-
         #region Methods
 
+        /// <summary>
+        /// Get the arguments associated with this context
+        /// </summary>
+        /// <returns></returns>
         public object[] GetArguments() => _arguments.OrderBy(k => k.Key).Select(v => v.Value).ToArray();
 
-        public void SetArguments(object[] args)
+        private void AddArgument(string name, object value)
+        {
+            _arguments[name] = value;
+        }
+
+        private void SetArguments(object[] args)
         {
             if (args is null)
             {
@@ -99,7 +122,7 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        public void SetArguments(IList<(string, object)> namedArgs)
+        private void SetArguments(IList<(string, object)> namedArgs)
         {
             if (namedArgs is null)
             {
@@ -110,11 +133,6 @@ namespace ZarDevs.DependencyInjection
 
             foreach (var (name, value) in namedArgs)
                 AddArgument(name, value);
-        }
-
-        private void AddArgument(string name, object value)
-        {
-            _arguments[name] = value;
         }
 
         #endregion Methods

@@ -72,7 +72,6 @@ namespace ZarDevs.DependencyInjection
 
             switch (info.Scope)
             {
-                case DependyBuilderScope.Request:
                 case DependyBuilderScope.Transient:
                     OnRegisterTransientMethod(info);
                     break;
@@ -95,7 +94,6 @@ namespace ZarDevs.DependencyInjection
 
             switch (info.Scope)
             {
-                case DependyBuilderScope.Request:
                 case DependyBuilderScope.Transient:
                     OnRegisterTransient(info);
                     break;

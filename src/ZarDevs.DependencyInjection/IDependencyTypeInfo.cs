@@ -2,6 +2,9 @@
 
 namespace ZarDevs.DependencyInjection
 {
+    /// <summary>
+    /// Dependency type information. When resolved the specified type will be instantiated and returned.
+    /// </summary>
     public interface IDependencyTypeInfo : IDependencyInfo
     {
         #region Properties

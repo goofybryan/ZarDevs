@@ -2,7 +2,7 @@
 
 namespace ZarDevs.DependencyInjection
 {
-    internal class DependencyBuilderInfo : IDependencyBuilderInfo
+    internal class DependencyBuilderInfo : IDependencyBuilderInfo, IDependencyBuilderBindingRequest, IDependencyBuilderBindingResolve, IDependencyBuilderBindingMetaData
     {
         #region Fields
 
@@ -18,21 +18,15 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public IDependencyBuilderInfo Bind(Type type)
+        public IDependencyBuilderBindingResolve Bind(Type type)
         {
             _info.RequestType = type ?? throw new ArgumentNullException(nameof(type));
             return this;
         }
 
-        public IDependencyBuilderInfo Bind<T>() where T : class
+        public IDependencyBuilderBindingResolve Bind<T>() where T : class
         {
             return Bind(typeof(T));
-        }
-
-        public IDependencyBuilderInfo InRequestScope()
-        {
-            _info.Scope = DependyBuilderScope.Request;
-            return this;
         }
 
         public IDependencyBuilderInfo InSingletonScope()
@@ -47,24 +41,24 @@ namespace ZarDevs.DependencyInjection
             return this;
         }
 
-        public IDependencyBuilderInfo To(Type type)
+        public IDependencyBuilderBindingMetaData To(Type type)
         {
             _info = new DependencyTypeInfo(type, _info);
             return this;
         }
 
-        public IDependencyBuilderInfo To<T>() where T : class
+        public IDependencyBuilderBindingMetaData To<T>() where T : class
         {
             return To(typeof(T));
         }
 
-        public IDependencyBuilderInfo To(Func<DepencyBuilderInfoContext, object, object> method)
+        public IDependencyBuilderBindingMetaData To(Func<DepencyBuilderInfoContext, object, object> method)
         {
             _info = new DependencyMethodInfo(method, _info);
             return this;
         }
 
-        public IDependencyBuilderInfo To<T>(T instance)
+        public IDependencyBuilderBindingMetaData To<T>(T instance)
         {
             _info = new DependencyInstanceInfo(instance, _info);
             return this;

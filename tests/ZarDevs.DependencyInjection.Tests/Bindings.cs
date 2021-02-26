@@ -18,7 +18,6 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<INormalClass>().To<NormalClass>().InTransientScope();
             builder.Bind<ICallingClass>().To<CallingClass>();
             builder.Bind<IChildClass>().To<ChildClass>();
-            builder.Bind<IRequestClass>().To<RequestClass>().InRequestScope();
             builder.Bind<ISingletonClass>().To<SingletonClass>().InSingletonScope();
             builder.Bind<ISingletonNamedClass>().To<SingletonClass>().InSingletonScope().WithKey(nameof(ISingletonNamedClass));
             builder.Bind<ISingletonEnumClass>().To<SingletonClass>().InSingletonScope().WithKey(EnumAsKey.Key);

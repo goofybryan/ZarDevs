@@ -14,17 +14,17 @@
 
         public override object Resolve(IIocContainer ioc, params object[] args)
         {
-            return Info.MethodTo(new DepencyBuilderInfoContext(ioc, args), Key);
+            return Info.Method(new DepencyBuilderInfoContext(ioc, args), Key);
         }
 
         public override object Resolve(IIocContainer ioc, params (string, object)[] args)
         {
-            return Info.MethodTo(new DepencyBuilderInfoContext(ioc, args), Key);
+            return Info.Method(new DepencyBuilderInfoContext(ioc, args), Key);
         }
 
         public override object Resolve(IIocContainer ioc)
         {
-            return Info.MethodTo(new DepencyBuilderInfoContext(ioc), Key);
+            return Info.Method(new DepencyBuilderInfoContext(ioc), Key);
         }
 
         #endregion Methods

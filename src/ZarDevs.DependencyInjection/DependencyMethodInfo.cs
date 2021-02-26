@@ -8,14 +8,14 @@ namespace ZarDevs.DependencyInjection
 
         public DependencyMethodInfo(Func<DepencyBuilderInfoContext, object, object> methodTo, DependencyInfo info) : base(info)
         {
-            MethodTo = methodTo ?? throw new ArgumentNullException(nameof(methodTo));
+            Method = methodTo ?? throw new ArgumentNullException(nameof(methodTo));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public Func<DepencyBuilderInfoContext, object, object> MethodTo { get; }
+        public Func<DepencyBuilderInfoContext, object, object> Method { get; }
 
         #endregion Properties
     }

@@ -2,12 +2,15 @@
 
 namespace ZarDevs.DependencyInjection
 {
+    /// <summary>
+    /// Base dependency information description.
+    /// </summary>
     public interface IDependencyInfo
     {
         #region Properties
 
         /// <summary>
-        /// Specify the key of the dependency.
+        /// Specify the key of the dependency, can be null.
         /// </summary>
         object Key { get; }
 

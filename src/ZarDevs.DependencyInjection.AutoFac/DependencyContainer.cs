@@ -71,10 +71,6 @@ namespace ZarDevs.DependencyInjection
                     binding.InstancePerDependency();
                     break;
 
-                case DependyBuilderScope.Request:
-                    binding.InstancePerRequest();
-                    break;
-
                 case DependyBuilderScope.Singleton:
                     binding.SingleInstance();
                     break;
@@ -131,7 +127,7 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            var binding = builder.Register((c, p) => info.MethodTo(CreateBuilderContext(c, p?.ToList(), info.RequestType), info.Key));
+            var binding = builder.Register((c, p) => info.Method(CreateBuilderContext(c, p?.ToList(), info.RequestType), info.Key));
 
             RegisterNamedDependency(binding, info);
 

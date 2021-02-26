@@ -48,14 +48,14 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnRegisterSingletonMethod(IDependencyMethodInfo info)
         {
-            _services.AddSingleton(info.RequestType, p => info.MethodTo(CreateDependencyInfoContext(p, info), info.Key));
+            _services.AddSingleton(info.RequestType, p => info.Method(CreateDependencyInfoContext(p, info), info.Key));
 
             base.OnRegisterSingletonMethod(info);
         }
 
         protected override void OnRegisterTransientMethod(IDependencyMethodInfo info)
         {
-            _services.AddTransient(info.RequestType, p => info.MethodTo(CreateDependencyInfoContext(p, info), info.Key));
+            _services.AddTransient(info.RequestType, p => info.Method(CreateDependencyInfoContext(p, info), info.Key));
 
             base.OnRegisterTransientMethod(info);
         }

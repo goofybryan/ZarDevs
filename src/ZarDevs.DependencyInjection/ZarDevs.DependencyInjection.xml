@@ -1,0 +1,697 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.DependencyInjection</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.DependencyInjection.IDepencyBuilderInfoContext">
+            <summary>
+            The dependency builder information context class used for custom IOC request specifically
+            for requests
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDepencyBuilderInfoContext.ArgumentCount">
+            <summary>
+            Get the argument count
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDepencyBuilderInfoContext.Ioc">
+            <summary>
+            Get the IOC constainer
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDepencyBuilderInfoContext.GetArguments">
+            <summary>
+            Get the arguments associated with this context
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DepencyBuilderInfoContext">
+            <summary>
+            Dependency builder information context used for resolving instances.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer)">
+            <summary>
+            Create a new instance of the context class.
+            </summary>
+            <param name="ioc">Specify the IOC container</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer,System.Object[])">
+            <summary>
+            Create a new instance of the context class.
+            </summary>
+            <param name="ioc">Specify the IOC container.</param>
+            <param name="args">A list of ordered args.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Create a new instance of the context class.
+            </summary>
+            <param name="ioc">Specify the IOC container</param>
+            <param name="args">A list of named arguments.</param>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.ArgumentCount">
+            <summary>
+            Get the argument count
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.Ioc">
+            <summary>
+            Get the IOC constainer
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.GetArguments">
+            <summary>
+            Get the arguments associated with this context
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyBuilder">
+            <summary>
+            Dependency builder used to build up the dependencies that will be translated to an
+            appropriate IOC solution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.#ctor(ZarDevs.DependencyInjection.IDependencyContainer)">
+            <summary>
+            Create a new instance
+            </summary>
+            <param name="container"></param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind(System.Type)">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <param name="type">The specified type to bind.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind``1">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <typeparam name="T">The specified type to bind.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Build">
+            <summary>
+            Build the dependencies.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyContainerBase">
+            <summary>
+            Dependency container base implementation.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.#ctor">
+            <summary>
+            Base constructor
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyContainerBase.Definitions">
+            <summary>
+            A list of definitions that have been added.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.Build(System.Collections.Generic.IList{ZarDevs.DependencyInjection.IDependencyInfo})">
+            <summary>
+            Build the dependencies.
+            </summary>
+            <param name="definitions">The list of definitions to transform.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.Dispose">
+            <summary>
+            Dispose of any resources.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.TryGetBinding(System.Type,System.Object)">
+            <summary>
+            Retrieve a dependency binding information when required.
+            </summary>
+            <param name="requestType">The request type to retrieve.</param>
+            <param name="key">A key that the binding is associated with, can be null.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.Dispose(System.Boolean)">
+            <summary>
+            Dispose of any resources.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.OnBuild(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Implement the on build method that will be called for each definition added.
+            </summary>
+            <param name="definition"></param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.OnBuildEnd">
+            <summary>
+            Virtual method that occurs when the build ends. Does not need to be called when overridden.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.OnBuildStart">
+            <summary>
+            Virtual method that occurs when the build starts. Does not need to be called when overridden.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyDefinitions">
+            <summary>
+            Contains a list of dependency definitions
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.Add(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Add a dependency to the definitons list.
+            </summary>
+            <param name="dependency">The dependency to add.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.Get``1(System.Object)">
+            <summary>
+            Get a the dependency information for the type and key. If multiple are found, returns the first one.
+            </summary>
+            <typeparam name="T">The request type.</typeparam>
+            <param name="key">The key</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.Get(System.Type,System.Object)">
+            <summary>
+            Get a the dependency information for the type and key. If multiple are found, returns the first one.
+            </summary>
+            <param name="requestType">The request type.</param>
+            <param name="key">The key</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.GetAll``1(System.Object)">
+            <summary>
+            Get all the dependency information for the type and key.
+            </summary>
+            <typeparam name="T">The request type.</typeparam>
+            <param name="key">The key</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.GetAll(System.Type,System.Object)">
+            <summary>
+            Get all the dependency information for the type and key.
+            </summary>
+            <param name="requestType">The request type.</param>
+            <param name="key">The key</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.TryGet``1(System.Object)">
+            <summary>
+            Try and get the information for the request type and key.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="key">The key</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.TryGet(System.Type,System.Object)">
+            <summary>
+            Try and get the information for the request type and key.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The key</param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependyBuilderScope">
+            <summary>
+            Dependency builder scope.
+            </summary>
+        </member>
+        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScope.Transient">
+            <summary>
+            Indicate that the request must be resolve a new instance with each call.
+            </summary>
+        </member>
+        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScope.Singleton">
+            <summary>
+            Indicate that the request must be resolve once and then returned with each call.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilder">
+            <summary>
+            Dependency builder interface that is used to start the binding process.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.Bind(System.Type)">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <param name="type">The specified type to bind.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.Bind``1">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <typeparam name="T">The specified type to bind.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.Build">
+            <summary>
+            Build the dependencies.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData">
+            <summary>
+            Bind in which scope and key is used to when resolving the request type.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.InSingletonScope">
+            <summary>
+            Create the binding in Singleton Scope resolution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.InTransientScope">
+            <summary>
+            Create the binding in Transient Scope resolution. This is the default scope.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest">
+            <summary>
+            Dependency builder binding request to start the binding.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind(System.Type)">
+            <summary>
+            Bind the specified type.
+            </summary>
+            <param name="type">Specified type to bind as the request type.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind``1">
+            <summary>
+            Bind the specified type.
+            </summary>
+            <typeparam name="T">Specified type to bind as the request type</typeparam>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve">
+            <summary>
+            One the request type has been bound in <see cref="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest"/> the
+            binding must be configured to a s resolution type, instance or method.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To(System.Type)">
+            <summary>
+            Bind the specified type to
+            </summary>
+            <param name="type">Specified type to that will be resolved.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To``1">
+            <summary>
+            Bind the specified type to that will be resolved.
+            </summary>
+            <typeparam name="T">Specified type to that will be resolved.</typeparam>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To``1(``0)">
+            <summary>
+            Bind the instance that will be resolved. This will be a singleton instance regardless of configuration.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To(System.Func{ZarDevs.DependencyInjection.DepencyBuilderInfoContext,System.Object,System.Object})">
+            <summary>
+            Bind to a method that will be used to reolve the request type.
+            </summary>
+            <param name="method">
+            The <see cref="T:System.Func`3"/> that will pass in a builder context and the
+            named value if any. The result must be able to cast to the request type, <see
+            cref="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind(System.Type)"/> or <seealso cref="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind``1"/>
+            </param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderInfo">
+            <summary>
+            Dependency builder information for a specific binding.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyBuilderInfo.DependencyInfo">
+            <summary>
+            Get the dependency info
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderInfo.WithKey(System.Object)">
+            <summary>
+            Create the binding with the key value.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyContainer">
+            <summary>
+            Dependency container that is used to house a list of dependencies. This interface is used by the implemented IOC technology to transform the binding information.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyContainer.Build(System.Collections.Generic.IList{ZarDevs.DependencyInjection.IDependencyInfo})">
+            <summary>
+            Build the dependencies.
+            </summary>
+            <param name="definitions">The list of definitions to transform.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyContainer.TryGetBinding(System.Type,System.Object)">
+            <summary>
+            Retrieve a dependency binding information when required.
+            </summary>
+            <param name="requestType">The request type to retrieve.</param>
+            <param name="key">A key that the binding is associated with, can be null.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyInfo">
+            <summary>
+            Base dependency information description.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyInfo.Key">
+            <summary>
+            Specify the key of the dependency, can be null.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope">
+            <summary>
+            Specify the scope that this dependency is active in.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType">
+            <summary>
+            Specify the request type that needs to be resolved.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo">
+            <summary>
+            Dependency instance information. When resolved, the specified instance will be returned.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyInstanceInfo.Instance">
+            <summary>
+            Get the instance that the IOC will resolve from the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyMethodInfo">
+            <summary>
+            Dependency method information, when resolved the method will be invoked.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyMethodInfo.Method">
+            <summary>
+            The method to invoke.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyTypeInfo">
+            <summary>
+            Dependency type information. When resolved the specified type will be instantiated and returned.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolvedType">
+            <summary>
+            Get the resolved type that the IOC will resolved from the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IIocContainer">
+            <summary>
+            IOC containter used to resolved a single instance
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.Resolve``1(System.Object[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of ordered parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.Resolve``1(System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.Resolve``1">
+            <summary>
+            Resolved the requested type.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveNamed``1(System.String,System.Object[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="name">The name of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of ordered parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveNamed``1(System.String,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="name">The name of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveNamed``1(System.String)">
+            <summary>
+            Resolved the requested type.
+            </summary>
+            <param name="name">The name of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Enum,System.Object[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="key">The key of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of ordered parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Enum,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="key">The key of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Object,System.Object[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="key">The key of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of ordered parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Object,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="key">The key of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Enum)">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="key">The key of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Object)">
+            <summary>
+            Resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="key">The key of the resolution request.</param>
+            <typeparam name="T">The request type</typeparam>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolve(System.Type)">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolve``1(System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of ordered parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolve``1(System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolve``1">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveNamed``1(System.String,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="name">The name of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveNamed``1(System.String,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="name">The name of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveNamed``1(System.String)">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="name">The name of the resolution request.</param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Enum,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Enum,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Object,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Object,System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor parameter name and associated types.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Enum)">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="key">The key of the resolution request.</param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Object)">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <param name="key">The key of the resolution request.</param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IIocKernelContainer">
+            <summary>
+            Ioc kernel container, this is what needs to be implemented by the IOC solution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocKernelContainer.CreateIocContainer">
+            <summary>
+            Create the Ioc Container, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC implementation to resolve the request using the underlying IOC methodology.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocKernelContainer.CreateDependencyBuilder">
+            <summary>
+            Create the dependency container that will be used to bind the dependencies and the transform it to the underlying IOC methodology.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.Ioc">
+            <summary>
+            The over arching IOC implementation
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.Ioc.Container">
+            <summary>
+            Get the current IOC container.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.Ioc.Instance">
+            <summary>
+            IOC instance
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.Ioc.Initialize(ZarDevs.DependencyInjection.IIocKernelContainer,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder},System.Action)">
+            <summary>
+            Initialize the IOC solution. This must be called for the IOC to work.
+            </summary>
+            <param name="container">
+            Specifiy the kernel container that housed the underlying IOC methodology.
+            </param>
+            <param name="buildDependencies">
+            Specify the build dependency action to invoke, this is where you can add additional
+            dependencies to the builder.
+            </param>
+            <param name="afterBuild">Specify an after build action.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.Ioc.Dispose">
+            <summary>
+            Dispose of the IOC implementations.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,8 @@
 ﻿namespace ZarDevs.DependencyInjection
 {
+    /// <summary>
+    /// Dependency instance information. When resolved, the specified instance will be returned.
+    /// </summary>
     public interface IDependencyInstanceInfo : IDependencyInfo
     {
         /// <summary>
