@@ -92,6 +92,11 @@ namespace ZarDevs.DependencyInjection
             return (T)_instanceResolution.GetResolution(key, typeof(T)).Resolve(this);
         }
 
+        public object TryResolve(Type requestType)
+        {
+            return _instanceResolution.TryGetResolution(requestType)?.Resolve(this);
+        }
+
         public T TryResolve<T>(params object[] args)
         {
             return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(this, args);
@@ -104,7 +109,7 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolve<T>()
         {
-            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(this);
+            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(this);
         }
 
         public T TryResolveNamed<T>(string key, params object[] args)

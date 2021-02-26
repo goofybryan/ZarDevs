@@ -1,17 +1,30 @@
-﻿using ZarDevs.Runtime;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
     public class RuntimeDependencyActivator : IDependencyTypeActivator
     {
-        private readonly IInspect _inspection;
-        private readonly ICreate _creation;
+        #region Fields
 
-        public RuntimeDependencyActivator(IInspect inspection, ICreate creation)
+        private readonly ICreate _creation;
+        private readonly IInspectConstructor _inspection;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public RuntimeDependencyActivator(IInspectConstructor inspection, ICreate creation)
         {
             _inspection = inspection ?? throw new System.ArgumentNullException(nameof(inspection));
             _creation = creation ?? throw new System.ArgumentNullException(nameof(creation));
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public object Resolve(IIocContainer ioc, IDependencyTypeInfo info, params object[] args)
         {
@@ -25,7 +38,19 @@ namespace ZarDevs.DependencyInjection
 
         public object Resolve(IIocContainer ioc, IDependencyTypeInfo info)
         {
-            return _creation.New(info.ResolvedType);
+            return Resolve(ioc, info, ResolveArgs(ioc, info.ResolvedType));
         }
+
+        private object[] ResolveArgs(IIocContainer ioc, Type instanceType)
+        {
+            IList<Type> orderedParameters = _inspection.GetConstructorParameters(instanceType);
+
+            if (orderedParameters.Count == 0)
+                return null;
+
+            return orderedParameters.Select(p => ioc.TryResolve(p)).ToArray();
+        }
+
+        #endregion Methods
     }
 }

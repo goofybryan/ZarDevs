@@ -6,7 +6,9 @@ using System.Reflection;
 namespace ZarDevs.Runtime
 {
     public interface IInspectConstructor : IInspect
-    { }
+    {
+        IList<Type> GetConstructorParameters(Type target);
+    }
 
     public class InspectConstructor : IInspectConstructor
     {
@@ -23,7 +25,7 @@ namespace ZarDevs.Runtime
 
         public (string, object)[] FindParameterNames(Type target, IList<object> orderedValues)
         {
-            var constructors = target.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            var constructors = GetConstructorInfos(target);
 
             foreach (var constructor in constructors)
             {
@@ -31,6 +33,13 @@ namespace ZarDevs.Runtime
             }
 
             throw new InvalidOperationException($"The is no constructors with constructor argument count as the requested count or matches the object types in order.");
+        }
+
+        public IList<Type> GetConstructorParameters(Type target)
+        {
+            var constructors = GetConstructorInfos(target).Select(info => info.GetParameters()).OrderBy(args => args.Length);
+
+            return constructors.First().Select(args => args.ParameterType).ToArray();
         }
 
         public object[] OrderParameters(Type target, IDictionary<string, object> unorderedValueMapping)
@@ -89,6 +98,11 @@ namespace ZarDevs.Runtime
             arguments = internalArguments.ToArray();
 
             return true;
+        }
+
+        private IList<ConstructorInfo> GetConstructorInfos(Type target)
+        {
+            return target.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
         }
 
         #endregion Methods

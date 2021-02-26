@@ -162,6 +162,11 @@ namespace ZarDevs.DependencyInjection
             return TryResolve<T>(CreateNamedParameters(null, typeof(T), parameters));
         }
 
+        public object TryResolve(Type requestType)
+        {
+            return Kernel.TryGet(requestType);
+        }
+
         public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
         {
             return Kernel.TryGet<T>(name, CreateParameters(parameters));

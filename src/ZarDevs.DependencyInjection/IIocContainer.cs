@@ -15,6 +15,12 @@ namespace ZarDevs.DependencyInjection
 
         T Resolve<T>();
 
+        T ResolveNamed<T>(string name, params object[] parameters);
+
+        T ResolveNamed<T>(string name, params (string, object)[] parameters);
+
+        T ResolveNamed<T>(string name);
+
         T ResolveWithKey<T>(Enum enumValue, params object[] parameters);
 
         T ResolveWithKey<T>(Enum enumValue, params (string, object)[] parameters);
@@ -27,17 +33,19 @@ namespace ZarDevs.DependencyInjection
 
         T ResolveWithKey<T>(object key);
 
-        T ResolveNamed<T>(string name, params object[] parameters);
-
-        T ResolveNamed<T>(string name, params (string, object)[] parameters);
-
-        T ResolveNamed<T>(string name);
+        object TryResolve(Type requestType);
 
         T TryResolve<T>(params object[] parameters);
 
         T TryResolve<T>(params (string, object)[] parameters);
 
         T TryResolve<T>();
+
+        T TryResolveNamed<T>(string name, params object[] parameters);
+
+        T TryResolveNamed<T>(string name, params (string, object)[] parameters);
+
+        T TryResolveNamed<T>(string name);
 
         T TryResolveWithKey<T>(Enum enumValue, params object[] parameters);
 
@@ -50,12 +58,6 @@ namespace ZarDevs.DependencyInjection
         T TryResolveWithKey<T>(Enum enumValue);
 
         T TryResolveWithKey<T>(object key);
-
-        T TryResolveNamed<T>(string name, params object[] parameters);
-
-        T TryResolveNamed<T>(string name, params (string, object)[] parameters);
-
-        T TryResolveNamed<T>(string name);
 
         #endregion Methods
     }

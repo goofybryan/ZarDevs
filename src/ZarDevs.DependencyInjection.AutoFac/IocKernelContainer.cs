@@ -6,31 +6,6 @@ using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class IocKernelContainer : IIocKernelContainer
-    {
-        private readonly IAutoFacDependencyContainer _container;
-
-        public IocKernelContainer(ContainerBuildOptions buildOptions)
-        {
-            _container = DependencyContainer.Create(buildOptions);
-        }
-
-        public IDependencyContainer CreateDependencyContainer()
-        {
-            return _container;
-        }
-
-        public IIocContainer CreateIocContainer()
-        {
-            return new IocContainer(_container);
-        }
-
-        public IDependencyBuilder CreateDependencyBuilder()
-        {
-            return new DependencyBuilder(_container);
-        }
-    }
-
     public class IocContainer : IIocContainer
     {
         #region Fields
@@ -68,7 +43,27 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Resolve<T>(CreateParameters(parameters));
         }
 
+        public T Resolve<T>()
+        {
+            return Resolve<T>(new (string, object)[0]);
+        }
+
+        public T Resolve<T>(params object[] parameters)
+        {
+            return Kernel.Resolve<T>(CreateParameters(parameters));
+        }
+
         public T ResolveNamed<T>(string name, params (string, object)[] parameters)
+        {
+            return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));
+        }
+
+        public T ResolveNamed<T>(string name)
+        {
+            return ResolveNamed<T>(name, new (string, object)[0]);
+        }
+
+        public T ResolveNamed<T>(string name, params object[] parameters)
         {
             return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));
         }
@@ -83,16 +78,6 @@ namespace ZarDevs.DependencyInjection
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
-        public T Resolve<T>()
-        {
-            return Resolve<T>(new (string, object)[0]);
-        }
-
-        public T ResolveNamed<T>(string name)
-        {
-            return ResolveNamed<T>(name, new (string, object)[0]);
-        }
-
         public T ResolveWithKey<T>(Enum key)
         {
             return ResolveWithKey<T>(key, new (string, object)[0]);
@@ -101,16 +86,6 @@ namespace ZarDevs.DependencyInjection
         public T ResolveWithKey<T>(object key)
         {
             return ResolveWithKey<T>(key, new (string, object)[0]);
-        }
-
-        public T Resolve<T>(params object[] parameters)
-        {
-            return Kernel.Resolve<T>(CreateParameters(parameters));
-        }
-
-        public T ResolveNamed<T>(string name, params object[] parameters)
-        {
-            return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));
         }
 
         public T ResolveWithKey<T>(Enum key, params object[] parameters)
@@ -128,7 +103,32 @@ namespace ZarDevs.DependencyInjection
             return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
         }
 
+        public T TryResolve<T>()
+        {
+            return TryResolve<T>(new (string, object)[0]);
+        }
+
+        public T TryResolve<T>(params object[] parameters)
+        {
+            return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
+        }
+
+        public object TryResolve(Type requestType)
+        {
+            return Kernel.IsRegistered(requestType) ? Kernel.Resolve(requestType) : null;
+        }
+
         public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
+        {
+            return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
+        }
+
+        public T TryResolveNamed<T>(string name)
+        {
+            return TryResolveNamed<T>(name, new (string, object)[0]);
+        }
+
+        public T TryResolveNamed<T>(string name, params object[] parameters)
         {
             return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
         }
@@ -143,16 +143,6 @@ namespace ZarDevs.DependencyInjection
             return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
-        public T TryResolve<T>()
-        {
-            return TryResolve<T>(new (string, object)[0]);
-        }
-
-        public T TryResolveNamed<T>(string name)
-        {
-            return TryResolveNamed<T>(name, new (string, object)[0]);
-        }
-
         public T TryResolveWithKey<T>(Enum key)
         {
             return TryResolveWithKey<T>(key, new (string, object)[0]);
@@ -161,16 +151,6 @@ namespace ZarDevs.DependencyInjection
         public T TryResolveWithKey<T>(object key)
         {
             return TryResolveWithKey<T>(key, new (string, object)[0]);
-        }
-
-        public T TryResolve<T>(params object[] parameters)
-        {
-            return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
-        }
-
-        public T TryResolveNamed<T>(string name, params object[] parameters)
-        {
-            return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
         }
 
         public T TryResolveWithKey<T>(Enum key, params object[] parameters)
@@ -225,6 +205,43 @@ namespace ZarDevs.DependencyInjection
             }
 
             return list.ToArray();
+        }
+
+        #endregion Methods
+    }
+
+    public class IocKernelContainer : IIocKernelContainer
+    {
+        #region Fields
+
+        private readonly IAutoFacDependencyContainer _container;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public IocKernelContainer(ContainerBuildOptions buildOptions)
+        {
+            _container = DependencyContainer.Create(buildOptions);
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        public IDependencyBuilder CreateDependencyBuilder()
+        {
+            return new DependencyBuilder(_container);
+        }
+
+        public IDependencyContainer CreateDependencyContainer()
+        {
+            return _container;
+        }
+
+        public IIocContainer CreateIocContainer()
+        {
+            return new IocContainer(_container);
         }
 
         #endregion Methods

@@ -108,12 +108,17 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolve<T>()
         {
-            return (T)_serviceProvider.GetService(typeof(T));
+            return (T)TryResolve(typeof(T));
         }
 
         public T TryResolve<T>(params object[] parameters)
         {
             return _dependencyResolver.TryResolve<T>(parameters);
+        }
+
+        public object TryResolve(Type requestType)
+        {
+            return _serviceProvider.GetService(requestType);
         }
 
         public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
