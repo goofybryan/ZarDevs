@@ -15,11 +15,11 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
             {
                 builder.ConfigureTest();
             });
-
-            
         }
 
         public IIocContainer Container { get; }
+
+        public bool RunComparisonTests => true;
 
         #endregion Constructors
 

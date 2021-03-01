@@ -4,7 +4,7 @@ using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.Microsoft.Tests
 {
-    public sealed class IocPerformanceTestFixture : IIocTestFixture
+    public sealed class IocPerformanceTestFixture : IIocPerformanceTestFixture
     {
         #region Constructors
 
@@ -32,6 +32,8 @@ namespace ZarDevs.DependencyInjection.Microsoft.Tests
         public IServiceProvider ContainerDirect { get; }
 
         public IServiceProvider ContainerComparison { get; }
+
+        public bool RunComparisonTests => true;
 
         #endregion Properties
 

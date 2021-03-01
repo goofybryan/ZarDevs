@@ -10,4 +10,9 @@ namespace ZarDevs.DependencyInjection.Tests
 
         #endregion Properties
     }
+
+    public interface IIocPerformanceTestFixture : IIocTestFixture
+    {
+        bool RunComparisonTests { get; }
+    }
 }

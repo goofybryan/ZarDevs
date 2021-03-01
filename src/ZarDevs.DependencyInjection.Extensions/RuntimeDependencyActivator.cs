@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
@@ -11,6 +13,7 @@ namespace ZarDevs.DependencyInjection
 
         private readonly ICreate _creation;
         private readonly IInspectConstructor _inspection;
+        private readonly ConcurrentDictionary<Type, RuntimeResolutionPlan> _resolutionPlan;
 
         #endregion Fields
 
@@ -20,6 +23,7 @@ namespace ZarDevs.DependencyInjection
         {
             _inspection = inspection ?? throw new ArgumentNullException(nameof(inspection));
             _creation = creation ?? throw new ArgumentNullException(nameof(creation));
+            _resolutionPlan = new ConcurrentDictionary<Type, RuntimeResolutionPlan>();
         }
 
         #endregion Constructors
@@ -38,19 +42,43 @@ namespace ZarDevs.DependencyInjection
 
         public object Resolve(IDependencyTypeInfo info)
         {
-            return Resolve(info, ResolveArgs(info.ResolvedType));
-        }
-
-        private object[] ResolveArgs(Type instanceType)
-        {
-            IList<Type> orderedParameters = _inspection.GetConstructorParameters(instanceType);
-
-            if (orderedParameters.Count == 0)
-                return null;
-
-            return orderedParameters.Select(p => Ioc.Container.TryResolve(p)).ToArray();
+            var resolution = _resolutionPlan.GetOrAdd(info.ResolvedType, type => RuntimeResolutionPlan.FromType(_inspection, type));
+            return resolution.Resolve();
         }
 
         #endregion Methods
+    }
+
+    internal class RuntimeResolutionPlan
+    {
+        public RuntimeResolutionPlan(ConstructorInfo constructor, IList<Type> constructorArgs)
+        {
+            Constructor = constructor ?? throw new ArgumentNullException(nameof(constructor));
+            ConstructorArgs = constructorArgs ?? throw new ArgumentNullException(nameof(constructorArgs));
+        }
+
+        public ConstructorInfo Constructor { get; }
+        public IList<Type> ConstructorArgs { get; }
+
+        public object Resolve() => Constructor.Invoke(ResolveParameters().ToArray());
+
+        public IEnumerable<object> ResolveParameters()
+        {
+            return (ConstructorArgs.Count == 0)? Enumerable.Empty<object>() : YieldResolve();            
+        }
+
+        private IEnumerable<object> YieldResolve()
+        {
+            foreach (Type argType in ConstructorArgs)
+            {
+                yield return Ioc.Container.TryResolve(argType);
+            }
+        }
+
+        public static RuntimeResolutionPlan FromType(IInspectConstructor inspect, Type instanceType)
+        {
+            var (constructor, args) = inspect.GetConstructor(instanceType);
+            return new RuntimeResolutionPlan(constructor, args);
+        }
     }
 }

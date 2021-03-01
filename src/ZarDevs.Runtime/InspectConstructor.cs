@@ -7,6 +7,7 @@ namespace ZarDevs.Runtime
 {
     public interface IInspectConstructor : IInspect
     {
+        (ConstructorInfo, IList<Type>) GetConstructor(Type target);
         IList<Type> GetConstructorParameters(Type target);
     }
 
@@ -33,6 +34,12 @@ namespace ZarDevs.Runtime
             }
 
             throw new InvalidOperationException($"The is no constructors with constructor argument count as the requested count or matches the object types in order.");
+        }
+
+        public (ConstructorInfo, IList<Type>) GetConstructor(Type target)
+        {
+            var constructors = GetConstructorInfos(target).Select(info => ValueTuple.Create(info, info.GetParameters().Select(i => i.ParameterType).ToArray())).OrderBy(args => args.Item2.Length);
+            return constructors.First();
         }
 
         public IList<Type> GetConstructorParameters(Type target)

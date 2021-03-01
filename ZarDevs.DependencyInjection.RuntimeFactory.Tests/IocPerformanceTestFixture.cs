@@ -1,23 +1,28 @@
-﻿using System;
-using ZarDevs.DependencyInjection.Tests;
+﻿using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 {
-    public sealed class IocTestFixture : IIocTestFixture, IDisposable
+    public sealed class IocPerformanceTestFixture : IIocPerformanceTestFixture
     {
         #region Constructors
 
-        public IocTestFixture()
+        public IocPerformanceTestFixture()
         {
             Container = Ioc.Initialize(IocRuntimeFactory.Initialize(), builder =>
             {
-                builder.ConfigureTest();
+                builder.ConfigurePerformanceTest();
             });
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public IIocContainer Container { get; }
 
-        #endregion Constructors
+        public bool RunComparisonTests => false;
+
+        #endregion Properties
 
         #region Methods
 

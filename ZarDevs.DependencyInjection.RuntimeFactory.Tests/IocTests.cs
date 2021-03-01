@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using ZarDevs.DependencyInjection.Tests;
 
-namespace ZarDevs.DependencyInjection.AutoFac.Tests
+namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 {
     public class IocTests : IocTestsConstruct<IocTestFixture>, IClassFixture<IocTestFixture>
     {

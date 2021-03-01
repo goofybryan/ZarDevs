@@ -3,7 +3,7 @@ using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.AutoFac.Tests
 {
-    public sealed class IocPerformanceTestFixture : IIocTestFixture
+    public sealed class IocPerformanceTestFixture : IIocPerformanceTestFixture
     {
         #region Constructors
 
@@ -49,6 +49,7 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
         public IIocContainer Container { get; }
         public IContainer DirectContainer { get; }
         public IContainer ContainerComparison { get; }
+        public bool RunComparisonTests => true;
 
         #endregion Constructors
 
