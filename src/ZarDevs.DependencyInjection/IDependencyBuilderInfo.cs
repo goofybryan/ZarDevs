@@ -76,11 +76,9 @@ namespace ZarDevs.DependencyInjection
         /// Bind to a method that will be used to reolve the request type.
         /// </summary>
         /// <param name="method">
-        /// The <see cref="Func{T1, T2, TResult}"/> that will pass in a builder context and the
-        /// named value if any. The result must be able to cast to the request type, <see
-        /// cref="IDependencyBuilderBindingRequest.Bind(Type)"/> or <seealso cref="IDependencyBuilderBindingRequest.Bind{T}"/>
+        /// The function <see cref="Func{T1, TResult}"/> will be executed, if any parameters are available, they will be passed in.
         /// </param>
-        IDependencyBuilderBindingMetaData To(Func<DepencyBuilderInfoContext, object, object> method);
+        IDependencyBuilderBindingMetaData To(Func<DepencyBuilderInfoContext, object> method);
 
         #endregion Methods
     }

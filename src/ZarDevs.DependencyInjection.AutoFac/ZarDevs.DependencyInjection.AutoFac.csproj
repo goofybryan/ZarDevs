@@ -11,8 +11,16 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ZarDevs Core</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
     <LangVersion>9</LangVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Description>AutoFac implementation of the Dependency Injection</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Dev\ZarDevs\src\ZarDevs.DependencyInjection.AutoFac\ZarDevs.DependencyInjection.AutoFac.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

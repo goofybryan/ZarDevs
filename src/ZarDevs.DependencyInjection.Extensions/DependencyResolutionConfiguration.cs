@@ -53,7 +53,7 @@ namespace ZarDevs.DependencyInjection
         public void AddInstanceResolution<T>(T instance, object key)
         {
             Type requestType = typeof(T);
-            Configure(requestType, new DependencySingletonInstance(new DependencyInstanceInfo(instance, key)));
+            Configure(requestType, new DependencySingletonInstance(new DependencyInstanceInfo(instance, new DependencyInfo { RequestType = requestType, Key = key })));
         }
 
         public void Configure(Type requestType, IDependencyResolution info)

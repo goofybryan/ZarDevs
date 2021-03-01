@@ -71,10 +71,12 @@ namespace ZarDevs.DependencyInjection
         {
             lock (this)
             {
+                if (_kernel != null) return _kernel;
+
                 var builder = container.CreateDependencyBuilder();
 
                 builder.Bind<IIocContainer>()
-                    .To((ctx, key) =>
+                    .To((ctx) =>
                     Container).InSingletonScope();
 
                 buildDependencies?.Invoke(builder);

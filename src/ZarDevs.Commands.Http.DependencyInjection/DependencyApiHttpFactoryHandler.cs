@@ -13,7 +13,7 @@ namespace ZarDevs.Commands.Http
 
         #region Methods
 
-        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler
+        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler
         {
             return Ioc.Resolve<THandler>();
         }

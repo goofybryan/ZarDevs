@@ -2,7 +2,7 @@
 
 namespace ZarDevs.DependencyInjection
 {
-    internal class DependencyInfo : IDependencyInfo
+    public class DependencyInfo : IDependencyInfo
     {
         #region Constructors
 
@@ -22,10 +22,15 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         public object Key { get; set; } = "";
-        public DependyBuilderScope Scope { get; set; }
+        public DependyBuilderScope Scope { get; protected set; }
         public Type RequestType { get; set; }
 
         #endregion Properties
+
+        internal virtual void SetScope(DependyBuilderScope scope)
+        {
+            Scope = scope;
+        }
 
         public override string ToString()
         {

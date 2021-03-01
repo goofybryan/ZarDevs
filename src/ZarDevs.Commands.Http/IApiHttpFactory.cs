@@ -6,7 +6,7 @@ namespace ZarDevs.Commands.Http
     {
         #region Methods
 
-        IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key = null) where THandler : IApiHttpRequestHandler;
+        IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key = null) where THandler : class, IApiHttpRequestHandler;
 
         IApiHttpClient NewClient(object key = null);
 
@@ -15,6 +15,6 @@ namespace ZarDevs.Commands.Http
 
     public interface IApiHttpHandlerFactory
     {
-        IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler;
+        IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler;
     }
 }

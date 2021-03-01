@@ -33,7 +33,7 @@ namespace ZarDevs.Commands.Http
 
         #region Methods
 
-        public IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key= null) where THandler : IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key= null) where THandler : class, IApiHttpRequestHandler
         {
             var binding = GetOrCreateBinding<THandler>(key);
             return binding;
@@ -45,7 +45,7 @@ namespace ZarDevs.Commands.Http
             return NewClient(binding?.Build());
         }
 
-        private IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(object key) where THandler : IApiHttpRequestHandler
+        private IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(object key) where THandler : class, IApiHttpRequestHandler
         {
             return _handlerMappings?.TryGetBinding(key) ?? new ApiHttpRequestHandlerBinding<THandler>(_handlerFactory);
         }
@@ -60,7 +60,7 @@ namespace ZarDevs.Commands.Http
 
     public class DefaultHttpHandlerFactory : IApiHttpHandlerFactory
     {
-        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : IApiHttpRequestHandler
+        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler
         {
             return Create.Instance.New<THandler>();
         }

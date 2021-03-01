@@ -21,19 +21,19 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public override object Resolve(IIocContainer ioc)
+        public override object Resolve()
         {
-            return _activator.Resolve(ioc, Info);
+            return _activator.Resolve(Info);
         }
 
-        public override object Resolve(IIocContainer ioc, params object[] args)
+        public override object Resolve(object[] args)
         {
-            return _activator.Resolve(ioc, Info, args);
+            return _activator.Resolve(Info, args);
         }
 
-        public override object Resolve(IIocContainer ioc, params (string, object)[] args)
+        public override object Resolve((string, object)[] args)
         {
-            return _activator.Resolve(ioc, Info, args);
+            return _activator.Resolve(Info, args);
         }
 
         #endregion Methods

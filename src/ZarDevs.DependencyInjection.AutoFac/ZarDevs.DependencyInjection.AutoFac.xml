@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.DependencyInjection.AutoFac</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.DependencyInjection.IAutoFacDependencyContainer">
+            <summary>
+            AutoFac dependency container
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IAutoFacDependencyContainer.Container">
+            <summary>
+            AutoFac 
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IocAutoFac">
+            <summary>
+            AutoFac initialization
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocAutoFac.Initialize(Autofac.Builder.ContainerBuildOptions)">
+            <summary>
+            Create a new IOC Kernel container that will start the binding process.
+            </summary>
+            <param name="buildOptions"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

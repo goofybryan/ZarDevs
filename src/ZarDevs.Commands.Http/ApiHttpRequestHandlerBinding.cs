@@ -2,7 +2,7 @@
 
 namespace ZarDevs.Commands.Http
 {
-    internal class ApiHttpRequestHandlerBinding<THandler> : IApiHttpRequestHandlerBinding where THandler : IApiHttpRequestHandler
+    internal class ApiHttpRequestHandlerBinding<THandler> : IApiHttpRequestHandlerBinding where THandler : class, IApiHttpRequestHandler
     {
         #region Fields
 
@@ -31,7 +31,7 @@ namespace ZarDevs.Commands.Http
 
         #region Methods
 
-        public IApiHttpRequestHandlerBinding Add<TBinding>() where TBinding : IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding Add<TBinding>() where TBinding : class, IApiHttpRequestHandler
         {
             var binding = new ApiHttpRequestHandlerBinding<TBinding>(_factory);
             Bindings.Add(binding);
@@ -55,7 +55,7 @@ namespace ZarDevs.Commands.Http
             return handler;
         }
 
-        public IApiHttpRequestHandlerBinding Chain<TNext>() where TNext : IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding Chain<TNext>() where TNext : class, IApiHttpRequestHandler
         {
             var binding = new ApiHttpRequestHandlerBinding<TNext>(_factory);
             Next = binding;

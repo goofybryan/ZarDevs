@@ -34,8 +34,8 @@ namespace ZarDevs.Commands.Http
 
             ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory);
 
-            builder.Bind<IApiHttpFactory>().To((ctx, key) => ApiHttpFactory.Instance).InSingletonScope();
-            builder.Bind<IApiHttpClient>().To((ctx, key) => ctx.Ioc.Resolve<IApiHttpFactory>().NewClient(key)).InTransientScope();
+            builder.Bind<IApiHttpFactory>().To((ctx) => ApiHttpFactory.Instance).InSingletonScope();
+            builder.Bind<IApiHttpClient>().To((ctx) => ctx.Ioc.Resolve<IApiHttpFactory>().NewClient(ctx.Info.Key)).InTransientScope();
 
             return builder;
         }
@@ -46,7 +46,7 @@ namespace ZarDevs.Commands.Http
         /// <typeparam name="THandler">The request handler that must inherit <see cref="IApiHttpRequestHandler"/></typeparam>
         /// <param name="name">The name of the handler, by default it's string.empty.</param>
         /// <returns></returns>
-        public static IApiHttpRequestHandlerBinding AddHttpRequestHandler<THandler>(string name = "") where THandler : IApiHttpRequestHandler
+        public static IApiHttpRequestHandlerBinding AddHttpRequestHandler<THandler>(string name = "") where THandler : class, IApiHttpRequestHandler
         {
             if (ApiHttpFactory.Instance == null) throw new InvalidOperationException("Please configure the HttpFactory using ConfigureHttp method.");
 

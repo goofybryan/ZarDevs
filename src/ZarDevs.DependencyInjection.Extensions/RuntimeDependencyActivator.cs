@@ -18,37 +18,37 @@ namespace ZarDevs.DependencyInjection
 
         public RuntimeDependencyActivator(IInspectConstructor inspection, ICreate creation)
         {
-            _inspection = inspection ?? throw new System.ArgumentNullException(nameof(inspection));
-            _creation = creation ?? throw new System.ArgumentNullException(nameof(creation));
+            _inspection = inspection ?? throw new ArgumentNullException(nameof(inspection));
+            _creation = creation ?? throw new ArgumentNullException(nameof(creation));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public object Resolve(IIocContainer ioc, IDependencyTypeInfo info, params object[] args)
+        public object Resolve(IDependencyTypeInfo info, params object[] args)
         {
             return _creation.New(info.ResolvedType, args);
         }
 
-        public object Resolve(IIocContainer ioc, IDependencyTypeInfo info, params (string, object)[] args)
+        public object Resolve(IDependencyTypeInfo info, params (string, object)[] args)
         {
-            return Resolve(ioc, info, _inspection.OrderParameters(info.ResolvedType, args));
+            return Resolve(info, _inspection.OrderParameters(info.ResolvedType, args));
         }
 
-        public object Resolve(IIocContainer ioc, IDependencyTypeInfo info)
+        public object Resolve(IDependencyTypeInfo info)
         {
-            return Resolve(ioc, info, ResolveArgs(ioc, info.ResolvedType));
+            return Resolve(info, ResolveArgs(info.ResolvedType));
         }
 
-        private object[] ResolveArgs(IIocContainer ioc, Type instanceType)
+        private object[] ResolveArgs(Type instanceType)
         {
             IList<Type> orderedParameters = _inspection.GetConstructorParameters(instanceType);
 
             if (orderedParameters.Count == 0)
                 return null;
 
-            return orderedParameters.Select(p => ioc.TryResolve(p)).ToArray();
+            return orderedParameters.Select(p => Ioc.Container.TryResolve(p)).ToArray();
         }
 
         #endregion Methods

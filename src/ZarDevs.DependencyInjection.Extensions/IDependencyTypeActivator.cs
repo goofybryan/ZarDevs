@@ -4,11 +4,11 @@
     {
         #region Methods
 
-        object Resolve(IIocContainer ioc, IDependencyTypeInfo info);
+        object Resolve(IDependencyTypeInfo info);
 
-        object Resolve(IIocContainer ioc, IDependencyTypeInfo info, params object[] args);
+        object Resolve(IDependencyTypeInfo info, params object[] args);
 
-        object Resolve(IIocContainer ioc, IDependencyTypeInfo info, params (string, object)[] args);
+        object Resolve(IDependencyTypeInfo info, params (string, object)[] args);
 
         #endregion Methods
     }

@@ -3,7 +3,7 @@ using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.AutoFac.Tests
 {
-    public sealed class IocTestFixture : IIocTests, IDisposable
+    public sealed class IocTestFixture : IIocTestFixture, IDisposable
     {
         #region Constructors
 

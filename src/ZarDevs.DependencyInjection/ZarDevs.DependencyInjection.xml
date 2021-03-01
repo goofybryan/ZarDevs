@@ -15,6 +15,11 @@
             Get the argument count
             </summary>
         </member>
+        <member name="P:ZarDevs.DependencyInjection.IDepencyBuilderInfoContext.Info">
+            <summary>
+            Get the dependency information that resulted in the context being created.
+            </summary>
+        </member>
         <member name="P:ZarDevs.DependencyInjection.IDepencyBuilderInfoContext.Ioc">
             <summary>
             Get the IOC constainer
@@ -31,29 +36,37 @@
             Dependency builder information context used for resolving instances.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer)">
+        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer,ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
             Create a new instance of the context class.
             </summary>
             <param name="ioc">Specify the IOC container</param>
+            <param name="info">Specify the binding info</param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer,System.Object[])">
+        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer,ZarDevs.DependencyInjection.IDependencyInfo,System.Object[])">
             <summary>
             Create a new instance of the context class.
             </summary>
             <param name="ioc">Specify the IOC container.</param>
+            <param name="info">Specify the binding info</param>
             <param name="args">A list of ordered args.</param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer,System.ValueTuple{System.String,System.Object}[])">
+        <member name="M:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.#ctor(ZarDevs.DependencyInjection.IIocContainer,ZarDevs.DependencyInjection.IDependencyInfo,System.ValueTuple{System.String,System.Object}[])">
             <summary>
             Create a new instance of the context class.
             </summary>
             <param name="ioc">Specify the IOC container</param>
+            <param name="info">Specify the binding info</param>
             <param name="args">A list of named arguments.</param>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.ArgumentCount">
             <summary>
             Get the argument count
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.Info">
+            <summary>
+            Get the dependency information that resulted in the context being created.
             </summary>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DepencyBuilderInfoContext.Ioc">
@@ -302,14 +315,12 @@
             <param name="instance"></param>
             <returns></returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To(System.Func{ZarDevs.DependencyInjection.DepencyBuilderInfoContext,System.Object,System.Object})">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To(System.Func{ZarDevs.DependencyInjection.DepencyBuilderInfoContext,System.Object})">
             <summary>
             Bind to a method that will be used to reolve the request type.
             </summary>
             <param name="method">
-            The <see cref="T:System.Func`3"/> that will pass in a builder context and the
-            named value if any. The result must be able to cast to the request type, <see
-            cref="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind(System.Type)"/> or <seealso cref="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind``1"/>
+            The function <see cref="T:System.Func`2"/> will be executed, if any parameters are available, they will be passed in.
             </param>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderInfo">
@@ -381,10 +392,23 @@
             Dependency method information, when resolved the method will be invoked.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.IDependencyMethodInfo.Method">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyMethodInfo.Execute">
             <summary>
-            The method to invoke.
+            Execute the method that has been configured
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyMethodInfo.Execute(System.Object[])">
+            <summary>
+            Execute the method that has been configured
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyMethodInfo.Execute(System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Execute the method that has been configured
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyTypeInfo">
             <summary>

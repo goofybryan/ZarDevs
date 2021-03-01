@@ -7,34 +7,6 @@ using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
-
-
-    public class IocKernelContainer : IIocKernelContainer
-    {
-        private readonly IKernel _kernel;
-        private readonly IDependencyContainer _container;
-
-        public IocKernelContainer(IKernel kernel)
-        {
-            _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
-            _container = DependencyContainer.Create(_kernel);
-        }
-
-        public IIocContainer CreateIocContainer()
-        {
-            return new IocContainer(_kernel, _container);
-        }
-
-        public IDependencyBuilder CreateDependencyBuilder()
-        {
-            var builder = new DependencyBuilder(_container);
-
-            builder.Bind<IDependencyContainer>().To(_container);
-
-            return builder;
-        }
-    }
-
     public class IocContainer : IIocContainer
     {
         #region Fields
@@ -73,42 +45,42 @@ namespace ZarDevs.DependencyInjection
             return Kernel.HasModule(name);
         }
 
-        public T Resolve<T>(params (string, object)[] parameters)
+        public T Resolve<T>(params (string, object)[] parameters) where T : class
         {
             return Kernel.Get<T>(CreateParameters(parameters));
         }
 
-        public T Resolve<T>()
+        public T Resolve<T>() where T : class
         {
-            return Resolve<T>(new (string, object)[0]);
+            return Kernel.Get<T>();
         }
 
-        public T Resolve<T>(params object[] parameters)
+        public T Resolve<T>(params object[] parameters) where T : class
         {
             return Resolve<T>(CreateNamedParameters(null, typeof(T), parameters));
         }
 
-        public T ResolveNamed<T>(string name, params (string, object)[] parameters)
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
         {
             return Kernel.Get<T>(name, CreateParameters(parameters));
         }
 
-        public T ResolveNamed<T>(string name)
+        public T ResolveNamed<T>(string name) where T : class
         {
-            return ResolveNamed<T>(name, new (string, object)[0]);
+            return Kernel.Get<T>(name);
         }
 
-        public T ResolveNamed<T>(string name, params object[] parameters)
+        public T ResolveNamed<T>(string name, params object[] parameters) where T : class
         {
             return ResolveNamed<T>(name, CreateNamedParameters(name, typeof(T), parameters));
         }
 
-        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return Kernel.Get<T>(key.GetBindingName(), CreateParameters(parameters));
         }
 
-        public T ResolveWithKey<T>(object key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
             if (key is null)
             {
@@ -121,25 +93,25 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Get<T>(key.ToString(), CreateParameters(parameters));
         }
 
-        public T ResolveWithKey<T>(Enum key)
+        public T ResolveWithKey<T>(Enum key) where T : class
         {
-            return ResolveWithKey<T>(key, new (string, object)[0]);
+            return Kernel.Get<T>(key.GetBindingName());
         }
 
-        public T ResolveWithKey<T>(object key)
+        public T ResolveWithKey<T>(object key) where T : class
         {
             if (key is Enum enumKey)
                 return ResolveWithKey<T>(enumKey);
 
-            return ResolveWithKey<T>(key, new (string, object)[0]);
+            return Kernel.Get<T>(key.ToString());
         }
 
-        public T ResolveWithKey<T>(Enum key, params object[] parameters)
+        public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
             return ResolveWithKey<T>(key.GetBindingName(), parameters);
         }
 
-        public T ResolveWithKey<T>(object key, params object[] parameters)
+        public T ResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             if (key is Enum enumKey)
                 return ResolveWithKey<T>(enumKey, parameters);
@@ -147,17 +119,17 @@ namespace ZarDevs.DependencyInjection
             return ResolveWithKey<T>(key.ToString(), parameters);
         }
 
-        public T TryResolve<T>(params (string, object)[] parameters)
+        public T TryResolve<T>(params (string, object)[] parameters) where T : class
         {
             return Kernel.TryGet<T>(CreateParameters(parameters));
         }
 
-        public T TryResolve<T>()
+        public T TryResolve<T>() where T : class
         {
-            return TryResolve<T>(new (string, object)[0]);
+            return Kernel.TryGet<T>();
         }
 
-        public T TryResolve<T>(params object[] parameters)
+        public T TryResolve<T>(params object[] parameters) where T : class
         {
             return TryResolve<T>(CreateNamedParameters(null, typeof(T), parameters));
         }
@@ -167,27 +139,27 @@ namespace ZarDevs.DependencyInjection
             return Kernel.TryGet(requestType);
         }
 
-        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
         {
             return Kernel.TryGet<T>(name, CreateParameters(parameters));
         }
 
-        public T TryResolveNamed<T>(string name)
+        public T TryResolveNamed<T>(string name) where T : class
         {
-            return TryResolveNamed<T>(name, new (string, object)[0]);
+            return Kernel.TryGet<T>(name);
         }
 
-        public T TryResolveNamed<T>(string name, params object[] parameters)
+        public T TryResolveNamed<T>(string name, params object[] parameters) where T : class
         {
             return TryResolveNamed<T>(name, CreateNamedParameters(name, typeof(T), parameters));
         }
 
-        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return TryResolveNamed<T>(key.GetBindingName(), parameters);
         }
 
-        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
             if (key is Enum enumKey)
                 return TryResolveWithKey<T>(enumKey, parameters);
@@ -195,25 +167,25 @@ namespace ZarDevs.DependencyInjection
             return TryResolveNamed<T>(key.ToString(), parameters);
         }
 
-        public T TryResolveWithKey<T>(Enum key)
+        public T TryResolveWithKey<T>(Enum key) where T : class
         {
-            return TryResolveWithKey<T>(key, new (string, object)[0]);
+            return Kernel.TryGet<T>(key.GetBindingName());
         }
 
-        public T TryResolveWithKey<T>(object key)
+        public T TryResolveWithKey<T>(object key) where T : class
         {
             if (key is Enum enumKey)
                 return TryResolveWithKey<T>(enumKey);
 
-            return TryResolveWithKey<T>(key, new (string, object)[0]);
+            return Kernel.TryGet<T>(key.ToString());
         }
 
-        public T TryResolveWithKey<T>(Enum key, params object[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
             return TryResolveNamed<T>(key.GetBindingName(), parameters);
         }
 
-        public T TryResolveWithKey<T>(object key, params object[] parameters)
+        public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             if (key is Enum enumKey)
                 return TryResolveWithKey<T>(enumKey, parameters);
@@ -269,6 +241,44 @@ namespace ZarDevs.DependencyInjection
             }
 
             return list.ToArray();
+        }
+
+        #endregion Methods
+    }
+
+    public class IocKernelContainer : IIocKernelContainer
+    {
+        #region Fields
+
+        private readonly IDependencyContainer _container;
+        private readonly IKernel _kernel;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public IocKernelContainer(IKernel kernel)
+        {
+            _kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+            _container = DependencyContainer.Create(_kernel);
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        public IDependencyBuilder CreateDependencyBuilder()
+        {
+            var builder = new DependencyBuilder(_container);
+
+            builder.Bind<IDependencyContainer>().To(_container);
+
+            return builder;
+        }
+
+        public IIocContainer CreateIocContainer()
+        {
+            return new IocContainer(_kernel, _container);
         }
 
         #endregion Methods

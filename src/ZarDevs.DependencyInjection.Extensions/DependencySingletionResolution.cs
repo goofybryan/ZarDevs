@@ -37,19 +37,19 @@ namespace ZarDevs.DependencyInjection
             GC.SuppressFinalize(this);
         }
 
-        public object Resolve(IIocContainer ioc, params object[] args)
+        public object Resolve(params object[] args)
         {
-            return Resolved ??= _resolution.Resolve(ioc, args);
+            return Resolved ??= _resolution.Resolve(args);
         }
 
-        public object Resolve(IIocContainer ioc, params (string, object)[] args)
+        public object Resolve(params (string, object)[] args)
         {
-            return Resolved ??= _resolution.Resolve(ioc, args);
+            return Resolved ??= _resolution.Resolve(args);
         }
 
-        public object Resolve(IIocContainer ioc)
+        public object Resolve()
         {
-            return Resolved ??= _resolution.Resolve(ioc);
+            return Resolved ??= _resolution.Resolve();
         }
 
         protected virtual void Dispose(bool disposing)

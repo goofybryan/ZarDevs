@@ -84,7 +84,7 @@ namespace ZarDevs.DependencyInjection
         {
             if (info is IDependencyMethodInfo methodInfo)
             {
-                return initial.ToMethod(ctx => methodInfo.Method(CreateContext(ctx), info.Key));
+                return initial.ToMethod(ctx => ExecuteMethod(methodInfo, ctx));
             }
 
             if (info is IDependencyTypeInfo typeInfo)
@@ -100,12 +100,11 @@ namespace ZarDevs.DependencyInjection
             throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
         }
 
-        private DepencyBuilderInfoContext CreateContext(IContext ctx)
+        private object ExecuteMethod(IDependencyMethodInfo info, IContext ctx)
         {
-            if (ctx.Request.Service == typeof(IIocContainer)) return null;
+            if (ctx.Parameters.Count == 0) return info.Execute();
 
-            return new DepencyBuilderInfoContext(ctx.Kernel.Get<IIocContainer>(),
-                      ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray());
+            return info.Execute(ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray());
         }
 
         #endregion Methods

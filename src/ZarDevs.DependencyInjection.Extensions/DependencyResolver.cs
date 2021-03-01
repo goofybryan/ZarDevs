@@ -32,129 +32,129 @@ namespace ZarDevs.DependencyInjection
             GC.SuppressFinalize(this);
         }
 
-        public T Resolve<T>(params object[] args)
+        public T Resolve<T>(params object[] parameters) where T : class
         {
-            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(this, args);
+            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(parameters);
         }
 
-        public T Resolve<T>(params (string, object)[] args)
+        public T Resolve<T>(params (string, object)[] parameters) where T : class
         {
-            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(this, args);
+            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(parameters);
         }
 
-        public T Resolve<T>()
+        public T Resolve<T>() where T : class
         {
-            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(this);
+            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve();
         }
 
-        public T ResolveNamed<T>(string key, params object[] args)
+        public T ResolveNamed<T>(string key, params object[] parameters) where T : class
         {
-            return (T)Resolve(key, typeof(T), args);
+            return (T)Resolve(key, typeof(T), parameters);
         }
 
-        public T ResolveNamed<T>(string key, params (string, object)[] args)
+        public T ResolveNamed<T>(string key, params (string, object)[] parameters) where T : class
         {
-            return (T)Resolve(key, typeof(T), args);
+            return (T)Resolve(key, typeof(T), parameters);
         }
 
-        public T ResolveNamed<T>(string name)
+        public T ResolveNamed<T>(string name) where T : class
         {
-            return (T)_instanceResolution.GetResolution(name, typeof(T)).Resolve(this);
+            return (T)_instanceResolution.GetResolution(name, typeof(T)).Resolve();
         }
 
-        public T ResolveWithKey<T>(Enum key, params object[] args)
+        public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
-            return (T)Resolve(key, typeof(T), args);
+            return (T)Resolve(key, typeof(T), parameters);
         }
 
-        public T ResolveWithKey<T>(object key, params object[] args)
+        public T ResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
-            return (T)Resolve(key, typeof(T), args);
+            return (T)Resolve(key, typeof(T), parameters);
         }
 
-        public T ResolveWithKey<T>(Enum key, params (string, object)[] args)
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
-            return (T)Resolve(key, typeof(T), args);
+            return (T)Resolve(key, typeof(T), parameters);
         }
 
-        public T ResolveWithKey<T>(object key, params (string, object)[] args)
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
-            return (T)Resolve(key, typeof(T), args);
+            return (T)Resolve(key, typeof(T), parameters);
         }
 
-        public T ResolveWithKey<T>(Enum enumValue)
+        public T ResolveWithKey<T>(Enum enumValue) where T : class
         {
-            return (T)_instanceResolution.GetResolution(enumValue, typeof(T)).Resolve(this);
+            return (T)_instanceResolution.GetResolution(enumValue, typeof(T)).Resolve();
         }
 
-        public T ResolveWithKey<T>(object key)
+        public T ResolveWithKey<T>(object key) where T : class
         {
-            return (T)_instanceResolution.GetResolution(key, typeof(T)).Resolve(this);
+            return (T)_instanceResolution.GetResolution(key, typeof(T)).Resolve();
         }
 
         public object TryResolve(Type requestType)
         {
-            return _instanceResolution.TryGetResolution(requestType)?.Resolve(this);
+            return _instanceResolution.TryGetResolution(requestType)?.Resolve();
         }
 
-        public T TryResolve<T>(params object[] args)
+        public T TryResolve<T>(params object[] parameters) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(this, args);
+            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(parameters);
         }
 
-        public T TryResolve<T>(params (string, object)[] args)
+        public T TryResolve<T>(params (string, object)[] parameters) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(this, args);
+            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(parameters);
         }
 
-        public T TryResolve<T>()
+        public T TryResolve<T>() where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(this);
+            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve();
         }
 
-        public T TryResolveNamed<T>(string key, params object[] args)
+        public T TryResolveNamed<T>(string key, params object[] parameters) where T : class
         {
-            return (T)TryResolve(key, typeof(T), args);
+            return (T)TryResolve(key, typeof(T), parameters);
         }
 
-        public T TryResolveNamed<T>(string key, params (string, object)[] args)
+        public T TryResolveNamed<T>(string key, params (string, object)[] parameters) where T : class
         {
-            return (T)TryResolve(key, typeof(T), args);
+            return (T)TryResolve(key, typeof(T), parameters);
         }
 
-        public T TryResolveNamed<T>(string name)
+        public T TryResolveNamed<T>(string name) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(name, typeof(T))?.Resolve(this);
+            return (T)_instanceResolution.TryGetResolution(name, typeof(T))?.Resolve();
         }
 
-        public T TryResolveWithKey<T>(Enum key, params object[] args)
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
-            return (T)TryResolve(key, typeof(T), args);
+            return (T)TryResolve(key, typeof(T), parameters);
         }
 
-        public T TryResolveWithKey<T>(object key, params object[] args)
+        public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
-            return (T)TryResolve(key, typeof(T), args);
+            return (T)TryResolve(key, typeof(T), parameters);
         }
 
-        public T TryResolveWithKey<T>(Enum key, params (string, object)[] args)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
-            return (T)TryResolve(key, typeof(T), args);
+            return (T)TryResolve(key, typeof(T), parameters);
         }
 
-        public T TryResolveWithKey<T>(object key, params (string, object)[] args)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
-            return (T)TryResolve(key, typeof(T), args);
+            return (T)TryResolve(key, typeof(T), parameters);
         }
 
-        public T TryResolveWithKey<T>(Enum enumValue)
+        public T TryResolveWithKey<T>(Enum enumValue) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(enumValue, typeof(T))?.Resolve(this);
+            return (T)_instanceResolution.TryGetResolution(enumValue, typeof(T))?.Resolve();
         }
 
-        public T TryResolveWithKey<T>(object key)
+        public T TryResolveWithKey<T>(object key) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(key, typeof(T))?.Resolve(this);
+            return (T)_instanceResolution.TryGetResolution(key, typeof(T))?.Resolve();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -169,24 +169,24 @@ namespace ZarDevs.DependencyInjection
             _isDisposed = true;
         }
 
-        private object Resolve(object key, Type requestType, params object[] args)
+        private object Resolve(object key, Type requestType, params object[] parameters)
         {
-            return _instanceResolution.GetResolution(key, requestType).Resolve(this, args);
+            return _instanceResolution.GetResolution(key, requestType).Resolve(parameters);
         }
 
-        private object Resolve(object key, Type requestType, params (string, object)[] args)
+        private object Resolve(object key, Type requestType, params (string, object)[] parameters)
         {
-            return _instanceResolution.GetResolution(key, requestType).Resolve(this, args);
+            return _instanceResolution.GetResolution(key, requestType).Resolve(parameters);
         }
 
-        private object TryResolve(object key, Type requestType, params object[] args)
+        private object TryResolve(object key, Type requestType, params object[] parameters)
         {
-            return _instanceResolution.TryGetResolution(key, requestType)?.Resolve(this, args);
+            return _instanceResolution.TryGetResolution(key, requestType)?.Resolve(parameters);
         }
 
-        private object TryResolve(object key, Type requestType, params (string, object)[] args)
+        private object TryResolve(object key, Type requestType, params (string, object)[] parameters)
         {
-            return _instanceResolution.TryGetResolution(key, requestType)?.Resolve(this, args);
+            return _instanceResolution.TryGetResolution(key, requestType)?.Resolve(parameters);
         }
 
         #endregion Methods

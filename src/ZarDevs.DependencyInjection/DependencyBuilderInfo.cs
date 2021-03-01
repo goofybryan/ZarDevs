@@ -31,13 +31,13 @@ namespace ZarDevs.DependencyInjection
 
         public IDependencyBuilderInfo InSingletonScope()
         {
-            _info.Scope = DependyBuilderScope.Singleton;
+            _info.SetScope(DependyBuilderScope.Singleton);
             return this;
         }
 
         public IDependencyBuilderInfo InTransientScope()
         {
-            _info.Scope = DependyBuilderScope.Transient;
+            _info.SetScope(DependyBuilderScope.Transient);
             return this;
         }
 
@@ -52,7 +52,7 @@ namespace ZarDevs.DependencyInjection
             return To(typeof(T));
         }
 
-        public IDependencyBuilderBindingMetaData To(Func<DepencyBuilderInfoContext, object, object> method)
+        public IDependencyBuilderBindingMetaData To(Func<DepencyBuilderInfoContext, object> method)
         {
             _info = new DependencyMethodInfo(method, _info);
             return this;

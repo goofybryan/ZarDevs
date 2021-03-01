@@ -4,11 +4,11 @@
     {
         #region Methods
 
-        IApiHttpRequestHandlerBinding Add<TBinding>() where TBinding : IApiHttpRequestHandler;
+        IApiHttpRequestHandlerBinding Add<TBinding>() where TBinding : class, IApiHttpRequestHandler;
 
         IApiHttpRequestHandler Build();
 
-        IApiHttpRequestHandlerBinding Chain<TNext>() where TNext : IApiHttpRequestHandler;
+        IApiHttpRequestHandlerBinding Chain<TNext>() where TNext : class, IApiHttpRequestHandler;
 
         IApiHttpRequestHandlerBinding Named(string name);
 

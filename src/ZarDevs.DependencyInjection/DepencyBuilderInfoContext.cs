@@ -18,6 +18,11 @@ namespace ZarDevs.DependencyInjection
         int ArgumentCount { get; }
 
         /// <summary>
+        /// Get the dependency information that resulted in the context being created.
+        /// </summary>
+        IDependencyInfo Info { get; }
+
+        /// <summary>
         /// Get the IOC constainer
         /// </summary>
         IIocContainer Ioc { get; }
@@ -52,9 +57,11 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance of the context class.
         /// </summary>
         /// <param name="ioc">Specify the IOC container</param>
-        public DepencyBuilderInfoContext(IIocContainer ioc)
+        /// <param name="info">Specify the binding info</param>
+        public DepencyBuilderInfoContext(IIocContainer ioc, IDependencyInfo info)
         {
             Ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+            Info = info ?? throw new ArgumentNullException(nameof(info));
             _arguments = new Dictionary<string, object>();
         }
 
@@ -62,8 +69,9 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance of the context class.
         /// </summary>
         /// <param name="ioc">Specify the IOC container.</param>
+        /// <param name="info">Specify the binding info</param>
         /// <param name="args">A list of ordered args.</param>
-        public DepencyBuilderInfoContext(IIocContainer ioc, object[] args) : this(ioc)
+        public DepencyBuilderInfoContext(IIocContainer ioc, IDependencyInfo info, object[] args) : this(ioc, info)
         {
             SetArguments(args);
         }
@@ -72,8 +80,9 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance of the context class.
         /// </summary>
         /// <param name="ioc">Specify the IOC container</param>
+        /// <param name="info">Specify the binding info</param>
         /// <param name="args">A list of named arguments.</param>
-        public DepencyBuilderInfoContext(IIocContainer ioc, (string, object)[] args) : this(ioc)
+        public DepencyBuilderInfoContext(IIocContainer ioc, IDependencyInfo info, (string, object)[] args) : this(ioc, info)
         {
             SetArguments(args);
         }
@@ -86,6 +95,11 @@ namespace ZarDevs.DependencyInjection
         /// Get the argument count
         /// </summary>
         public int ArgumentCount => _arguments.Count;
+
+        /// <summary>
+        /// Get the dependency information that resulted in the context being created.
+        /// </summary>
+        public IDependencyInfo Info { get; }
 
         /// <summary>
         /// Get the IOC constainer

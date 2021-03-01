@@ -38,77 +38,77 @@ namespace ZarDevs.DependencyInjection
             GC.SuppressFinalize(this);
         }
 
-        public T Resolve<T>(params (string, object)[] parameters)
+        public T Resolve<T>(params (string, object)[] parameters) where T : class
         {
             return Kernel.Resolve<T>(CreateParameters(parameters));
         }
 
-        public T Resolve<T>()
+        public T Resolve<T>() where T : class
         {
-            return Resolve<T>(new (string, object)[0]);
+            return Kernel.Resolve<T>();
         }
 
-        public T Resolve<T>(params object[] parameters)
+        public T Resolve<T>(params object[] parameters) where T : class
         {
             return Kernel.Resolve<T>(CreateParameters(parameters));
         }
 
-        public T ResolveNamed<T>(string name, params (string, object)[] parameters)
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
         {
             return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));
         }
 
-        public T ResolveNamed<T>(string name)
+        public T ResolveNamed<T>(string name) where T : class
         {
-            return ResolveNamed<T>(name, new (string, object)[0]);
+            return Kernel.ResolveNamed<T>(name);
         }
 
-        public T ResolveNamed<T>(string name, params object[] parameters)
+        public T ResolveNamed<T>(string name, params object[] parameters) where T : class
         {
             return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));
         }
 
-        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
-        public T ResolveWithKey<T>(object key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
-        public T ResolveWithKey<T>(Enum key)
+        public T ResolveWithKey<T>(Enum key) where T : class
         {
             return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T ResolveWithKey<T>(object key)
+        public T ResolveWithKey<T>(object key) where T : class
         {
             return ResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T ResolveWithKey<T>(Enum key, params object[] parameters)
+        public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
-        public T ResolveWithKey<T>(object key, params object[] parameters)
+        public T ResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             return Kernel.ResolveKeyed<T>(key, CreateParameters(parameters));
         }
 
-        public T TryResolve<T>(params (string, object)[] parameters)
+        public T TryResolve<T>(params (string, object)[] parameters) where T : class
         {
             return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
         }
 
-        public T TryResolve<T>()
+        public T TryResolve<T>() where T : class
         {
-            return TryResolve<T>(new (string, object)[0]);
+            return Kernel.IsRegistered<T>() ? Resolve<T>() : default;
         }
 
-        public T TryResolve<T>(params object[] parameters)
+        public T TryResolve<T>(params object[] parameters) where T : class
         {
             return Kernel.IsRegistered<T>() ? Resolve<T>(parameters) : default;
         }
@@ -118,47 +118,47 @@ namespace ZarDevs.DependencyInjection
             return Kernel.IsRegistered(requestType) ? Kernel.Resolve(requestType) : null;
         }
 
-        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
         }
 
-        public T TryResolveNamed<T>(string name)
+        public T TryResolveNamed<T>(string name) where T : class
         {
             return TryResolveNamed<T>(name, new (string, object)[0]);
         }
 
-        public T TryResolveNamed<T>(string name, params object[] parameters)
+        public T TryResolveNamed<T>(string name, params object[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
         }
 
-        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
-        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
-        public T TryResolveWithKey<T>(Enum key)
+        public T TryResolveWithKey<T>(Enum key) where T : class
         {
             return TryResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T TryResolveWithKey<T>(object key)
+        public T TryResolveWithKey<T>(object key) where T : class
         {
             return TryResolveWithKey<T>(key, new (string, object)[0]);
         }
 
-        public T TryResolveWithKey<T>(Enum key, params object[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
 
-        public T TryResolveWithKey<T>(object key, params object[] parameters)
+        public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
         }
@@ -193,8 +193,8 @@ namespace ZarDevs.DependencyInjection
 
         private Parameter[] CreateParameters((string, object)[] parameters)
         {
-            if (parameters == null)
-                return null;
+            if (parameters == null || parameters.Length == 0)
+                return new Parameter[0];
 
             var list = new List<Parameter>();
 

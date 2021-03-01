@@ -12,19 +12,19 @@
 
         #region Methods
 
-        public override object Resolve(IIocContainer ioc, params object[] args)
+        public override object Resolve(object[] args)
         {
-            return Info.Method(new DepencyBuilderInfoContext(ioc, args), Key);
+            return Info.Execute(args);
         }
 
-        public override object Resolve(IIocContainer ioc, params (string, object)[] args)
+        public override object Resolve((string, object)[] args)
         {
-            return Info.Method(new DepencyBuilderInfoContext(ioc, args), Key);
+            return Info.Execute(args);
         }
 
-        public override object Resolve(IIocContainer ioc)
+        public override object Resolve()
         {
-            return Info.Method(new DepencyBuilderInfoContext(ioc), Key);
+            return Info.Execute();
         }
 
         #endregion Methods

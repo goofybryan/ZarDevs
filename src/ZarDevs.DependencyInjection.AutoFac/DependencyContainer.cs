@@ -8,16 +8,22 @@ using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
+    /// <summary>
+    /// AutoFac dependency container
+    /// </summary>
     public interface IAutoFacDependencyContainer : IDependencyContainer
     {
         #region Properties
 
+        /// <summary>
+        /// AutoFac 
+        /// </summary>
         IContainer Container { get; }
 
         #endregion Properties
     }
 
-    public class DependencyContainer : DependencyContainerBase, IAutoFacDependencyContainer
+    internal class DependencyContainer : DependencyContainerBase, IAutoFacDependencyContainer
     {
         #region Fields
 
@@ -48,7 +54,7 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnBuild(IDependencyInfo info)
         {
-            if (!TryRegisterTypeTo(Builder, info as IDependencyTypeInfo) && !TryRegisterMethod(Builder, info as IDependencyMethodInfo))
+            if (!TryRegisterTypeTo(Builder, info as IDependencyTypeInfo) && !TryRegisterMethod(Builder, info as IDependencyMethodInfo) && !TryRegisterInstance(Builder, info as IDependencyInstanceInfo))
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
         }
 
@@ -77,14 +83,11 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        private DepencyBuilderInfoContext CreateBuilderContext(IComponentContext componentContext, IList<Parameter> parameters, Type requestType)
+        private object ExecuteMethod(IDependencyMethodInfo info, IList<Parameter> parameters)
         {
-            if (requestType == typeof(IIocContainer)) return null;
-
-            IIocContainer container = componentContext.Resolve<IIocContainer>();
-            if (parameters == null || parameters.Count == 0) return new DepencyBuilderInfoContext(container);
-            if (TryGetNamedParameters(parameters, out (string, object)[] namedParameters)) return new DepencyBuilderInfoContext(container, namedParameters);
-            if (TryGetPositionalParameters(parameters, out object[] positionalParameters)) return new DepencyBuilderInfoContext(container, positionalParameters);
+            if (parameters == null || parameters.Count == 0) return info.Execute();
+            if (TryGetNamedParameters(parameters, out (string, object)[] namedParameters)) return info.Execute(namedParameters);
+            if (TryGetPositionalParameters(parameters, out object[] positionalParameters)) return info.Execute(positionalParameters);
 
             throw new NotSupportedException("Only AutoFac NamedParameter or PositionalParameter is supported.");
         }
@@ -122,12 +125,26 @@ namespace ZarDevs.DependencyInjection
             return args.Count > 0;
         }
 
+        private bool TryRegisterInstance(ContainerBuilder builder, IDependencyInstanceInfo info)
+        {
+            if (info == null)
+                return false;
+
+            var binding = builder.RegisterInstance(info.Instance);
+
+            RegisterNamedDependency(binding, info);
+
+            Build(info, binding);
+
+            return true;
+        }
+
         private bool TryRegisterMethod(ContainerBuilder builder, IDependencyMethodInfo info)
         {
             if (info == null)
                 return false;
 
-            var binding = builder.Register((c, p) => info.Method(CreateBuilderContext(c, p?.ToList(), info.RequestType), info.Key));
+            var binding = builder.Register((c, p) => ExecuteMethod(info, p?.ToArray()));
 
             RegisterNamedDependency(binding, info);
 

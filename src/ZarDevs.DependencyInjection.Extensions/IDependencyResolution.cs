@@ -10,11 +10,11 @@
 
         #region Methods
 
-        object Resolve(IIocContainer ioc);
+        object Resolve();
 
-        object Resolve(IIocContainer ioc, params object[] args);
+        object Resolve(object[] args);
 
-        object Resolve(IIocContainer ioc, params (string, object)[] args);
+        object Resolve((string, object)[] args);
 
         #endregion Methods
     }

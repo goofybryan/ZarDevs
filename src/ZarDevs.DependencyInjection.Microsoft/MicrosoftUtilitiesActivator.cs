@@ -21,29 +21,31 @@ namespace ZarDevs.DependencyInjection
 
         #endregion Constructors
 
+        private IIocContainer Ioc => DependencyInjection.Ioc.Container;
+
         #region Methods
 
-        public object Resolve(IIocContainer ioc, IDependencyTypeInfo info, params object[] args)
+        public object Resolve(IDependencyTypeInfo info, params object[] args)
         {
             if (args == null || args.Length == 0)
-                return Resolve(ioc, info);
+                return Resolve(info);
 
-            return ActivatorUtilities.CreateInstance(ioc.Resolve<IServiceProvider>(), info.ResolvedType, args);
+            return ActivatorUtilities.CreateInstance(Ioc.Resolve<IServiceProvider>(), info.ResolvedType, args);
         }
 
-        public object Resolve(IIocContainer ioc, IDependencyTypeInfo info, params (string, object)[] args)
+        public object Resolve(IDependencyTypeInfo info, params (string, object)[] args)
         {
             if (args == null || args.Length == 0)
-                return Resolve(ioc, info);
+                return Resolve(info);
 
             var orderedParameters = _inspectConstructor.OrderParameters(info.ResolvedType, args);
 
-            return ActivatorUtilities.CreateInstance(ioc.Resolve<IServiceProvider>(), info.ResolvedType, orderedParameters);
+            return ActivatorUtilities.CreateInstance(Ioc.Resolve<IServiceProvider>(), info.ResolvedType, orderedParameters);
         }
 
-        public object Resolve(IIocContainer ioc, IDependencyTypeInfo info)
+        public object Resolve(IDependencyTypeInfo info)
         {
-            return ActivatorUtilities.GetServiceOrCreateInstance(ioc.Resolve<IServiceProvider>(), info.RequestType);
+            return ActivatorUtilities.GetServiceOrCreateInstance(Ioc.Resolve<IServiceProvider>(), info.RequestType);
         }
 
         #endregion Methods

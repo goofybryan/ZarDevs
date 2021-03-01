@@ -48,24 +48,16 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnRegisterSingletonMethod(IDependencyMethodInfo info)
         {
-            _services.AddSingleton(info.RequestType, p => info.Method(CreateDependencyInfoContext(p, info), info.Key));
+            _services.AddSingleton(info.RequestType, p => info.Execute());
 
             base.OnRegisterSingletonMethod(info);
         }
 
         protected override void OnRegisterTransientMethod(IDependencyMethodInfo info)
         {
-            _services.AddTransient(info.RequestType, p => info.Method(CreateDependencyInfoContext(p, info), info.Key));
+            _services.AddTransient(info.RequestType, p => info.Execute());
 
             base.OnRegisterTransientMethod(info);
-        }
-
-        private DepencyBuilderInfoContext CreateDependencyInfoContext(IServiceProvider provider, IDependencyMethodInfo info)
-        {
-            if(info.RequestType == typeof(IIocContainer)) 
-                return null;
-
-            return new DepencyBuilderInfoContext(provider.GetRequiredService<IIocContainer>());
         }
 
         #endregion Methods

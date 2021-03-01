@@ -13,6 +13,7 @@
     <Version>0.1.0</Version>
     <LangVersion>9</LangVersion>
     <Description>This package contains dependency neutral binding descriptors. It is intended for use for your most basic scenarios.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -19,7 +19,6 @@ namespace ZarDevs.DependencyInjection
 
         private IDependencyResolver _dependencyResolver;
         private bool _isDisposed;
-        private IServiceProvider _serviceProvider;
 
         #endregion Fields
 
@@ -28,10 +27,16 @@ namespace ZarDevs.DependencyInjection
         public IocContainer(IDependencyResolver dependencyResolver, IServiceProvider serviceProvider)
         {
             _dependencyResolver = dependencyResolver ?? throw new ArgumentNullException(nameof(dependencyResolver));
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        public IServiceProvider ServiceProvider { get; set; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -41,127 +46,127 @@ namespace ZarDevs.DependencyInjection
             GC.SuppressFinalize(this);
         }
 
-        public T Resolve<T>(params (string, object)[] parameters)
+        public T Resolve<T>(params (string, object)[] parameters) where T : class
         {
             return _dependencyResolver.Resolve<T>(parameters);
         }
 
-        public T Resolve<T>()
+        public T Resolve<T>() where T : class
         {
-            return (T)_serviceProvider.GetRequiredService(typeof(T));
+            return (T)ServiceProvider.GetRequiredService(typeof(T));
         }
 
-        public T Resolve<T>(params object[] parameters)
+        public T Resolve<T>(params object[] parameters) where T : class
         {
             return _dependencyResolver.Resolve<T>(parameters);
         }
 
-        public T ResolveNamed<T>(string name, params (string, object)[] parameters)
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
         {
             return _dependencyResolver.ResolveNamed<T>(name, parameters);
         }
 
-        public T ResolveNamed<T>(string name)
+        public T ResolveNamed<T>(string name) where T : class
         {
             return _dependencyResolver.ResolveNamed<T>(name);
         }
 
-        public T ResolveNamed<T>(string name, params object[] parameters)
+        public T ResolveNamed<T>(string name, params object[] parameters) where T : class
         {
             return _dependencyResolver.ResolveNamed<T>(name, parameters);
         }
 
-        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return ResolveWithKey<T>(key, parameters);
         }
 
-        public T ResolveWithKey<T>(object key, params (string, object)[] parameters)
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
             return ResolveWithKey<T>(key, parameters);
         }
 
-        public T ResolveWithKey<T>(Enum key)
+        public T ResolveWithKey<T>(Enum key) where T : class
         {
             return _dependencyResolver.ResolveWithKey<T>(key);
         }
 
-        public T ResolveWithKey<T>(object key)
+        public T ResolveWithKey<T>(object key) where T : class
         {
             return _dependencyResolver.ResolveWithKey<T>(key);
         }
 
-        public T ResolveWithKey<T>(Enum key, params object[] parameters)
+        public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
             return _dependencyResolver.ResolveWithKey<T>(key, parameters);
         }
 
-        public T ResolveWithKey<T>(object key, params object[] parameters)
+        public T ResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             return _dependencyResolver.ResolveWithKey<T>(key, parameters);
         }
 
-        public T TryResolve<T>(params (string, object)[] parameters)
+        public T TryResolve<T>(params (string, object)[] parameters) where T : class
         {
             return _dependencyResolver.TryResolve<T>(parameters);
         }
 
-        public T TryResolve<T>()
+        public T TryResolve<T>() where T : class
         {
             return (T)TryResolve(typeof(T));
         }
 
-        public T TryResolve<T>(params object[] parameters)
+        public T TryResolve<T>(params object[] parameters) where T : class
         {
             return _dependencyResolver.TryResolve<T>(parameters);
         }
 
         public object TryResolve(Type requestType)
         {
-            return _serviceProvider.GetService(requestType);
+            return ServiceProvider.GetService(requestType);
         }
 
-        public T TryResolveNamed<T>(string name, params (string, object)[] parameters)
+        public T TryResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveNamed<T>(name, parameters);
         }
 
-        public T TryResolveNamed<T>(string name)
+        public T TryResolveNamed<T>(string name) where T : class
         {
             return _dependencyResolver.TryResolveNamed<T>(name);
         }
 
-        public T TryResolveNamed<T>(string name, params object[] parameters)
+        public T TryResolveNamed<T>(string name, params object[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveNamed<T>(name, parameters);
         }
 
-        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
         }
 
-        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters)
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
         }
 
-        public T TryResolveWithKey<T>(Enum key)
+        public T TryResolveWithKey<T>(Enum key) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key);
         }
 
-        public T TryResolveWithKey<T>(object key)
+        public T TryResolveWithKey<T>(object key) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key);
         }
 
-        public T TryResolveWithKey<T>(Enum key, params object[] parameters)
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
         }
 
-        public T TryResolveWithKey<T>(object key, params object[] parameters)
+        public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
         }
@@ -175,7 +180,7 @@ namespace ZarDevs.DependencyInjection
                     _dependencyResolver.Dispose();
                     _dependencyResolver = null;
 
-                    _serviceProvider = null;
+                    ServiceProvider = null;
                 }
 
                 _isDisposed = true;
@@ -189,8 +194,8 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private readonly IServiceCollection _serviceCollection;
         private readonly IDependencyInstanceConfiguration _resolutionConfiguration;
+        private readonly IServiceCollection _serviceCollection;
 
         #endregion Fields
 
@@ -229,7 +234,7 @@ namespace ZarDevs.DependencyInjection
         public IIocContainer CreateIocContainer()
         {
             var resolution = (IDependencyInstanceResolution)_resolutionConfiguration;
-            var serviceProvider = (IServiceProvider)resolution.GetResolution(typeof(IServiceProvider)).Resolve(null);
+            var serviceProvider = (IServiceProvider)resolution.GetResolution(typeof(IServiceProvider)).Resolve();
             var activator = serviceProvider.GetRequiredService<IDependencyResolver>();
             return new IocContainer(activator, serviceProvider);
         }

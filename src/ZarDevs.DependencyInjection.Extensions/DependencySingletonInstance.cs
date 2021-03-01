@@ -36,19 +36,19 @@ namespace ZarDevs.DependencyInjection
             GC.SuppressFinalize(this);
         }
 
-        public object Resolve(IIocContainer ioc)
+        public object Resolve()
         {
             return Instance;
         }
 
-        public object Resolve(IIocContainer ioc, params object[] args)
+        public object Resolve(object[] args)
         {
-            return Resolve(ioc);
+            return Resolve();
         }
 
-        public object Resolve(IIocContainer ioc, params (string, object)[] args)
+        public object Resolve((string, object)[] args)
         {
-            return Resolve(ioc);
+            return Resolve();
         }
 
         protected virtual void Dispose(bool disposing)

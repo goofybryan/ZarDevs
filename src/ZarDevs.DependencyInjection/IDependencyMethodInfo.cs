@@ -11,9 +11,22 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <summary>
-        /// The method to invoke.
+        /// Execute the method that has been configured
         /// </summary>
-        Func<DepencyBuilderInfoContext, object, object> Method { get; }
+        /// <returns></returns>
+        object Execute();
+
+        /// <summary>
+        /// Execute the method that has been configured
+        /// </summary>
+        /// <returns></returns>
+        object Execute(object[] args);
+
+        /// <summary>
+        /// Execute the method that has been configured
+        /// </summary>
+        /// <returns></returns>
+        object Execute((string, object)[] args);
 
         #endregion Properties
     }

@@ -3,16 +3,7 @@ using Xunit;
 
 namespace ZarDevs.DependencyInjection.Tests
 {
-    public interface IIocTests : IDisposable
-    {
-        #region Properties
-
-        IIocContainer Container { get; }
-
-        #endregion Properties
-    }
-
-    public abstract class IocTestsConstruct<T> where T : class, IIocTests
+    public abstract class IocTestsConstruct<T> where T : class, IIocTestFixture
     {
         #region Constructors
 
