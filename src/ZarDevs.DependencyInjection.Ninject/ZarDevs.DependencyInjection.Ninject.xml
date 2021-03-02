@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.DependencyInjection.Ninject</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.DependencyInjection.IocNinject">
+            <summary>
+            IOC NInject initializing class.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocNinject.CreateBuilder(Ninject.INinjectSettings)">
+            <summary>
+            Create a new instance of the IOC Kernel Builder with either the specified Ninject Setting or empty settings. A <see cref="T:Ninject.StandardKernel"/> will be used.
+            </summary>
+            <param name="settings"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

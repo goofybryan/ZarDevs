@@ -9,7 +9,7 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 
         public IocTestFixture()
         {
-            Container = Ioc.Initialize(IocRuntimeFactory.Initialize(), builder =>
+            Container = Ioc.Initialize(new IocKernelBuilder(), builder =>
             {
                 builder.ConfigureTest();
             });

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.DependencyInjection.Microsoft</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.DependencyInjection.IIocKernelServiceProviderBuilder">
+            <summary>
+            Ioc 
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocKernelServiceProviderBuilder.ConfigureServiceProvider(System.IServiceProvider)">
+            <summary>
+            Configure the service provider by adding it to the instance resolution configurations.
+            </summary>
+            <param name="serviceProvider">The service provider.</param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IocServiceProvider">
+            <summary>
+            Ioc service provider that is used to create a Ioc Kernel builder.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocServiceProvider.CreateBuilder(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Create a new instance of the Ioc kernel builder
+            </summary>
+            <param name="services">The service collection that will be used for the bindings.</param>
+        </member>
+    </members>
+</doc>

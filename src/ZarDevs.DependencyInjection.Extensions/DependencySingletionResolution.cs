@@ -2,6 +2,14 @@
 
 namespace ZarDevs.DependencyInjection
 {
+    /// <summary>
+    /// Dependency singleton resolution is used when you want to define a resolution that needs to
+    /// be resolved once and then always return the same instance.
+    /// </summary>
+    /// <typeparam name="TInfo">The <see cref="IDependencyInfo"/> describing this resolution.</typeparam>
+    /// <typeparam name="TResolution">
+    /// The underlying <see cref="IDependencyResolution"/> that will be used to resolve the initial instance.
+    /// </typeparam>
     public class DependencySingletionResolution<TInfo, TResolution> : IDependencyResolution<TInfo>, IDisposable where TInfo : IDependencyInfo where TResolution : IDependencyResolution<TInfo>
     {
         #region Fields
@@ -13,6 +21,12 @@ namespace ZarDevs.DependencyInjection
 
         #region Constructors
 
+        /// <summary>
+        /// Create a new instance of the singleton resolution.
+        /// </summary>
+        /// <param name="resolution">
+        /// The underlying resolution that will be used to initialy resolve with.
+        /// </param>
         public DependencySingletionResolution(TResolution resolution)
         {
             _resolution = resolution ?? throw new ArgumentNullException(nameof(resolution));
@@ -22,14 +36,26 @@ namespace ZarDevs.DependencyInjection
 
         #region Properties
 
+        /// <summary>
+        /// The <see cref="IDependencyInfo"/> impementation describing this resolution.
+        /// </summary>
         public TInfo Info => _resolution.Info;
+
+        /// <summary>
+        /// The key that is associated to this resolution.
+        /// </summary>
         public object Key => _resolution.Key;
-        public object Resolved { get; private set; }
+
+        private object Resolved { get; set; }
 
         #endregion Properties
 
         #region Methods
 
+        /// <summary>
+        /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/>
+        /// implements <see cref="IDisposable"/> that will be called.
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
@@ -37,21 +63,45 @@ namespace ZarDevs.DependencyInjection
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Initially resolve the instance and from then always return the instance.
+        /// </summary>
+        /// <param name="args">
+        /// A list of ordered constructor arguments. They will be used if the instance has not been
+        /// resolved, if it has, they will be ignored
+        /// </param>
+        /// <returns>An instance for this resolution.</returns>
         public object Resolve(params object[] args)
         {
             return Resolved ??= _resolution.Resolve(args);
         }
 
+        /// <summary>
+        /// Initially resolve the instance and from then always return the instance.
+        /// </summary>
+        /// <param name="args">
+        /// A list of named constructor arguments. They will be used if the instance has not been
+        /// resolved, if it has, they will be ignored
+        /// </param>
+        /// <returns>An instance for this resolution.</returns>
         public object Resolve(params (string, object)[] args)
         {
             return Resolved ??= _resolution.Resolve(args);
         }
 
+        /// <summary>
+        /// Initially resolve the instance and from then always return the instance.
+        /// </summary>
+        /// <returns>An instance for this resolution.</returns>
         public object Resolve()
         {
             return Resolved ??= _resolution.Resolve();
         }
 
+        /// <summary>
+        /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/>
+        /// implements <see cref="IDisposable"/> that will be called.
+        /// </summary>
         protected virtual void Dispose(bool disposing)
         {
             if (_isDisposed) return;

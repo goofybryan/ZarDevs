@@ -11,7 +11,7 @@ namespace ZarDevs.DependencyInjection.Microsoft.Tests
         {
             var services = new ServiceCollection();
 
-            var kernel = new IocKernelBuilder(services);
+            var kernel = IocServiceProvider.CreateBuilder(services);
 
             Container = Ioc.Initialize(kernel,
                 builder => builder.ConfigureTest(),

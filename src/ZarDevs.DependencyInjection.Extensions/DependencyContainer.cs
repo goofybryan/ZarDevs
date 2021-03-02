@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace ZarDevs.DependencyInjection
 {
+    /// <summary>
+    /// Dependency container that is used to build bindings and apply them to the configuration.
+    /// </summary>
     public class DependencyContainer : DependencyContainerBase
     {
         #region Fields
@@ -14,6 +17,11 @@ namespace ZarDevs.DependencyInjection
 
         #region Constructors
 
+        /// <summary>
+        /// Create a new instance of the dependency container.
+        /// </summary>
+        /// <param name="configuration">The instance configuration that will contain the binding configuration.</param>
+        /// <param name="activator">The type activator that is used to resolve types.</param>
         public DependencyContainer(IDependencyInstanceConfiguration configuration, IDependencyTypeActivator activator)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -24,32 +32,56 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
+        /// <summary>
+        /// Implement the on build method that will be called for each definition added.
+        /// </summary>
+        /// <param name="definition">The dependency info that describes what is required.</param>
         protected override void OnBuild(IDependencyInfo definition)
         {
             if (!TryRegisterTypeTo(definition as IDependencyTypeInfo) && !TryRegisterMethod(definition as IDependencyMethodInfo) && !TryRegisterInstance(definition as IDependencyInstanceInfo))
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", definition.RequestType));
         }
 
+        /// <summary>
+        /// Register a <see cref="IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterInstance(IDependencyInstanceInfo info)
         {
             _configuration.Configure(info.RequestType, new DependencySingletonInstance(info));
         }
 
+        /// <summary>
+        /// Register a singleton <see cref="IDependencyTypeInfo"/> instance with the configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterSingleton(IDependencyTypeInfo info)
         {
             _configuration.Configure(info.RequestType, new DependencySingletionResolution<IDependencyTypeInfo, DependencyTypeResolution>(new DependencyTypeResolution(info, _activator)));
         }
 
+        /// <summary>
+        /// Register a singleton <see cref="IDependencyMethodInfo"/> instance with the configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterSingletonMethod(IDependencyMethodInfo info)
         {
             _configuration.Configure(info.RequestType, new DependencySingletionResolution<IDependencyMethodInfo, DependencyMethodResolution>(new DependencyMethodResolution(info)));
         }
 
+        /// <summary>
+        /// Register a transient <see cref="IDependencyTypeInfo"/> instance with the configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterTransient(IDependencyTypeInfo info)
         {
             _configuration.Configure(info.RequestType, new DependencyTypeResolution(info, _activator));
         }
 
+        /// <summary>
+        /// Register a transient <see cref="IDependencyMethodInfo"/> instance with the configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterTransientMethod(IDependencyMethodInfo info)
         {
             _configuration.Configure(info.RequestType, new DependencyMethodResolution(info));

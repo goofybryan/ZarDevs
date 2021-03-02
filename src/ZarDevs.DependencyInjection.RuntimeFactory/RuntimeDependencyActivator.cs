@@ -7,7 +7,7 @@ using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class RuntimeDependencyActivator : IDependencyTypeActivator
+    internal class RuntimeDependencyActivator : IDependencyTypeActivator
     {
         #region Fields
 

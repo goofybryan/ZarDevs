@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://dev.azure.com/ZarDevs/ZarDevs</PackageProjectUrl>
     <RepositoryUrl>https://dev.azure.com/ZarDevs/_git/ZarDevs</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>ZarDevs,Dependency,Injection</PackageTags>
+    <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.1.0</Version>
     <LangVersion>9</LangVersion>

@@ -8,7 +8,7 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 
         public IocPerformanceTestFixture()
         {
-            Container = Ioc.Initialize(IocRuntimeFactory.Initialize(), builder =>
+            Container = Ioc.Initialize(new IocKernelBuilder(), builder =>
             {
                 builder.ConfigurePerformanceTest();
             });

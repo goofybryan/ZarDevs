@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class DependencyContainer : DependencyContainerBase
+    internal class DependencyContainer : DependencyContainerBase
     {
         #region Constructors
 

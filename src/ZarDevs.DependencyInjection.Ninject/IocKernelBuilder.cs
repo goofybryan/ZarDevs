@@ -3,7 +3,7 @@ using System;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class IocKernelBuilder : IIocKernelBuilder
+    internal class IocKernelBuilder : IIocKernelBuilder
     {
         #region Fields
 

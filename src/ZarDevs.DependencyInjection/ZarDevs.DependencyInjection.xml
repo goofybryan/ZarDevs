@@ -153,7 +153,7 @@
             <summary>
             Implement the on build method that will be called for each definition added.
             </summary>
-            <param name="definition"></param>
+            <param name="definition">The dependency info that describes what is required.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.OnBuildEnd">
             <summary>
@@ -510,7 +510,7 @@
             <summary>
             Resolved the requested type with the list of paramaters specified.
             </summary>
-            <param name="name">The name of the resolution request.</param>
+            <param name="key">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
             <param name="parameters">
             A list of ordered parameters, these must match a constructor order.
@@ -532,7 +532,7 @@
             <summary>
             Resolved the requested type.
             </summary>
-            <param name="name">The name of the resolution request.</param>
+            <param name="key">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
         </member>
@@ -635,7 +635,7 @@
             Try resolved the requested type with the list of paramaters specified.
             </summary>
             <typeparam name="T">The request type</typeparam>
-            <param name="name">The name of the resolution request.</param>
+            <param name="key">The name of the resolution request.</param>
             <param name="parameters">
             A list of named parameters, these must match a constructor order.
             </param>
@@ -646,7 +646,7 @@
             Try resolved the requested type with the list of paramaters specified.
             </summary>
             <typeparam name="T">The request type</typeparam>
-            <param name="name">The name of the resolution request.</param>
+            <param name="key">The name of the resolution request.</param>
             <param name="parameters">
             A list of named parameters, these must match a constructor parameter name and associated types.
             </param>
@@ -657,7 +657,7 @@
             Try resolved the requested type with the list of paramaters specified.
             </summary>
             <typeparam name="T">The request type</typeparam>
-            <param name="name">The name of the resolution request.</param>
+            <param name="key">The name of the resolution request.</param>
             <returns>The resolved type.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Enum,System.Object[])">

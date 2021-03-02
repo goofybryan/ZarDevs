@@ -91,7 +91,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Implement the on build method that will be called for each definition added.
         /// </summary>
-        /// <param name="definition"></param>
+        /// <param name="definition">The dependency info that describes what is required.</param>
         protected abstract void OnBuild(IDependencyInfo definition);
 
         /// <summary>
