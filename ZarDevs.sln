@@ -47,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Extensions", "src\ZarDevs.DependencyInjection.Extensions\ZarDevs.DependencyInjection.Extensions.csproj", "{FA85C5F8-8DD1-4739-B05F-1990D52E9E5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.DependencyInjection.RuntimeFactory.Tests", "ZarDevs.DependencyInjection.RuntimeFactory.Tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests.csproj", "{F3E4900F-66D7-47A0-BB91-A967C4AD98A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.DependencyInjection.RuntimeFactory.Tests", "tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests.csproj", "{F3E4900F-66D7-47A0-BB91-A967C4AD98A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
