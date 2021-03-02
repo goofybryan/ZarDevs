@@ -19,16 +19,12 @@
     <Description>AutoFac implementation of the Dependency Injection</Description>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>DependencyInjection.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\ZarDevs.DependencyInjection\DependencyInjection.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\Dev\ZarDevs\src\ZarDevs.DependencyInjection.AutoFac\ZarDevs.DependencyInjection.AutoFac.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\ZarDevs.DependencyInjection\DependencyInjection.pfx" Link="DependencyInjection.pfx" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />

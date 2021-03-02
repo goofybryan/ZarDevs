@@ -23,8 +23,4 @@
     <DocumentationFile>C:\Dev\ZarDevs\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\ZarDevs.DependencyInjection\DependencyInjection.pfx" Link="DependencyInjection.pfx" />
-  </ItemGroup>
-
 </Project>
