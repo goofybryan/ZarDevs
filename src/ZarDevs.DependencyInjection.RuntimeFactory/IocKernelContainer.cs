@@ -3,7 +3,7 @@ using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
-    public sealed class IocKernelContainer : IIocKernelContainer
+    public sealed class IocKernelContainer : IIocKernelBuilder
     {
         public IocKernelContainer()
         {

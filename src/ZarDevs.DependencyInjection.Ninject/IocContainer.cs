@@ -7,7 +7,7 @@ using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class IocContainer : IIocContainer
+    internal class IocContainer : IIocContainer<IKernel>
     {
         #region Fields
 

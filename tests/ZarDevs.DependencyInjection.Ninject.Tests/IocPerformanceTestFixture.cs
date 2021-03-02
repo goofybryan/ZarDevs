@@ -9,7 +9,7 @@ namespace ZarDevs.DependencyInjection.Ninject.Tests
 
         public IocPerformanceTestFixture()
         {
-            var kernel = (IocKernelContainer)IocNinject.Initialize();
+            var kernel = (IocKernelBuilder)IocNinject.Initialize();
 
             Container = Ioc.Initialize(kernel, builder =>
             {

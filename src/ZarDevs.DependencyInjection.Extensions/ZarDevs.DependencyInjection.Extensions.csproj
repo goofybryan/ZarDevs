@@ -4,7 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>ZarDevs.DependencyInjection</RootNamespace>
     <LangVersion>9</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>DependencyInjection.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\ZarDevs.DependencyInjection\DependencyInjection.pfx" Link="DependencyInjection.pfx" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />

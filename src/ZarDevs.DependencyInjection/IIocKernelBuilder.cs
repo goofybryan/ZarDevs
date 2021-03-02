@@ -3,9 +3,9 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Ioc kernel container, this is what needs to be implemented by the IOC solution.
+    /// Ioc Kernel Builder that will create instances of the underlying IOC technology
     /// </summary>
-    public interface IIocKernelContainer
+    public interface IIocKernelBuilder
     {
         #region Methods
 

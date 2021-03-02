@@ -12,6 +12,8 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
             {
                 builder.ConfigurePerformanceTest();
             });
+
+            InstanceResolution = ((IIocContainer<IDependencyInstanceResolution>)Container).Kernel;
         }
 
         #endregion Constructors
@@ -19,6 +21,7 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
         #region Properties
 
         public IIocContainer Container { get; }
+        public IDependencyInstanceResolution InstanceResolution { get; }
 
         public bool RunComparisonTests => false;
 

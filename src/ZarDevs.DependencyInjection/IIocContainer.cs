@@ -2,9 +2,8 @@
 
 namespace ZarDevs.DependencyInjection
 {
-    // TODO BM: Add methods for getting all services e.g. IEnumerable<T> ResolveAll<T>()where T :
-    // class; TODO BM: Add methods for partial parameters and resolve rest (constructor matching to
-    // nearest parameter size)
+    // TODO BM: Add methods for getting all services e.g. IEnumerable<T> ResolveAll<T>()where T : class; 
+    // TODO BM: Add methods for partial parameters and resolve rest (constructor matching to nearest parameter size)
     /// <summary>
     /// IOC containter used to resolved a single instance
     /// </summary>
@@ -254,5 +253,17 @@ namespace ZarDevs.DependencyInjection
         T TryResolveWithKey<T>(object key) where T : class;
 
         #endregion Methods
+    }
+
+    /// <summary>
+    /// Ioc Containter with the Kernel exposed.
+    /// </summary>
+    /// <typeparam name="TKernel">The underlying resolution technology.</typeparam>
+    public interface IIocContainer<TKernel> : IIocContainer
+    {
+        /// <summary>
+        /// Get the IOC container kernel that is the underlying resolution technology.
+        /// </summary>
+        public TKernel Kernel { get; }
     }
 }

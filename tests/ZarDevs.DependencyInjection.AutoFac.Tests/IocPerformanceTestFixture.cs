@@ -16,7 +16,7 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
                 builder.ConfigurePerformanceTest();
             });
 
-            DirectContainer = ((IocContainer)Container).Container.Container;
+            DirectContainer = ((IIocContainer<IContainer>)Container).Kernel;
             ContainerComparison = CreateComparison();
         }
 

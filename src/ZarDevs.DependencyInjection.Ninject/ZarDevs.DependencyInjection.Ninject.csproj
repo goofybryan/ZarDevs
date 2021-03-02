@@ -13,10 +13,17 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.0.1</Version>
     <LangVersion>9</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>DependencyInjection.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Ninject" Version="3.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\ZarDevs.DependencyInjection\DependencyInjection.pfx" Link="DependencyInjection.pfx" />
   </ItemGroup>
 
   <ItemGroup>

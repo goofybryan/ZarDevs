@@ -12,14 +12,14 @@ namespace ZarDevs.DependencyInjection.Microsoft.Tests
         {
             var services = new ServiceCollection();
 
-            var kernel = new IocKernelContainer(services);
+            var kernel = new IocKernelBuilder(services);
 
             Container = Ioc.Initialize(kernel,
                 builder => builder.ConfigurePerformanceTest(),
                 () => kernel.ConfigureServiceProvider(services.BuildServiceProvider())
             );
 
-            ContainerDirect = ((IocContainer)Container).ServiceProvider;
+            ContainerDirect = ((IIocContainer<IServiceProvider>)Container).Kernel;
             ContainerComparison = CreateComparison();
         }
 

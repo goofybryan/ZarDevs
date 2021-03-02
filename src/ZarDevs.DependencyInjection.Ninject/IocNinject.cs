@@ -4,15 +4,15 @@ namespace ZarDevs.DependencyInjection
 {
     public static class IocNinject
     {
-        public static IIocKernelContainer Initialize(INinjectSettings settings = null)
+        public static IIocKernelBuilder Initialize(INinjectSettings settings = null)
         {
             return InitializeKernel(settings);
         }
 
-        private static IocKernelContainer InitializeKernel(INinjectSettings settings)
+        private static IocKernelBuilder InitializeKernel(INinjectSettings settings)
         {
             var kernel = new StandardKernel(settings ?? new NinjectSettings());
-            return new IocKernelContainer(kernel);
+            return new IocKernelBuilder(kernel);
         }
     }
 }

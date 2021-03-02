@@ -3,12 +3,19 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>ZarDevs.DependencyInjection</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>DependencyInjection.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ZarDevs.DependencyInjection.Extensions\ZarDevs.DependencyInjection.Extensions.csproj" />
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
     <ProjectReference Include="..\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\ZarDevs.DependencyInjection\DependencyInjection.pfx" Link="DependencyInjection.pfx" />
   </ItemGroup>
 
 </Project>

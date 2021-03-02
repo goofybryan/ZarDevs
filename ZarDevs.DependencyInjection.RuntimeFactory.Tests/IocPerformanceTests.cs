@@ -17,7 +17,7 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 
         protected override T PerformanceResolveDirect<T>()
         {
-            throw new System.NotSupportedException("This test does not support a comparison");
+            return (T)Fixture.InstanceResolution.GetResolution(typeof(T)).Resolve();
         }
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class IocKernelContainer : IIocKernelContainer
+    public class IocKernelBuilder : IIocKernelBuilder
     {
         #region Fields
 
@@ -13,7 +13,7 @@ namespace ZarDevs.DependencyInjection
 
         #region Constructors
 
-        public IocKernelContainer(IKernel kernel)
+        public IocKernelBuilder(IKernel kernel)
         {
             Kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
             _container = DependencyContainer.Create(Kernel);

@@ -7,7 +7,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Methods
 
-        public static IIocKernelContainer Initialize()
+        public static IIocKernelBuilder Initialize()
         {
             return new IocKernelContainer();
         }

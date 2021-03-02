@@ -1,12 +1,11 @@
 ﻿using Autofac;
-using Autofac.Builder;
 using Autofac.Core;
 using System;
 using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
-    public class IocContainer : IIocContainer
+    internal class IocContainer : IIocContainer<IContainer>
     {
         #region Fields
 
@@ -19,19 +18,24 @@ namespace ZarDevs.DependencyInjection
         public IocContainer(IAutoFacDependencyContainer container)
         {
             Container = container ?? throw new ArgumentNullException(nameof(container));
+            Kernel = Container.Container;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IAutoFacDependencyContainer Container { get; }
-        public IContainer Kernel => Container.Container;
+        public IContainer Kernel { get; }
+
+        private IAutoFacDependencyContainer Container { get; }
 
         #endregion Properties
 
         #region Methods
 
+        /// <summary>
+        /// Disposed of the resources.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -205,43 +209,6 @@ namespace ZarDevs.DependencyInjection
             }
 
             return list.ToArray();
-        }
-
-        #endregion Methods
-    }
-
-    public class IocKernelContainer : IIocKernelContainer
-    {
-        #region Fields
-
-        private readonly IAutoFacDependencyContainer _container;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public IocKernelContainer(ContainerBuildOptions buildOptions)
-        {
-            _container = DependencyContainer.Create(buildOptions);
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public IDependencyBuilder CreateDependencyBuilder()
-        {
-            return new DependencyBuilder(_container);
-        }
-
-        public IDependencyContainer CreateDependencyContainer()
-        {
-            return _container;
-        }
-
-        public IIocContainer CreateIocContainer()
-        {
-            return new IocContainer(_container);
         }
 
         #endregion Methods

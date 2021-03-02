@@ -2,7 +2,7 @@
 
 namespace ZarDevs.DependencyInjection
 {
-    public interface IDependencyResolver : IIocContainer
+    public interface IDependencyResolver : IIocContainer<IDependencyInstanceResolution>
     {
     }
 
@@ -10,7 +10,6 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private readonly IDependencyInstanceResolution _instanceResolution;
         private bool _isDisposed;
 
         #endregion Fields
@@ -19,10 +18,16 @@ namespace ZarDevs.DependencyInjection
 
         public DependencyResolver(IDependencyInstanceResolution instanceResolution)
         {
-            _instanceResolution = instanceResolution ?? throw new ArgumentNullException(nameof(instanceResolution));
+            Kernel = instanceResolution ?? throw new ArgumentNullException(nameof(instanceResolution));
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        public IDependencyInstanceResolution Kernel { get; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -34,17 +39,17 @@ namespace ZarDevs.DependencyInjection
 
         public T Resolve<T>(params object[] parameters) where T : class
         {
-            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(parameters);
+            return (T)Kernel.GetResolution(typeof(T)).Resolve(parameters);
         }
 
         public T Resolve<T>(params (string, object)[] parameters) where T : class
         {
-            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve(parameters);
+            return (T)Kernel.GetResolution(typeof(T)).Resolve(parameters);
         }
 
         public T Resolve<T>() where T : class
         {
-            return (T)_instanceResolution.GetResolution(typeof(T)).Resolve();
+            return (T)Kernel.GetResolution(typeof(T)).Resolve();
         }
 
         public T ResolveNamed<T>(string key, params object[] parameters) where T : class
@@ -59,7 +64,7 @@ namespace ZarDevs.DependencyInjection
 
         public T ResolveNamed<T>(string name) where T : class
         {
-            return (T)_instanceResolution.GetResolution(name, typeof(T)).Resolve();
+            return (T)Kernel.GetResolution(name, typeof(T)).Resolve();
         }
 
         public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
@@ -84,32 +89,32 @@ namespace ZarDevs.DependencyInjection
 
         public T ResolveWithKey<T>(Enum enumValue) where T : class
         {
-            return (T)_instanceResolution.GetResolution(enumValue, typeof(T)).Resolve();
+            return (T)Kernel.GetResolution(enumValue, typeof(T)).Resolve();
         }
 
         public T ResolveWithKey<T>(object key) where T : class
         {
-            return (T)_instanceResolution.GetResolution(key, typeof(T)).Resolve();
+            return (T)Kernel.GetResolution(key, typeof(T)).Resolve();
         }
 
         public object TryResolve(Type requestType)
         {
-            return _instanceResolution.TryGetResolution(requestType)?.Resolve();
+            return Kernel.TryGetResolution(requestType)?.Resolve();
         }
 
         public T TryResolve<T>(params object[] parameters) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(parameters);
+            return (T)Kernel.TryGetResolution(typeof(T))?.Resolve(parameters);
         }
 
         public T TryResolve<T>(params (string, object)[] parameters) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve(parameters);
+            return (T)Kernel.TryGetResolution(typeof(T))?.Resolve(parameters);
         }
 
         public T TryResolve<T>() where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(typeof(T))?.Resolve();
+            return (T)Kernel.TryGetResolution(typeof(T))?.Resolve();
         }
 
         public T TryResolveNamed<T>(string key, params object[] parameters) where T : class
@@ -124,7 +129,7 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveNamed<T>(string name) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(name, typeof(T))?.Resolve();
+            return (T)Kernel.TryGetResolution(name, typeof(T))?.Resolve();
         }
 
         public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
@@ -149,12 +154,12 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveWithKey<T>(Enum enumValue) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(enumValue, typeof(T))?.Resolve();
+            return (T)Kernel.TryGetResolution(enumValue, typeof(T))?.Resolve();
         }
 
         public T TryResolveWithKey<T>(object key) where T : class
         {
-            return (T)_instanceResolution.TryGetResolution(key, typeof(T))?.Resolve();
+            return (T)Kernel.TryGetResolution(key, typeof(T))?.Resolve();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -163,7 +168,7 @@ namespace ZarDevs.DependencyInjection
 
             if (disposing)
             {
-                _instanceResolution.Dispose();
+                Kernel.Dispose();
             }
 
             _isDisposed = true;
@@ -171,22 +176,22 @@ namespace ZarDevs.DependencyInjection
 
         private object Resolve(object key, Type requestType, params object[] parameters)
         {
-            return _instanceResolution.GetResolution(key, requestType).Resolve(parameters);
+            return Kernel.GetResolution(key, requestType).Resolve(parameters);
         }
 
         private object Resolve(object key, Type requestType, params (string, object)[] parameters)
         {
-            return _instanceResolution.GetResolution(key, requestType).Resolve(parameters);
+            return Kernel.GetResolution(key, requestType).Resolve(parameters);
         }
 
         private object TryResolve(object key, Type requestType, params object[] parameters)
         {
-            return _instanceResolution.TryGetResolution(key, requestType)?.Resolve(parameters);
+            return Kernel.TryGetResolution(key, requestType)?.Resolve(parameters);
         }
 
         private object TryResolve(object key, Type requestType, params (string, object)[] parameters)
         {
-            return _instanceResolution.TryGetResolution(key, requestType)?.Resolve(parameters);
+            return Kernel.TryGetResolution(key, requestType)?.Resolve(parameters);
         }
 
         #endregion Methods

@@ -26,5 +26,31 @@
             <param name="buildOptions"></param>
             <returns></returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.IocContainer.Dispose">
+            <summary>
+            Disposed of the resources.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IocKernelBuilder">
+            <summary>
+            Ioc Kernerl Builder that will create instances of the underlying IOC technology
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.#ctor(Autofac.Builder.ContainerBuildOptions)">
+            <summary>
+            Instanciate a new instance with build options
+            </summary>
+            <param name="buildOptions">AutoFac build options.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.CreateDependencyBuilder">
+            <summary>
+            Create a new instance of the dependency builder
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.CreateIocContainer">
+            <summary>
+            Create a new instance of the IOC container that wraps the AutoFac container.
+            </summary>
+        </member>
     </members>
 </doc>

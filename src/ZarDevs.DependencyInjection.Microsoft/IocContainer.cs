@@ -1,19 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using ZarDevs.Runtime;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ZarDevs.DependencyInjection
 {
-    public interface IIocKernelServiceProvider
-    {
-        #region Methods
-
-        void ConfigureServiceProvider(IServiceProvider serviceProvider);
-
-        #endregion Methods
-    }
-
-    public class IocContainer : IIocContainer
+    internal class IocContainer : IIocContainer<IServiceProvider>
     {
         #region Fields
 
@@ -27,14 +17,14 @@ namespace ZarDevs.DependencyInjection
         public IocContainer(IDependencyResolver dependencyResolver, IServiceProvider serviceProvider)
         {
             _dependencyResolver = dependencyResolver ?? throw new ArgumentNullException(nameof(dependencyResolver));
-            ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            Kernel = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IServiceProvider ServiceProvider { get; set; }
+        public IServiceProvider Kernel { get; set; }
 
         #endregion Properties
 
@@ -53,7 +43,7 @@ namespace ZarDevs.DependencyInjection
 
         public T Resolve<T>() where T : class
         {
-            return (T)ServiceProvider.GetRequiredService(typeof(T));
+            return (T)Kernel.GetRequiredService(typeof(T));
         }
 
         public T Resolve<T>(params object[] parameters) where T : class
@@ -123,7 +113,7 @@ namespace ZarDevs.DependencyInjection
 
         public object TryResolve(Type requestType)
         {
-            return ServiceProvider.GetService(requestType);
+            return Kernel.GetService(requestType);
         }
 
         public T TryResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
@@ -180,63 +170,11 @@ namespace ZarDevs.DependencyInjection
                     _dependencyResolver.Dispose();
                     _dependencyResolver = null;
 
-                    ServiceProvider = null;
+                    Kernel = null;
                 }
 
                 _isDisposed = true;
             }
-        }
-
-        #endregion Methods
-    }
-
-    public sealed class IocKernelContainer : IIocKernelContainer, IIocKernelServiceProvider
-    {
-        #region Fields
-
-        private readonly IDependencyInstanceConfiguration _resolutionConfiguration;
-        private readonly IServiceCollection _serviceCollection;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public IocKernelContainer(IServiceCollection serviceCollection)
-        {
-            _serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
-            _resolutionConfiguration = new DependencyResolutionConfiguration();
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        public void ConfigureServiceProvider(IServiceProvider serviceProvider)
-        {
-            _resolutionConfiguration.AddInstanceResolution(serviceProvider, null);
-        }
-
-        public IDependencyBuilder CreateDependencyBuilder()
-        {
-            var activator = new MicrosoftUtilitiesActivator(InspectConstructor.Instance);
-            var dependencyContainer = new MicrosoftDependencyContainer(_serviceCollection, _resolutionConfiguration, activator);
-            var builder = new DependencyBuilder(dependencyContainer);
-
-            builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
-            builder.Bind<ICreate>().To(Create.Instance);
-            builder.Bind<IDependencyInstanceResolution>().To(_resolutionConfiguration);
-            builder.Bind<IDependencyTypeActivator>().To(activator);
-            builder.Bind<IDependencyResolver>().To<DependencyResolver>();
-
-            return builder;
-        }
-
-        public IIocContainer CreateIocContainer()
-        {
-            var resolution = (IDependencyInstanceResolution)_resolutionConfiguration;
-            var serviceProvider = (IServiceProvider)resolution.GetResolution(typeof(IServiceProvider)).Resolve();
-            var activator = serviceProvider.GetRequiredService<IDependencyResolver>();
-            return new IocContainer(activator, serviceProvider);
         }
 
         #endregion Methods

@@ -54,7 +54,7 @@ namespace ZarDevs.DependencyInjection
         /// </param>
         /// <param name="afterBuild">Specify an after build action.</param>
         /// <returns></returns>
-        public static IIocContainer Initialize(IIocKernelContainer container, Action<IDependencyBuilder> buildDependencies, Action afterBuild = null) => Instance.InitializeInternal(container, buildDependencies, afterBuild);
+        public static IIocContainer Initialize(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action afterBuild = null) => Instance.InitializeInternal(container, buildDependencies, afterBuild);
 
         /// <summary>
         /// Dispose of the IOC implementations.
@@ -67,7 +67,7 @@ namespace ZarDevs.DependencyInjection
             _kernel = null;
         }
 
-        private IIocContainer InitializeInternal(IIocKernelContainer container, Action<IDependencyBuilder> buildDependencies, Action afterBuild)
+        private IIocContainer InitializeInternal(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action afterBuild)
         {
             lock (this)
             {

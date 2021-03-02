@@ -14,9 +14,9 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="buildOptions"></param>
         /// <returns></returns>
-        public static IIocKernelContainer Initialize(ContainerBuildOptions buildOptions = ContainerBuildOptions.None)
+        public static IIocKernelBuilder Initialize(ContainerBuildOptions buildOptions = ContainerBuildOptions.None)
         {
-            return new IocKernelContainer(buildOptions);
+            return new IocKernelBuilder(buildOptions);
         }
 
         #endregion Methods

@@ -218,6 +218,60 @@
             <param name="requestType">The request type</param>
             <param name="key">The key</param>
         </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyInfo">
+            <summary>
+            Base dependency info class that describes the <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.RequestType"/>, <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.Scope"/> and optionally <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.Key"/> for any binding.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor">
+            <summary>
+            Create a new empty instance
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(ZarDevs.DependencyInjection.DependencyInfo)">
+            <summary>
+            Create a new instance with copied values.
+            </summary>
+            <param name="copy">The base instance to copy from.</param>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyInfo.Key">
+            <summary>
+            An optional key that will be used to define the binding.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyInfo.Scope">
+            <summary>
+            The scope that the binding will be defined to, default is <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScope.Transient"/>
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyInfo.RequestType">
+            <summary>
+            The request type that will be used to define what needs to be resolved.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.ToString">
+            <summary>
+            Overridden ToString describing the class properties.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyInstanceInfo">
+            <summary>
+            Dpendency info class that describes the dependency binding and the Instance that will always be resolved.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceInfo.#ctor(System.Object,ZarDevs.DependencyInjection.DependencyInfo)">
+            <summary>
+            Create a new instance
+            </summary>
+            <param name="instance">The instance that is always returned.</param>
+            <param name="copy">The initail descriptor that's values will be copied.</param>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyInstanceInfo.Instance">
+            <summary>
+            The instance that is always returned.
+            </summary>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.DependyBuilderScope">
             <summary>
             Dependency builder scope.
@@ -666,18 +720,29 @@
             <param name="key">The key of the resolution request.</param>
             <returns>The resolved type.</returns>
         </member>
-        <member name="T:ZarDevs.DependencyInjection.IIocKernelContainer">
+        <member name="T:ZarDevs.DependencyInjection.IIocContainer`1">
             <summary>
-            Ioc kernel container, this is what needs to be implemented by the IOC solution.
+            Ioc Containter with the Kernel exposed.
+            </summary>
+            <typeparam name="TKernel">The underlying resolution technology.</typeparam>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IIocContainer`1.Kernel">
+            <summary>
+            Get the IOC container kernel that is the underlying resolution technology.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IIocKernelContainer.CreateIocContainer">
+        <member name="T:ZarDevs.DependencyInjection.IIocKernelBuilder">
+            <summary>
+            Ioc Kernel Builder that will create instances of the underlying IOC technology
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocKernelBuilder.CreateIocContainer">
             <summary>
             Create the Ioc Container, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC implementation to resolve the request using the underlying IOC methodology.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IIocKernelContainer.CreateDependencyBuilder">
+        <member name="M:ZarDevs.DependencyInjection.IIocKernelBuilder.CreateDependencyBuilder">
             <summary>
             Create the dependency container that will be used to bind the dependencies and the transform it to the underlying IOC methodology.
             </summary>
@@ -698,7 +763,7 @@
             IOC instance
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.Ioc.Initialize(ZarDevs.DependencyInjection.IIocKernelContainer,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder},System.Action)">
+        <member name="M:ZarDevs.DependencyInjection.Ioc.Initialize(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder},System.Action)">
             <summary>
             Initialize the IOC solution. This must be called for the IOC to work.
             </summary>
