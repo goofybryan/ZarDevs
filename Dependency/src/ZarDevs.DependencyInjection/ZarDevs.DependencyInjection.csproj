@@ -23,4 +23,8 @@
     <DocumentationFile>ZarDevs.DependencyInjection.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
+  </ItemGroup>
+
 </Project>
