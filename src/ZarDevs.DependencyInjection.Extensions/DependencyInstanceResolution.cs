@@ -176,12 +176,30 @@ namespace ZarDevs.DependencyInjection
 
         private IDependencyResolution TryGetResolution(object key, Type requestType, bool throwOnNotFound)
         {
-            if (!_bindings.TryGetValue(requestType, out IDictionary<object, IDependencyResolution> binding)
-                || !binding.TryGetValue(key ?? string.Empty, out IDependencyResolution instanceType))
+            if (TryGetResolution(key, requestType, out IDependencyResolution resolution))
+                return resolution;
+
+            if (!requestType.IsConstructedGenericType) 
                 return new NotFoundDependencyResolution(requestType, key, throwOnNotFound);
 
-            return instanceType;
+            var genericType = requestType.GetGenericTypeDefinition();
+
+            if(!TryGetResolution(key, genericType, out resolution))
+                return new NotFoundDependencyResolution(requestType, key, throwOnNotFound);
+
+            Configure(requestType, resolution.MakeConcrete(requestType));
+
+            return _bindings[requestType][key ?? string.Empty];
         }
+
+        private bool TryGetResolution(object key, Type requestType, out IDependencyResolution resolution)
+        { 
+            resolution = null;
+
+            return _bindings.TryGetValue(requestType, out IDictionary<object, IDependencyResolution> binding)
+                            && binding.TryGetValue(key ?? string.Empty, out resolution);
+        }
+
 
         #endregion Methods
     }

@@ -167,10 +167,25 @@ namespace ZarDevs.DependencyInjection
             if (info == null)
                 return false;
 
-            IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> binding = builder.RegisterType(info.ResolvedType);
+            if (TryRegisterTypeGeneric(builder, info))
+                return true;
+
+            var binding = builder.RegisterType(info.ResolvedType);
 
             RegisterNamedDependency(binding, info);
+            Build(info, binding);
 
+            return true;
+        }
+
+        private bool TryRegisterTypeGeneric(ContainerBuilder builder, IDependencyTypeInfo info)
+        {
+            if (!info.ResolvedType.IsGenericType) 
+                return false;
+
+            var binding = builder.RegisterGeneric(info.ResolvedType);
+
+            RegisterNamedDependency(binding, info);
             Build(info, binding);
 
             return true;

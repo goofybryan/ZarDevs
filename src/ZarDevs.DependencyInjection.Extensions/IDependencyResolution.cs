@@ -1,4 +1,6 @@
-﻿namespace ZarDevs.DependencyInjection
+﻿using System;
+
+namespace ZarDevs.DependencyInjection
 {
     /// <summary>
     /// Define the dependency resolution and how to resolve it.
@@ -15,6 +17,13 @@
         #endregion Properties
 
         #region Methods
+
+        /// <summary>
+        /// Create a concrete resolution out of a generic.
+        /// </summary>
+        /// <param name="concreteRequest">The concrete request type.</param>
+        /// <returns>A resolution </returns>
+        IDependencyResolution MakeConcrete(Type concreteRequest);
 
         /// <summary>
         /// Resolve and return the instance

@@ -24,6 +24,38 @@ namespace ZarDevs.DependencyInjection.Tests
         #region Methods
 
         [Fact]
+        public void Resolve_GenericImplementations_ReturnsInstance()
+        {
+            // Act
+            IGenericTypeTests<int> intGeneric = Ioc.Resolve<IGenericTypeTests<int>>();
+            IGenericTypeTests<bool> boolGeneric = Ioc.Resolve<IGenericTypeTests<bool>>();
+
+            // Assert
+            Assert.NotNull(intGeneric);
+            Assert.NotNull(boolGeneric);
+            Assert.NotEqual(intGeneric.GetType(), boolGeneric.GetType());
+        }
+
+        [Fact]
+        public void Resolve_GenericSingltonImplementations_ReturnsSameInstanceForSameType()
+        {
+            // Act
+            IGenericSingletonTests<int> intGeneric1 = Ioc.Resolve<IGenericSingletonTests<int>>();
+            IGenericSingletonTests<int> intGeneric2 = Ioc.Resolve<IGenericSingletonTests<int>>();
+            IGenericSingletonTests<bool> boolGeneric1 = Ioc.Resolve<IGenericSingletonTests<bool>>();
+            IGenericSingletonTests<bool> boolGeneric2 = Ioc.Resolve<IGenericSingletonTests<bool>>();
+
+            // Assert
+            Assert.NotNull(intGeneric1);
+            Assert.NotNull(boolGeneric1);
+            Assert.NotNull(intGeneric2);
+            Assert.NotNull(boolGeneric2);
+            Assert.NotEqual(intGeneric1.GetType(), boolGeneric1.GetType());
+            Assert.Same(intGeneric1, intGeneric2);
+            Assert.Same(boolGeneric1, boolGeneric2);
+        }
+
+        [Fact]
         public void Resolve_Singleton_ReturnsSameInstance()
         {
             // Act
@@ -32,7 +64,7 @@ namespace ZarDevs.DependencyInjection.Tests
 
             // Assert
             AssertInstanceIsSame(instance1, instance2);
-            Assert.IsType<SingletonClass>(instance1);
+            Assert.IsType<SingletonClassTest>(instance1);
         }
 
         [Fact]
@@ -276,7 +308,7 @@ namespace ZarDevs.DependencyInjection.Tests
 
             // Assert
             AssertInstanceIsSame(instance1, instance2);
-            Assert.IsType<SingletonClass>(instance1);
+            Assert.IsType<SingletonClassTest>(instance1);
         }
 
         [Fact]

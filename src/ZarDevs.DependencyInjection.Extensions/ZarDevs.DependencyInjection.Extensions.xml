@@ -221,6 +221,15 @@
             The key that is associated to this resolution.
             </summary>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.MakeConcrete(System.Type)">
+            <summary>
+            Create a concrete resolution out of a generic.
+            </summary>
+            <param name="concreteRequest">The concrete request type.</param>
+            <exception cref="T:System.InvalidOperationException">Throws when the current <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/> is not compatible with the <paramref name="concreteRequest"/></exception>
+            <exception cref="T:System.NotSupportedException">Throws this when the resolution does not support making a</exception>
+            <returns>A resolution </returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.Resolve">
             <summary>
             Resolve and return the instance
@@ -240,6 +249,13 @@
             </summary>
             <param name="args">A list of ordered constructor arguments.</param>
             <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.OnMakeConcrete(System.Type)">
+            <summary>
+            Override to make a resolution, otherwise a <see cref="T:System.NotSupportedException"/> will be thrown.
+            </summary>
+            <param name="concreteRequest">The concrete request type.</param>
+            <returns></returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException">
             <summary>
@@ -575,6 +591,13 @@
             implements <see cref="T:System.IDisposable"/> that will be called.
             </summary>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencySingletionResolution`2.MakeConcrete(System.Type)">
+            <summary>
+            Make a concrete singleton resolution
+            </summary>
+            <param name="concreteRequest">The concrete request type.</param>
+            <returns></returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletionResolution`2.Resolve(System.Object[])">
             <summary>
             Initially resolve the instance and from then always return the instance.
@@ -616,7 +639,9 @@
             <summary>
             Create a new instance of of the dependency resolution.
             </summary>
-            <param name="info">The the <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/> that describes this resolution.</param>
+            <param name="info">
+            The the <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/> that describes this resolution.
+            </param>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencySingletonInstance.Key">
             <summary>
@@ -627,6 +652,11 @@
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
             implements <see cref="T:System.IDisposable"/> that will be called.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencySingletonInstance.MakeConcrete(System.Type)">
+            <summary>
+            This is not supported by this class.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletonInstance.Resolve">
@@ -687,6 +717,13 @@
             <param name="args">A list of named constructor arguments.</param>
             <returns>An instance for this resolution.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyTypeResolution.OnMakeConcrete(System.Type)">
+            <summary>
+            Override to make a resolution, otherwise a <see cref="T:System.NotSupportedException"/> will be thrown.
+            </summary>
+            <param name="concreteRequest">The concrete request type.</param>
+            <returns></returns>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyInstanceConfiguration">
             <summary>
             Dependency instance configuration
@@ -716,6 +753,13 @@
             <summary>
             The key that is associated to this resolution.
             </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolution.MakeConcrete(System.Type)">
+            <summary>
+            Create a concrete resolution out of a generic.
+            </summary>
+            <param name="concreteRequest">The concrete request type.</param>
+            <returns>A resolution </returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyResolution.Resolve">
             <summary>

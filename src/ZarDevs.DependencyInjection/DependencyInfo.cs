@@ -20,7 +20,7 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance with copied values.
         /// </summary>
         /// <param name="copy">The base instance to copy from.</param>
-        protected DependencyInfo(DependencyInfo copy)
+        protected DependencyInfo(IDependencyInfo copy)
         {
             Key = copy.Key;
             Scope = copy.Scope;

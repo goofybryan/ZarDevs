@@ -20,7 +20,9 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new instance of of the dependency resolution.
         /// </summary>
-        /// <param name="info">The the <see cref="IDependencyInstanceInfo"/> that describes this resolution.</param>
+        /// <param name="info">
+        /// The the <see cref="IDependencyInstanceInfo"/> that describes this resolution.
+        /// </param>
         public DependencySingletonInstance(IDependencyInstanceInfo info)
         {
             _info = info ?? throw new ArgumentNullException(nameof(info));
@@ -49,6 +51,14 @@ namespace ZarDevs.DependencyInjection
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// This is not supported by this class.
+        /// </summary>
+        public IDependencyResolution MakeConcrete(Type concreteRequest)
+        {
+            throw new NotSupportedException("An instance resolution does not support generic types.");
         }
 
         /// <summary>

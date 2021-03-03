@@ -64,6 +64,18 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
+        /// Make a concrete singleton resolution
+        /// </summary>
+        /// <param name="concreteRequest">The concrete request type.</param>
+        /// <returns></returns>
+        public IDependencyResolution MakeConcrete(Type concreteRequest)
+        {
+            var concreteResolution = (TResolution)_resolution.MakeConcrete(concreteRequest);
+
+            return new DependencySingletionResolution<TInfo, TResolution>(concreteResolution);
+        }
+
+        /// <summary>
         /// Initially resolve the instance and from then always return the instance.
         /// </summary>
         /// <param name="args">

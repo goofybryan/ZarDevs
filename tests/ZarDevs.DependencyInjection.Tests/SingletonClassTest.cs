@@ -8,6 +8,6 @@
 
     public interface ISingletonEnumClass { }
 
-    internal class SingletonClass : ISingletonClass, ISingletonEnumClass, ISingletonKeyClass, ISingletonNamedClass
+    internal class SingletonClassTest : ISingletonClass, ISingletonEnumClass, ISingletonKeyClass, ISingletonNamedClass
     { }
 }

@@ -228,7 +228,7 @@
             Create a new empty instance
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(ZarDevs.DependencyInjection.DependencyInfo)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
             Create a new instance with copied values.
             </summary>
@@ -473,6 +473,27 @@
             <summary>
             Get the resolved type that the IOC will resolved from the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>.
             </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyInfoExtentions">
+            <summary>
+            Dependency info extensions
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyInfo,System.Type)">
+            <summary>
+            Convert a generic type info into a concrete type info
+            </summary>
+            <param name="info">The current dependency info</param>
+            <param name="concreteRequestType">The concrete type that has been requested.</param>
+            <returns>A new instance of the dependency info with the concrete information set.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyTypeInfo,System.Type)">
+            <summary>
+            Convert a generic type info into a concrete type info
+            </summary>
+            <param name="typeInfo">The current dependency info</param>
+            <param name="concreteRequestType">The concrete type that has been requested.</param>
+            <returns>A new instance of the dependency info with the concrete information set.</returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IIocContainer">
             <summary>

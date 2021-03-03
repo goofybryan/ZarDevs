@@ -36,5 +36,10 @@ namespace ZarDevs.DependencyInjection
         {
             return Resolve();
         }
+
+        public IDependencyResolution MakeConcrete(Type concreteRequest)
+        {
+            throw new NotSupportedException("This is not supported by the not found resolution");
+        }
     }
 }

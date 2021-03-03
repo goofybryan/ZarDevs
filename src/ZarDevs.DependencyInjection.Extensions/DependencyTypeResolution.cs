@@ -58,6 +58,18 @@ namespace ZarDevs.DependencyInjection
             return _activator.Resolve(Info, args);
         }
 
+        /// <summary>
+        /// Override to make a resolution, otherwise a <see cref="NotSupportedException"/> will be thrown.
+        /// </summary>
+        /// <param name="concreteRequest">The concrete request type.</param>
+        /// <returns></returns>
+        protected override IDependencyResolution OnMakeConcrete(Type concreteRequest)
+        {
+            var concreteInfo = Info.As(concreteRequest);
+
+            return new DependencyTypeResolution(concreteInfo, _activator);
+        }
+
         #endregion Methods
     }
 }
