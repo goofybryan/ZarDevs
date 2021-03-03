@@ -1,0 +1,23 @@
+﻿using ZarDevs.DependencyInjection;
+
+namespace ZarDevs.Http
+{
+    internal class DependencyApiHttpFactoryHandler : IApiHttpHandlerFactory
+    {
+        public DependencyApiHttpFactoryHandler(IIocContainer ioc)
+        {
+            Ioc = ioc ?? throw new System.ArgumentNullException(nameof(ioc));
+        }
+
+        public IIocContainer Ioc { get; }
+
+        #region Methods
+
+        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler
+        {
+            return Ioc.Resolve<THandler>();
+        }
+
+        #endregion Methods
+    }
+}

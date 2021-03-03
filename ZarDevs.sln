@@ -3,51 +3,63 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Core.Models", "src\ZarDevs.Core.Models\ZarDevs.Core.Models.csproj", "{013D4102-B003-4B7A-928D-77F09B635420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Models", "Models\src\ZarDevs.Models\ZarDevs.Models.csproj", "{013D4102-B003-4B7A-928D-77F09B635420}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection", "src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj", "{F39ABCF7-00ED-4444-9FCF-D1CEDF1C5007}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection", "Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj", "{F39ABCF7-00ED-4444-9FCF-D1CEDF1C5007}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.AutoFac", "src\ZarDevs.DependencyInjection.AutoFac\ZarDevs.DependencyInjection.AutoFac.csproj", "{033AF347-0A9F-4ECD-B6A6-90C722E93E70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.AutoFac", "Dependency\src\ZarDevs.DependencyInjection.AutoFac\ZarDevs.DependencyInjection.AutoFac.csproj", "{033AF347-0A9F-4ECD-B6A6-90C722E93E70}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Ninject", "src\ZarDevs.DependencyInjection.Ninject\ZarDevs.DependencyInjection.Ninject.csproj", "{7CD803C2-E7C8-437A-903C-56622CA5BA50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Ninject", "Dependency\src\ZarDevs.DependencyInjection.Ninject\ZarDevs.DependencyInjection.Ninject.csproj", "{7CD803C2-E7C8-437A-903C-56622CA5BA50}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CC0DE82B-B126-4078-8E65-AAAD305851E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.AutoFac.Tests", "Dependency\tests\ZarDevs.DependencyInjection.AutoFac.Tests\ZarDevs.DependencyInjection.AutoFac.Tests.csproj", "{89922F45-8462-410C-A817-F17640CDEC7B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Tests", "Dependency\tests\ZarDevs.DependencyInjection.Tests\ZarDevs.DependencyInjection.Tests.csproj", "{FE886EB9-AB23-47E5-98D6-526F6A315A7D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.AutoFac.Tests", "tests\ZarDevs.DependencyInjection.AutoFac.Tests\ZarDevs.DependencyInjection.AutoFac.Tests.csproj", "{89922F45-8462-410C-A817-F17640CDEC7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Ninject.Tests", "Dependency\tests\ZarDevs.DependencyInjection.Ninject.Tests\ZarDevs.DependencyInjection.Ninject.Tests.csproj", "{3BC2BB36-1FE5-4778-BA0C-B8546F843D29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Tests", "tests\ZarDevs.DependencyInjection.Tests\ZarDevs.DependencyInjection.Tests.csproj", "{FE886EB9-AB23-47E5-98D6-526F6A315A7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Microsoft", "Dependency\src\ZarDevs.DependencyInjection.Microsoft\ZarDevs.DependencyInjection.Microsoft.csproj", "{566F52B4-AC6F-40DF-9D2F-0C32BF23B5F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Ninject.Tests", "tests\ZarDevs.DependencyInjection.Ninject.Tests\ZarDevs.DependencyInjection.Ninject.Tests.csproj", "{3BC2BB36-1FE5-4778-BA0C-B8546F843D29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Abstractions", "Http\src\ZarDevs.Http.Abstractions\ZarDevs.Http.Abstractions.csproj", "{50BA1813-544B-4A3C-BD52-36095442ABFC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Microsoft", "src\ZarDevs.DependencyInjection.Microsoft\ZarDevs.DependencyInjection.Microsoft.csproj", "{566F52B4-AC6F-40DF-9D2F-0C32BF23B5F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http", "Http\src\ZarDevs.Http\ZarDevs.Http.csproj", "{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Abstractions", "src\ZarDevs.Commands.Abstractions\ZarDevs.Commands.Abstractions.csproj", "{50BA1813-544B-4A3C-BD52-36095442ABFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api", "Http\src\ZarDevs.Http.Api\ZarDevs.Http.Api.csproj", "{633439A7-5836-48E7-810A-FE578A450848}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Http", "src\ZarDevs.Commands.Http\ZarDevs.Commands.Http.csproj", "{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Runtime", "Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj", "{2D26F10A-360D-4497-A9AC-2F46DC2C8550}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Api", "src\ZarDevs.Commands.Api\ZarDevs.Commands.Api.csproj", "{633439A7-5836-48E7-810A-FE578A450848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.DependencyInjection", "Http\src\ZarDevs.Http.DependencyInjection\ZarDevs.Http.DependencyInjection.csproj", "{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Runtime", "src\ZarDevs.Runtime\ZarDevs.Runtime.csproj", "{2D26F10A-360D-4497-A9AC-2F46DC2C8550}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.DependencyInjection", "Http\src\ZarDevs.Http.Api.DependencyInjection\ZarDevs.Http.Api.DependencyInjection.csproj", "{B542BDDD-BC5D-43AF-9E2E-1B1FBDA09E7B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Resources", "src\ZarDevs.Resources\ZarDevs.Resources.csproj", "{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Microsoft.Tests", "Dependency\tests\ZarDevs.DependencyInjection.Microsoft.Tests\ZarDevs.DependencyInjection.Microsoft.Tests.csproj", "{D29EBC23-AF29-45ED-B7D2-410F046AF597}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Validations", "src\ZarDevs.Validations\ZarDevs.Validations.csproj", "{6FC807C1-37FF-4CDB-A087-046CB9C251C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Runtime.Tests", "Runtime\tests\ZarDevs.Runtime.Tests\ZarDevs.Runtime.Tests.csproj", "{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Http.DependencyInjection", "src\ZarDevs.Commands.Http.DependencyInjection\ZarDevs.Commands.Http.DependencyInjection.csproj", "{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.RuntimeFactory", "Dependency\src\ZarDevs.DependencyInjection.RuntimeFactory\ZarDevs.DependencyInjection.RuntimeFactory.csproj", "{20E4D0E2-6DB9-408B-931F-2CE487DD00DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Commands.Api.DependencyInjection", "src\ZarDevs.Commands.Api.DependencyInjection\ZarDevs.Commands.Api.DependencyInjection.csproj", "{B542BDDD-BC5D-43AF-9E2E-1B1FBDA09E7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Extensions", "Dependency\src\ZarDevs.DependencyInjection.Extensions\ZarDevs.DependencyInjection.Extensions.csproj", "{FA85C5F8-8DD1-4739-B05F-1990D52E9E5B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Microsoft.Tests", "tests\ZarDevs.DependencyInjection.Microsoft.Tests\ZarDevs.DependencyInjection.Microsoft.Tests.csproj", "{D29EBC23-AF29-45ED-B7D2-410F046AF597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.RuntimeFactory.Tests", "Dependency\tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests.csproj", "{F3E4900F-66D7-47A0-BB91-A967C4AD98A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Runtime.Tests", "tests\ZarDevs.Runtime.Tests\ZarDevs.Runtime.Tests.csproj", "{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependency", "Dependency", "{CFEF35B0-740D-4194-8264-985633F4F8FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.RuntimeFactory", "src\ZarDevs.DependencyInjection.RuntimeFactory\ZarDevs.DependencyInjection.RuntimeFactory.csproj", "{20E4D0E2-6DB9-408B-931F-2CE487DD00DD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Extensions", "src\ZarDevs.DependencyInjection.Extensions\ZarDevs.DependencyInjection.Extensions.csproj", "{FA85C5F8-8DD1-4739-B05F-1990D52E9E5B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E6091740-CD92-4CCC-AD29-F27DB241EBCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.DependencyInjection.RuntimeFactory.Tests", "tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests.csproj", "{F3E4900F-66D7-47A0-BB91-A967C4AD98A9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{616E0557-6A93-4A68-9302-5F1BDEE00425}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A1D45145-6BC3-40AB-BE02-D67DAEEE594E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D3D1AAE4-B7CD-4358-AB13-7939A23F05CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{AA2F38D3-258F-45CE-8043-F118BF8E66DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B22FC00E-C83F-4EAD-94EC-A0180C7CD9D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Http", "Http", "{6FC4B09E-1759-4B42-8EEC-C626A6B928C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{326C7DFF-E27E-4A8B-BB19-8EC784997449}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,14 +115,6 @@ Global
 		{2D26F10A-360D-4497-A9AC-2F46DC2C8550}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D26F10A-360D-4497-A9AC-2F46DC2C8550}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D26F10A-360D-4497-A9AC-2F46DC2C8550}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FC807C1-37FF-4CDB-A087-046CB9C251C2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -144,27 +148,31 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{013D4102-B003-4B7A-928D-77F09B635420} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{F39ABCF7-00ED-4444-9FCF-D1CEDF1C5007} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{033AF347-0A9F-4ECD-B6A6-90C722E93E70} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{7CD803C2-E7C8-437A-903C-56622CA5BA50} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{89922F45-8462-410C-A817-F17640CDEC7B} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
-		{FE886EB9-AB23-47E5-98D6-526F6A315A7D} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
-		{3BC2BB36-1FE5-4778-BA0C-B8546F843D29} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
-		{566F52B4-AC6F-40DF-9D2F-0C32BF23B5F0} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{50BA1813-544B-4A3C-BD52-36095442ABFC} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{633439A7-5836-48E7-810A-FE578A450848} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{2D26F10A-360D-4497-A9AC-2F46DC2C8550} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{6767CFA7-2C0C-4F6D-BCAC-190A27ECC686} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{6FC807C1-37FF-4CDB-A087-046CB9C251C2} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{B542BDDD-BC5D-43AF-9E2E-1B1FBDA09E7B} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{D29EBC23-AF29-45ED-B7D2-410F046AF597} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
-		{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
-		{20E4D0E2-6DB9-408B-931F-2CE487DD00DD} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{FA85C5F8-8DD1-4739-B05F-1990D52E9E5B} = {CC0DE82B-B126-4078-8E65-AAAD305851E6}
-		{F3E4900F-66D7-47A0-BB91-A967C4AD98A9} = {45193D80-B87F-4A5F-A3C6-B80BAB03FAC8}
+		{013D4102-B003-4B7A-928D-77F09B635420} = {B22FC00E-C83F-4EAD-94EC-A0180C7CD9D8}
+		{F39ABCF7-00ED-4444-9FCF-D1CEDF1C5007} = {F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}
+		{033AF347-0A9F-4ECD-B6A6-90C722E93E70} = {F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}
+		{7CD803C2-E7C8-437A-903C-56622CA5BA50} = {F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}
+		{89922F45-8462-410C-A817-F17640CDEC7B} = {E6091740-CD92-4CCC-AD29-F27DB241EBCE}
+		{FE886EB9-AB23-47E5-98D6-526F6A315A7D} = {E6091740-CD92-4CCC-AD29-F27DB241EBCE}
+		{3BC2BB36-1FE5-4778-BA0C-B8546F843D29} = {E6091740-CD92-4CCC-AD29-F27DB241EBCE}
+		{566F52B4-AC6F-40DF-9D2F-0C32BF23B5F0} = {F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}
+		{50BA1813-544B-4A3C-BD52-36095442ABFC} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
+		{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
+		{633439A7-5836-48E7-810A-FE578A450848} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
+		{2D26F10A-360D-4497-A9AC-2F46DC2C8550} = {A1D45145-6BC3-40AB-BE02-D67DAEEE594E}
+		{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
+		{B542BDDD-BC5D-43AF-9E2E-1B1FBDA09E7B} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
+		{D29EBC23-AF29-45ED-B7D2-410F046AF597} = {E6091740-CD92-4CCC-AD29-F27DB241EBCE}
+		{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C} = {D3D1AAE4-B7CD-4358-AB13-7939A23F05CE}
+		{20E4D0E2-6DB9-408B-931F-2CE487DD00DD} = {F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}
+		{FA85C5F8-8DD1-4739-B05F-1990D52E9E5B} = {F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}
+		{F3E4900F-66D7-47A0-BB91-A967C4AD98A9} = {E6091740-CD92-4CCC-AD29-F27DB241EBCE}
+		{F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E} = {CFEF35B0-740D-4194-8264-985633F4F8FF}
+		{E6091740-CD92-4CCC-AD29-F27DB241EBCE} = {CFEF35B0-740D-4194-8264-985633F4F8FF}
+		{A1D45145-6BC3-40AB-BE02-D67DAEEE594E} = {616E0557-6A93-4A68-9302-5F1BDEE00425}
+		{D3D1AAE4-B7CD-4358-AB13-7939A23F05CE} = {616E0557-6A93-4A68-9302-5F1BDEE00425}
+		{B22FC00E-C83F-4EAD-94EC-A0180C7CD9D8} = {AA2F38D3-258F-45CE-8043-F118BF8E66DC}
+		{326C7DFF-E27E-4A8B-BB19-8EC784997449} = {6FC4B09E-1759-4B42-8EEC-C626A6B928C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BBC94B1-CE12-4692-BE35-086344F06179}

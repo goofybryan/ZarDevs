@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>ZarDevs.Commands.Api.DependencyInjection</AssemblyName>
+    <RootNamespace>ZarDevs.Http.Api</RootNamespace>
+    <LangVersion>9</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http.Api\ZarDevs.Http.Api.csproj" />
+  </ItemGroup>
+
+</Project>

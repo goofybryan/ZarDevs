@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Bryan Musso</Authors>
+    <Company>ZarsDevs</Company>
+    <PackageProjectUrl>https://dev.azure.com/ZarDevs/ZarDevs</PackageProjectUrl>
+    <RepositoryUrl>https://dev.azure.com/ZarDevs/_git/ZarDevs</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>ZarDevs Core</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>This assembly is used for runtime manipulation.</Description>
+    <Version>0.0.1</Version>
+    <LangVersion>9</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>RunTime.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <LangVersion>9</LangVersion>
+  </PropertyGroup>
+
+</Project>

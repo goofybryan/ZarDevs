@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>ZarDevs.Http.Api</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Bryan Musso</Authors>
+    <Company>ZarsDevs</Company>
+    <PackageProjectUrl>https://dev.azure.com/ZarDevs/ZarDevs</PackageProjectUrl>
+    <RepositoryUrl>https://dev.azure.com/ZarDevs/_git/ZarDevs</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>ZarDevs Core</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>0.0.1</Version>
+    <LangVersion>9</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http.Abstractions\ZarDevs.Http.Abstractions.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http\ZarDevs.Http.csproj" />
+  </ItemGroup>
+
+</Project>
