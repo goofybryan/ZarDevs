@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
@@ -39,6 +40,13 @@ namespace ZarDevs.DependencyInjection
         /// <typeparam name="T">The request type</typeparam>
         /// <returns>The resolved type.</returns>
         T Resolve<T>() where T : class;
+
+        /// <summary>
+        /// Resolve all instance of the requested type <paramref name="requestType"/>.
+        /// </summary>
+        /// <param name="requestType">The request type to resolve,</param>
+        /// <returns>The resolved IEnumberable as an object (can safely be cast to IEnumerable).</returns>
+        IEnumerable ResolveAll(Type requestType);
 
         /// <summary>
         /// Resolve all instance of the requested type <typeparamref name="T"/>.

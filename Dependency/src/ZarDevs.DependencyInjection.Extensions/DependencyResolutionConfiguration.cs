@@ -33,7 +33,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="type">The request type that will need to be resolved.</param>
         /// <param name="key">The key that is requested, can be null.</param>
         /// <returns>A list of resolutions, if none found, will return <see cref="Enumerable.Empty{IDependencyResolution}"/></returns>
-        IEnumerable<IDependencyResolution> GetResolutionsByKey(Type type, object key);
+        IList<IDependencyResolution> GetResolutionsByKey(Type type, object key);
 
         /// <summary>
         /// Get a list of configured resolutions. If any generic resolution is requested, it will be
@@ -41,7 +41,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="type">The request type that will need to be resolved.</param>
         /// <returns>A list of resolutions, if none found, will return <see cref="Enumerable.Empty{IDependencyResolution}"/></returns>
-        IEnumerable<IDependencyResolution> GetResolutionsByType(Type type);
+        IList<IDependencyResolution> GetResolutionsByType(Type type);
 
         #endregion Methods
     }
@@ -108,9 +108,9 @@ namespace ZarDevs.DependencyInjection
         /// <param name="type">The request type that will need to be resolved.</param>
         /// <param name="key">The key that is requested, can be null. Be warned, if the key is null, it will only return configured values that have a null key.</param>
         /// <returns>A list of resolutions, if none found, will return <see cref="Enumerable.Empty{IDependencyResolution}"/></returns>
-        public IEnumerable<IDependencyResolution> GetResolutionsByKey(Type type, object key)
+        public IList<IDependencyResolution> GetResolutionsByKey(Type type, object key)
         {
-            return GetResolutionsByType(type).Where(r => Equals(r.Key, key));
+            return GetResolutionsByType(type).Where(r => Equals(r.Key, key)).ToArray();
         }
 
         /// <summary>
@@ -119,20 +119,20 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="type">The request type that will need to be resolved.</param>
         /// <returns>A list of resolutions, if none found, will return <see cref="Enumerable.Empty{IDependencyResolution}"/></returns>
-        public IEnumerable<IDependencyResolution> GetResolutionsByType(Type type)
+        public IList<IDependencyResolution> GetResolutionsByType(Type type)
         {
             if (_typeMap.TryGetValue(type, out var resolutions))
-                return resolutions.AsEnumerable();
+                return resolutions.ToArray();
 
             if (!type.IsConstructedGenericType)
-                return Enumerable.Empty<IDependencyResolution>();
+                return new IDependencyResolution[0];
 
             var genericType = type.GetGenericTypeDefinition();
 
             if (!_typeMap.TryGetValue(genericType, out resolutions))
-                return Enumerable.Empty<IDependencyResolution>();
+                return new IDependencyResolution[0];
 
-            return _typeMap.GetOrAdd(type, t => CreateConcreteResolutions(type, resolutions)).AsEnumerable();
+            return _typeMap.GetOrAdd(type, t => CreateConcreteResolutions(type, resolutions)).ToArray();
         }
 
         /// <summary>

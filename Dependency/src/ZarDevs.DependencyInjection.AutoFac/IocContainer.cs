@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
@@ -60,6 +61,11 @@ namespace ZarDevs.DependencyInjection
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
             return Kernel.Resolve<IMultipleResolver<T>>().Resolved;
+        }
+
+        public IEnumerable ResolveAll(Type requestType)
+        {
+            return ((MultipleResolver)Kernel.Resolve(MultipleResolver.MakeConcreateOfType(requestType))).ResolvedAsObject;
         }
 
         public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class

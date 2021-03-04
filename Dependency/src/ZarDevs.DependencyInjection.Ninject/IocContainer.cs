@@ -1,6 +1,7 @@
 ﻿using Ninject;
 using Ninject.Parameters;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ZarDevs.Runtime;
@@ -63,6 +64,11 @@ namespace ZarDevs.DependencyInjection
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
             return Kernel.GetAll<T>();
+        }
+
+        public IEnumerable ResolveAll(Type requestType)
+        {
+            return Kernel.GetAll(requestType);
         }
 
         public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -19,32 +21,49 @@ namespace ZarDevs.DependencyInjection
         /// Resolve and resolutions and return
         /// </summary>
         /// <returns>An IEnumerable of the resolved values</returns>
-        IEnumerable<object> Resolve();
+        IEnumerable Resolve();
     }
 
     internal class DependencyResolutions : IDependencyResolutions
     {
-        private readonly IEnumerable<IDependencyResolution> _resolutions;
+        private readonly Type _requestType;
+        private readonly IList<IDependencyResolution> _resolutions;
 
-        public DependencyResolutions(IEnumerable<IDependencyResolution> resolutions)
+        public DependencyResolutions(Type requestType, IList<IDependencyResolution> resolutions)
         {
+            _requestType = requestType ?? throw new ArgumentNullException(nameof(requestType));
             _resolutions = resolutions ?? throw new ArgumentNullException(nameof(resolutions));
         }
 
         public IEnumerable<T> Resolve<T>()
         {
-            foreach(var resolution in _resolutions)
+            return YieldResolve<T>().ToArray();
+        }
+
+        public IEnumerable Resolve()
+        {
+            return YieldResolve();
+        }
+
+        private IEnumerable<T> YieldResolve<T>()
+        {
+            foreach (var resolution in _resolutions)
             {
                 yield return (T)resolution.Resolve();
             }
         }
 
-        public IEnumerable<object> Resolve()
+        private IEnumerable YieldResolve()
         {
-            foreach (var resolution in _resolutions)
+            Array resolved = Array.CreateInstance(_requestType, _resolutions.Count);
+
+            for (int i = 0; i < _resolutions.Count; i++)
             {
-                yield return resolution.Resolve();
+                IDependencyResolution resolution = _resolutions[i];
+                resolved.SetValue(resolution.Resolve(), i);
             }
+
+            return resolved;
         }
     }
 }

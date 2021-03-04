@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
@@ -98,6 +99,16 @@ namespace ZarDevs.DependencyInjection
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
             return Kernel.GetAllResolutions(typeof(T)).Resolve<T>();
+        }
+
+        /// <summary>
+        /// Resolve all instance of the requested type <paramref name="requestType"/>.
+        /// </summary>
+        /// <param name="requestType">The request type to resolve,</param>
+        /// <returns>The resolved IEnumberable as an object (can safely be cast to IEnumerable).</returns>
+        public IEnumerable ResolveAll(Type requestType)
+        {
+            return Kernel.GetAllResolutions(requestType).Resolve();
         }
 
         /// <summary>

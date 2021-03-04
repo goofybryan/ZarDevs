@@ -495,6 +495,13 @@
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveAll(System.Type)">
+            <summary>
+            Resolve all instance of the requested type <paramref name="requestType"/>.
+            </summary>
+            <param name="requestType">The request type to resolve,</param>
+            <returns>The resolved IEnumberable as an object (can safely be cast to IEnumerable).</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveNamed``1(System.String,System.Object[])">
             <summary>
             Resolved the requested type with the list of paramaters specified.

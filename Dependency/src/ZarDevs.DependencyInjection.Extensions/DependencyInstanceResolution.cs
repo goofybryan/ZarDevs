@@ -125,7 +125,7 @@ namespace ZarDevs.DependencyInjection
         /// </returns>
         public IDependencyResolutions GetAllResolutions(Type requestType)
         {
-            return new DependencyResolutions(_configuration.GetResolutionsByType(requestType));
+            return new DependencyResolutions(requestType, _configuration.GetResolutionsByType(requestType));
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace ZarDevs.DependencyInjection
         /// </returns>
         public IDependencyResolutions GetAllResolutions(Type requestType, object key)
         {
-            return new DependencyResolutions(_configuration.GetResolutionsByKey(requestType, key));
+            return new DependencyResolutions(requestType, _configuration.GetResolutionsByKey(requestType, key));
         }
 
         /// <summary>

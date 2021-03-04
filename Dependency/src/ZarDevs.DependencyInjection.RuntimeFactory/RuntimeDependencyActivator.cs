@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,10 @@ namespace ZarDevs.DependencyInjection
         {
             foreach (Type argType in ConstructorArgs)
             {
-                yield return Ioc.Container.TryResolve(argType);
+                if (typeof(IEnumerable).IsAssignableFrom(argType) && argType.GenericTypeArguments.Length > 0)
+                    yield return  Ioc.Container.ResolveAll(argType.GenericTypeArguments[0]);
+                else
+                    yield return Ioc.Container.TryResolve(argType);
             }
         }
 

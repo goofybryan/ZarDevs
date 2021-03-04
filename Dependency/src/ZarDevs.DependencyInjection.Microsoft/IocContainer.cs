@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -55,6 +56,11 @@ namespace ZarDevs.DependencyInjection
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
             return Kernel.GetServices<T>();
+        }
+
+        public IEnumerable ResolveAll(Type requestType)
+        {
+            return Kernel.GetServices(requestType);
         }
 
         public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
