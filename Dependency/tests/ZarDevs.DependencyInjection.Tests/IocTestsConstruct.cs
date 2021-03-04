@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace ZarDevs.DependencyInjection.Tests
@@ -240,6 +243,87 @@ namespace ZarDevs.DependencyInjection.Tests
 
                 Assert.Equal(expectedValue, actualValue);
             }
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindings_ReturnsAll()
+        {
+            // Act
+            IEnumerable<IMultipleBindingClassTest> all = Ioc.ResolveAll<IMultipleBindingClassTest>();
+
+            // Assert
+            Assert.NotNull(all);
+            var listAll = all.ToList();
+            Assert.Equal(3, listAll.Count);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest1);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest2);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest3);
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindingsConstructor_ReturnsAll()
+        {
+            // Act
+            IMultipleBindingConstructorClassTest test = Ioc.Resolve<IMultipleBindingConstructorClassTest>();
+
+            // Assert
+            Assert.NotNull(test);
+            Assert.NotNull(test.MultipleBindings);
+            var listAll = test.MultipleBindings.ToList();
+            Assert.Equal(3, listAll.Count);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest1);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest2);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest3);
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindingsGeneric_ReturnsAll()
+        {
+            // Act
+            IEnumerable<IMultipleBindingClassTest<int>> allInt = Ioc.ResolveAll<IMultipleBindingClassTest<int>>();
+            IEnumerable<IMultipleBindingClassTest<bool>> allBool = Ioc.ResolveAll<IMultipleBindingClassTest<bool>>();
+
+            // Assert
+            Assert.NotNull(allInt);
+            var listAllInt = allInt.ToList();
+            Assert.Equal(3, listAllInt.Count);
+            Assert.All(listAllInt, Assert.NotNull);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest1<int>);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest2<int>);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest3<int>);
+
+            Assert.NotNull(allBool);
+            var listAllBool = allBool.ToList();
+            Assert.Equal(3, listAllBool.Count);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest1<bool>);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest2<bool>);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest3<bool>);
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindingsGenericConstructor_ReturnsAll()
+        {
+            // Act
+            IMultipleBindingConstructorClassTest<int> testInt = Ioc.Resolve<IMultipleBindingConstructorClassTest<int>>();
+            IMultipleBindingConstructorClassTest<bool> testBool = Ioc.Resolve<IMultipleBindingConstructorClassTest<bool>>();
+
+            // Assert
+            Assert.NotNull(testInt);
+            Assert.NotNull(testInt.MultipleBindings);
+            var listAllInt = testInt.MultipleBindings.ToList();
+            Assert.Equal(3, listAllInt.Count);
+            Assert.All(listAllInt, Assert.NotNull);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest1<int>);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest2<int>);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest3<int>);
+
+            Assert.NotNull(testBool);
+            Assert.NotNull(testBool.MultipleBindings);
+            var listAllBool = testBool.MultipleBindings.ToList();
+            Assert.Equal(3, listAllBool.Count);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest1<bool>);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest2<bool>);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest3<bool>);
         }
 
         [Fact]

@@ -32,6 +32,14 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<INotBindedKeyed>().To<NotBindedClass>().WithKey(typeof(INormalClass));
             builder.Bind(typeof(IGenericTypeTests<>)).To(typeof(GenericTypeTest<>));
             builder.Bind(typeof(IGenericSingletonTests<>)).To(typeof(GenericTypeTest<>)).InSingletonScope();
+            builder.Bind<IMultipleBindingClassTest>().To<MultipleBindingClassTest1>().WithKey(nameof(MultipleBindingClassTest1));
+            builder.Bind<IMultipleBindingClassTest>().To<MultipleBindingClassTest2>().WithKey(nameof(MultipleBindingClassTest2));
+            builder.Bind<IMultipleBindingClassTest>().To<MultipleBindingClassTest3>().WithKey(nameof(MultipleBindingClassTest3));
+            builder.Bind<IMultipleBindingConstructorClassTest>().To<MultipleBindingConstructorClassTest>();
+            builder.Bind(typeof(IMultipleBindingConstructorClassTest<>)).To(typeof(MultipleBindingConstructorClassTest<>));
+            builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest1<>)).WithKey(typeof(MultipleBindingClassTest1<>).Name);
+            builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest2<>)).WithKey(typeof(MultipleBindingClassTest2<>).Name);
+            builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest3<>)).WithKey(typeof(MultipleBindingClassTest3<>).Name);
         }
 
         public static void ConfigurePerformanceTest(this IDependencyBuilder builder)
