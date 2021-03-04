@@ -33,7 +33,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// The key that is associated to this resolution.
         /// </summary>
-        public object Key => Info.Key ?? string.Empty;
+        public object Key => Info.Key;
 
 
         /// <summary>

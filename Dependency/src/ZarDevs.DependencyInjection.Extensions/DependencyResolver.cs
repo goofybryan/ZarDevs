@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -88,6 +89,17 @@ namespace ZarDevs.DependencyInjection
         {
             return (T)Kernel.GetResolution(typeof(T)).Resolve();
         }
+
+        /// <summary>
+        /// Resolve all instance of the requested type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The request type</typeparam>
+        /// <returns>The resolved type.</returns>
+        public IEnumerable<T> ResolveAll<T>() where T : class
+        {
+            return Kernel.GetAllResolutions(typeof(T)).Resolve<T>();
+        }
+
         /// <summary>
         /// Resolved the requested type with the list of paramaters specified.
         /// </summary>

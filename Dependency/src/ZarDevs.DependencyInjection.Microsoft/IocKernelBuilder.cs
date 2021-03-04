@@ -25,7 +25,8 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private readonly IDependencyInstanceConfiguration _resolutionConfiguration;
+        private readonly IDependencyResolutionConfiguration _resolutionConfiguration;
+        private readonly IDependencyInstanceResolution _instanceResolution;
         private readonly IServiceCollection _serviceCollection;
 
         #endregion Fields
@@ -35,7 +36,8 @@ namespace ZarDevs.DependencyInjection
         public IocKernelBuilder(IServiceCollection serviceCollection)
         {
             _serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
-            _resolutionConfiguration = new DependencyInstanceResolution();
+            _resolutionConfiguration = new DependencyResolutionConfiguration();
+            _instanceResolution = new DependencyInstanceResolution(_resolutionConfiguration);
         }
 
         #endregion Constructors
@@ -43,7 +45,7 @@ namespace ZarDevs.DependencyInjection
         #region Methods>
         public void ConfigureServiceProvider(IServiceProvider serviceProvider)
         {
-            _resolutionConfiguration.AddInstanceResolution(serviceProvider, null);
+            _resolutionConfiguration.AddInstance(serviceProvider);
         }
 
         public IDependencyBuilder CreateDependencyBuilder()
@@ -54,7 +56,8 @@ namespace ZarDevs.DependencyInjection
 
             builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
             builder.Bind<ICreate>().To(Create.Instance);
-            builder.Bind<IDependencyInstanceResolution>().To(_resolutionConfiguration);
+            builder.Bind<IDependencyResolutionConfiguration>().To(_resolutionConfiguration);
+            builder.Bind<IDependencyInstanceResolution>().To(_instanceResolution);
             builder.Bind<IDependencyTypeActivator>().To(activator);
             builder.Bind<IDependencyResolver>().To<DependencyResolver>();
 
@@ -63,8 +66,7 @@ namespace ZarDevs.DependencyInjection
 
         public IIocContainer CreateIocContainer()
         {
-            var resolution = (IDependencyInstanceResolution)_resolutionConfiguration;
-            var serviceProvider = (IServiceProvider)resolution.GetResolution(typeof(IServiceProvider)).Resolve();
+            var serviceProvider = (IServiceProvider)_instanceResolution.GetResolution(typeof(IServiceProvider)).Resolve();
             var activator = serviceProvider.GetRequiredService<IDependencyResolver>();
             return new IocContainer(activator, serviceProvider);
         }

@@ -14,8 +14,8 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         public IocKernelBuilder()
         {
-            DependencyInstanceResolution configuration = new DependencyInstanceResolution();
-            InstanceResolution = configuration;
+            DependencyResolutionConfiguration configuration = new DependencyResolutionConfiguration();
+            InstanceResolution = new DependencyInstanceResolution(configuration);
             Activator = new RuntimeDependencyActivator(InspectConstructor.Instance, Create.Instance);
             Container = new DependencyContainer(configuration, Activator);
         }

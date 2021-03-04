@@ -21,7 +21,7 @@
             Dependency container that is used to build bindings and apply them to the configuration.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.#ctor(ZarDevs.DependencyInjection.IDependencyInstanceConfiguration,ZarDevs.DependencyInjection.IDependencyTypeActivator)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeActivator)">
             <summary>
             Create a new instance of the dependency container.
             </summary>
@@ -69,12 +69,36 @@
             Dependency instance resolution
             </summary>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.GetAllResolutions(System.Type)">
+            <summary>
+            Get all the resolution for the request type.
+            </summary>
+            <param name="requestType">The request type that will need to be resolved.</param>
+            <returns>
+            The resolved instance, if not found an empty <see
+            cref="M:System.Linq.Enumerable.Empty``1"/> will be returned.
+            </returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.GetAllResolutions(System.Type,System.Object)">
+            <summary>
+            Get all the resolution for the request type.
+            </summary>
+            <param name="requestType">The request type that will need to be resolved.</param>
+            <param name="key">The key for this resolution. A null value is also considered a key.</param>
+            <returns>
+            The resolved instance, if not found an empty <see
+            cref="M:System.Linq.Enumerable.Empty``1"/> will be returned.
+            </returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.GetResolution(System.Type)">
             <summary>
             Get the resolution for the request type.
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
-            <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.</returns>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.
+            </returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.GetResolution(System.Object,System.Type)">
             <summary>
@@ -82,14 +106,20 @@
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
             <param name="key">The key for this resolution.</param>
-            <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.</returns>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.
+            </returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.TryGetResolution(System.Type)">
             <summary>
             Try and get the resolution for the request type.
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
-            <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that will return null when resolved.</returns>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will return null when resolved.
+            </returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.TryGetResolution(System.Object,System.Type)">
             <summary>
@@ -97,32 +127,21 @@
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
             <param name="key">The key for this resolution.</param>
-            <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that will return null when resolved.</returns>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will return null when resolved.
+            </returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyInstanceResolution">
             <summary>
-            Dependency resolution configuration is used to configure any dependency resolutions and get them them at runtime.
+            Dependency resolution configuration is used to configure any dependency resolutions and get
+            them them at runtime.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.#ctor">
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration)">
             <summary>
             Create a new instance of the Dependency resolution configuration.
             </summary>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.AddInstanceResolution``1(``0,System.Object)">
-            <summary>
-            Add an instance to the configuration for the Type <typeparamref name="T"/>
-            </summary>
-            <typeparam name="T">The type of the instance.</typeparam>
-            <param name="instance">The instance that will always be resolved.</param>
-            <param name="key">An optional key</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.Configure(System.Type,ZarDevs.DependencyInjection.IDependencyResolution)">
-            <summary>
-            Configure the request type <paramref name="requestType"/> to the resolution <paramref name="info"/>
-            </summary>
-            <param name="requestType">The request type that will need to be resolved.</param>
-            <param name="info">The resolution that will be implemented.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.Dispose">
             <summary>
@@ -130,20 +149,47 @@
             implements <see cref="T:System.IDisposable"/> that will be called.
             </summary>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.GetAllResolutions(System.Type)">
+            <summary>
+            Get all the resolution for the request type.
+            </summary>
+            <param name="requestType">The request type that will need to be resolved.</param>
+            <returns>
+            The resolved instance, if not found an empty <see
+            cref="M:System.Linq.Enumerable.Empty``1"/> will be returned.
+            </returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.GetAllResolutions(System.Type,System.Object)">
+            <summary>
+            Get all the resolution for the request type.
+            </summary>
+            <param name="requestType">The request type that will need to be resolved.</param>
+            <param name="key">The key for this resolution. A null value is also considered a key and will return only resolutions that have no key configured.</param>
+            <returns>
+            The resolved instance, if not found an empty <see
+            cref="M:System.Linq.Enumerable.Empty``1"/> will be returned.
+            </returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.GetResolution(System.Object,System.Type)">
             <summary>
             Get the resolution for the request type.
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
             <param name="key">The key for this resolution.</param>
-            <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.</returns>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.
+            </returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.GetResolution(System.Type)">
             <summary>
             Get the resolution for the request type.
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
-            <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.</returns>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will throw an <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException"/>.
+            </returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.TryGetResolution(System.Object,System.Type)">
             <summary>
@@ -257,6 +303,93 @@
             <param name="concreteRequest">The concrete request type.</param>
             <returns></returns>
         </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration">
+            <summary>
+            Dependency instance configuration
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.Add(System.Type,ZarDevs.DependencyInjection.IDependencyResolution)">
+            <summary>
+            Configure the request type <paramref name="type"/> to the resolution <paramref name="resolution"/>
+            </summary>
+            <param name="type">The request type that will need to be resolved.</param>
+            <param name="resolution">The resolution that will be implemented.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.AddInstance``1(``0)">
+            <summary>
+            Add an instance to the configuration for the Type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type of the instance.</typeparam>
+            <param name="instance">The instance that will always be resolved.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.GetResolutionsByKey(System.Type,System.Object)">
+            <summary>
+            Get a list of configured resolutions by key. If any generic resolution is requested, it
+            will be generated for all and then the keyed values will be returned.
+            </summary>
+            <param name="type">The request type that will need to be resolved.</param>
+            <param name="key">The key that is requested, can be null.</param>
+            <returns>A list of resolutions, if none found, will return <see cref="M:System.Linq.Enumerable.Empty``1"/></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.GetResolutionsByType(System.Type)">
+            <summary>
+            Get a list of configured resolutions. If any generic resolution is requested, it will be
+            generated for all.
+            </summary>
+            <param name="type">The request type that will need to be resolved.</param>
+            <returns>A list of resolutions, if none found, will return <see cref="M:System.Linq.Enumerable.Empty``1"/></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyResolutionConfiguration">
+            <summary>
+            Dependency instance configuration
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.#ctor">
+            <summary>
+            Create a new instance of the dependency resolution configuration.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.Add(System.Type,ZarDevs.DependencyInjection.IDependencyResolution)">
+            <summary>
+            Configure the request type <paramref name="type"/> to the resolution <paramref name="resolution"/>
+            </summary>
+            <param name="type">The request type that will need to be resolved.</param>
+            <param name="resolution">The resolution that will be implemented.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.AddInstance``1(``0)">
+            <summary>
+            Add an instance to the configuration for the Type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type of the instance.</typeparam>
+            <param name="instance">The instance that will always be resolved.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.Dispose">
+            <summary>
+            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/> implement <see cref="T:System.IDisposable"/>, they will also be called.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.GetResolutionsByKey(System.Type,System.Object)">
+            <summary>
+            Get a list of configured resolutions by key. If any generic resolution is requested, it
+            will be generated for all and then the keyed values will be returned.
+            </summary>
+            <param name="type">The request type that will need to be resolved.</param>
+            <param name="key">The key that is requested, can be null. Be warned, if the key is null, it will only return configured values that have a null key.</param>
+            <returns>A list of resolutions, if none found, will return <see cref="M:System.Linq.Enumerable.Empty``1"/></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.GetResolutionsByType(System.Type)">
+            <summary>
+            Get a list of configured resolutions. If any generic resolution is requested, it will be
+            generated for all.
+            </summary>
+            <param name="type">The request type that will need to be resolved.</param>
+            <returns>A list of resolutions, if none found, will return <see cref="M:System.Linq.Enumerable.Empty``1"/></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.Dispose(System.Boolean)">
+            <summary>
+            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/> implement <see cref="T:System.IDisposable"/>, they will also be called.
+            </summary>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException">
             <summary>
             Dependency resolution configured
@@ -283,6 +416,24 @@
             <summary>
             Return the key
             </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyResolutions">
+            <summary>
+            Interface for resolving multiple resolutions.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutions.Resolve``1">
+            <summary>
+            Resolve and resolutions and return as <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The return type to resolve to.</typeparam>
+            <returns>An IEnumerable of the resolved values cast to <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutions.Resolve">
+            <summary>
+            Resolve and resolutions and return
+            </summary>
+            <returns>An IEnumerable of the resolved values</returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolver">
             <summary>
@@ -333,6 +484,13 @@
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.Resolve``1">
             <summary>
             Resolved the requested type.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveAll``1">
+            <summary>
+            Resolve all instance of the requested type <typeparamref name="T"/>.
             </summary>
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
@@ -723,26 +881,6 @@
             </summary>
             <param name="concreteRequest">The concrete request type.</param>
             <returns></returns>
-        </member>
-        <member name="T:ZarDevs.DependencyInjection.IDependencyInstanceConfiguration">
-            <summary>
-            Dependency instance configuration
-            </summary>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceConfiguration.AddInstanceResolution``1(``0,System.Object)">
-            <summary>
-            Add an instance to the configuration for the Type <typeparamref name="T"/>
-            </summary>
-            <typeparam name="T">The type of the instance.</typeparam>
-            <param name="instance">The instance that will always be resolved.</param>
-            <param name="key">An optional key</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceConfiguration.Configure(System.Type,ZarDevs.DependencyInjection.IDependencyResolution)">
-            <summary>
-            Configure the request type <paramref name="requestType"/> to the resolution <paramref name="info"/>
-            </summary>
-            <param name="requestType">The request type that will need to be resolved.</param>
-            <param name="info">The resolution that will be implemented.</param>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolution">
             <summary>

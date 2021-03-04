@@ -12,10 +12,34 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
+        /// Get all the resolution for the request type.
+        /// </summary>
+        /// <param name="requestType">The request type that will need to be resolved.</param>
+        /// <returns>
+        /// The resolved instance, if not found an empty <see
+        /// cref="Enumerable.Empty{IDependencyResolution}"/> will be returned.
+        /// </returns>
+        IDependencyResolutions GetAllResolutions(Type requestType);
+
+        /// <summary>
+        /// Get all the resolution for the request type.
+        /// </summary>
+        /// <param name="requestType">The request type that will need to be resolved.</param>
+        /// <param name="key">The key for this resolution. A null value is also considered a key.</param>
+        /// <returns>
+        /// The resolved instance, if not found an empty <see
+        /// cref="Enumerable.Empty{IDependencyResolution}"/> will be returned.
+        /// </returns>
+        IDependencyResolutions GetAllResolutions(Type requestType, object key);
+
+        /// <summary>
         /// Get the resolution for the request type.
         /// </summary>
         /// <param name="requestType">The request type that will need to be resolved.</param>
-        /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that will throw an <see cref="DependencyResolutionNotConfiguredException"/>.</returns>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will throw an <see cref="DependencyResolutionNotConfiguredException"/>.
+        /// </returns>
         IDependencyResolution GetResolution(Type requestType);
 
         /// <summary>
@@ -23,14 +47,20 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="requestType">The request type that will need to be resolved.</param>
         /// <param name="key">The key for this resolution.</param>
-        /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that will throw an <see cref="DependencyResolutionNotConfiguredException"/>.</returns>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will throw an <see cref="DependencyResolutionNotConfiguredException"/>.
+        /// </returns>
         IDependencyResolution GetResolution(object key, Type requestType);
 
         /// <summary>
         /// Try and get the resolution for the request type.
         /// </summary>
         /// <param name="requestType">The request type that will need to be resolved.</param>
-        /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that will return null when resolved.</returns>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will return null when resolved.
+        /// </returns>
         IDependencyResolution TryGetResolution(Type requestType);
 
         /// <summary>
@@ -38,20 +68,24 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="requestType">The request type that will need to be resolved.</param>
         /// <param name="key">The key for this resolution.</param>
-        /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that will return null when resolved.</returns>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will return null when resolved.
+        /// </returns>
         IDependencyResolution TryGetResolution(object key, Type requestType);
 
         #endregion Methods
     }
 
     /// <summary>
-    /// Dependency resolution configuration is used to configure any dependency resolutions and get them them at runtime.
+    /// Dependency resolution configuration is used to configure any dependency resolutions and get
+    /// them them at runtime.
     /// </summary>
-    public class DependencyInstanceResolution : IDependencyInstanceConfiguration, IDependencyInstanceResolution
+    public class DependencyInstanceResolution : IDependencyInstanceResolution
     {
         #region Fields
 
-        private readonly IDictionary<Type, IDictionary<object, IDependencyResolution>> _bindings;
+        private readonly IDependencyResolutionConfiguration _configuration;
         private bool _disposed;
 
         #endregion Fields
@@ -61,41 +95,14 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new instance of the Dependency resolution configuration.
         /// </summary>
-        public DependencyInstanceResolution()
+        public DependencyInstanceResolution(IDependencyResolutionConfiguration configuration)
         {
-            _bindings = new Dictionary<Type, IDictionary<object, IDependencyResolution>>();
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         #endregion Constructors
 
         #region Methods
-
-        /// <summary>
-        /// Add an instance to the configuration for the Type <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">The type of the instance.</typeparam>
-        /// <param name="instance">The instance that will always be resolved.</param>
-        /// <param name="key">An optional key</param>
-        public void AddInstanceResolution<T>(T instance, object key)
-        {
-            Type requestType = typeof(T);
-            Configure(requestType, new DependencySingletonInstance(new DependencyInstanceInfo(instance, new DependencyInfo { RequestType = requestType, Key = key })));
-        }
-
-        /// <summary>
-        /// Configure the request type <paramref name="requestType"/> to the resolution <paramref name="info"/>
-        /// </summary>
-        /// <param name="requestType">The request type that will need to be resolved.</param>
-        /// <param name="info">The resolution that will be implemented.</param>
-        public void Configure(Type requestType, IDependencyResolution info)
-        {
-            if (!_bindings.ContainsKey(requestType))
-            {
-                _bindings[requestType] = new Dictionary<object, IDependencyResolution>();
-            }
-
-            _bindings[requestType].Add(info.Key ?? string.Empty, info);
-        }
 
         /// <summary>
         /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/>
@@ -109,24 +116,57 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Get the resolution for the request type.
+        /// Get all the resolution for the request type.
         /// </summary>
         /// <param name="requestType">The request type that will need to be resolved.</param>
-        /// <param name="key">The key for this resolution.</param>
-        /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that will throw an <see cref="DependencyResolutionNotConfiguredException"/>.</returns>
-        public IDependencyResolution GetResolution(object key, Type requestType)
+        /// <returns>
+        /// The resolved instance, if not found an empty <see
+        /// cref="Enumerable.Empty{IDependencyResolution}"/> will be returned.
+        /// </returns>
+        public IDependencyResolutions GetAllResolutions(Type requestType)
         {
-            return TryGetResolution(key, requestType, true);
+            return new DependencyResolutions(_configuration.GetResolutionsByType(requestType));
+        }
+
+        /// <summary>
+        /// Get all the resolution for the request type.
+        /// </summary>
+        /// <param name="requestType">The request type that will need to be resolved.</param>
+        /// <param name="key">The key for this resolution. A null value is also considered a key and will return only resolutions that have no key configured.</param>
+        /// <returns>
+        /// The resolved instance, if not found an empty <see
+        /// cref="Enumerable.Empty{IDependencyResolution}"/> will be returned.
+        /// </returns>
+        public IDependencyResolutions GetAllResolutions(Type requestType, object key)
+        {
+            return new DependencyResolutions(_configuration.GetResolutionsByKey(requestType, key));
         }
 
         /// <summary>
         /// Get the resolution for the request type.
         /// </summary>
         /// <param name="requestType">The request type that will need to be resolved.</param>
-        /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that will throw an <see cref="DependencyResolutionNotConfiguredException"/>.</returns>
+        /// <param name="key">The key for this resolution.</param>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will throw an <see cref="DependencyResolutionNotConfiguredException"/>.
+        /// </returns>
+        public IDependencyResolution GetResolution(object key, Type requestType)
+        {
+            return TryGetResolution(requestType, key, true);
+        }
+
+        /// <summary>
+        /// Get the resolution for the request type.
+        /// </summary>
+        /// <param name="requestType">The request type that will need to be resolved.</param>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will throw an <see cref="DependencyResolutionNotConfiguredException"/>.
+        /// </returns>
         public IDependencyResolution GetResolution(Type requestType)
         {
-            return GetResolution(null, requestType);
+            return TryGetResolution(requestType, true);
         }
 
         /// <summary>
@@ -137,7 +177,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/>.</returns>
         public IDependencyResolution TryGetResolution(object key, Type requestType)
         {
-            return TryGetResolution(key, requestType, false);
+            return TryGetResolution(requestType, key, false);
         }
 
         /// <summary>
@@ -147,7 +187,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns>The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/>.</returns>
         public IDependencyResolution TryGetResolution(Type requestType)
         {
-            return TryGetResolution(null, requestType);
+            return TryGetResolution(requestType, false);
         }
 
         /// <summary>
@@ -160,46 +200,21 @@ namespace ZarDevs.DependencyInjection
 
             if (disposing)
             {
-                foreach (var resolutions in _bindings.Values)
-                {
-                    foreach (var disposable in resolutions.OfType<IDisposable>())
-                    {
-                        disposable.Dispose();
-                    }
-                }
-
-                _bindings.Clear();
+                _configuration.Dispose();
             }
 
             _disposed = true;
         }
 
-        private IDependencyResolution TryGetResolution(object key, Type requestType, bool throwOnNotFound)
+        private IDependencyResolution TryGetResolution(Type requestType, bool throwOnNotFound)
         {
-            if (TryGetResolution(key, requestType, out IDependencyResolution resolution))
-                return resolution;
-
-            if (!requestType.IsConstructedGenericType) 
-                return new NotFoundDependencyResolution(requestType, key, throwOnNotFound);
-
-            var genericType = requestType.GetGenericTypeDefinition();
-
-            if(!TryGetResolution(key, genericType, out resolution))
-                return new NotFoundDependencyResolution(requestType, key, throwOnNotFound);
-
-            Configure(requestType, resolution.MakeConcrete(requestType));
-
-            return _bindings[requestType][key ?? string.Empty];
+            return _configuration.GetResolutionsByType(requestType).FirstOrDefault() ?? new NotFoundDependencyResolution(requestType, null, throwOnNotFound);
         }
 
-        private bool TryGetResolution(object key, Type requestType, out IDependencyResolution resolution)
-        { 
-            resolution = null;
-
-            return _bindings.TryGetValue(requestType, out IDictionary<object, IDependencyResolution> binding)
-                            && binding.TryGetValue(key ?? string.Empty, out resolution);
+        private IDependencyResolution TryGetResolution(Type requestType, object key, bool throwOnNotFound)
+        {
+            return _configuration.GetResolutionsByKey(requestType, key).FirstOrDefault() ?? new NotFoundDependencyResolution(requestType, key, throwOnNotFound);
         }
-
 
         #endregion Methods
     }

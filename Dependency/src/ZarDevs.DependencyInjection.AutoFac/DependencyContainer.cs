@@ -60,6 +60,7 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnBuildEnd()
         {
+            Builder.RegisterGeneric(typeof(MultipleResolver<>)).As(typeof(IMultipleResolver<>));
             Container = Builder.Build(_buildOptions);
         }
 

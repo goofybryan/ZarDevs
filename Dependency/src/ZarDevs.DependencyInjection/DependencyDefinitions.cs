@@ -114,7 +114,7 @@ namespace ZarDevs.DependencyInjection
             if (!Definitions.TryGetValue(requestType, out var dependencies))
                 return Enumerable.Empty<IDependencyInfo>();
 
-            return dependencies.Where(d => d.Key == (key ?? string.Empty));
+            return dependencies.Where(d => d.Key == key);
         }
 
         public IDependencyInfo TryGet<T>(object key)

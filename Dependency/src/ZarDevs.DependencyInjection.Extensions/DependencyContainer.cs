@@ -11,7 +11,7 @@ namespace ZarDevs.DependencyInjection
         #region Fields
 
         private readonly IDependencyTypeActivator _activator;
-        private readonly IDependencyInstanceConfiguration _configuration;
+        private readonly IDependencyResolutionConfiguration _configuration;
 
         #endregion Fields
 
@@ -22,7 +22,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="configuration">The instance configuration that will contain the binding configuration.</param>
         /// <param name="activator">The type activator that is used to resolve types.</param>
-        public DependencyContainer(IDependencyInstanceConfiguration configuration, IDependencyTypeActivator activator)
+        public DependencyContainer(IDependencyResolutionConfiguration configuration, IDependencyTypeActivator activator)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _activator = activator ?? throw new ArgumentNullException(nameof(activator));
@@ -48,7 +48,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterInstance(IDependencyInstanceInfo info)
         {
-            _configuration.Configure(info.RequestType, new DependencySingletonInstance(info));
+            _configuration.Add(info.RequestType, new DependencySingletonInstance(info));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterSingleton(IDependencyTypeInfo info)
         {
-            _configuration.Configure(info.RequestType, new DependencySingletionResolution<IDependencyTypeInfo, DependencyTypeResolution>(new DependencyTypeResolution(info, _activator)));
+            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyTypeInfo, DependencyTypeResolution>(new DependencyTypeResolution(info, _activator)));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterSingletonMethod(IDependencyMethodInfo info)
         {
-            _configuration.Configure(info.RequestType, new DependencySingletionResolution<IDependencyMethodInfo, DependencyMethodResolution>(new DependencyMethodResolution(info)));
+            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyMethodInfo, DependencyMethodResolution>(new DependencyMethodResolution(info)));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterTransient(IDependencyTypeInfo info)
         {
-            _configuration.Configure(info.RequestType, new DependencyTypeResolution(info, _activator));
+            _configuration.Add(info.RequestType, new DependencyTypeResolution(info, _activator));
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterTransientMethod(IDependencyMethodInfo info)
         {
-            _configuration.Configure(info.RequestType, new DependencyMethodResolution(info));
+            _configuration.Add(info.RequestType, new DependencyMethodResolution(info));
         }
 
         private bool TryRegisterInstance(IDependencyInstanceInfo info)

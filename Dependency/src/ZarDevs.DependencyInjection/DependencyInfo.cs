@@ -12,19 +12,29 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new empty instance
         /// </summary>
-        public DependencyInfo()
+        internal DependencyInfo()
         {
+        }
+
+        /// <summary>
+        /// Create a new instance with the base variables set.
+        /// </summary>
+        /// <param name="requestType">Specifiy the request type, must not be null.</param>
+        /// <param name="key">Specify the key, optional.</param>
+        /// <param name="scope">Specify the scope, optional, default is <see cref="DependyBuilderScope.Transient"/></param>
+        public DependencyInfo(Type requestType, object key = null, DependyBuilderScope scope = DependyBuilderScope.Transient)
+        {
+            RequestType = requestType ?? throw new ArgumentNullException(nameof(requestType));
+            Key = key;
+            Scope = scope;
         }
 
         /// <summary>
         /// Create a new instance with copied values.
         /// </summary>
         /// <param name="copy">The base instance to copy from.</param>
-        protected DependencyInfo(IDependencyInfo copy)
+        protected DependencyInfo(IDependencyInfo copy) : this(copy.RequestType, copy.Key, copy.Scope)
         {
-            Key = copy.Key;
-            Scope = copy.Scope;
-            RequestType = copy.RequestType;
         }
 
         #endregion Constructors
@@ -34,7 +44,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// An optional key that will be used to define the binding.
         /// </summary>
-        public object Key { get; set; } = "";
+        public object Key { get; set; }
 
         /// <summary>
         /// The scope that the binding will be defined to, default is <see cref="DependyBuilderScope.Transient"/>

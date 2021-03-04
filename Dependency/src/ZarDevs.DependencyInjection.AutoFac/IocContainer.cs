@@ -57,6 +57,11 @@ namespace ZarDevs.DependencyInjection
             return Kernel.Resolve<T>(CreateParameters(parameters));
         }
 
+        public IEnumerable<T> ResolveAll<T>() where T : class
+        {
+            return Kernel.Resolve<IMultipleResolver<T>>().Resolved;
+        }
+
         public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
         {
             return Kernel.ResolveNamed<T>(name, CreateParameters(parameters));

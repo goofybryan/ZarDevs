@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
-    // TODO BM: Add methods for getting all services e.g. IEnumerable<T> ResolveAll<T>()where T : class; 
-    // TODO BM: Add methods for partial parameters and resolve rest (constructor matching to nearest parameter size)
+    // TODO BM: Add methods for getting all services e.g. IEnumerable<T> ResolveAll<T>()where T :
+    // class; TODO BM: Add methods for partial parameters and resolve rest (constructor matching to
+    // nearest parameter size)
     /// <summary>
     /// IOC containter used to resolved a single instance
     /// </summary>
@@ -12,7 +14,7 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <param name="parameters">
@@ -22,7 +24,7 @@ namespace ZarDevs.DependencyInjection
         T Resolve<T>(params object[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <param name="parameters">
@@ -32,14 +34,21 @@ namespace ZarDevs.DependencyInjection
         T Resolve<T>(params (string, object)[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type.
+        /// Resolve the requested type.
         /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <returns>The resolved type.</returns>
         T Resolve<T>() where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve all instance of the requested type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The request type</typeparam>
+        /// <returns>The resolved type.</returns>
+        IEnumerable<T> ResolveAll<T>() where T : class;
+
+        /// <summary>
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The name of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -50,7 +59,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveNamed<T>(string key, params object[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="name">The name of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -61,7 +70,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type.
+        /// Resolve the requested type.
         /// </summary>
         /// <param name="key">The name of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -69,7 +78,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveNamed<T>(string key) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -80,7 +89,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -91,7 +100,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -102,7 +111,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveWithKey<T>(object key, params object[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -113,7 +122,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -121,7 +130,7 @@ namespace ZarDevs.DependencyInjection
         T ResolveWithKey<T>(Enum key) where T : class;
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -261,9 +270,13 @@ namespace ZarDevs.DependencyInjection
     /// <typeparam name="TKernel">The underlying resolution technology.</typeparam>
     public interface IIocContainer<TKernel> : IIocContainer
     {
+        #region Properties
+
         /// <summary>
         /// Get the IOC container kernel that is the underlying resolution technology.
         /// </summary>
         public TKernel Kernel { get; }
+
+        #endregion Properties
     }
 }

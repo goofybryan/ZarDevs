@@ -13,7 +13,7 @@ namespace ZarDevs.DependencyInjection
 
         #region Constructors
 
-        public MicrosoftDependencyContainer(IServiceCollection services, IDependencyInstanceConfiguration configuration, IDependencyTypeActivator activator)
+        public MicrosoftDependencyContainer(IServiceCollection services, IDependencyResolutionConfiguration configuration, IDependencyTypeActivator activator)
             : base(configuration, activator)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));

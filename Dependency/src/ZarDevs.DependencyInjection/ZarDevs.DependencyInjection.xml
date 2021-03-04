@@ -228,6 +228,14 @@
             Create a new empty instance
             </summary>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(System.Type,System.Object,ZarDevs.DependencyInjection.DependyBuilderScope)">
+            <summary>
+            Create a new instance with the base variables set.
+            </summary>
+            <param name="requestType">Specifiy the request type, must not be null.</param>
+            <param name="key">Specify the key, optional.</param>
+            <param name="scope">Specify the scope, optional, default is <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScope.Transient"/></param>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
             Create a new instance with copied values.
@@ -280,6 +288,13 @@
             <summary>
             Dpendency info class that describes the dependency binding and the Instance that will always be resolved.
             </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceInfo.#ctor(System.Type,System.Object)">
+            <summary>
+            Create a new instance
+            </summary>
+            <param name="requestType">Specify the request type.</param>
+            <param name="instance">The instance that is always returned.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceInfo.#ctor(System.Object,ZarDevs.DependencyInjection.DependencyInfo)">
             <summary>
@@ -502,7 +517,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.Resolve``1(System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <typeparam name="T">The request type</typeparam>
             <param name="parameters">
@@ -512,7 +527,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.Resolve``1(System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <typeparam name="T">The request type</typeparam>
             <param name="parameters">
@@ -522,14 +537,21 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.Resolve``1">
             <summary>
-            Resolved the requested type.
+            Resolve the requested type.
+            </summary>
+            <typeparam name="T">The request type</typeparam>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveAll``1">
+            <summary>
+            Resolve all instance of the requested type <typeparamref name="T"/>.
             </summary>
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveNamed``1(System.String,System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -540,7 +562,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveNamed``1(System.String,System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="name">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -551,7 +573,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveNamed``1(System.String)">
             <summary>
-            Resolved the requested type.
+            Resolve the requested type.
             </summary>
             <param name="key">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -559,7 +581,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Enum,System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -570,7 +592,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Enum,System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -581,7 +603,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Object,System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -592,7 +614,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Object,System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -603,7 +625,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Enum)">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -611,7 +633,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.ResolveWithKey``1(System.Object)">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            Resolve the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
