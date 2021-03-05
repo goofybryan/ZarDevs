@@ -42,22 +42,34 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.RuntimeFactory.Tests", "Dependency\tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests.csproj", "{F3E4900F-66D7-47A0-BB91-A967C4AD98A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependency", "Dependency", "{CFEF35B0-740D-4194-8264-985633F4F8FF}"
+	ProjectSection(SolutionItems) = preProject
+		Dependency\README.md = Dependency\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F678FE97-FCCB-44CB-B5F0-0B78DAD86F7E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E6091740-CD92-4CCC-AD29-F27DB241EBCE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{616E0557-6A93-4A68-9302-5F1BDEE00425}"
+	ProjectSection(SolutionItems) = preProject
+		Runtime\README.md = Runtime\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A1D45145-6BC3-40AB-BE02-D67DAEEE594E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D3D1AAE4-B7CD-4358-AB13-7939A23F05CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{AA2F38D3-258F-45CE-8043-F118BF8E66DC}"
+	ProjectSection(SolutionItems) = preProject
+		Models\README.md = Models\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B22FC00E-C83F-4EAD-94EC-A0180C7CD9D8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Http", "Http", "{6FC4B09E-1759-4B42-8EEC-C626A6B928C2}"
+	ProjectSection(SolutionItems) = preProject
+		Http\README.md = Http\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{326C7DFF-E27E-4A8B-BB19-8EC784997449}"
 EndProject
