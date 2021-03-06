@@ -52,7 +52,7 @@ namespace ZarDevs.DependencyInjection
             return To(typeof(T));
         }
 
-        public IDependencyBuilderBindingMetaData To(Func<DepencyBuilderInfoContext, object> method)
+        public IDependencyBuilderBindingMetaData To(Func<DependencyBuilderContext, object> method)
         {
             _info = new DependencyMethodInfo(method, _info);
             return this;

@@ -8,7 +8,7 @@ namespace ZarDevs.DependencyInjection
     /// The dependency builder information context class used for custom IOC request specifically
     /// for requests
     /// </summary>
-    public interface IDepencyBuilderInfoContext
+    public interface IDepencyBuilderContext
     {
         #region Properties
 
@@ -43,7 +43,7 @@ namespace ZarDevs.DependencyInjection
     /// <summary>
     /// Dependency builder information context used for resolving instances.
     /// </summary>
-    public class DepencyBuilderInfoContext : IDepencyBuilderInfoContext
+    public class DependencyBuilderContext : IDepencyBuilderContext
     {
         #region Fields
 
@@ -58,7 +58,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="ioc">Specify the IOC container</param>
         /// <param name="info">Specify the binding info</param>
-        public DepencyBuilderInfoContext(IIocContainer ioc, IDependencyInfo info)
+        public DependencyBuilderContext(IIocContainer ioc, IDependencyInfo info)
         {
             Ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
             Info = info ?? throw new ArgumentNullException(nameof(info));
@@ -71,7 +71,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="ioc">Specify the IOC container.</param>
         /// <param name="info">Specify the binding info</param>
         /// <param name="args">A list of ordered args.</param>
-        public DepencyBuilderInfoContext(IIocContainer ioc, IDependencyInfo info, object[] args) : this(ioc, info)
+        public DependencyBuilderContext(IIocContainer ioc, IDependencyInfo info, object[] args) : this(ioc, info)
         {
             SetArguments(args);
         }
@@ -82,7 +82,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="ioc">Specify the IOC container</param>
         /// <param name="info">Specify the binding info</param>
         /// <param name="args">A list of named arguments.</param>
-        public DepencyBuilderInfoContext(IIocContainer ioc, IDependencyInfo info, (string, object)[] args) : this(ioc, info)
+        public DependencyBuilderContext(IIocContainer ioc, IDependencyInfo info, (string, object)[] args) : this(ioc, info)
         {
             SetArguments(args);
         }

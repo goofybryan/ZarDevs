@@ -78,7 +78,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="method">
         /// The function <see cref="Func{T1, TResult}"/> will be executed, if any parameters are available, they will be passed in.
         /// </param>
-        IDependencyBuilderBindingMetaData To(Func<DepencyBuilderInfoContext, object> method);
+        IDependencyBuilderBindingMetaData To(Func<DependencyBuilderContext, object> method);
 
         #endregion Methods
     }

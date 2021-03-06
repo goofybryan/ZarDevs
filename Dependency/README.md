@@ -12,6 +12,10 @@ My goal was to write a standardized way to create bindings and then have them "t
 
 I enjoy writing code that takes away the need to continually write complex code to do simple tasks. For example just to communicate to an authenticated server there is several steps that need to checked before and after each call to the server. And these steps are sometime very hard to cater for because you do not know where your solution will be used.
 
+What I did not cater by choice was `Scoped` variables. These are complex behaviours that can be easily overcome using other means and/or directly implementing them in the underlying technology.
+
+To see how to use please read the following [document](./src/ZarDevs.DependencyInjection/README.md)
+
 ## Why IOC?
 
 What I like about it is the fact that you allow the infrastructure to give you the objects you require by configuration. So it is possible to have the same object implementing and interface and have comepletely different results. Now you can achieve this using all sorts of different techniques and patterns. I also enjoy creating code that is simple and then allowing infrastructure to do the heaving lifting. Take the following example:
@@ -32,13 +36,14 @@ What I like about it is the fact that you allow the infrastructure to give you t
 
         public Task<string> ExampleIoc(string url)
         {
+            // All the required classes will be injected into the GetCommand
             var command = _ioc.Get<IGetCommand>();
             return command.ExecuteAsync(url);
         }
 
         public Task<string> ExampleFactory(string url)
         {
-            // Very similar to IOC, great alternative, just very rigid.
+            // Very similar to IOC, great alternative, just very rigid and needs to be implemented.
             var command = _factory.CreateGetCommand();
             return command.ExecuteAsync(url);
         }
