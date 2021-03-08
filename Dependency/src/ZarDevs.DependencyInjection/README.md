@@ -110,13 +110,36 @@ You can add bindings based on a key. This is useful if you want add multiple bin
     builder.Bind<ITask>().To<Task1>().Named("Task1");
     builder.Bind<ITask>().To<Task2>().Named("Task2");
     builder.Bind<ITask>().To<Task3>().Named("Task3");
+    // or Enum
+    builder.Bind<ITask>().To<Task1>().Named(Task.Task1);
+    builder.Bind<ITask>().To<Task2>().Named(Task.Task2);
+    builder.Bind<ITask>().To<Task3>().Named(Task.Task3);
+    // or object
+    builder.Bind<ITask>().To<Task1>().Named(typeof(ITask1));
+    builder.Bind<ITask>().To<Task1>().Named(typeof(ITask2));
+    builder.Bind<ITask>().To<Task1>().Named(typeof(ITask3));
 
     // Use
     ITask task1 = Ioc.Resolve<ITask>("Task1");
     ITask task2 = Ioc.Resolve<ITask>("Task2");
     ITask task3 = Ioc.Resolve<ITask>("Task3");
+    // or Enum
+    ITask task1 = Ioc.Resolve<ITask>(Task.Task1);
+    ITask task1 = Ioc.Resolve<ITask>(Task.Task2);
+    ITask task1 = Ioc.Resolve<ITask>(Task.Task3);
     ```
 
 You can look at the [tests](../../tests/) to see a complete list of tests and how the [bindings](../../tests/ZarDevs.DependencyInjection.Tests/bindings.cs) was setup.
 
 ## Links
+
+1. [Home](../../../README.md)
+1. [Dependency Injection](../../README.md)
+    1. [AutoFac Dependency Injection](../ZarDevs.DependencyInjection.AutoFac/README.md)
+    1. [Microsoft Dependency Injection](../ZarDevs.DependencyInjection.Microsoft/README.md)
+    1. [Ninject Dependency Injection](../ZarDevs.DependencyInjection.Ninject/README.md)
+    1. [Runtime Factory Dependency Injection](../ZarDevs.DependencyInjection.RuntimeFactory/README.md)
+    1. [Dependency Injection Extensions](../ZarDevs.DependencyInjection.Extensions/README.md)
+1. [Http Api Security Abstractions](../../../Http/README.md)
+1. [Model and PropertyChanged Abstractions](../../../Models/README.md)
+1. [Runtime Utilities](../../../Runtime/README.md)
