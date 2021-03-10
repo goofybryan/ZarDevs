@@ -1,5 +1,4 @@
 ﻿using Ninject;
-using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {

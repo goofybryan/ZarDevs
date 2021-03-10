@@ -131,7 +131,10 @@ namespace ZarDevs.DependencyInjection
         /// Get all the resolution for the request type.
         /// </summary>
         /// <param name="requestType">The request type that will need to be resolved.</param>
-        /// <param name="key">The key for this resolution. A null value is also considered a key and will return only resolutions that have no key configured.</param>
+        /// <param name="key">
+        /// The key for this resolution. A null value is also considered a key and will return only
+        /// resolutions that have no key configured.
+        /// </param>
         /// <returns>
         /// The resolved instance, if not found an empty <see
         /// cref="Enumerable.Empty{IDependencyResolution}"/> will be returned.

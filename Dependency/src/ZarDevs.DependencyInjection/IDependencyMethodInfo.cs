@@ -1,14 +1,11 @@
-﻿using System;
-using System.Reflection;
-
-namespace ZarDevs.DependencyInjection
+﻿namespace ZarDevs.DependencyInjection
 {
     /// <summary>
     /// Dependency method information, when resolved the method will be invoked.
     /// </summary>
     public interface IDependencyMethodInfo : IDependencyInfo
     {
-        #region Properties
+        #region Methods
 
         /// <summary>
         /// Execute the method that has been configured
@@ -17,6 +14,6 @@ namespace ZarDevs.DependencyInjection
         /// <returns></returns>
         object Execute(IDependencyContext context);
 
-        #endregion Properties
+        #endregion Methods
     }
 }

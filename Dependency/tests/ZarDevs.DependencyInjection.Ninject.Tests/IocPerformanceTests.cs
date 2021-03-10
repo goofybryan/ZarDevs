@@ -1,15 +1,21 @@
-﻿using Xunit;
-using ZarDevs.DependencyInjection.Tests;
+﻿using Ninject;
+using Xunit;
 using Xunit.Abstractions;
-using Ninject;
+using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.Ninject.Tests
 {
     public class IocPerformanceTests : IocPerformanceConstruct<IocPerformanceTestFixture>, IClassFixture<IocPerformanceTestFixture>
     {
+        #region Constructors
+
         public IocPerformanceTests(IocPerformanceTestFixture fixture, ITestOutputHelper output) : base(fixture, output)
         {
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         protected override T PerformanceResolveComparison<T>()
         {
@@ -20,5 +26,7 @@ namespace ZarDevs.DependencyInjection.Ninject.Tests
         {
             return Fixture.ContainerDirect.Get<T>();
         }
+
+        #endregion Methods
     }
 }

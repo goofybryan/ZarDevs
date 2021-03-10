@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -26,9 +25,8 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnRegisterFactory(IDependencyFactoryInfo info, IDependencyFactory factory)
         {
-            if(info.IsFactoryGeneric())
+            if (info.IsFactoryGeneric())
             {
-
             }
             else
             {
@@ -42,14 +40,13 @@ namespace ZarDevs.DependencyInjection
         {
             if (info.IsFactoryGeneric())
             {
-
             }
             else
             {
                 _services.AddSingleton(info.RequestType, p => factory.Resolve(info.CreateContext(Ioc.Container)));
             }
 
-            base.OnRegisterFactorySingleton(info, factory); 
+            base.OnRegisterFactorySingleton(info, factory);
         }
 
         protected override void OnRegisterInstance(IDependencyInstanceInfo info)
@@ -67,19 +64,19 @@ namespace ZarDevs.DependencyInjection
             base.OnRegisterSingleton(info);
         }
 
+        protected override void OnRegisterSingletonMethod(IDependencyMethodInfo info)
+        {
+            _services.AddSingleton(info.RequestType, p => info.Execute(info.CreateContext(Ioc.Container)));
+
+            base.OnRegisterSingletonMethod(info);
+        }
+
         protected override void OnRegisterTransient(IDependencyTypeInfo info)
         {
             _services.AddTransient(info.ResolvedType);
             _services.AddTransient(info.RequestType, info.ResolvedType);
 
             base.OnRegisterTransient(info);
-        }
-
-        protected override void OnRegisterSingletonMethod(IDependencyMethodInfo info)
-        {
-            _services.AddSingleton(info.RequestType, p => info.Execute(info.CreateContext(Ioc.Container)));
-
-            base.OnRegisterSingletonMethod(info);
         }
 
         protected override void OnRegisterTransientMethod(IDependencyMethodInfo info)

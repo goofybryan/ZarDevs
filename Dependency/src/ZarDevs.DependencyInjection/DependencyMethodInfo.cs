@@ -17,11 +17,15 @@ namespace ZarDevs.DependencyInjection
 
         public Func<IDependencyContext, object> Method { get; }
 
+        #endregion Properties
+
+        #region Methods
+
         public object Execute(IDependencyContext context)
         {
             return Method(context);
         }
 
-        #endregion Properties
+        #endregion Methods
     }
 }

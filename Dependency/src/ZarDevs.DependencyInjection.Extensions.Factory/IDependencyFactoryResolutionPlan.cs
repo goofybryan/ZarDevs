@@ -5,6 +5,8 @@
     /// </summary>
     public interface IDependencyFactoryResolutionPlan
     {
+        #region Methods
+
         /// <summary>
         /// Resolve the factory method.
         /// </summary>
@@ -12,5 +14,7 @@
         /// <param name="context">The dependency context.</param>
         /// <returns></returns>
         object Resolve(object factory, IDependencyContext context);
+
+        #endregion Methods
     }
 }

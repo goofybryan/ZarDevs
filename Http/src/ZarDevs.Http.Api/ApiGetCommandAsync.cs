@@ -5,7 +5,12 @@ namespace ZarDevs.Http.Api
 {
     public class ApiGetCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandJsonResponse>, IApiGetCommandAsync
     {
+        #region Fields
+
         private readonly IHttpResponseFactory _responseFactory;
+
+        #endregion Fields
+
         #region Constructors
 
         public ApiGetCommandAsync(IApiHttpClient httpClient, IHttpResponseFactory responseFactory) : base(httpClient)

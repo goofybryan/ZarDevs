@@ -3,13 +3,14 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/> and will call the <see cref="IDependencyFactoryInfo.FactoryType"/> <see cref="IDependencyFactoryInfo.MethodName"/>
+    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/>
+    /// and will call the <see cref="IDependencyFactoryInfo.FactoryType"/><see cref="IDependencyFactoryInfo.MethodName"/>
     /// </summary>
     public class DependencyFactoryResolution : DependencyResolution<IDependencyFactoryInfo>
     {
-        private readonly IDependencyFactory _factory;
         #region Fields
 
+        private readonly IDependencyFactory _factory;
 
         #endregion Fields
 

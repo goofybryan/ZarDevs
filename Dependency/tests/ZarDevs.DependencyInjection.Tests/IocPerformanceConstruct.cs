@@ -41,6 +41,12 @@ namespace ZarDevs.DependencyInjection.Tests
         }
 
         [Fact]
+        public void PerformanceComparisonInstanceTest()
+        {
+            RunPerformanceTest<IPerformanceInstanceTest>();
+        }
+
+        [Fact]
         public void PerformanceComparisonMethodTest()
         {
             RunPerformanceTest<IPerformanceMethodResultTest>();
@@ -52,13 +58,8 @@ namespace ZarDevs.DependencyInjection.Tests
             RunPerformanceTest<IPerformanceSingletonTest>();
         }
 
-        [Fact]
-        public void PerformanceComparisonInstanceTest()
-        {
-            RunPerformanceTest<IPerformanceInstanceTest>();
-        }
-
         protected abstract T PerformanceResolveComparison<T>() where T : class;
+
         protected abstract T PerformanceResolveDirect<T>() where T : class;
 
         private void AssertPerformance(TimeSpan iocTests, TimeSpan iocTestsDirect, TimeSpan iocTestsComparison)
@@ -97,11 +98,16 @@ namespace ZarDevs.DependencyInjection.Tests
 
         private TimeSpan RunIocTests<T>(Func<T> creation) where T : class
         {
+            // Run once to ensure any lazy initialization is completed.
+            var result = creation();
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<T>(result);
+
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             for (int i = 0; i < TotalRuns; i++)
             {
-                var result = creation();
+                result = creation();
                 Assert.NotNull(result);
                 Assert.IsAssignableFrom<T>(result);
             }

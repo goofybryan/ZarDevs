@@ -91,8 +91,7 @@
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyContext">
             <summary>
-            The dependency information context class used for custom IOC request specifically
-            for requests
+            The dependency information context class used for custom IOC request specifically for requests
             </summary>
         </member>
         <member name="P:ZarDevs.DependencyInjection.IDependencyContext.ArgumentCount">
@@ -202,14 +201,16 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.Get``1(System.Object)">
             <summary>
-            Get a the dependency information for the type and key. If multiple are found, returns the first one.
+            Get a the dependency information for the type and key. If multiple are found, returns
+            the first one.
             </summary>
             <typeparam name="T">The request type.</typeparam>
             <param name="key">The key</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyDefinitions.Get(System.Type,System.Object)">
             <summary>
-            Get a the dependency information for the type and key. If multiple are found, returns the first one.
+            Get a the dependency information for the type and key. If multiple are found, returns
+            the first one.
             </summary>
             <param name="requestType">The request type.</param>
             <param name="key">The key</param>
@@ -315,13 +316,6 @@
             <param name="concreteRequestType">The concrete type that has been requested.</param>
             <returns>A new instance of the dependency info with the concrete information set.</returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.IsFactoryGeneric(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
-            <summary>
-            Get an indicator to see if the factory is a generic type.
-            </summary>
-            <param name="typeInfo"></param>
-            <returns></returns>
-        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyFactoryInfo,System.Type)">
             <summary>
             Convert a generic factory info into a concrete type info.
@@ -330,9 +324,17 @@
             <param name="concreteRequestType">The concrete type that has been requested.</param>
             <returns>A new instance of the dependency info with the concrete information set.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.IsFactoryGeneric(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <summary>
+            Get an indicator to see if the factory is a generic type.
+            </summary>
+            <param name="typeInfo"></param>
+            <returns></returns>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyInstanceInfo">
             <summary>
-            Dpendency info class that describes the dependency binding and the Instance that will always be resolved.
+            Dpendency info class that describes the dependency binding and the Instance that will always
+            be resolved.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceInfo.#ctor(System.Type,System.Object)">
@@ -493,7 +495,8 @@
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyContainer">
             <summary>
-            Dependency container that is used to house a list of dependencies. This interface is used by the implemented IOC technology to transform the binding information.
+            Dependency container that is used to house a list of dependencies. This interface is used by
+            the implemented IOC technology to transform the binding information.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyContainer.Build(System.Collections.Generic.IList{ZarDevs.DependencyInjection.IDependencyInfo})">
@@ -861,15 +864,17 @@
             Ioc Kernel Builder that will create instances of the underlying IOC technology
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IIocKernelBuilder.CreateIocContainer">
+        <member name="M:ZarDevs.DependencyInjection.IIocKernelBuilder.CreateDependencyBuilder">
             <summary>
-            Create the Ioc Container, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC implementation to resolve the request using the underlying IOC methodology.
+            Create the dependency container that will be used to bind the dependencies and the
+            transform it to the underlying IOC methodology.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IIocKernelBuilder.CreateDependencyBuilder">
+        <member name="M:ZarDevs.DependencyInjection.IIocKernelBuilder.CreateIocContainer">
             <summary>
-            Create the dependency container that will be used to bind the dependencies and the transform it to the underlying IOC methodology.
+            Create the Ioc Container, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC
+            implementation to resolve the request using the underlying IOC methodology.
             </summary>
             <returns></returns>
         </member>

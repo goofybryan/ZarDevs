@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -194,9 +194,15 @@ namespace ZarDevs.DependencyInjection
 
     internal class IocFactoryContainer : IocContainer
     {
+        #region Constructors
+
         public IocFactoryContainer(IDependencyResolver dependencyResolver, IServiceProvider serviceProvider) : base(dependencyResolver, serviceProvider)
         {
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public override T Resolve<T>()
         {
@@ -217,5 +223,7 @@ namespace ZarDevs.DependencyInjection
         {
             return _dependencyResolver.TryResolve(requestType);
         }
+
+        #endregion Methods
     }
 }

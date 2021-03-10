@@ -7,6 +7,8 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public static class DependencyInfoExtentions
     {
+        #region Methods
+
         /// <summary>
         /// Convert a generic type info into a concrete type info
         /// </summary>
@@ -32,23 +34,13 @@ namespace ZarDevs.DependencyInjection
         /// <returns>A new instance of the dependency info with the concrete information set.</returns>
         public static IDependencyTypeInfo As(this IDependencyTypeInfo typeInfo, Type concreteRequestType)
         {
-            if(!typeInfo.ResolvedType.IsGenericType)
+            if (!typeInfo.ResolvedType.IsGenericType)
                 throw new InvalidOperationException($"The info resolved type for '{typeInfo}' is not a generic type.");
 
             var resovleType = typeInfo.ResolvedType;
             var concreteResolveType = resovleType.MakeGenericType(concreteRequestType.GenericTypeArguments);
 
             return new DependencyTypeInfo(concreteResolveType, typeInfo) { RequestType = concreteRequestType };
-        }
-
-        /// <summary>
-        /// Get an indicator to see if the factory is a generic type.
-        /// </summary>
-        /// <param name="typeInfo"></param>
-        /// <returns></returns>
-        public static bool IsFactoryGeneric(this IDependencyFactoryInfo typeInfo)
-        {
-            return typeInfo.FactoryType.IsGenericType;
         }
 
         /// <summary>
@@ -67,5 +59,17 @@ namespace ZarDevs.DependencyInjection
 
             return new DependencyFactoryInfo(concreteResolveType, typeInfo.MethodName, typeInfo) { RequestType = concreteRequestType };
         }
+
+        /// <summary>
+        /// Get an indicator to see if the factory is a generic type.
+        /// </summary>
+        /// <param name="typeInfo"></param>
+        /// <returns></returns>
+        public static bool IsFactoryGeneric(this IDependencyFactoryInfo typeInfo)
+        {
+            return typeInfo.FactoryType.IsGenericType;
+        }
+
+        #endregion Methods
     }
 }

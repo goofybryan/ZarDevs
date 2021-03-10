@@ -4,7 +4,8 @@ using System.Collections.Generic;
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dependency container that is used to house a list of dependencies. This interface is used by the implemented IOC technology to transform the binding information.
+    /// Dependency container that is used to house a list of dependencies. This interface is used by
+    /// the implemented IOC technology to transform the binding information.
     /// </summary>
     public interface IDependencyContainer : IDisposable
     {

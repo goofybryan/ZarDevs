@@ -10,6 +10,7 @@
 
         #endregion Methods
     }
+
     public interface IFactoryMethodClass<T>
     {
         #region Methods
@@ -31,10 +32,6 @@
         #endregion Properties
     }
 
-    public interface IFactoryMethodResolutionSingletonClass : IFactoryMethodResolutionClass { }
-
-    public interface IFactoryMethodResolutionSingletonClass<T> : IFactoryMethodResolutionClass<T> { }
-
     public interface IFactoryMethodResolutionClass<T>
     {
         #region Properties
@@ -44,6 +41,10 @@
 
         #endregion Properties
     }
+
+    public interface IFactoryMethodResolutionSingletonClass : IFactoryMethodResolutionClass { }
+
+    public interface IFactoryMethodResolutionSingletonClass<T> : IFactoryMethodResolutionClass<T> { }
 
     public class FactoryMethodClass : IFactoryMethodClass
     {
@@ -64,6 +65,8 @@
 
     public class FactoryMethodClass<T> : IFactoryMethodClass<T>
     {
+        #region Methods
+
         public IFactoryMethodResolutionClass<T> Method(IGenericTypeTests<T> genericType, params IMultipleBindingClassTest<T>[] multipleBindings)
         {
             return new FactoryMethodResolutionClass<T>(genericType, multipleBindings);
@@ -73,6 +76,8 @@
         {
             return new FactoryMethodResolutionClass<T>(genericType, multipleBindings);
         }
+
+        #endregion Methods
     }
 
     public class FactoryMethodResolutionClass : IFactoryMethodResolutionClass, IFactoryMethodResolutionSingletonClass

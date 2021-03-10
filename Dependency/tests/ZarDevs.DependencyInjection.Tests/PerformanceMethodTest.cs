@@ -1,11 +1,11 @@
 ﻿namespace ZarDevs.DependencyInjection.Tests
 {
-    public interface IPerformanceMethodTest
+    public interface IPerformanceMethodResultTest
     {
     }
 
-    public interface IPerformanceMethodResultTest
-    { 
+    public interface IPerformanceMethodTest
+    {
     }
 
     public class PerformanceMethodTest : IPerformanceMethodTest, IPerformanceMethodResultTest

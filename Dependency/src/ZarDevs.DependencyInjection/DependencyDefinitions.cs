@@ -18,14 +18,16 @@ namespace ZarDevs.DependencyInjection
         void Add(IDependencyInfo dependency);
 
         /// <summary>
-        /// Get a the dependency information for the type and key. If multiple are found, returns the first one.
+        /// Get a the dependency information for the type and key. If multiple are found, returns
+        /// the first one.
         /// </summary>
         /// <typeparam name="T">The request type.</typeparam>
         /// <param name="key">The key</param>
         IDependencyInfo Get<T>(object key);
 
         /// <summary>
-        /// Get a the dependency information for the type and key. If multiple are found, returns the first one.
+        /// Get a the dependency information for the type and key. If multiple are found, returns
+        /// the first one.
         /// </summary>
         /// <param name="requestType">The request type.</param>
         /// <param name="key">The key</param>
@@ -108,7 +110,7 @@ namespace ZarDevs.DependencyInjection
             return GetAll(typeof(T), key);
         }
 
-        //
+
         public IEnumerable<IDependencyInfo> GetAll(Type requestType, object key)
         {
             if (!Definitions.TryGetValue(requestType, out var dependencies))

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZarDevs.Http
+﻿namespace ZarDevs.Http
 {
     public interface IApiHttpFactory
     {
@@ -15,6 +13,10 @@ namespace ZarDevs.Http
 
     public interface IApiHttpHandlerFactory
     {
+        #region Methods
+
         IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler;
+
+        #endregion Methods
     }
 }

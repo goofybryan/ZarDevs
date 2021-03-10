@@ -5,8 +5,7 @@ using System.Linq;
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// The dependency information context class used for custom IOC request specifically
-    /// for requests
+    /// The dependency information context class used for custom IOC request specifically for requests
     /// </summary>
     public interface IDependencyContext
     {
@@ -128,11 +127,6 @@ namespace ZarDevs.DependencyInjection
         /// <returns></returns>
         public object[] GetArguments() => _arguments.OrderBy(k => k.Key).Select(v => v.Value).ToArray();
 
-        private void AddArgument(string name, object value)
-        {
-            _arguments[name] = value;
-        }
-
         /// <summary>
         /// Set the arguments for the context.
         /// </summary>
@@ -167,6 +161,11 @@ namespace ZarDevs.DependencyInjection
                 AddArgument(name, value);
 
             return this;
+        }
+
+        private void AddArgument(string name, object value)
+        {
+            _arguments[name] = value;
         }
 
         #endregion Methods

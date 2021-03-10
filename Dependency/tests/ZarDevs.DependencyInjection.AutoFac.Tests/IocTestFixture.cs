@@ -1,5 +1,4 @@
-﻿using System;
-using ZarDevs.DependencyInjection.Tests;
+﻿using ZarDevs.DependencyInjection.Tests;
 
 namespace ZarDevs.DependencyInjection.AutoFac.Tests
 {
@@ -17,11 +16,15 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
             });
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public IIocContainer Container { get; }
 
         public bool RunComparisonTests => true;
 
-        #endregion Constructors
+        #endregion Properties
 
         #region Methods
 

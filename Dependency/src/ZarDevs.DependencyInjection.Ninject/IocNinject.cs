@@ -8,8 +8,11 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public static class IocNinject
     {
+        #region Methods
+
         /// <summary>
-        /// Create a new instance of the IOC Kernel Builder with either the specified Ninject Setting or empty settings. A <see cref="StandardKernel"/> will be used.
+        /// Create a new instance of the IOC Kernel Builder with either the specified Ninject
+        /// Setting or empty settings. A <see cref="StandardKernel"/> will be used.
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
@@ -18,5 +21,7 @@ namespace ZarDevs.DependencyInjection
             var kernel = new StandardKernel(settings ?? new NinjectSettings());
             return new IocKernelBuilder(kernel, new DependencyFactory(InspectMethod.Instance));
         }
+
+        #endregion Methods
     }
 }

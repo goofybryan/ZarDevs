@@ -13,12 +13,20 @@ namespace ZarDevs.DependencyInjection.Tests
 
     internal class CallingClass : ICallingClass
     {
+        #region Fields
+
         private readonly IChildClass _childClass;
+
+        #endregion Fields
+
+        #region Constructors
 
         public CallingClass(IChildClass childClass)
         {
             _childClass = childClass ?? throw new ArgumentNullException(nameof(childClass));
         }
+
+        #endregion Constructors
 
         #region Methods
 

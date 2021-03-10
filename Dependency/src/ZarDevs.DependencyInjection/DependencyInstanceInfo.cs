@@ -3,10 +3,13 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dpendency info class that describes the dependency binding and the Instance that will always be resolved.
+    /// Dpendency info class that describes the dependency binding and the Instance that will always
+    /// be resolved.
     /// </summary>
     public class DependencyInstanceInfo : DependencyInfo, IDependencyInstanceInfo
     {
+        #region Constructors
+
         /// <summary>
         /// Create a new instance
         /// </summary>
@@ -30,10 +33,18 @@ namespace ZarDevs.DependencyInjection
             Scope = DependyBuilderScope.Singleton;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// The instance that is always returned.
         /// </summary>
         public object Instance { get; }
+
+        #endregion Properties
+
+        #region Methods
 
         internal override void SetScope(DependyBuilderScope scope)
         {
@@ -46,5 +57,7 @@ namespace ZarDevs.DependencyInjection
             if (!requestType.IsAssignableFrom(instanceType))
                 throw new InvalidOperationException($"Cannot bind {requestType.FullName} to instance {instanceType}.");
         }
+
+        #endregion Methods
     }
 }

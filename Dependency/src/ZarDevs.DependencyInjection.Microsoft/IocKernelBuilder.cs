@@ -5,16 +5,16 @@ using ZarDevs.Runtime;
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Ioc 
+    /// Ioc
     /// </summary>
     public interface IIocKernelServiceProviderBuilder : IIocKernelBuilder
     {
-        #region Methods
-
         /// <summary>
         /// Configure the service provider by adding it to the instance resolution configurations.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
+
+        #region Methods
 
         void ConfigureServiceProvider(IServiceProvider serviceProvider);
 
@@ -25,8 +25,8 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private readonly IDependencyResolutionConfiguration _resolutionConfiguration;
         private readonly IDependencyInstanceResolution _instanceResolution;
+        private readonly IDependencyResolutionConfiguration _resolutionConfiguration;
         private readonly IServiceCollection _serviceCollection;
 
         #endregion Fields
@@ -42,7 +42,8 @@ namespace ZarDevs.DependencyInjection
 
         #endregion Constructors
 
-        #region Methods>
+        #region Methods
+
         public void ConfigureServiceProvider(IServiceProvider serviceProvider)
         {
             _resolutionConfiguration.AddInstance(serviceProvider);

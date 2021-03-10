@@ -5,9 +5,13 @@
     /// </summary>
     public interface IDependencyInstanceInfo : IDependencyInfo
     {
+        #region Properties
+
         /// <summary>
         /// Get the instance that the IOC will resolve from the <see cref="IDependencyInfo.RequestType"/>.
         /// </summary>
         object Instance { get; }
+
+        #endregion Properties
     }
 }

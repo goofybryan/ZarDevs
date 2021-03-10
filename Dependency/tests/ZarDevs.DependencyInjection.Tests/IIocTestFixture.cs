@@ -2,6 +2,15 @@
 
 namespace ZarDevs.DependencyInjection.Tests
 {
+    public interface IIocPerformanceTestFixture : IIocTestFixture
+    {
+        #region Properties
+
+        bool RunComparisonTests { get; }
+
+        #endregion Properties
+    }
+
     public interface IIocTestFixture : IDisposable
     {
         #region Properties
@@ -9,10 +18,5 @@ namespace ZarDevs.DependencyInjection.Tests
         IIocContainer Container { get; }
 
         #endregion Properties
-    }
-
-    public interface IIocPerformanceTestFixture : IIocTestFixture
-    {
-        bool RunComparisonTests { get; }
     }
 }

@@ -15,9 +15,13 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
             });
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public IIocContainer Container { get; }
 
-        #endregion Constructors
+        #endregion Properties
 
         #region Methods
 

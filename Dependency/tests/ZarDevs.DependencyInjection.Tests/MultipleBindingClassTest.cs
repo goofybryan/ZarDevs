@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ZarDevs.DependencyInjection.Tests
+﻿namespace ZarDevs.DependencyInjection.Tests
 {
     public interface IMultipleBindingClassTest
     {
@@ -16,19 +12,19 @@ namespace ZarDevs.DependencyInjection.Tests
     {
     }
 
-    public class MultipleBindingClassTest2 : IMultipleBindingClassTest
-    {
-    }
-
-    public class MultipleBindingClassTest3 : IMultipleBindingClassTest
-    {
-    }
-
     public class MultipleBindingClassTest1<T> : IMultipleBindingClassTest<T>
     {
     }
 
+    public class MultipleBindingClassTest2 : IMultipleBindingClassTest
+    {
+    }
+
     public class MultipleBindingClassTest2<T> : IMultipleBindingClassTest<T>
+    {
+    }
+
+    public class MultipleBindingClassTest3 : IMultipleBindingClassTest
     {
     }
 

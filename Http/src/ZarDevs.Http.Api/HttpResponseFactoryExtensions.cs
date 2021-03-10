@@ -2,6 +2,7 @@
 {
     public static class HttpResponseFactoryExtensions
     {
+        #region Methods
 
         public static TValue GetResponseAs<TValue>(this ApiCommandResponse response)
         {
@@ -15,5 +16,6 @@
             return value;
         }
 
+        #endregion Methods
     }
 }

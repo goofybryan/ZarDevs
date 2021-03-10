@@ -29,10 +29,8 @@ namespace ZarDevs.DependencyInjection.Microsoft.Tests
 
         public IIocContainer Container { get; }
 
-        public IServiceProvider ContainerDirect { get; }
-
         public IServiceProvider ContainerComparison { get; }
-
+        public IServiceProvider ContainerDirect { get; }
         public bool RunComparisonTests => true;
 
         #endregion Properties

@@ -13,6 +13,18 @@ namespace ZarDevs.DependencyInjection.Tests
 
         #region Methods
 
+        public static void ConfigurePerformanceTest(this IDependencyBuilder builder)
+        {
+            builder.Bind<IPerformanceMethodTest>().To<PerformanceMethodTest>();
+            builder.Bind<IPerformanceMethodResultTest>().To((ctx) => PerformanceMethodTest.Method());
+            builder.Bind<IPerformanceConstructParam1Test>().To<PerformanceConstructParamTest>();
+            builder.Bind<IPerformanceConstructParam2Test>().To<PerformanceConstructParamTest>();
+            builder.Bind<IPerformanceConstructParam3Test>().To<PerformanceConstructParamTest>();
+            builder.Bind<IPerformanceConstructTest>().To<PerformanceConstructTest>();
+            builder.Bind<IPerformanceSingletonTest>().To<PerformanceSingletonTest>().InSingletonScope();
+            builder.Bind<IPerformanceInstanceTest>().To(new PerformanceInstanceTest());
+        }
+
         public static void ConfigureTest(this IDependencyBuilder builder)
         {
             builder.Bind<INormalClass>().To<NormalClass>().InTransientScope();
@@ -46,18 +58,6 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind(typeof(IFactoryMethodClass<>)).To(typeof(FactoryMethodClass<>)).InSingletonScope();
             builder.Bind(typeof(IFactoryMethodResolutionClass<>)).ToFactory(typeof(IFactoryMethodClass<>), "Method");
             builder.Bind(typeof(IFactoryMethodResolutionSingletonClass<>)).ToFactory(typeof(IFactoryMethodClass<>), "Singleton").InSingletonScope();
-        }
-
-        public static void ConfigurePerformanceTest(this IDependencyBuilder builder)
-        {
-            builder.Bind<IPerformanceMethodTest>().To<PerformanceMethodTest>();
-            builder.Bind<IPerformanceMethodResultTest>().To((ctx) => PerformanceMethodTest.Method());
-            builder.Bind<IPerformanceConstructParam1Test>().To<PerformanceConstructParamTest>();
-            builder.Bind<IPerformanceConstructParam2Test>().To<PerformanceConstructParamTest>();
-            builder.Bind<IPerformanceConstructParam3Test>().To<PerformanceConstructParamTest>();
-            builder.Bind<IPerformanceConstructTest>().To<PerformanceConstructTest>();
-            builder.Bind<IPerformanceSingletonTest>().To<PerformanceSingletonTest>().InSingletonScope();
-            builder.Bind<IPerformanceInstanceTest>().To(new PerformanceInstanceTest());
         }
 
         #endregion Methods

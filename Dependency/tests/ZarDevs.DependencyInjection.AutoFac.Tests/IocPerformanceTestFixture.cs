@@ -20,6 +20,27 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
             ContainerComparison = CreateComparison();
         }
 
+        #endregion Constructors
+
+        #region Properties
+
+        public IIocContainer Container { get; }
+
+        public IContainer ContainerComparison { get; }
+
+        public IContainer DirectContainer { get; }
+
+        public bool RunComparisonTests => true;
+
+        #endregion Properties
+
+        #region Methods
+
+        public void Dispose()
+        {
+            Ioc.Instance.Dispose();
+        }
+
         private IContainer CreateComparison()
         {
             var builder = new ContainerBuilder();
@@ -44,20 +65,6 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
             builder.RegisterInstance(new PerformanceInstanceTest()).As<IPerformanceInstanceTest>().SingleInstance();
 
             return builder.Build();
-        }
-
-        public IIocContainer Container { get; }
-        public IContainer DirectContainer { get; }
-        public IContainer ContainerComparison { get; }
-        public bool RunComparisonTests => true;
-
-        #endregion Constructors
-
-        #region Methods
-
-        public void Dispose()
-        {
-            Ioc.Instance.Dispose();
         }
 
         #endregion Methods

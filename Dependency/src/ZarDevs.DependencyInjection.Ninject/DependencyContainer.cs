@@ -1,20 +1,19 @@
 ﻿using Ninject;
 using Ninject.Activation;
-using Ninject.Extensions.Factory;
-using Ninject.Extensions.Factory.Factory;
 using Ninject.Syntax;
 using System;
-using System.Collections.Concurrent;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
     internal class DependencyContainer : DependencyContainerBase
     {
+        #region Fields
+
         private readonly IDependencyFactory _dependencyFactory;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -35,6 +34,11 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         public static IDependencyContainer Create(IKernel kernel, IDependencyFactory dependencyFactory) => new DependencyContainer(kernel, dependencyFactory);
+
+        public override IDependencyInfo TryGetBinding(Type requestType, object key)
+        {
+            return base.TryGetBinding(requestType, key) ?? _dependencyFactory.FactoryInfos.FirstOrDefault(i => i.RequestType == requestType && i.Key == key);
+        }
 
         protected override void OnBuild(IDependencyInfo info)
         {
@@ -100,12 +104,12 @@ namespace ZarDevs.DependencyInjection
                 return initial.To(typeInfo.ResolvedType);
             }
 
-            if(info is IDependencyInstanceInfo instanceInfo)
+            if (info is IDependencyInstanceInfo instanceInfo)
             {
                 return initial.ToConstant(instanceInfo.Instance);
             }
 
-            if(info is IDependencyFactoryInfo factoryInfo)
+            if (info is IDependencyFactoryInfo factoryInfo)
             {
                 return initial.ToMethod(ctx => ExecuteFactory(factoryInfo, ctx));
             }
@@ -135,11 +139,6 @@ namespace ZarDevs.DependencyInjection
             var args = ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray();
 
             return info.Execute(context.SetArguments(args));
-        }
-
-        public override IDependencyInfo TryGetBinding(Type requestType, object key)
-        {
-            return base.TryGetBinding(requestType, key) ?? _dependencyFactory.FactoryInfos.FirstOrDefault(i => i.RequestType == requestType && i.Key == key);
         }
 
         #endregion Methods

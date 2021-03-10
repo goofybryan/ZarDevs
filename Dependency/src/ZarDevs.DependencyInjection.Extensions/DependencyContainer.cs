@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -22,7 +21,9 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new instance of the dependency container.
         /// </summary>
-        /// <param name="configuration">The instance configuration that will contain the binding configuration.</param>
+        /// <param name="configuration">
+        /// The instance configuration that will contain the binding configuration.
+        /// </param>
         /// <param name="activator">The type activator that is used to resolve types.</param>
         /// <param name="dependencyFactory">The dependency factory.</param>
         public DependencyContainer(IDependencyResolutionConfiguration configuration, IDependencyTypeActivator activator, IDependencyFactory dependencyFactory)
@@ -46,6 +47,76 @@ namespace ZarDevs.DependencyInjection
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", definition.RequestType));
         }
 
+        /// <summary>
+        /// Register a <see cref="IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
+        /// <param name="factory"></param>
+        protected virtual void OnRegisterFactory(IDependencyFactoryInfo info, IDependencyFactory factory)
+        {
+            _configuration.Add(info.RequestType, new DependencyFactoryResolution(info, factory));
+        }
+
+        /// <summary>
+        /// Register a singleton <see cref="IDependencyTypeInfo"/> instance with the configuration.
+        /// Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
+        /// <param name="factory">The dependency factory that will resolve the factory.</param>
+        protected virtual void OnRegisterFactorySingleton(IDependencyFactoryInfo info, IDependencyFactory factory)
+        {
+            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyFactoryInfo, DependencyFactoryResolution>(new DependencyFactoryResolution(info, factory)));
+        }
+
+        /// <summary>
+        /// Register a <see cref="IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
+        protected virtual void OnRegisterInstance(IDependencyInstanceInfo info)
+        {
+            _configuration.Add(info.RequestType, new DependencySingletonInstance(info));
+        }
+
+        /// <summary>
+        /// Register a singleton <see cref="IDependencyTypeInfo"/> instance with the configuration.
+        /// Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
+        protected virtual void OnRegisterSingleton(IDependencyTypeInfo info)
+        {
+            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyTypeInfo, DependencyTypeResolution>(new DependencyTypeResolution(info, _activator)));
+        }
+
+        /// <summary>
+        /// Register a singleton <see cref="IDependencyMethodInfo"/> instance with the
+        /// configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
+        protected virtual void OnRegisterSingletonMethod(IDependencyMethodInfo info)
+        {
+            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyMethodInfo, DependencyMethodResolution>(new DependencyMethodResolution(info)));
+        }
+
+        /// <summary>
+        /// Register a transient <see cref="IDependencyTypeInfo"/> instance with the configuration.
+        /// Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
+        protected virtual void OnRegisterTransient(IDependencyTypeInfo info)
+        {
+            _configuration.Add(info.RequestType, new DependencyTypeResolution(info, _activator));
+        }
+
+        /// <summary>
+        /// Register a transient <see cref="IDependencyMethodInfo"/> instance with the
+        /// configuration. Can be overridden.
+        /// </summary>
+        /// <param name="info">The dependency information describing the resolving requirements.</param>
+        protected virtual void OnRegisterTransientMethod(IDependencyMethodInfo info)
+        {
+            _configuration.Add(info.RequestType, new DependencyMethodResolution(info));
+        }
+
         private bool TryRegisterFactory(IDependencyFactoryInfo info)
         {
             if (info == null)
@@ -66,71 +137,6 @@ namespace ZarDevs.DependencyInjection
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Register a <see cref="IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
-        /// </summary>
-        /// <param name="info">The dependency information describing the resolving requirements.</param>
-        /// <param name="factory"></param>
-        protected virtual void OnRegisterFactory(IDependencyFactoryInfo info, IDependencyFactory factory)
-        {
-            _configuration.Add(info.RequestType, new DependencyFactoryResolution(info, factory));
-        }
-
-        /// <summary>
-        /// Register a singleton <see cref="IDependencyTypeInfo"/> instance with the configuration. Can be overridden.
-        /// </summary>
-        /// <param name="info">The dependency information describing the resolving requirements.</param>
-        /// <param name="factory">The dependency factory that will resolve the factory.</param>
-        protected virtual void OnRegisterFactorySingleton(IDependencyFactoryInfo info, IDependencyFactory factory)
-        {
-            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyFactoryInfo, DependencyFactoryResolution>(new DependencyFactoryResolution(info, factory)));
-        }
-
-        /// <summary>
-        /// Register a <see cref="IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
-        /// </summary>
-        /// <param name="info">The dependency information describing the resolving requirements.</param>
-        protected virtual void OnRegisterInstance(IDependencyInstanceInfo info)
-        {
-            _configuration.Add(info.RequestType, new DependencySingletonInstance(info));
-        }
-
-        /// <summary>
-        /// Register a singleton <see cref="IDependencyTypeInfo"/> instance with the configuration. Can be overridden.
-        /// </summary>
-        /// <param name="info">The dependency information describing the resolving requirements.</param>
-        protected virtual void OnRegisterSingleton(IDependencyTypeInfo info)
-        {
-            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyTypeInfo, DependencyTypeResolution>(new DependencyTypeResolution(info, _activator)));
-        }
-
-        /// <summary>
-        /// Register a singleton <see cref="IDependencyMethodInfo"/> instance with the configuration. Can be overridden.
-        /// </summary>
-        /// <param name="info">The dependency information describing the resolving requirements.</param>
-        protected virtual void OnRegisterSingletonMethod(IDependencyMethodInfo info)
-        {
-            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyMethodInfo, DependencyMethodResolution>(new DependencyMethodResolution(info)));
-        }
-
-        /// <summary>
-        /// Register a transient <see cref="IDependencyTypeInfo"/> instance with the configuration. Can be overridden.
-        /// </summary>
-        /// <param name="info">The dependency information describing the resolving requirements.</param>
-        protected virtual void OnRegisterTransient(IDependencyTypeInfo info)
-        {
-            _configuration.Add(info.RequestType, new DependencyTypeResolution(info, _activator));
-        }
-
-        /// <summary>
-        /// Register a transient <see cref="IDependencyMethodInfo"/> instance with the configuration. Can be overridden.
-        /// </summary>
-        /// <param name="info">The dependency information describing the resolving requirements.</param>
-        protected virtual void OnRegisterTransientMethod(IDependencyMethodInfo info)
-        {
-            _configuration.Add(info.RequestType, new DependencyMethodResolution(info));
         }
 
         private bool TryRegisterInstance(IDependencyInstanceInfo info)

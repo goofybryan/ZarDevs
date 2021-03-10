@@ -8,13 +8,13 @@ namespace ZarDevs.Http
     {
         #region Fields
 
-        private readonly ApiHttpRequestHandlerBindingMap _handlerMappings;
         private readonly IApiHttpHandlerFactory _handlerFactory;
+        private readonly ApiHttpRequestHandlerBindingMap _handlerMappings;
         private readonly HttpClient _httpClient;
 
         #endregion Fields
 
-        #region Constructors90
+        #region Constructors
 
         public ApiHttpFactory(HttpClient httpClient, IApiHttpHandlerFactory handlerFactory)
         {
@@ -33,7 +33,7 @@ namespace ZarDevs.Http
 
         #region Methods
 
-        public IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key= null) where THandler : class, IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key = null) where THandler : class, IApiHttpRequestHandler
         {
             var binding = GetOrCreateBinding<THandler>(key);
             return binding;
@@ -60,9 +60,13 @@ namespace ZarDevs.Http
 
     public class DefaultHttpHandlerFactory : IApiHttpHandlerFactory
     {
+        #region Methods
+
         public IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler
         {
             return Create.Instance.New<THandler>();
         }
+
+        #endregion Methods
     }
 }

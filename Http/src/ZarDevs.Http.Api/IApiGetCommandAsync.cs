@@ -2,5 +2,5 @@
 {
     public interface IApiGetCommandAsync : ICommandAsync<ApiCommandRequest, ApiCommandJsonResponse>
     {
-    } 
+    }
 }

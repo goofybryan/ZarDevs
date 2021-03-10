@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection.Tests
 {
     public interface IMultipleConstructorClass
     {
-        IDictionary<string,object> Args { get; }
+        #region Properties
+
+        IDictionary<string, object> Args { get; }
+
+        #endregion Properties
     }
 
     public class MultipleConstructorClass : IMultipleConstructorClass
     {
+        #region Constructors
+
         public MultipleConstructorClass()
         {
             Args = new Dictionary<string, object>();
@@ -31,6 +35,12 @@ namespace ZarDevs.DependencyInjection.Tests
             Args[nameof(value3)] = value3;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public IDictionary<string, object> Args { get; }
+
+        #endregion Properties
     }
 }

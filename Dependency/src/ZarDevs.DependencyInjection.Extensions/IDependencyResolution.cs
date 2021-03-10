@@ -22,7 +22,7 @@ namespace ZarDevs.DependencyInjection
         /// Create a concrete resolution out of a generic.
         /// </summary>
         /// <param name="concreteRequest">The concrete request type.</param>
-        /// <returns>A resolution </returns>
+        /// <returns>A resolution</returns>
         IDependencyResolution MakeConcrete(Type concreteRequest);
 
         /// <summary>

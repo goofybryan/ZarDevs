@@ -21,7 +21,11 @@ namespace ZarDevs.DependencyInjection
 
         #endregion Constructors
 
+        #region Properties
+
         private IIocContainer Ioc => DependencyInjection.Ioc.Container;
+
+        #endregion Properties
 
         #region Methods
 

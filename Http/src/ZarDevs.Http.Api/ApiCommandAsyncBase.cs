@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using ZarDevs.Http;
 
 namespace ZarDevs.Http.Api
 {

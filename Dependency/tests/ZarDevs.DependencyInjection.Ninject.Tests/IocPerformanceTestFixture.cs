@@ -26,10 +26,8 @@ namespace ZarDevs.DependencyInjection.Ninject.Tests
 
         public IIocContainer Container { get; }
 
-        public IKernel ContainerDirect { get; }
-
         public IKernel ContainerComparison { get; }
-
+        public IKernel ContainerDirect { get; }
         public bool RunComparisonTests => true;
 
         #endregion Properties

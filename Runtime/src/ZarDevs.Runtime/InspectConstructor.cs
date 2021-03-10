@@ -28,14 +28,16 @@ namespace ZarDevs.Runtime
         (ConstructorInfo, IList<Type>) GetConstructorParameterMap(Type target);
 
         /// <summary>
-        /// Get the constructor parameters. This will return the constructor with the least amount of constructor parameters.
+        /// Get the constructor parameters. This will return the constructor with the least amount
+        /// of constructor parameters.
         /// </summary>
         /// <param name="target">The target object type.</param>
         /// <returns></returns>
         IList<Type> GetConstructorParameters(Type target);
 
         /// <summary>
-        /// Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+        /// Finds a constructor with the same parameters and returns the ordered list of parameter
+        /// objects that have been matched by name and type.
         /// </summary>
         /// <param name="target">The target object type.</param>
         /// <param name="unorderedValueMapping">
@@ -45,7 +47,8 @@ namespace ZarDevs.Runtime
         object[] OrderParameters(Type target, IList<(string, object)> unorderedValueMapping);
 
         /// <summary>
-        /// Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+        /// Finds a constructor with the same parameters and returns the ordered list of parameter
+        /// objects that have been matched by name and type.
         /// </summary>
         /// <param name="target">The target object type.</param>
         /// <param name="unorderedValueMapping">
@@ -106,7 +109,8 @@ namespace ZarDevs.Runtime
         }
 
         /// <summary>
-        /// Get the constructor parameters. This will return the constructor with the least amount of constructor parameters.
+        /// Get the constructor parameters. This will return the constructor with the least amount
+        /// of constructor parameters.
         /// </summary>
         /// <param name="target">The target object type.</param>
         /// <returns></returns>
@@ -118,7 +122,8 @@ namespace ZarDevs.Runtime
         }
 
         /// <summary>
-        /// Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+        /// Finds a constructor with the same parameters and returns the ordered list of parameter
+        /// objects that have been matched by name and type.
         /// </summary>
         /// <param name="target">The target object type.</param>
         /// <param name="unorderedValueMapping">
@@ -154,7 +159,8 @@ namespace ZarDevs.Runtime
         }
 
         /// <summary>
-        /// Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+        /// Finds a constructor with the same parameters and returns the ordered list of parameter
+        /// objects that have been matched by name and type.
         /// </summary>
         /// <param name="target">The target object type.</param>
         /// <param name="unorderedValueMapping">

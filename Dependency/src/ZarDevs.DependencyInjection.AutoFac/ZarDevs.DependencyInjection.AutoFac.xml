@@ -11,7 +11,7 @@
         </member>
         <member name="P:ZarDevs.DependencyInjection.IAutoFacDependencyContainer.Container">
             <summary>
-            AutoFac 
+            AutoFac
             </summary>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IocAutoFac">

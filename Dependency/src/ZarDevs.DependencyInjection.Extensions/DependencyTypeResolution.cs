@@ -3,7 +3,8 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/> and will call the <see cref="IDependencyFactoryInfo.FactoryType"/> <see cref="IDependencyFactoryInfo.MethodName"/>
+    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/>
+    /// and will call the <see cref="IDependencyFactoryInfo.FactoryType"/><see cref="IDependencyFactoryInfo.MethodName"/>
     /// </summary>
     public class DependencyTypeResolution : DependencyResolution<IDependencyTypeInfo>
     {
@@ -19,7 +20,9 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance of the dependency type resolution.
         /// </summary>
         /// <param name="info">The type information describing this resolution.</param>
-        /// <param name="activator">The activator that will be used to return an instance of the <see cref="IDependencyTypeInfo.ResolvedType"/></param>
+        /// <param name="activator">
+        /// The activator that will be used to return an instance of the <see cref="IDependencyTypeInfo.ResolvedType"/>
+        /// </param>
         public DependencyTypeResolution(IDependencyTypeInfo info, IDependencyTypeActivator activator) : base(info)
         {
             _activator = activator ?? throw new ArgumentNullException(nameof(activator));

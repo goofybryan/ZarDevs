@@ -17,9 +17,13 @@ namespace ZarDevs.DependencyInjection.Ninject.Tests
             });
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public IIocContainer Container { get; }
 
-        #endregion Constructors
+        #endregion Properties
 
         #region Methods
 

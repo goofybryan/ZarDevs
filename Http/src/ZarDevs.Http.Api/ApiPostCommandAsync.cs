@@ -6,7 +6,12 @@ namespace ZarDevs.Http.Api
 {
     public class ApiPostCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandResponse>, IApiPostCommandAsync
     {
+        #region Fields
+
         private readonly IHttpResponseFactory _responseFactory;
+
+        #endregion Fields
+
         #region Constructors
 
         public ApiPostCommandAsync(IApiHttpClient httpClient, IHttpResponseFactory responseFactory) : base(httpClient)

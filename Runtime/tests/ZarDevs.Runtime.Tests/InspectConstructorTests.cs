@@ -93,18 +93,6 @@ namespace ZarDevs.Runtime.Tests
             OrderParametersAssert(hasInteger, hasValue, hasGeneric, hasInterface, value, intValue, testInterface, orderedList);
         }
 
-        private void OrderParametersAssert(bool hasInteger, bool hasValue, bool hasGeneric, bool hasInterface, string value, int intValue, ITestInterface testInterface, IList<object> orderedList)
-        {
-            // Assert
-            int index = 0;
-            if (hasInteger) index = AssertOrder(intValue, index, orderedList);
-            if (hasValue) index = AssertOrder(value, index, orderedList);
-            if (hasGeneric) index = AssertOrder(this, index, orderedList);
-            if (hasInterface) index = AssertOrder(testInterface, index, orderedList);
-
-            Assert.Equal(orderedList.Count, index);
-        }
-
         private int AssertOrder<T>(T expectedValue, int index, IList<object> orderedParameters)
         {
             Assert.Equal(expectedValue, orderedParameters[index]);
@@ -116,6 +104,18 @@ namespace ZarDevs.Runtime.Tests
         {
             Assert.Contains(ValueTuple.Create(expectedName, expectedValue), namedParameters);
             return 1;
+        }
+
+        private void OrderParametersAssert(bool hasInteger, bool hasValue, bool hasGeneric, bool hasInterface, string value, int intValue, ITestInterface testInterface, IList<object> orderedList)
+        {
+            // Assert
+            int index = 0;
+            if (hasInteger) index = AssertOrder(intValue, index, orderedList);
+            if (hasValue) index = AssertOrder(value, index, orderedList);
+            if (hasGeneric) index = AssertOrder(this, index, orderedList);
+            if (hasInterface) index = AssertOrder(testInterface, index, orderedList);
+
+            Assert.Equal(orderedList.Count, index);
         }
 
         #endregion Methods
