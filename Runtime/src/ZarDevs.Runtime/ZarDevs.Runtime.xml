@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.Runtime</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.Runtime.IInspectConstructor">
+            <summary>
+            Runtime constructor inpsection.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.FindParameterNames(System.Type,System.Object[])">
+            <summary>
+            Find the constructor arguments for a list of ordered parameters.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="argumentValuesInOrder"></param>
+            <returns>Returns a list of constructor parameter names and associated values.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.GetConstructorParameterMap(System.Type)">
+            <summary>
+            Get a map of all the public constructors and a list of the associated parameter types.
+            </summary>
+            <param name="target">The target object type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.GetConstructorParameters(System.Type)">
+            <summary>
+            Get the constructor parameters. This will return the constructor with the least amount of constructor parameters.
+            </summary>
+            <param name="target">The target object type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IList{System.ValueTuple{System.String,System.Object}})">
+            <summary>
+            Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="unorderedValueMapping">
+            The unordered list of constructor paramaters and the associated name.
+            </param>
+            <returns>The ordered list of objects from the mapping.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="unorderedValueMapping">
+            The unordered list of constructor paramaters and the associated name.
+            </param>
+            <returns>The ordered list of objects from the mapping.</returns>
+        </member>
+        <member name="T:ZarDevs.Runtime.InspectConstructor">
+            <summary>
+            Runtime constructor inpsection.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Runtime.InspectConstructor.Instance">
+            <summary>
+            Get and instance of the Inpect class.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.FindParameterNames(System.Type,System.Object[])">
+            <summary>
+            Find the constructor arguments for a list of ordered parameters.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="argumentValuesInOrder"></param>
+            <returns>Returns a list of constructor parameter names and associated values.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.GetConstructorParameterMap(System.Type)">
+            <summary>
+            Get a map of all the public constructors and a list of the associated parameter types.
+            </summary>
+            <param name="target">The target object type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.GetConstructorParameters(System.Type)">
+            <summary>
+            Get the constructor parameters. This will return the constructor with the least amount of constructor parameters.
+            </summary>
+            <param name="target">The target object type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="unorderedValueMapping">
+            The unordered list of constructor paramaters and the associated name.
+            </param>
+            <returns>The ordered list of objects from the mapping.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IList{System.ValueTuple{System.String,System.Object}})">
+            <summary>
+            Finds a constructor with the same parameters and returns the ordered list of parameter objects that have been matched by name and type.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="unorderedValueMapping">
+            The unordered list of constructor paramaters and the associated name.
+            </param>
+            <returns>The ordered list of objects from the mapping.</returns>
+        </member>
+        <member name="T:ZarDevs.Runtime.IInspectMethod">
+            <summary>
+            Runtime method inpsection.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectMethod.FindMethodForArguments(System.Type,System.String,System.Collections.Generic.IList{System.Object})">
+            <summary>
+            Get method for the target type and arguments.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="methodName">The method name.</param>
+            <param name="argumentValuesInOrder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectMethod.GetMethodParameterMap(System.Type,System.String)">
+            <summary>
+            Get a map of all the public methods and a list of the associated parameter types.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="methodName">The method name.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.Runtime.InspectMethod">
+            <summary>
+            Runtime method inpsection.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Runtime.InspectMethod.Instance">
+            <summary>
+            Get and instance of the Inpect class.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectMethod.FindMethodForArguments(System.Type,System.String,System.Collections.Generic.IList{System.Object})">
+            <summary>
+            Get method for the target type and arguments.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="methodName">The method name.</param>
+            <param name="argumentValuesInOrder"></param>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectMethod.GetMethodParameterMap(System.Type,System.String)">
+            <summary>
+            Get a map of all the public methods and a list of the associated parameter types. Always
+            gets the method with the lowest parameter count.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="methodName">The method name.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

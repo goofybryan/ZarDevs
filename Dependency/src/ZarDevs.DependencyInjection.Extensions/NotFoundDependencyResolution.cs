@@ -4,9 +4,15 @@ namespace ZarDevs.DependencyInjection
 {
     internal class NotFoundDependencyResolution : IDependencyResolution
     {
-        private readonly Type _requestType;
+        #region Fields
+
         private readonly object _key;
+        private readonly Type _requestType;
         private readonly bool _throwError;
+
+        #endregion Fields
+
+        #region Constructors
 
         public NotFoundDependencyResolution(Type requestType, object key, bool throwError)
         {
@@ -17,10 +23,22 @@ namespace ZarDevs.DependencyInjection
 
         public NotFoundDependencyResolution() : this(null, null, false)
         {
-
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public object Key => null;
+
+        #endregion Properties
+
+        #region Methods
+
+        public IDependencyResolution MakeConcrete(Type concreteRequest)
+        {
+            throw new NotSupportedException("This is not supported by the not found resolution");
+        }
 
         public object Resolve()
         {
@@ -37,9 +55,11 @@ namespace ZarDevs.DependencyInjection
             return Resolve();
         }
 
-        public IDependencyResolution MakeConcrete(Type concreteRequest)
+        public object Resolve(IDependencyContext context)
         {
-            throw new NotSupportedException("This is not supported by the not found resolution");
+            return Resolve();
         }
+
+        #endregion Methods
     }
 }

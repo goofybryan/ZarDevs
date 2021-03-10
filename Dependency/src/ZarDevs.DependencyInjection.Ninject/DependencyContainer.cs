@@ -1,19 +1,27 @@
 ﻿using Ninject;
 using Ninject.Activation;
+using Ninject.Extensions.Factory;
+using Ninject.Extensions.Factory.Factory;
 using Ninject.Syntax;
 using System;
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
     internal class DependencyContainer : DependencyContainerBase
     {
+        private readonly IDependencyFactory _dependencyFactory;
+
         #region Constructors
 
-        private DependencyContainer(IKernel kernel)
+        private DependencyContainer(IKernel kernel, IDependencyFactory dependencyFactory)
         {
             Kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
+            _dependencyFactory = dependencyFactory ?? throw new ArgumentNullException(nameof(dependencyFactory));
         }
 
         #endregion Constructors
@@ -26,7 +34,7 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public static IDependencyContainer Create(IKernel kernel) => new DependencyContainer(kernel);
+        public static IDependencyContainer Create(IKernel kernel, IDependencyFactory dependencyFactory) => new DependencyContainer(kernel, dependencyFactory);
 
         protected override void OnBuild(IDependencyInfo info)
         {
@@ -97,14 +105,41 @@ namespace ZarDevs.DependencyInjection
                 return initial.ToConstant(instanceInfo.Instance);
             }
 
+            if(info is IDependencyFactoryInfo factoryInfo)
+            {
+                return initial.ToMethod(ctx => ExecuteFactory(factoryInfo, ctx));
+            }
+
             throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
+        }
+
+        private object ExecuteFactory(IDependencyFactoryInfo info, IContext ctx)
+        {
+            var executionInfo = info;
+
+            if (info.IsFactoryGeneric())
+            {
+                var concreteRequest = info.RequestType.MakeGenericType(ctx.GenericArguments);
+                executionInfo = info.As(concreteRequest);
+            }
+
+            var args = ctx.Parameters.Count == 0 ? null : ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray();
+            return _dependencyFactory.Resolve(executionInfo.CreateContext(Ioc.Container).SetArguments(args));
         }
 
         private object ExecuteMethod(IDependencyMethodInfo info, IContext ctx)
         {
-            if (ctx.Parameters.Count == 0) return info.Execute();
+            var context = info.CreateContext(Ioc.Container);
+            if (ctx.Parameters.Count == 0) return info.Execute(context);
 
-            return info.Execute(ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray());
+            var args = ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray();
+
+            return info.Execute(context.SetArguments(args));
+        }
+
+        public override IDependencyInfo TryGetBinding(Type requestType, object key)
+        {
+            return base.TryGetBinding(requestType, key) ?? _dependencyFactory.FactoryInfos.FirstOrDefault(i => i.RequestType == requestType && i.Key == key);
         }
 
         #endregion Methods

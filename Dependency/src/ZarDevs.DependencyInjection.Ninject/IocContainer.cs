@@ -68,7 +68,14 @@ namespace ZarDevs.DependencyInjection
 
         public IEnumerable ResolveAll(Type requestType)
         {
-            return Kernel.GetAll(requestType);
+            var result = Kernel.GetAll(requestType).ToArray();
+            var resolved = Array.CreateInstance(requestType, result.Length);
+            for (int i = 0; i < result.Length; i++)
+            {
+                resolved.SetValue(result[i], i);
+            }
+
+            return resolved;
         }
 
         public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class

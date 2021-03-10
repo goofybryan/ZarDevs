@@ -45,6 +45,13 @@ namespace ZarDevs.DependencyInjection
         /// <returns>An instance for this resolution.</returns>
         object Resolve((string, object)[] args);
 
+        /// <summary>
+        /// Resolve and return the instance
+        /// </summary>
+        /// <param name="context">The dependency context.</param>
+        /// <returns>An instance for this resolution.</returns>
+        object Resolve(IDependencyContext context);
+
         #endregion Methods
     }
 

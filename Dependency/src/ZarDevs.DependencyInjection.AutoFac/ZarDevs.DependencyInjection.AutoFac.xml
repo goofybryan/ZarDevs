@@ -36,11 +36,12 @@
             Ioc Kernerl Builder that will create instances of the underlying IOC technology
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.#ctor(Autofac.Builder.ContainerBuildOptions)">
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.#ctor(Autofac.Builder.ContainerBuildOptions,ZarDevs.DependencyInjection.IDependencyFactory)">
             <summary>
             Instanciate a new instance with build options
             </summary>
             <param name="buildOptions">AutoFac build options.</param>
+            <param name="dependencyFactory">The dependency factory.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.CreateDependencyBuilder">
             <summary>

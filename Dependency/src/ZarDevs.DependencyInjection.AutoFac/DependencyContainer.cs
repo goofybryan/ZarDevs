@@ -2,9 +2,11 @@
 using Autofac.Builder;
 using Autofac.Core;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -28,15 +30,17 @@ namespace ZarDevs.DependencyInjection
         #region Fields
 
         private readonly ContainerBuildOptions _buildOptions;
+        private readonly IDependencyFactory _dependencyFactory;
 
         #endregion Fields
 
         #region Constructors
 
-        private DependencyContainer(ContainerBuildOptions buildOptions)
+        private DependencyContainer(ContainerBuildOptions buildOptions, IDependencyFactory dependencyFactory)
         {
             Builder = new ContainerBuilder();
             _buildOptions = buildOptions;
+            _dependencyFactory = dependencyFactory ?? throw new ArgumentNullException(nameof(dependencyFactory));
         }
 
         #endregion Constructors
@@ -50,12 +54,45 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public static IAutoFacDependencyContainer Create(ContainerBuildOptions buildOptions) => new DependencyContainer(buildOptions);
+        public static IAutoFacDependencyContainer Create(ContainerBuildOptions buildOptions, IDependencyFactory dependencyFactory) => new DependencyContainer(buildOptions, dependencyFactory);
 
         protected override void OnBuild(IDependencyInfo info)
         {
-            if (!TryRegisterTypeTo(Builder, info as IDependencyTypeInfo) && !TryRegisterMethod(Builder, info as IDependencyMethodInfo) && !TryRegisterInstance(Builder, info as IDependencyInstanceInfo))
+            if (!TryRegisterTypeTo(Builder, info as IDependencyTypeInfo) && !TryRegisterMethod(Builder, info as IDependencyMethodInfo) && !TryRegisterInstance(Builder, info as IDependencyInstanceInfo) && !TryRegisterFactory(Builder, info))
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
+        }
+
+        private bool TryRegisterFactory(ContainerBuilder builder, IDependencyInfo info)
+        {
+            if (info is not IDependencyFactoryInfo factoryInfo)
+                return false;
+
+            if (factoryInfo.IsFactoryGeneric())
+            {
+                var binding = builder.RegisterGeneric((ctx, types, p) =>
+                {
+                    var concreteRequest = factoryInfo.RequestType.MakeGenericType(types);
+                    var concreteInfo = factoryInfo.As(concreteRequest);
+                    return ExecuteFactory(concreteInfo, p?.ToArray());
+                });
+
+                RegisterNamedDependency(binding, info);
+
+                Build(info, binding);
+            }
+            else
+            {
+                var binding = builder.Register((ctx, p) =>
+                {
+                    return ExecuteFactory(factoryInfo, p?.ToArray());
+                });
+
+                RegisterNamedDependency(binding, info);
+
+                Build(info, binding);
+            }
+
+            return true;
         }
 
         protected override void OnBuildEnd()
@@ -84,11 +121,20 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
+        private object ExecuteFactory(IDependencyFactoryInfo info, IList<Parameter> parameters)
+        {
+            if (parameters == null || parameters.Count == 0) return _dependencyFactory.Resolve(info.CreateContext(Ioc.Container));
+            if (TryGetNamedParameters(parameters, out (string, object)[] namedParameters)) return _dependencyFactory.Resolve(info.CreateContext(Ioc.Container).SetArguments(namedParameters));
+            if (TryGetPositionalParameters(parameters, out object[] positionalParameters)) return _dependencyFactory.Resolve(info.CreateContext(Ioc.Container).SetArguments(positionalParameters));
+
+            throw new NotSupportedException("Only AutoFac NamedParameter or PositionalParameter is supported.");
+        }
+
         private object ExecuteMethod(IDependencyMethodInfo info, IList<Parameter> parameters)
         {
-            if (parameters == null || parameters.Count == 0) return info.Execute();
-            if (TryGetNamedParameters(parameters, out (string, object)[] namedParameters)) return info.Execute(namedParameters);
-            if (TryGetPositionalParameters(parameters, out object[] positionalParameters)) return info.Execute(positionalParameters);
+            if (parameters == null || parameters.Count == 0) return info.Execute(info.CreateContext(Ioc.Container));
+            if (TryGetNamedParameters(parameters, out (string, object)[] namedParameters)) return info.Execute(info.CreateContext(Ioc.Container).SetArguments(namedParameters));
+            if (TryGetPositionalParameters(parameters, out object[] positionalParameters)) return info.Execute(info.CreateContext(Ioc.Container).SetArguments(positionalParameters));
 
             throw new NotSupportedException("Only AutoFac NamedParameter or PositionalParameter is supported.");
         }

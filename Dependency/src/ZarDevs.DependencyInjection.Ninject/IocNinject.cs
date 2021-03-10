@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -15,7 +16,7 @@ namespace ZarDevs.DependencyInjection
         public static IIocKernelBuilder CreateBuilder(INinjectSettings settings = null)
         {
             var kernel = new StandardKernel(settings ?? new NinjectSettings());
-            return new IocKernelBuilder(kernel);
+            return new IocKernelBuilder(kernel, new DependencyFactory(InspectMethod.Instance));
         }
     }
 }

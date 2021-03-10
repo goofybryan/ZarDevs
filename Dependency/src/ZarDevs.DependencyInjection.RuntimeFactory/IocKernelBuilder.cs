@@ -14,10 +14,10 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         public IocKernelBuilder()
         {
-            DependencyResolutionConfiguration configuration = new DependencyResolutionConfiguration();
+            DependencyResolutionConfiguration configuration = new ();
             InstanceResolution = new DependencyInstanceResolution(configuration);
             Activator = new RuntimeDependencyActivator(InspectConstructor.Instance, Create.Instance);
-            Container = new DependencyContainer(configuration, Activator);
+            Container = new DependencyContainer(configuration, Activator, new DependencyFactory(InspectMethod.Instance));
         }
 
         #endregion Constructors
@@ -43,6 +43,7 @@ namespace ZarDevs.DependencyInjection
 
             builder.Bind<IDependencyTypeActivator>().To(Activator);
             builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
+            builder.Bind<IInspectMethod>().To(InspectMethod.Instance);
             builder.Bind<ICreate>().To(Create.Instance);
             builder.Bind<IDependencyInstanceResolution>().To(InstanceResolution);
 

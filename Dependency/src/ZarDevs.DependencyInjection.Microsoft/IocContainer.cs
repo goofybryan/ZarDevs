@@ -9,7 +9,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private IDependencyResolver _dependencyResolver;
+        protected IDependencyResolver _dependencyResolver;
         private bool _isDisposed;
 
         #endregion Fields
@@ -43,7 +43,7 @@ namespace ZarDevs.DependencyInjection
             return _dependencyResolver.Resolve<T>(parameters);
         }
 
-        public T Resolve<T>() where T : class
+        public virtual T Resolve<T>() where T : class
         {
             return (T)Kernel.GetRequiredService(typeof(T));
         }
@@ -53,12 +53,12 @@ namespace ZarDevs.DependencyInjection
             return _dependencyResolver.Resolve<T>(parameters);
         }
 
-        public IEnumerable<T> ResolveAll<T>() where T : class
+        public virtual IEnumerable<T> ResolveAll<T>() where T : class
         {
             return Kernel.GetServices<T>();
         }
 
-        public IEnumerable ResolveAll(Type requestType)
+        public virtual IEnumerable ResolveAll(Type requestType)
         {
             return Kernel.GetServices(requestType);
         }
@@ -123,7 +123,7 @@ namespace ZarDevs.DependencyInjection
             return _dependencyResolver.TryResolve<T>(parameters);
         }
 
-        public object TryResolve(Type requestType)
+        public virtual object TryResolve(Type requestType)
         {
             return Kernel.GetService(requestType);
         }
@@ -190,5 +190,32 @@ namespace ZarDevs.DependencyInjection
         }
 
         #endregion Methods
+    }
+
+    internal class IocFactoryContainer : IocContainer
+    {
+        public IocFactoryContainer(IDependencyResolver dependencyResolver, IServiceProvider serviceProvider) : base(dependencyResolver, serviceProvider)
+        {
+        }
+
+        public override T Resolve<T>()
+        {
+            return _dependencyResolver.Resolve<T>();
+        }
+
+        public override IEnumerable ResolveAll(Type requestType)
+        {
+            return _dependencyResolver.ResolveAll(requestType);
+        }
+
+        public override IEnumerable<T> ResolveAll<T>()
+        {
+            return _dependencyResolver.ResolveAll<T>();
+        }
+
+        public override object TryResolve(Type requestType)
+        {
+            return _dependencyResolver.TryResolve(requestType);
+        }
     }
 }

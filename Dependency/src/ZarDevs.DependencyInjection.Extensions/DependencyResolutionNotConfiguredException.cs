@@ -8,7 +8,7 @@ namespace ZarDevs.DependencyInjection
     [Serializable]
     public class DependencyResolutionNotConfiguredException : Exception
     {
-        private const string NoKeySpecified = "No Key Specified.";
+        private const string _noKeySpecified = "No Key Specified.";
 
         /// <summary>
         /// 
@@ -16,7 +16,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="requestType"></param>
         /// <param name="key"></param>
         public DependencyResolutionNotConfiguredException(Type requestType, object key) 
-            : base($"No dependency resolution configured for type '{requestType}', with key '{(key != null ? key.ToString() : NoKeySpecified)}'")
+            : base($"No dependency resolution configured for type '{requestType}', with key '{(key != null ? key.ToString() : _noKeySpecified)}'")
         {
             RequestType = requestType;
             Key = key;

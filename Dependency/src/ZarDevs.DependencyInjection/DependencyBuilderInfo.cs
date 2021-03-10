@@ -6,7 +6,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private DependencyInfo _info = new DependencyInfo();
+        private DependencyInfo _info = new();
 
         #endregion Fields
 
@@ -52,7 +52,7 @@ namespace ZarDevs.DependencyInjection
             return To(typeof(T));
         }
 
-        public IDependencyBuilderBindingMetaData To(Func<DependencyBuilderContext, object> method)
+        public IDependencyBuilderBindingMetaData To(Func<IDependencyContext, object> method)
         {
             _info = new DependencyMethodInfo(method, _info);
             return this;
@@ -61,6 +61,18 @@ namespace ZarDevs.DependencyInjection
         public IDependencyBuilderBindingMetaData To<T>(T instance)
         {
             _info = new DependencyInstanceInfo(instance, _info);
+            return this;
+        }
+
+        public IDependencyBuilderBindingMetaData ToFactory<T>(string methodName)
+        {
+            _info = new DependencyFactoryInfo(typeof(T), methodName, _info);
+            return this;
+        }
+
+        public IDependencyBuilderBindingMetaData ToFactory(Type factoryType, string methodName)
+        {
+            _info = new DependencyFactoryInfo(factoryType, methodName, _info);
             return this;
         }
 

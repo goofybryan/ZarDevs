@@ -28,7 +28,7 @@
         /// <returns>An instance for this resolution.</returns>
         public override object Resolve(object[] args)
         {
-            return Info.Execute(args);
+            return Info.Execute(Info.CreateContext(Ioc.Container).SetArguments(args));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@
         /// <returns>An instance for this resolution.</returns>
         public override object Resolve((string, object)[] args)
         {
-            return Info.Execute(args);
+            return Info.Execute(Info.CreateContext(Ioc.Container).SetArguments(args));
         }
 
         /// <summary>
@@ -47,7 +47,17 @@
         /// <returns>An instance for this resolution.</returns>
         public override object Resolve()
         {
-            return Info.Execute();
+            return Info.Execute(Info.CreateContext(Ioc.Container));
+        }
+
+        /// <summary>
+        /// Resolve and return the instance
+        /// </summary>
+        /// <param name="context">The dependency context.</param>
+        /// <returns>An instance for this resolution.</returns>
+        public override object Resolve(IDependencyContext context)
+        {
+            return Info.Execute(context);
         }
 
         #endregion Methods

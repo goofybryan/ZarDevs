@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.Extensions.Factory\ZarDevs.DependencyInjection.Extensions.Factory.csproj" />
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
   </ItemGroup>
 

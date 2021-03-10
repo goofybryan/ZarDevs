@@ -77,7 +77,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns>Returns the instance in the described <see cref="IDependencyInstanceInfo.Instance"/></returns>
         public object Resolve(object[] args)
         {
-            return Resolve();
+            return Instance;
         }
 
         /// <summary>
@@ -87,7 +87,17 @@ namespace ZarDevs.DependencyInjection
         /// <returns>Returns the instance in the described <see cref="IDependencyInstanceInfo.Instance"/></returns>
         public object Resolve((string, object)[] args)
         {
-            return Resolve();
+            return Instance;
+        }
+
+        /// <summary>
+        /// Resolve and return the instance
+        /// </summary>
+        /// <param name="context">The dependency context.</param>
+        /// <returns>An instance for this resolution.</returns>
+        public object Resolve(IDependencyContext context)
+        {
+            return Instance;
         }
 
         /// <summary>

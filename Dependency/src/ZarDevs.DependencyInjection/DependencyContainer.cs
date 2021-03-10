@@ -73,7 +73,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="requestType">The request type to retrieve.</param>
         /// <param name="key">A key that the binding is associated with, can be null.</param>
-        public IDependencyInfo TryGetBinding(Type requestType, object key)
+        public virtual IDependencyInfo TryGetBinding(Type requestType, object key)
         {
             return Definitions.TryGet(requestType, key);
         }

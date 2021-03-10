@@ -3,18 +3,12 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Base dependency info class that describes the <see cref="RequestType"/>, <see cref="Scope"/> and optionally <see cref="Key"/> for any binding.
+    /// Base dependency info class that describes the <see cref="RequestType"/>, <see cref="Scope"/>
+    /// and optionally <see cref="Key"/> for any binding.
     /// </summary>
     public class DependencyInfo : IDependencyInfo
     {
         #region Constructors
-
-        /// <summary>
-        /// Create a new empty instance
-        /// </summary>
-        internal DependencyInfo()
-        {
-        }
 
         /// <summary>
         /// Create a new instance with the base variables set.
@@ -27,6 +21,13 @@ namespace ZarDevs.DependencyInjection
             RequestType = requestType ?? throw new ArgumentNullException(nameof(requestType));
             Key = key;
             Scope = scope;
+        }
+
+        /// <summary>
+        /// Create a new empty instance
+        /// </summary>
+        internal DependencyInfo()
+        {
         }
 
         /// <summary>
@@ -47,20 +48,26 @@ namespace ZarDevs.DependencyInjection
         public object Key { get; set; }
 
         /// <summary>
-        /// The scope that the binding will be defined to, default is <see cref="DependyBuilderScope.Transient"/>
-        /// </summary>
-        public DependyBuilderScope Scope { get; protected set; }
-
-        /// <summary>
         /// The request type that will be used to define what needs to be resolved.
         /// </summary>
         public Type RequestType { get; set; }
 
+        /// <summary>
+        /// The scope that the binding will be defined to, default is <see cref="DependyBuilderScope.Transient"/>
+        /// </summary>
+        public DependyBuilderScope Scope { get; protected set; }
+
         #endregion Properties
 
-        internal virtual void SetScope(DependyBuilderScope scope)
+        #region Methods
+
+        /// <summary>
+        /// Create a new instance of the dependency context.
+        /// </summary>
+        /// <returns></returns>
+        public IDependencyContext CreateContext(IIocContainer ioc)
         {
-            Scope = scope;
+            return new DependencyContext(ioc, this);
         }
 
         /// <summary>
@@ -71,5 +78,12 @@ namespace ZarDevs.DependencyInjection
         {
             return $"Dependency Info: Key={Key}, Scope={Scope}, RequestType={RequestType}";
         }
+
+        internal virtual void SetScope(DependyBuilderScope scope)
+        {
+            Scope = scope;
+        }
+
+        #endregion Methods
     }
 }

@@ -40,6 +40,12 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest1<>)).WithKey(typeof(MultipleBindingClassTest1<>).Name);
             builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest2<>)).WithKey(typeof(MultipleBindingClassTest2<>).Name);
             builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest3<>)).WithKey(typeof(MultipleBindingClassTest3<>).Name);
+            builder.Bind<IFactoryMethodClass>().To<FactoryMethodClass>().InSingletonScope();
+            builder.Bind<IFactoryMethodResolutionClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method));
+            builder.Bind<IFactoryMethodResolutionSingletonClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Singleton)).InSingletonScope();
+            builder.Bind(typeof(IFactoryMethodClass<>)).To(typeof(FactoryMethodClass<>)).InSingletonScope();
+            builder.Bind(typeof(IFactoryMethodResolutionClass<>)).ToFactory(typeof(IFactoryMethodClass<>), "Method");
+            builder.Bind(typeof(IFactoryMethodResolutionSingletonClass<>)).ToFactory(typeof(IFactoryMethodClass<>), "Singleton").InSingletonScope();
         }
 
         public static void ConfigurePerformanceTest(this IDependencyBuilder builder)

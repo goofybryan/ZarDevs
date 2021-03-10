@@ -111,6 +111,16 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
+        /// Resolve and return the instance
+        /// </summary>
+        /// <param name="context">The dependency context.</param>
+        /// <returns>An instance for this resolution.</returns>
+        public object Resolve(IDependencyContext context)
+        {
+            return Resolved ??= _resolution.Resolve(context);
+        }
+
+        /// <summary>
         /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/>
         /// implements <see cref="IDisposable"/> that will be called.
         /// </summary>

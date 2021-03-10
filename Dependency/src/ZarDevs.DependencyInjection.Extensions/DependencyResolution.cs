@@ -81,6 +81,13 @@ namespace ZarDevs.DependencyInjection
         public abstract object Resolve(params (string, object)[] args);
 
         /// <summary>
+        /// Resolve and return the instance
+        /// </summary>
+        /// <param name="context">The dependency context.</param>
+        /// <returns>An instance for this resolution.</returns>
+        public abstract object Resolve(IDependencyContext context);
+
+        /// <summary>
         /// Override to make a resolution, otherwise a <see cref="NotSupportedException"/> will be thrown.
         /// </summary>
         /// <param name="concreteRequest">The concrete request type.</param>

@@ -21,18 +21,33 @@
             Dependency container that is used to build bindings and apply them to the configuration.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeActivator)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeActivator,ZarDevs.DependencyInjection.IDependencyFactory)">
             <summary>
             Create a new instance of the dependency container.
             </summary>
             <param name="configuration">The instance configuration that will contain the binding configuration.</param>
             <param name="activator">The type activator that is used to resolve types.</param>
+            <param name="dependencyFactory">The dependency factory.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnBuild(ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
             Implement the on build method that will be called for each definition added.
             </summary>
             <param name="definition">The dependency info that describes what is required.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterFactory(ZarDevs.DependencyInjection.IDependencyFactoryInfo,ZarDevs.DependencyInjection.IDependencyFactory)">
+            <summary>
+            Register a <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
+            </summary>
+            <param name="info">The dependency information describing the resolving requirements.</param>
+            <param name="factory"></param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterFactorySingleton(ZarDevs.DependencyInjection.IDependencyFactoryInfo,ZarDevs.DependencyInjection.IDependencyFactory)">
+            <summary>
+            Register a singleton <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/> instance with the configuration. Can be overridden.
+            </summary>
+            <param name="info">The dependency information describing the resolving requirements.</param>
+            <param name="factory">The dependency factory that will resolve the factory.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterInstance(ZarDevs.DependencyInjection.IDependencyInstanceInfo)">
             <summary>
@@ -63,6 +78,52 @@
             Register a transient <see cref="T:ZarDevs.DependencyInjection.IDependencyMethodInfo"/> instance with the configuration. Can be overridden.
             </summary>
             <param name="info">The dependency information describing the resolving requirements.</param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyFactoryResolution">
+            <summary>
+            Dependency type resolution that will resolve the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/> and will call the <see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.FactoryType"/> <see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.MethodName"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.#ctor(ZarDevs.DependencyInjection.IDependencyFactoryInfo,ZarDevs.DependencyInjection.IDependencyFactory)">
+            <summary>
+            Create a new instance of the dependency type resolution.
+            </summary>
+            <param name="info">The type information describing this resolution.</param>
+            <param name="factory">The dependency factory</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.Resolve">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.Resolve(System.Object[])">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="args">A list of ordered constructor arguments.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.Resolve(System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="args">A list of named constructor arguments.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.OnMakeConcrete(System.Type)">
+            <summary>
+            Override to make a resolution, otherwise a <see cref="T:System.NotSupportedException"/> will be thrown.
+            </summary>
+            <param name="concreteRequest">The concrete request type.</param>
+            <returns></returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyInstanceResolution">
             <summary>
@@ -245,6 +306,13 @@
             </summary>
             <returns>An instance for this resolution.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyMethodResolution.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyResolution`1">
             <summary>
             Abstract resolution class that is implementing the base requirements of <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
@@ -296,6 +364,13 @@
             <param name="args">A list of ordered constructor arguments.</param>
             <returns>An instance for this resolution.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.OnMakeConcrete(System.Type)">
             <summary>
             Override to make a resolution, otherwise a <see cref="T:System.NotSupportedException"/> will be thrown.
@@ -306,6 +381,11 @@
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration">
             <summary>
             Dependency instance configuration
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.HasGenericFactoryTypes">
+            <summary>
+            Get an indicator that this configuration has generic factory types.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.Add(System.Type,ZarDevs.DependencyInjection.IDependencyResolution)">
@@ -349,6 +429,11 @@
             Create a new instance of the dependency resolution configuration.
             </summary>
         </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.HasGenericFactoryTypes">
+            <summary>
+            Get an indicator that this configuration has generic factory types.
+            </summary>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.Add(System.Type,ZarDevs.DependencyInjection.IDependencyResolution)">
             <summary>
             Configure the request type <paramref name="type"/> to the resolution <paramref name="resolution"/>
@@ -365,7 +450,8 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.Dispose">
             <summary>
-            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/> implement <see cref="T:System.IDisposable"/>, they will also be called.
+            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
+            implement <see cref="T:System.IDisposable"/>, they will also be called.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.GetResolutionsByKey(System.Type,System.Object)">
@@ -374,7 +460,10 @@
             will be generated for all and then the keyed values will be returned.
             </summary>
             <param name="type">The request type that will need to be resolved.</param>
-            <param name="key">The key that is requested, can be null. Be warned, if the key is null, it will only return configured values that have a null key.</param>
+            <param name="key">
+            The key that is requested, can be null. Be warned, if the key is null, it will only
+            return configured values that have a null key.
+            </param>
             <returns>A list of resolutions, if none found, will return <see cref="M:System.Linq.Enumerable.Empty``1"/></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.GetResolutionsByType(System.Type)">
@@ -387,7 +476,8 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.Dispose(System.Boolean)">
             <summary>
-            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/> implement <see cref="T:System.IDisposable"/>, they will also be called.
+            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
+            implement <see cref="T:System.IDisposable"/>, they will also be called.
             </summary>
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException">
@@ -789,6 +879,13 @@
             </summary>
             <returns>An instance for this resolution.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencySingletionResolution`2.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletionResolution`2.Dispose(System.Boolean)">
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
@@ -844,6 +941,13 @@
             <param name="args">Never used.</param>
             <returns>Returns the instance in the described <see cref="P:ZarDevs.DependencyInjection.IDependencyInstanceInfo.Instance"/></returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencySingletonInstance.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletonInstance.Dispose(System.Boolean)">
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
@@ -852,7 +956,7 @@
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyTypeResolution">
             <summary>
-            Dependency type resolution that will resolve the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/> and return an instance of the <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolvedType"/>
+            Dependency type resolution that will resolve the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/> and will call the <see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.FactoryType"/> <see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.MethodName"/>
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyTypeResolution.#ctor(ZarDevs.DependencyInjection.IDependencyTypeInfo,ZarDevs.DependencyInjection.IDependencyTypeActivator)">
@@ -880,6 +984,13 @@
             Resolve and return the instance
             </summary>
             <param name="args">A list of named constructor arguments.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyTypeResolution.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
             <returns>An instance for this resolution.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyTypeResolution.OnMakeConcrete(System.Type)">
@@ -924,6 +1035,13 @@
             Resolve and return the instance
             </summary>
             <param name="args">A list of named constructor arguments.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolution.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
             <returns>An instance for this resolution.</returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolution`1">

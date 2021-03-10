@@ -13,20 +13,9 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Execute the method that has been configured
         /// </summary>
+        /// <param name="context">The dependency context</param>
         /// <returns></returns>
-        object Execute();
-
-        /// <summary>
-        /// Execute the method that has been configured
-        /// </summary>
-        /// <returns></returns>
-        object Execute(object[] args);
-
-        /// <summary>
-        /// Execute the method that has been configured
-        /// </summary>
-        /// <returns></returns>
-        object Execute((string, object)[] args);
+        object Execute(IDependencyContext context);
 
         #endregion Properties
     }

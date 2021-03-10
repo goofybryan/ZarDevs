@@ -18,6 +18,9 @@ namespace ZarDevs.DependencyInjection
             if (info is IDependencyTypeInfo typeInfo)
                 return As(typeInfo, concreteRequestType);
 
+            if (info is IDependencyFactoryInfo factoryInfo)
+                return As(factoryInfo, concreteRequestType);
+
             throw new NotSupportedException($"The dependency info {info} is not currently supported.");
         }
 
@@ -36,6 +39,33 @@ namespace ZarDevs.DependencyInjection
             var concreteResolveType = resovleType.MakeGenericType(concreteRequestType.GenericTypeArguments);
 
             return new DependencyTypeInfo(concreteResolveType, typeInfo) { RequestType = concreteRequestType };
+        }
+
+        /// <summary>
+        /// Get an indicator to see if the factory is a generic type.
+        /// </summary>
+        /// <param name="typeInfo"></param>
+        /// <returns></returns>
+        public static bool IsFactoryGeneric(this IDependencyFactoryInfo typeInfo)
+        {
+            return typeInfo.FactoryType.IsGenericType;
+        }
+
+        /// <summary>
+        /// Convert a generic factory info into a concrete type info.
+        /// </summary>
+        /// <param name="typeInfo">The current dependency info</param>
+        /// <param name="concreteRequestType">The concrete type that has been requested.</param>
+        /// <returns>A new instance of the dependency info with the concrete information set.</returns>
+        public static IDependencyFactoryInfo As(this IDependencyFactoryInfo typeInfo, Type concreteRequestType)
+        {
+            if (!IsFactoryGeneric(typeInfo))
+                return new DependencyFactoryInfo(concreteRequestType, typeInfo.MethodName, typeInfo);
+
+            var resovleType = typeInfo.FactoryType;
+            var concreteResolveType = resovleType.MakeGenericType(concreteRequestType.GenericTypeArguments);
+
+            return new DependencyFactoryInfo(concreteResolveType, typeInfo.MethodName, typeInfo) { RequestType = concreteRequestType };
         }
     }
 }

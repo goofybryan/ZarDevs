@@ -76,9 +76,26 @@ namespace ZarDevs.DependencyInjection
         /// Bind to a method that will be used to reolve the request type.
         /// </summary>
         /// <param name="method">
-        /// The function <see cref="Func{T1, TResult}"/> will be executed, if any parameters are available, they will be passed in.
+        /// The function <see cref="Func{T1, TResult}"/> will be executed, if any parameters are
+        /// available, they will be passed in.
         /// </param>
-        IDependencyBuilderBindingMetaData To(Func<DependencyBuilderContext, object> method);
+        IDependencyBuilderBindingMetaData To(Func<IDependencyContext, object> method);
+
+        /// <summary>
+        /// Bind to a factory method that will be used to resolve the request.
+        /// </summary>
+        /// <typeparam name="T">The factory type</typeparam>
+        /// <param name="methodName">The factory method</param>
+        /// <returns></returns>
+        IDependencyBuilderBindingMetaData ToFactory<T>(string methodName);
+
+        /// <summary>
+        /// Bind to a factory method that will be used to resolve the request.
+        /// </summary>
+        /// <param name="factoryType">The factory type</param>
+        /// <param name="methodName">The factory method</param>
+        /// <returns></returns>
+        IDependencyBuilderBindingMetaData ToFactory(Type factoryType, string methodName);
 
         #endregion Methods
     }

@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.DependencyInjection.Extensions.Factory</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyFactory">
+            <summary>
+            Dependency factory that is used to resolve a factory call.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyFactory.FactoryInfos">
+            <summary>
+            Get a list of factory dependency info that this factory can resolve. This list gets
+            updated when <see cref="M:ZarDevs.DependencyInjection.IDependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)"/> or <see
+            cref="M:ZarDevs.DependencyInjection.IDependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)"/> is called.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyFactory.InspectMethod">
+            <summary>
+            Get an instance of the runtime method inspector.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <summary>
+            Generate a concrete factory from the info supplied.
+            </summary>
+            <param name="concreteInfo">The concrete type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve the instance of the requested type from the factory.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyFactory">
+            <summary>
+            Dependency factory that is used to resolve a factory call.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactory.#ctor(ZarDevs.Runtime.IInspectMethod)">
+            <summary>
+            Create new instance of dependnecy factory.
+            </summary>
+            <param name="inspectMethod">The runtime method inspector.</param>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyFactory.FactoryInfos">
+            <summary>
+            Get a list of factory dependency info that this factory can resolve. This list gets
+            updated when <see cref="M:ZarDevs.DependencyInjection.DependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)"/> or <see
+            cref="M:ZarDevs.DependencyInjection.DependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)"/> is called.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyFactory.InspectMethod">
+            <summary>
+            Get an instance of the runtime method inspector.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <summary>
+            Generate a concrete factory from the info supplied.
+            </summary>
+            <param name="concreteInfo">The concrete type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve the instance of the requested type from the factory.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyFactoryDefinitions">
+            <summary>
+            Dependency Factory defitions
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyFactoryDefinitions.AddFactoryInfo(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <summary>
+            Add a factory dependency to the definitions.
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyFactoryResolutionPlan">
+            <summary>
+            Dependency resolution factory plan.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyFactoryResolutionPlan.Resolve(System.Object,ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve the factory method.
+            </summary>
+            <param name="factory">The factory object that needs to be resolved.</param>
+            <param name="context">The dependency context.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

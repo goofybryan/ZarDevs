@@ -51,10 +51,11 @@ namespace ZarDevs.DependencyInjection
         public IDependencyBuilder CreateDependencyBuilder()
         {
             var activator = new MicrosoftUtilitiesActivator(InspectConstructor.Instance);
-            var dependencyContainer = new MicrosoftDependencyContainer(_serviceCollection, _resolutionConfiguration, activator);
+            var dependencyContainer = new MicrosoftDependencyContainer(_serviceCollection, _resolutionConfiguration, activator, new DependencyFactory(InspectMethod.Instance));
             var builder = new DependencyBuilder(dependencyContainer);
 
             builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
+            builder.Bind<IInspectMethod>().To(InspectMethod.Instance);
             builder.Bind<ICreate>().To(Create.Instance);
             builder.Bind<IDependencyResolutionConfiguration>().To(_resolutionConfiguration);
             builder.Bind<IDependencyInstanceResolution>().To(_instanceResolution);
@@ -68,7 +69,8 @@ namespace ZarDevs.DependencyInjection
         {
             var serviceProvider = (IServiceProvider)_instanceResolution.GetResolution(typeof(IServiceProvider)).Resolve();
             var activator = serviceProvider.GetRequiredService<IDependencyResolver>();
-            return new IocContainer(activator, serviceProvider);
+            var configuration = serviceProvider.GetRequiredService<IDependencyResolutionConfiguration>();
+            return configuration.HasGenericFactoryTypes ? new IocFactoryContainer(activator, serviceProvider) : new IocContainer(activator, serviceProvider);
         }
 
         #endregion Methods

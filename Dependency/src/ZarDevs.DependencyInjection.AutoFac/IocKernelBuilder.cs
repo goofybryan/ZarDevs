@@ -1,4 +1,5 @@
 ﻿using Autofac.Builder;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -19,9 +20,10 @@ namespace ZarDevs.DependencyInjection
         /// Instanciate a new instance with build options
         /// </summary>
         /// <param name="buildOptions">AutoFac build options.</param>
-        public IocKernelBuilder(ContainerBuildOptions buildOptions)
+        /// <param name="dependencyFactory">The dependency factory.</param>
+        public IocKernelBuilder(ContainerBuildOptions buildOptions, IDependencyFactory dependencyFactory)
         {
-            _container = DependencyContainer.Create(buildOptions);
+            _container = DependencyContainer.Create(buildOptions, dependencyFactory);
         }
 
         #endregion Constructors

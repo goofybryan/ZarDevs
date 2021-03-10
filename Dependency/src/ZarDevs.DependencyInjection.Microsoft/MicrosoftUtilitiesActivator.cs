@@ -8,13 +8,13 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private readonly IInspect _inspectConstructor;
+        private readonly IInspectConstructor _inspectConstructor;
 
         #endregion Fields
 
         #region Constructors
 
-        public MicrosoftUtilitiesActivator(IInspect inspectConstructor)
+        public MicrosoftUtilitiesActivator(IInspectConstructor inspectConstructor)
         {
             _inspectConstructor = inspectConstructor ?? throw new ArgumentNullException(nameof(inspectConstructor));
         }
@@ -45,7 +45,7 @@ namespace ZarDevs.DependencyInjection
 
         public object Resolve(IDependencyTypeInfo info)
         {
-            return ActivatorUtilities.GetServiceOrCreateInstance(Ioc.Resolve<IServiceProvider>(), info.RequestType);
+            return ActivatorUtilities.CreateInstance(Ioc.Resolve<IServiceProvider>(), info.ResolvedType);
         }
 
         #endregion Methods

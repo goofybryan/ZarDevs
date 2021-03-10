@@ -6,7 +6,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Constructors
 
-        public DependencyMethodInfo(Func<DependencyBuilderContext, object> methodTo, DependencyInfo info) : base(info)
+        public DependencyMethodInfo(Func<IDependencyContext, object> methodTo, DependencyInfo info) : base(info)
         {
             Method = methodTo ?? throw new ArgumentNullException(nameof(methodTo));
         }
@@ -15,38 +15,13 @@ namespace ZarDevs.DependencyInjection
 
         #region Properties
 
-        public Func<DependencyBuilderContext, object> Method { get; }
+        public Func<IDependencyContext, object> Method { get; }
 
-        public object Execute()
+        public object Execute(IDependencyContext context)
         {
-            return Method(CreateDependencyInfoContext());
-        }
-
-        public object Execute(object[] args)
-        {
-            return Method(CreateDependencyInfoContext(args));
-        }
-
-        public object Execute((string, object)[] args)
-        {
-            return Method(CreateDependencyInfoContext(args));
+            return Method(context);
         }
 
         #endregion Properties
-
-        private DependencyBuilderContext CreateDependencyInfoContext()
-        {
-            return new DependencyBuilderContext(Ioc.Container, this);
-        }
-
-        private DependencyBuilderContext CreateDependencyInfoContext(params object[] args)
-        {
-            return new DependencyBuilderContext(Ioc.Container, this, args);
-        }
-
-        private DependencyBuilderContext CreateDependencyInfoContext((string, object)[] args)
-        {
-            return new DependencyBuilderContext(Ioc.Container, this, args);
-        }
     }
 }

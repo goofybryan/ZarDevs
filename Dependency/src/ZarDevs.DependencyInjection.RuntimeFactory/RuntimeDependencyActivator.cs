@@ -72,8 +72,10 @@ namespace ZarDevs.DependencyInjection
         {
             foreach (Type argType in ConstructorArgs)
             {
-                if (typeof(IEnumerable).IsAssignableFrom(argType) && argType.GenericTypeArguments.Length > 0)
-                    yield return  Ioc.Container.ResolveAll(argType.GenericTypeArguments[0]);
+                if (argType.IsArray) 
+                    yield return Ioc.Container.ResolveAll(argType.GetElementType());
+                else if (typeof(IEnumerable).IsAssignableFrom(argType) && argType.GenericTypeArguments.Length > 0)
+                    yield return Ioc.Container.ResolveAll(argType.GenericTypeArguments[0]);
                 else
                     yield return Ioc.Container.TryResolve(argType);
             }
@@ -81,7 +83,7 @@ namespace ZarDevs.DependencyInjection
 
         public static RuntimeResolutionPlan FromType(IInspectConstructor inspect, Type instanceType)
         {
-            var (constructor, args) = inspect.GetConstructor(instanceType);
+            var (constructor, args) = inspect.GetConstructorParameterMap(instanceType);
             return new RuntimeResolutionPlan(constructor, args);
         }
     }

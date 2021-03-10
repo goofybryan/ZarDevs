@@ -1,4 +1,5 @@
 ﻿using Autofac.Builder;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -16,7 +17,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns></returns>
         public static IIocKernelBuilder Initialize(ContainerBuildOptions buildOptions = ContainerBuildOptions.None)
         {
-            return new IocKernelBuilder(buildOptions);
+            return new IocKernelBuilder(buildOptions, new DependencyFactory(InspectMethod.Instance));
         }
 
         #endregion Methods

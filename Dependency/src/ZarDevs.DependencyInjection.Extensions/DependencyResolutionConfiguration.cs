@@ -10,6 +10,15 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public interface IDependencyResolutionConfiguration : IDisposable
     {
+        #region Properties
+
+        /// <summary>
+        /// Get an indicator that this configuration has generic factory types.
+        /// </summary>
+        bool HasGenericFactoryTypes { get; }
+
+        #endregion Properties
+
         #region Methods
 
         /// <summary>
@@ -55,6 +64,7 @@ namespace ZarDevs.DependencyInjection
 
         private readonly ConcurrentDictionary<Type, ISet<IDependencyResolution>> _typeMap;
         private bool _disposed;
+        private bool _hasGenericFactoryTypes;
 
         #endregion Fields
 
@@ -70,6 +80,15 @@ namespace ZarDevs.DependencyInjection
 
         #endregion Constructors
 
+        #region Properties
+
+        /// <summary>
+        /// Get an indicator that this configuration has generic factory types.
+        /// </summary>
+        public bool HasGenericFactoryTypes => _hasGenericFactoryTypes;
+
+        #endregion Properties
+
         #region Methods
 
         /// <summary>
@@ -79,6 +98,8 @@ namespace ZarDevs.DependencyInjection
         /// <param name="resolution">The resolution that will be implemented.</param>
         public void Add(Type type, IDependencyResolution resolution)
         {
+            _hasGenericFactoryTypes |= resolution is DependencyFactoryResolution;
+
             AddToTypeMap(type, resolution);
         }
 
@@ -93,7 +114,8 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/> implement <see cref="IDisposable"/>, they will also be called.
+        /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/>
+        /// implement <see cref="IDisposable"/>, they will also be called.
         /// </summary>
         public void Dispose()
         {
@@ -106,7 +128,10 @@ namespace ZarDevs.DependencyInjection
         /// will be generated for all and then the keyed values will be returned.
         /// </summary>
         /// <param name="type">The request type that will need to be resolved.</param>
-        /// <param name="key">The key that is requested, can be null. Be warned, if the key is null, it will only return configured values that have a null key.</param>
+        /// <param name="key">
+        /// The key that is requested, can be null. Be warned, if the key is null, it will only
+        /// return configured values that have a null key.
+        /// </param>
         /// <returns>A list of resolutions, if none found, will return <see cref="Enumerable.Empty{IDependencyResolution}"/></returns>
         public IList<IDependencyResolution> GetResolutionsByKey(Type type, object key)
         {
@@ -136,7 +161,8 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/> implement <see cref="IDisposable"/>, they will also be called.
+        /// Dispose of the underlying resources. If any <see cref="IDependencyResolution"/>
+        /// implement <see cref="IDisposable"/>, they will also be called.
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -25,6 +24,120 @@ namespace ZarDevs.DependencyInjection.Tests
         #endregion Properties
 
         #region Methods
+
+        [Fact]
+        public void Resolve_FactoryGenericMethodWithIocResolvedArgs_ReturnsMethodResult()
+        {
+            // Act
+            IFactoryMethodResolutionClass<int> methodClass1Int = Ioc.Resolve<IFactoryMethodResolutionClass<int>>();
+            IFactoryMethodResolutionClass<int> methodClass2Int = Ioc.Resolve<IFactoryMethodResolutionClass<int>>();
+
+            IFactoryMethodResolutionClass<bool> methodClass1Bool = Ioc.Resolve<IFactoryMethodResolutionClass<bool>>();
+            IFactoryMethodResolutionClass<bool> methodClass2Bool = Ioc.Resolve<IFactoryMethodResolutionClass<bool>>();
+
+            // Assert
+            AssertInstanceIsNotSame(methodClass1Int, methodClass2Int);
+            AssertInstanceIsNotSame(methodClass1Bool, methodClass2Bool);
+
+            Assert.NotNull(methodClass1Int.GenericType);
+            Assert.NotNull(methodClass1Int.MultipleBindings);
+            AssertMultipleBindings(methodClass1Int.MultipleBindings.ToList(), 3);
+
+            Assert.NotNull(methodClass2Int.GenericType);
+            Assert.NotNull(methodClass2Int.MultipleBindings);
+            AssertMultipleBindings(methodClass2Int.MultipleBindings.ToList(), 3);
+
+            Assert.NotNull(methodClass1Bool.GenericType);
+            Assert.NotNull(methodClass1Bool.MultipleBindings);
+            AssertMultipleBindings(methodClass1Bool.MultipleBindings.ToList(), 3);
+
+            Assert.NotNull(methodClass2Bool.GenericType);
+            Assert.NotNull(methodClass2Bool.MultipleBindings);
+            AssertMultipleBindings(methodClass2Bool.MultipleBindings.ToList(), 3);
+        }
+
+        [Fact]
+        public void Resolve_FactoryGenericMethodWithPassedArgs_ReturnsMethodResult()
+        {
+            // Act
+            IFactoryMethodResolutionClass<int> methodClass1Int = Ioc.Resolve<IFactoryMethodResolutionClass<int>>(new GenericTypeTest<int>(), new IMultipleBindingClassTest<int>[] { new MultipleBindingClassTest1<int>(), new MultipleBindingClassTest2<int>() });
+            IFactoryMethodResolutionClass<int> methodClass2Int = Ioc.Resolve<IFactoryMethodResolutionClass<int>>(new GenericTypeTest<int>(), new IMultipleBindingClassTest<int>[] { new MultipleBindingClassTest1<int>() });
+
+            IFactoryMethodResolutionClass<bool> methodClass1Bool = Ioc.Resolve<IFactoryMethodResolutionClass<bool>>(new GenericTypeTest<bool>(), new IMultipleBindingClassTest<bool>[] { new MultipleBindingClassTest1<bool>(), new MultipleBindingClassTest2<bool>() });
+            IFactoryMethodResolutionClass<bool> methodClass2Bool = Ioc.Resolve<IFactoryMethodResolutionClass<bool>>(new GenericTypeTest<bool>(), new IMultipleBindingClassTest<bool>[] { new MultipleBindingClassTest1<bool>() });
+
+            // Assert
+            AssertInstanceIsNotSame(methodClass1Int, methodClass2Int);
+
+            Assert.NotNull(methodClass1Int.GenericType);
+            Assert.NotNull(methodClass1Int.MultipleBindings);
+            AssertMultipleBindings(methodClass1Int.MultipleBindings.ToList(), 2);
+
+            Assert.NotNull(methodClass2Int.GenericType);
+            Assert.NotNull(methodClass2Int.MultipleBindings);
+            AssertMultipleBindings(methodClass2Int.MultipleBindings.ToList(), 1);
+
+            Assert.NotNull(methodClass1Bool.GenericType);
+            Assert.NotNull(methodClass1Bool.MultipleBindings);
+            AssertMultipleBindings(methodClass1Bool.MultipleBindings.ToList(), 2);
+
+            Assert.NotNull(methodClass2Bool.GenericType);
+            Assert.NotNull(methodClass2Bool.MultipleBindings);
+            AssertMultipleBindings(methodClass2Bool.MultipleBindings.ToList(), 1);
+        }
+
+        [Fact]
+        public void Resolve_FactoryMethodSingleton_ReturnsSameMethodResult()
+        {
+            // Act
+            IFactoryMethodResolutionSingletonClass methodClass1 = Ioc.Resolve<IFactoryMethodResolutionSingletonClass>();
+            IFactoryMethodResolutionSingletonClass methodClass2 = Ioc.Resolve<IFactoryMethodResolutionSingletonClass>(new NormalClass(), new IMultipleBindingClassTest[] { new MultipleBindingClassTest1(), new MultipleBindingClassTest2() });
+
+            // Assert
+            AssertInstanceIsSame(methodClass1, methodClass2);
+
+            Assert.NotNull(methodClass1.NormalClass);
+            Assert.NotNull(methodClass1.MultipleBindings);
+            AssertMultipleBindings(methodClass1.MultipleBindings.ToList(), 3);
+        }
+
+        [Fact]
+        public void Resolve_FactoryMethodWithIocResolvedArgs_ReturnsMethodResult()
+        {
+            // Act
+            IFactoryMethodResolutionClass methodClass1 = Ioc.Resolve<IFactoryMethodResolutionClass>();
+            IFactoryMethodResolutionClass methodClass2 = Ioc.Resolve<IFactoryMethodResolutionClass>();
+
+            // Assert
+            AssertInstanceIsNotSame(methodClass1, methodClass2);
+
+            Assert.NotNull(methodClass1.NormalClass);
+            Assert.NotNull(methodClass1.MultipleBindings);
+            AssertMultipleBindings(methodClass1.MultipleBindings.ToList(), 3);
+
+            Assert.NotNull(methodClass2.NormalClass);
+            Assert.NotNull(methodClass2.MultipleBindings);
+            AssertMultipleBindings(methodClass2.MultipleBindings.ToList(), 3);
+        }
+
+        [Fact]
+        public void Resolve_FactoryMethodWithPassedArgs_ReturnsMethodResult()
+        {
+            // Act
+            IFactoryMethodResolutionClass methodClass1 = Ioc.Resolve<IFactoryMethodResolutionClass>(new NormalClass(), new IMultipleBindingClassTest[] { new MultipleBindingClassTest1(), new MultipleBindingClassTest2() });
+            IFactoryMethodResolutionClass methodClass2 = Ioc.Resolve<IFactoryMethodResolutionClass>(new NormalClass(), new IMultipleBindingClassTest[] { new MultipleBindingClassTest1() });
+
+            // Assert
+            AssertInstanceIsNotSame(methodClass1, methodClass2);
+
+            Assert.NotNull(methodClass1.NormalClass);
+            Assert.NotNull(methodClass1.MultipleBindings);
+            AssertMultipleBindings(methodClass1.MultipleBindings.ToList(), 2);
+
+            Assert.NotNull(methodClass2.NormalClass);
+            Assert.NotNull(methodClass2.MultipleBindings);
+            AssertMultipleBindings(methodClass2.MultipleBindings.ToList(), 1);
+        }
 
         [Fact]
         public void Resolve_GenericImplementations_ReturnsInstance()
@@ -56,6 +169,77 @@ namespace ZarDevs.DependencyInjection.Tests
             Assert.NotEqual(intGeneric1.GetType(), boolGeneric1.GetType());
             Assert.Same(intGeneric1, intGeneric2);
             Assert.Same(boolGeneric1, boolGeneric2);
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindings_ReturnsAll()
+        {
+            // Act
+            IEnumerable<IMultipleBindingClassTest> all = Ioc.ResolveAll<IMultipleBindingClassTest>();
+
+            // Assert
+            Assert.NotNull(all);
+            var listAll = all.ToList();
+            Assert.Equal(3, listAll.Count);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest1);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest2);
+            Assert.Contains(listAll, a => a is MultipleBindingClassTest3);
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindingsConstructor_ReturnsAll()
+        {
+            // Act
+            IMultipleBindingConstructorClassTest test = Ioc.Resolve<IMultipleBindingConstructorClassTest>();
+
+            // Assert
+            Assert.NotNull(test);
+            Assert.NotNull(test.MultipleBindings);
+            var multipleBindings = test.MultipleBindings.ToList();
+            AssertMultipleBindings(multipleBindings, 3);
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindingsGeneric_ReturnsAll()
+        {
+            // Act
+            IEnumerable<IMultipleBindingClassTest<int>> allInt = Ioc.ResolveAll<IMultipleBindingClassTest<int>>();
+            IEnumerable<IMultipleBindingClassTest<bool>> allBool = Ioc.ResolveAll<IMultipleBindingClassTest<bool>>();
+
+            // Assert
+            Assert.NotNull(allInt);
+            var listAllInt = allInt.ToList();
+            Assert.Equal(3, listAllInt.Count);
+            Assert.All(listAllInt, Assert.NotNull);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest1<int>);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest2<int>);
+            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest3<int>);
+
+            Assert.NotNull(allBool);
+            var listAllBool = allBool.ToList();
+            Assert.Equal(3, listAllBool.Count);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest1<bool>);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest2<bool>);
+            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest3<bool>);
+        }
+
+        [Fact]
+        public void Resolve_MultipleBindingsGenericConstructor_ReturnsAll()
+        {
+            // Act
+            IMultipleBindingConstructorClassTest<int> testInt = Ioc.Resolve<IMultipleBindingConstructorClassTest<int>>();
+            IMultipleBindingConstructorClassTest<bool> testBool = Ioc.Resolve<IMultipleBindingConstructorClassTest<bool>>();
+
+            // Assert
+            Assert.NotNull(testInt);
+            Assert.NotNull(testInt.MultipleBindings);
+            var listAllInt = testInt.MultipleBindings.ToList();
+            AssertMultipleBindings(listAllInt, 3);
+
+            Assert.NotNull(testBool);
+            Assert.NotNull(testBool.MultipleBindings);
+            var listAllBool = testBool.MultipleBindings.ToList();
+            AssertMultipleBindings(listAllBool, 3);
         }
 
         [Fact]
@@ -243,87 +427,6 @@ namespace ZarDevs.DependencyInjection.Tests
 
                 Assert.Equal(expectedValue, actualValue);
             }
-        }
-
-        [Fact]
-        public void Resolve_MultipleBindings_ReturnsAll()
-        {
-            // Act
-            IEnumerable<IMultipleBindingClassTest> all = Ioc.ResolveAll<IMultipleBindingClassTest>();
-
-            // Assert
-            Assert.NotNull(all);
-            var listAll = all.ToList();
-            Assert.Equal(3, listAll.Count);
-            Assert.Contains(listAll, a => a is MultipleBindingClassTest1);
-            Assert.Contains(listAll, a => a is MultipleBindingClassTest2);
-            Assert.Contains(listAll, a => a is MultipleBindingClassTest3);
-        }
-
-        [Fact]
-        public void Resolve_MultipleBindingsConstructor_ReturnsAll()
-        {
-            // Act
-            IMultipleBindingConstructorClassTest test = Ioc.Resolve<IMultipleBindingConstructorClassTest>();
-
-            // Assert
-            Assert.NotNull(test);
-            Assert.NotNull(test.MultipleBindings);
-            var listAll = test.MultipleBindings.ToList();
-            Assert.Equal(3, listAll.Count);
-            Assert.Contains(listAll, a => a is MultipleBindingClassTest1);
-            Assert.Contains(listAll, a => a is MultipleBindingClassTest2);
-            Assert.Contains(listAll, a => a is MultipleBindingClassTest3);
-        }
-
-        [Fact]
-        public void Resolve_MultipleBindingsGeneric_ReturnsAll()
-        {
-            // Act
-            IEnumerable<IMultipleBindingClassTest<int>> allInt = Ioc.ResolveAll<IMultipleBindingClassTest<int>>();
-            IEnumerable<IMultipleBindingClassTest<bool>> allBool = Ioc.ResolveAll<IMultipleBindingClassTest<bool>>();
-
-            // Assert
-            Assert.NotNull(allInt);
-            var listAllInt = allInt.ToList();
-            Assert.Equal(3, listAllInt.Count);
-            Assert.All(listAllInt, Assert.NotNull);
-            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest1<int>);
-            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest2<int>);
-            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest3<int>);
-
-            Assert.NotNull(allBool);
-            var listAllBool = allBool.ToList();
-            Assert.Equal(3, listAllBool.Count);
-            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest1<bool>);
-            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest2<bool>);
-            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest3<bool>);
-        }
-
-        [Fact]
-        public void Resolve_MultipleBindingsGenericConstructor_ReturnsAll()
-        {
-            // Act
-            IMultipleBindingConstructorClassTest<int> testInt = Ioc.Resolve<IMultipleBindingConstructorClassTest<int>>();
-            IMultipleBindingConstructorClassTest<bool> testBool = Ioc.Resolve<IMultipleBindingConstructorClassTest<bool>>();
-
-            // Assert
-            Assert.NotNull(testInt);
-            Assert.NotNull(testInt.MultipleBindings);
-            var listAllInt = testInt.MultipleBindings.ToList();
-            Assert.Equal(3, listAllInt.Count);
-            Assert.All(listAllInt, Assert.NotNull);
-            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest1<int>);
-            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest2<int>);
-            Assert.Contains(listAllInt, a => a is MultipleBindingClassTest3<int>);
-
-            Assert.NotNull(testBool);
-            Assert.NotNull(testBool.MultipleBindings);
-            var listAllBool = testBool.MultipleBindings.ToList();
-            Assert.Equal(3, listAllBool.Count);
-            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest1<bool>);
-            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest2<bool>);
-            Assert.Contains(listAllBool, a => a is MultipleBindingClassTest3<bool>);
         }
 
         [Fact]
@@ -582,6 +685,29 @@ namespace ZarDevs.DependencyInjection.Tests
             Assert.NotNull(instance1);
             Assert.NotNull(instance2);
             Assert.Same(instance1, instance2);
+        }
+
+        private static void AssertMultipleBindings(List<IMultipleBindingClassTest> multipleBindings, int untilCount)
+        {
+            Assert.Equal(untilCount, multipleBindings.Count);
+            if (untilCount >= 1)
+                Assert.Contains(multipleBindings, a => a is MultipleBindingClassTest1);
+            if (untilCount >= 2)
+                Assert.Contains(multipleBindings, a => a is MultipleBindingClassTest2);
+            if (untilCount == 3)
+                Assert.Contains(multipleBindings, a => a is MultipleBindingClassTest3);
+        }
+
+        private static void AssertMultipleBindings<TBinding>(List<IMultipleBindingClassTest<TBinding>> listAllInt, int untilCount)
+        {
+            Assert.Equal(untilCount, listAllInt.Count);
+            Assert.All(listAllInt, Assert.NotNull);
+            if (untilCount >= 1)
+                Assert.Contains(listAllInt, a => a is MultipleBindingClassTest1<TBinding>);
+            if (untilCount >= 2)
+                Assert.Contains(listAllInt, a => a is MultipleBindingClassTest2<TBinding>);
+            if (untilCount == 3)
+                Assert.Contains(listAllInt, a => a is MultipleBindingClassTest3<TBinding>);
         }
 
         #endregion Methods

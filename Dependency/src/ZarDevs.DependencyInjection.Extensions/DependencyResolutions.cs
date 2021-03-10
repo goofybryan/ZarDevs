@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -10,6 +9,8 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public interface IDependencyResolutions
     {
+        #region Methods
+
         /// <summary>
         /// Resolve and resolutions and return as <typeparamref name="T"/>
         /// </summary>
@@ -22,12 +23,20 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <returns>An IEnumerable of the resolved values</returns>
         IEnumerable Resolve();
+
+        #endregion Methods
     }
 
     internal class DependencyResolutions : IDependencyResolutions
     {
+        #region Fields
+
         private readonly Type _requestType;
         private readonly IList<IDependencyResolution> _resolutions;
+
+        #endregion Fields
+
+        #region Constructors
 
         public DependencyResolutions(Type requestType, IList<IDependencyResolution> resolutions)
         {
@@ -35,22 +44,18 @@ namespace ZarDevs.DependencyInjection
             _resolutions = resolutions ?? throw new ArgumentNullException(nameof(resolutions));
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         public IEnumerable<T> Resolve<T>()
         {
-            return YieldResolve<T>().ToArray();
+            return (IEnumerable<T>)YieldResolve();
         }
 
         public IEnumerable Resolve()
         {
             return YieldResolve();
-        }
-
-        private IEnumerable<T> YieldResolve<T>()
-        {
-            foreach (var resolution in _resolutions)
-            {
-                yield return (T)resolution.Resolve();
-            }
         }
 
         private IEnumerable YieldResolve()
@@ -65,5 +70,7 @@ namespace ZarDevs.DependencyInjection
 
             return resolved;
         }
+
+        #endregion Methods
     }
 }

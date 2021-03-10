@@ -1,5 +1,5 @@
 ﻿using Ninject;
-using System;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -13,10 +13,10 @@ namespace ZarDevs.DependencyInjection
 
         #region Constructors
 
-        public IocKernelBuilder(IKernel kernel)
+        public IocKernelBuilder(IKernel kernel, IDependencyFactory dependencyFactory)
         {
-            Kernel = kernel ?? throw new ArgumentNullException(nameof(kernel));
-            _container = DependencyContainer.Create(Kernel);
+            Kernel = kernel ?? throw new System.ArgumentNullException(nameof(kernel));
+            _container = DependencyContainer.Create(kernel, dependencyFactory);
         }
 
         #endregion Constructors

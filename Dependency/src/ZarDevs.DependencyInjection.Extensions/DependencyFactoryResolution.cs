@@ -5,11 +5,11 @@ namespace ZarDevs.DependencyInjection
     /// <summary>
     /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/> and will call the <see cref="IDependencyFactoryInfo.FactoryType"/> <see cref="IDependencyFactoryInfo.MethodName"/>
     /// </summary>
-    public class DependencyTypeResolution : DependencyResolution<IDependencyTypeInfo>
+    public class DependencyFactoryResolution : DependencyResolution<IDependencyFactoryInfo>
     {
+        private readonly IDependencyFactory _factory;
         #region Fields
 
-        private readonly IDependencyTypeActivator _activator;
 
         #endregion Fields
 
@@ -19,10 +19,10 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance of the dependency type resolution.
         /// </summary>
         /// <param name="info">The type information describing this resolution.</param>
-        /// <param name="activator">The activator that will be used to return an instance of the <see cref="IDependencyTypeInfo.ResolvedType"/></param>
-        public DependencyTypeResolution(IDependencyTypeInfo info, IDependencyTypeActivator activator) : base(info)
+        /// <param name="factory">The dependency factory</param>
+        public DependencyFactoryResolution(IDependencyFactoryInfo info, IDependencyFactory factory) : base(info)
         {
-            _activator = activator ?? throw new ArgumentNullException(nameof(activator));
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         #endregion Constructors
@@ -35,7 +35,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns>An instance for this resolution.</returns>
         public override object Resolve()
         {
-            return _activator.Resolve(Info);
+            return _factory.Resolve(Info.CreateContext(Ioc.Container));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns>An instance for this resolution.</returns>
         public override object Resolve(object[] args)
         {
-            return _activator.Resolve(Info, args);
+            return _factory.Resolve(Info.CreateContext(Ioc.Container).SetArguments(args));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns>An instance for this resolution.</returns>
         public override object Resolve((string, object)[] args)
         {
-            return _activator.Resolve(Info, args);
+            return _factory.Resolve(Info.CreateContext(Ioc.Container).SetArguments(args));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns>An instance for this resolution.</returns>
         public override object Resolve(IDependencyContext context)
         {
-            return _activator.Resolve(Info, context.GetArguments());
+            return _factory.Resolve(context);
         }
 
         /// <summary>
@@ -77,7 +77,9 @@ namespace ZarDevs.DependencyInjection
         {
             var concreteInfo = Info.As(concreteRequest);
 
-            return new DependencyTypeResolution(concreteInfo, _activator);
+            var factory = _factory.MakeConcrete(concreteInfo);
+
+            return new DependencyFactoryResolution(concreteInfo, factory);
         }
 
         #endregion Methods

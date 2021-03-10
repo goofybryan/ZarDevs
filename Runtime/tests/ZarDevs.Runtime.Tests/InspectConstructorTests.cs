@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace ZarDevs.Runtime.Tests
@@ -28,7 +29,7 @@ namespace ZarDevs.Runtime.Tests
             if (hasInterface) parameters.Add(testInterface);
 
             // Act
-            IList<(string, object)> namedParameters = InspectConstructor.Instance.FindParameterNames(typeof(TestClass), parameters);
+            IList<(string, object)> namedParameters = InspectConstructor.Instance.FindParameterNames(typeof(TestClass), parameters.ToArray());
 
             // Assert
             int paramCount = 0;

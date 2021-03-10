@@ -5,10 +5,10 @@ using System.Linq;
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// The dependency builder information context class used for custom IOC request specifically
+    /// The dependency information context class used for custom IOC request specifically
     /// for requests
     /// </summary>
-    public interface IDepencyBuilderContext
+    public interface IDependencyContext
     {
         #region Properties
 
@@ -37,13 +37,25 @@ namespace ZarDevs.DependencyInjection
         /// <returns></returns>
         object[] GetArguments();
 
+        /// <summary>
+        /// Set the arguments for the context.
+        /// </summary>
+        /// <param name="args">The context arguments</param>
+        IDependencyContext SetArguments(object[] args);
+
+        /// <summary>
+        /// Set the arguments for the context.
+        /// </summary>
+        /// <param name="namedArgs">The context arguments</param>
+        IDependencyContext SetArguments(IList<(string, object)> namedArgs);
+
         #endregion Methods
     }
 
     /// <summary>
-    /// Dependency builder information context used for resolving instances.
+    /// Dependency information context used for resolving instances.
     /// </summary>
-    public class DependencyBuilderContext : IDepencyBuilderContext
+    public class DependencyContext : IDependencyContext
     {
         #region Fields
 
@@ -58,7 +70,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="ioc">Specify the IOC container</param>
         /// <param name="info">Specify the binding info</param>
-        public DependencyBuilderContext(IIocContainer ioc, IDependencyInfo info)
+        public DependencyContext(IIocContainer ioc, IDependencyInfo info)
         {
             Ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
             Info = info ?? throw new ArgumentNullException(nameof(info));
@@ -71,7 +83,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="ioc">Specify the IOC container.</param>
         /// <param name="info">Specify the binding info</param>
         /// <param name="args">A list of ordered args.</param>
-        public DependencyBuilderContext(IIocContainer ioc, IDependencyInfo info, object[] args) : this(ioc, info)
+        public DependencyContext(IIocContainer ioc, IDependencyInfo info, object[] args) : this(ioc, info)
         {
             SetArguments(args);
         }
@@ -82,7 +94,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="ioc">Specify the IOC container</param>
         /// <param name="info">Specify the binding info</param>
         /// <param name="args">A list of named arguments.</param>
-        public DependencyBuilderContext(IIocContainer ioc, IDependencyInfo info, (string, object)[] args) : this(ioc, info)
+        public DependencyContext(IIocContainer ioc, IDependencyInfo info, (string, object)[] args) : this(ioc, info)
         {
             SetArguments(args);
         }
@@ -121,12 +133,14 @@ namespace ZarDevs.DependencyInjection
             _arguments[name] = value;
         }
 
-        private void SetArguments(object[] args)
+        /// <summary>
+        /// Set the arguments for the context.
+        /// </summary>
+        /// <param name="args">The context arguments</param>
+        public IDependencyContext SetArguments(object[] args)
         {
             if (args is null)
-            {
-                return;
-            }
+                return this;
 
             _arguments.Clear();
 
@@ -134,19 +148,25 @@ namespace ZarDevs.DependencyInjection
             {
                 AddArgument(i.ToString(), args[i]);
             }
+
+            return this;
         }
 
-        private void SetArguments(IList<(string, object)> namedArgs)
+        /// <summary>
+        /// Set the arguments for the context.
+        /// </summary>
+        /// <param name="namedArgs">The context arguments</param>
+        public IDependencyContext SetArguments(IList<(string, object)> namedArgs)
         {
             if (namedArgs is null)
-            {
-                throw new ArgumentNullException(nameof(namedArgs));
-            }
+                return this;
 
             _arguments.Clear();
 
             foreach (var (name, value) in namedArgs)
                 AddArgument(name, value);
+
+            return this;
         }
 
         #endregion Methods
