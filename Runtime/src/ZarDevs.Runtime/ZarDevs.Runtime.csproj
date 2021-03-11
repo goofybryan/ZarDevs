@@ -13,10 +13,6 @@
     <Description>This assembly is used for runtime manipulation.</Description>
     <Version>0.0.1</Version>
     <LangVersion>9</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>RunTime.pfx</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
-    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

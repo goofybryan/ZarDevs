@@ -14,7 +14,7 @@
     <LangVersion>9</LangVersion>
     <Description>This package contains dependency neutral binding descriptors. It is intended for use for your most basic scenarios.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>DependencyInjection.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
