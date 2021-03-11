@@ -35,9 +35,6 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     
-- task: mirror-git-repository-vsts-task@1
+- task: gitsync@1
   inputs:
-    sourceGitRepositoryUri: '$(Build.Repository.Uri)'
-    sourceVerifySSLCertificate: false
-    destinationGitRepositoryUri: 'https://github.com/goofybryan/ZarDevs.git'
-    destinationGitRepositoryPersonalAccessToken: '$(VSMirror)'
+    GitRepoUrl: 'https://$(VSMirror)@github.com/goofybryan/ZarDevs.git'
