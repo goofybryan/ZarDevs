@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
     <AssemblyName>ZarDevs.Commands.Api.DependencyInjection</AssemblyName>
     <RootNamespace>ZarDevs.Http.Api</RootNamespace>
     <LangVersion>9</LangVersion>
