@@ -5,14 +5,14 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
-    <PackageProjectUrl>https://dev.azure.com/ZarDevs/ZarDevs</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/tree/master/Dependency</PackageProjectUrl>
     <RepositoryUrl>https://dev.azure.com/ZarDevs/_git/ZarDevs</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.1.0</Version>
     <LangVersion>9</LangVersion>
-    <Description>This package contains dependency neutral binding descriptors. It is intended for use for your most basic scenarios.</Description>
+    <Description>This is a unification/standardization of IOC and is intended to be used by projects that do not what to be bound to a specific IOC technology. Please read more on the project page.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>

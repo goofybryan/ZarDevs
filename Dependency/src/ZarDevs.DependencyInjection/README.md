@@ -153,11 +153,10 @@ You can look at the [tests](../../tests/) to see a complete list of tests and ho
 
 1. [Home](../../../README.md)
 1. [Dependency Injection](../../README.md)
+    1. [Dependency Injection](../ZarDevs.DependencyInjection/README.md)
     1. [AutoFac Dependency Injection](../ZarDevs.DependencyInjection.AutoFac/README.md)
     1. [Microsoft Dependency Injection](../ZarDevs.DependencyInjection.Microsoft/README.md)
     1. [Ninject Dependency Injection](../ZarDevs.DependencyInjection.Ninject/README.md)
     1. [Runtime Factory Dependency Injection](../ZarDevs.DependencyInjection.RuntimeFactory/README.md)
     1. [Dependency Injection Extensions](../ZarDevs.DependencyInjection.Extensions/README.md)
-1. [Http Api Security Abstractions](../../../Http/README.md)
-1. [Model and PropertyChanged Abstractions](../../../Models/README.md)
-1. [Runtime Utilities](../../../Runtime/README.md)
+    1. [Dependency Injection Factory Extensions](../ZarDevs.DependencyInjection.Extensions.Factory/README.md)
