@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using ZarDevs.Runtime;
 
@@ -57,7 +56,7 @@ namespace ZarDevs.DependencyInjection
         public RuntimeResolutionPlan(ConstructorInfo constructor, IList<Type> constructorArgs)
         {
             Constructor = constructor ?? throw new ArgumentNullException(nameof(constructor));
-            ConstructorArgs = constructorArgs ?? throw new ArgumentNullException(nameof(constructorArgs));
+            ConstructorArgs = CreateParameterResolvers(constructorArgs ?? throw new ArgumentNullException(nameof(constructorArgs)));
         }
 
         #endregion Constructors
@@ -65,7 +64,7 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         public ConstructorInfo Constructor { get; }
-        public IList<Type> ConstructorArgs { get; }
+        public IList<IRuntimeResolutionPlanParameterResolver> ConstructorArgs { get; }
 
         #endregion Properties
 
@@ -77,24 +76,39 @@ namespace ZarDevs.DependencyInjection
             return new RuntimeResolutionPlan(constructor, args);
         }
 
-        public object Resolve() => Constructor.Invoke(ResolveParameters().ToArray());
+        public object Resolve() => Constructor.Invoke(ResolveParameters());
 
-        public IEnumerable<object> ResolveParameters()
+        public object[] ResolveParameters()
         {
-            return (ConstructorArgs.Count == 0) ? Enumerable.Empty<object>() : YieldResolve();
+            return (ConstructorArgs.Count == 0) ? new object[0] : ResolveArgs();
         }
 
-        private IEnumerable<object> YieldResolve()
+        private IList<IRuntimeResolutionPlanParameterResolver> CreateParameterResolvers(IList<Type> constructorArgs)
         {
-            foreach (Type argType in ConstructorArgs)
+            var list = new List<IRuntimeResolutionPlanParameterResolver>();
+
+            foreach (Type argType in constructorArgs)
             {
                 if (argType.IsArray)
-                    yield return Ioc.Container.ResolveAll(argType.GetElementType());
+                    list.Add(new RuntimeResolutionPlanListParameter(argType.GetElementType(), Ioc.Container));
                 else if (typeof(IEnumerable).IsAssignableFrom(argType) && argType.GenericTypeArguments.Length > 0)
-                    yield return Ioc.Container.ResolveAll(argType.GenericTypeArguments[0]);
+                    list.Add(new RuntimeResolutionPlanListParameter(argType.GenericTypeArguments[0], Ioc.Container));
                 else
-                    yield return Ioc.Container.TryResolve(argType);
+                    list.Add(new RuntimeResolutionPlanSingleParameter(argType, Ioc.Container));
             }
+
+            return list;
+        }
+
+        private object[] ResolveArgs()
+        {
+            var args = new object[ConstructorArgs.Count];
+            for (int i = 0; i < ConstructorArgs.Count; i++)
+            {
+                args[i] = ConstructorArgs[i].Resolve();
+            }
+
+            return args;
         }
 
         #endregion Methods

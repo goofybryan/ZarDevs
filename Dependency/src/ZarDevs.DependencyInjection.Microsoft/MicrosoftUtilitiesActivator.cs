@@ -9,6 +9,7 @@ namespace ZarDevs.DependencyInjection
         #region Fields
 
         private readonly IInspectConstructor _inspectConstructor;
+        private IServiceProvider _serviceProvider;
 
         #endregion Fields
 
@@ -24,6 +25,7 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         private IIocContainer Ioc => DependencyInjection.Ioc.Container;
+        private IServiceProvider ServiceProvider => _serviceProvider ??= Ioc.Resolve<IServiceProvider>();
 
         #endregion Properties
 
@@ -34,7 +36,7 @@ namespace ZarDevs.DependencyInjection
             if (args == null || args.Length == 0)
                 return Resolve(info);
 
-            return ActivatorUtilities.CreateInstance(Ioc.Resolve<IServiceProvider>(), info.ResolvedType, args);
+            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolvedType, args);
         }
 
         public object Resolve(IDependencyTypeInfo info, params (string, object)[] args)
@@ -44,12 +46,12 @@ namespace ZarDevs.DependencyInjection
 
             var orderedParameters = _inspectConstructor.OrderParameters(info.ResolvedType, args);
 
-            return ActivatorUtilities.CreateInstance(Ioc.Resolve<IServiceProvider>(), info.ResolvedType, orderedParameters);
+            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolvedType, orderedParameters);
         }
 
         public object Resolve(IDependencyTypeInfo info)
         {
-            return ActivatorUtilities.CreateInstance(Ioc.Resolve<IServiceProvider>(), info.ResolvedType);
+            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolvedType);
         }
 
         #endregion Methods

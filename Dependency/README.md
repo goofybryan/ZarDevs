@@ -167,7 +167,7 @@ What I like about it is the fact that you allow the infrastructure to give you t
 
 1. [Home](../../README.md)
 1. [Dependency Injection](./README.md)
-    1. [Dependency Injection](/src/Zar.Devs.DependencyInjection/README.md)
+    1. [Dependency Injection](./src/Zar.Devs.DependencyInjection/README.md)
     1. [AutoFac Dependency Injection](./src/ZarDevs.DependencyInjection.AutoFac/README.md)
     1. [Microsoft Dependency Injection](./src/ZarDevs.DependencyInjection.Microsoft/README.md)
     1. [Ninject Dependency Injection](./src/ZarDevs.DependencyInjection.Ninject/README.md)

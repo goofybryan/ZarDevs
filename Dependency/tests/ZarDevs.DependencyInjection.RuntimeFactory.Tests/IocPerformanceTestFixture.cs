@@ -23,7 +23,7 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
         public IIocContainer Container { get; }
         public IDependencyInstanceResolution InstanceResolution { get; }
 
-        public bool RunComparisonTests => false;
+        public bool RunComparisonTests => true;
 
         #endregion Properties
 
