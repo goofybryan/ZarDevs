@@ -68,7 +68,9 @@ This project currently supports only two of the three scopes that normally exist
 
 ### Binding Parameter Arguments
 
-There may be a need to pass parameters to your bindings and not have IOC resolve these for you. You can eitehr pass in named arguments or arguments in the order of the constructor parameters. _Just be warned that this requires knowledge of the constructor arguments and changes to the constructor could have consequences at runtime._
+There may be a need to pass parameters to your bindings and not have IOC resolve these for you. You can eitehr pass in named arguments or arguments in the order of the constructor parameters.
+
+_Just be warned that this requires knowledge of the constructor arguments and changes to the constructor could have consequences at runtime. Each underlying technology act different. If you follow the general rule, what I pass in is everything that is expected, then you should be fine. Naturally use with caution._
 
     ```c#
     // Build
@@ -98,7 +100,21 @@ You can also bind to a specified method of a class. This useful if you have fact
 
     // Use
     var factoryResolved = Ioc.Resolve<IFactoryResolved>();
+    ```
 
+### To Factory Binding
+
+What I introduced was something that does method injection implicitly. The context was to declare a type to be resolved by a method of another type, the factory. The infrastucture would resolve the parameters and invoke the method. Naturally same rules apply as regular binding.
+
+    ```C#
+    // Build
+    Builder.Bind<IFactory>().To<Factory>().InSingletonScoped(); // Optional scope but makes sense
+    Builder.Bind<IResolvedFactoryClass>().ToFactory(nameof(IFactory.CreateFactoryClass));
+
+    ...
+
+    // Use
+    IResolvedFactoryClass factoryClass = Ioc.Resolve<IResolvedFactoryClass>();
     ```
 
 ### Keyed Bindings
@@ -118,6 +134,8 @@ You can add bindings based on a key. This is useful if you want add multiple bin
     builder.Bind<ITask>().To<Task1>().Named(typeof(ITask1));
     builder.Bind<ITask>().To<Task1>().Named(typeof(ITask2));
     builder.Bind<ITask>().To<Task1>().Named(typeof(ITask3));
+
+    ...
 
     // Use
     ITask task1 = Ioc.Resolve<ITask>("Task1");
