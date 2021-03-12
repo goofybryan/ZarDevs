@@ -144,7 +144,7 @@ What I like about it is the fact that you allow the infrastructure to give you t
             
             if(string.IsNullOrEmpty(token)) return false;
 
-            _apiTokeStore.Update(token);
+            _apiTokenStore.Update(token);
 
             return true;
         }
@@ -162,6 +162,16 @@ What I like about it is the fact that you allow the infrastructure to give you t
     }
 
     ```
+
+## What still needs to be done
+
+1. Validation of bindings
+1. Validation tests construct
+1. Optimization (look at code and see where I can improve)
+1. Investigate better `Build<T>().To<T>()` Pattern
+1. Perhaps support `IServiceProvider` explicitly?
+1. Memory load testing (ensure that I am not too much of an overhead)
+1. More tests
 
 ## Links
 

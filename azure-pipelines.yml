@@ -7,6 +7,18 @@
 
 trigger:
 - master
+  paths:
+    include:
+    - Dependency
+    exclude:
+    - README.md
+    - Dependency/README.md
+    - Http/README.md
+    - Models/README.md
+    - Runtime/README.md
+    - src
+    - tests
+    - LICENSE
 
 pool:
   vmImage: 'windows-latest'
