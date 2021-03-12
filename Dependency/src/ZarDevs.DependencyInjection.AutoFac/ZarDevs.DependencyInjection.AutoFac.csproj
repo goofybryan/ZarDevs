@@ -6,17 +6,21 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
-    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/tree/master/Dependency</PackageProjectUrl>
-    <RepositoryUrl>https://dev.azure.com/ZarDevs/_git/ZarDevs</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/goofybryan/ZarDevs/tree/master/Dependency</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
     <LangVersion>9</LangVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
-    <Description>AutoFac implementation of the Dependency Injection</Description>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Description>This package contains my implemention of my Dependency Injection Bindings that will be translated to AutoFac bindings. Please see project url for more information.</Description>
+    <Copyright>Copyright (c) ZarDevs 2021</Copyright>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\DependencyInjection.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

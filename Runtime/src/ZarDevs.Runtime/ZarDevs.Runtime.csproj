@@ -5,14 +5,18 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
-    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/tree/master/Dependency</PackageProjectUrl>
-    <RepositoryUrl>https://dev.azure.com/ZarDevs/_git/ZarDevs</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/goofybryan/ZarDevs/tree/master/Runtime</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>ZarDevs Core</PackageTags>
+    <PackageTags>ZarDevs,Runtime,Reflection</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>This assembly is used for runtime manipulation.</Description>
-    <Version>0.0.1</Version>
+    <Description>The project contains some useful reflection utilities that I use in my libraries. Specifically used for the Dependency Injection projects.</Description>
+    <Version>0.1.0</Version>
     <LangVersion>9</LangVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright (c) ZarDevs 2021</Copyright>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Runtime.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

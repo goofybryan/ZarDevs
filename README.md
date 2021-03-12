@@ -8,7 +8,7 @@ I have been working in the .Net environment for years, and as everyone knows, yo
 
 So I decided to take one of last projects and completely revamp the backbone libraries I wrote. I decided that I was going to try things differently and all things that annoyed me about it and build something that is useful and flexible and re-usable.
 
-So here is a list of items I am busy with.
+So here is a list of items I am busy with. I also need to split the project into smaller projects instead of having one monolith one.
 
 ### Dependency Injection (Ready, needs lots of testing)
 
