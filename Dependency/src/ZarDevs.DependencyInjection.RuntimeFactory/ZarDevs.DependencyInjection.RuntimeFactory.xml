@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>ZarDevs.DependencyInjection.RuntimeFactory</name>
+        <name>ZarDevs.DependencyInjection.Runtime</name>
     </assembly>
     <members>
         <member name="T:ZarDevs.DependencyInjection.IocKernelBuilder">
@@ -26,6 +26,18 @@
             Create the dependency container that will be used to bind the dependencies and the
             transform it to the underlying IOC methodology.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IIocContainerExtensions">
+            <summary>
+            <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> extensions
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainerExtensions.Resolver(ZarDevs.DependencyInjection.IIocContainer)">
+            <summary>
+            Cast the current container to <see cref="T:ZarDevs.DependencyInjection.IDependencyResolver"/>.
+            </summary>
+            <param name="container">The container to cast</param>
             <returns></returns>
         </member>
     </members>

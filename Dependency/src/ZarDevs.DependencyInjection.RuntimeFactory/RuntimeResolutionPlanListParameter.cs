@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -6,24 +7,22 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private readonly IIocContainer _ioc;
-        private readonly Type _resolveType;
+        private readonly IDependencyResolutions _resolutions;
 
         #endregion Fields
 
         #region Constructors
 
-        public RuntimeResolutionPlanListParameter(Type resolveType, IIocContainer ioc)
+        public RuntimeResolutionPlanListParameter(IDependencyResolutions resolutions)
         {
-            _resolveType = resolveType ?? throw new ArgumentNullException(nameof(resolveType));
-            _ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+            _resolutions = resolutions ?? throw new ArgumentNullException(nameof(resolutions));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public object Resolve() => _ioc.ResolveAll(_resolveType);
+        public object Resolve() => _resolutions.Resolve();
 
         #endregion Methods
     }

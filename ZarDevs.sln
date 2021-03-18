@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Runtime.Tests", "Runtime\tests\ZarDevs.Runtime.Tests\ZarDevs.Runtime.Tests.csproj", "{ECE98F7C-43FB-4D47-9CFC-CB1E6568B95C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.RuntimeFactory", "Dependency\src\ZarDevs.DependencyInjection.RuntimeFactory\ZarDevs.DependencyInjection.RuntimeFactory.csproj", "{20E4D0E2-6DB9-408B-931F-2CE487DD00DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Runtime", "Dependency\src\ZarDevs.DependencyInjection.RuntimeFactory\ZarDevs.DependencyInjection.Runtime.csproj", "{20E4D0E2-6DB9-408B-931F-2CE487DD00DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Extensions", "Dependency\src\ZarDevs.DependencyInjection.Extensions\ZarDevs.DependencyInjection.Extensions.csproj", "{FA85C5F8-8DD1-4739-B05F-1990D52E9E5B}"
 EndProject
@@ -73,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Http", "Http", "{6FC4B09E-1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{326C7DFF-E27E-4A8B-BB19-8EC784997449}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.DependencyInjection.Extensions.Factory", "Dependency\src\ZarDevs.DependencyInjection.Extensions.Factory\ZarDevs.DependencyInjection.Extensions.Factory.csproj", "{CFFDE380-CC91-4FA3-B55A-45D0D32A4196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Extensions.Factory", "Dependency\src\ZarDevs.DependencyInjection.Extensions.Factory\ZarDevs.DependencyInjection.Extensions.Factory.csproj", "{CFFDE380-CC91-4FA3-B55A-45D0D32A4196}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

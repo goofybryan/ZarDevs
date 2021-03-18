@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using ZarDevs.Runtime;
@@ -13,7 +12,7 @@ namespace ZarDevs.DependencyInjection
 
         private readonly ICreate _creation;
         private readonly IInspectConstructor _inspection;
-        private readonly ConcurrentDictionary<Type, RuntimeResolutionPlan> _resolutionPlan;
+        private readonly IDictionary<Type, RuntimeResolutionPlan> _resolutionPlan;
 
         #endregion Fields
 
@@ -23,7 +22,7 @@ namespace ZarDevs.DependencyInjection
         {
             _inspection = inspection ?? throw new ArgumentNullException(nameof(inspection));
             _creation = creation ?? throw new ArgumentNullException(nameof(creation));
-            _resolutionPlan = new ConcurrentDictionary<Type, RuntimeResolutionPlan>();
+            _resolutionPlan = new Dictionary<Type, RuntimeResolutionPlan>();
         }
 
         #endregion Constructors
@@ -42,7 +41,12 @@ namespace ZarDevs.DependencyInjection
 
         public object Resolve(IDependencyTypeInfo info)
         {
-            var resolution = _resolutionPlan.GetOrAdd(info.ResolvedType, type => RuntimeResolutionPlan.FromType(_inspection, type));
+            var type = info.ResolvedType;
+            if (!_resolutionPlan.TryGetValue(type, out var resolution))
+            {
+                resolution = _resolutionPlan[type] = RuntimeResolutionPlan.FromType(_inspection, type);
+            }
+
             return resolution.Resolve();
         }
 
@@ -86,15 +90,16 @@ namespace ZarDevs.DependencyInjection
         private IList<IRuntimeResolutionPlanParameterResolver> CreateParameterResolvers(IList<Type> constructorArgs)
         {
             var list = new List<IRuntimeResolutionPlanParameterResolver>();
+            var resolver = Ioc.Container.Resolver();
 
             foreach (Type argType in constructorArgs)
             {
                 if (argType.IsArray)
-                    list.Add(new RuntimeResolutionPlanListParameter(argType.GetElementType(), Ioc.Container));
+                    list.Add(new RuntimeResolutionPlanListParameter(resolver.TryGetAllResolutions(argType.GetElementType())));
                 else if (typeof(IEnumerable).IsAssignableFrom(argType) && argType.GenericTypeArguments.Length > 0)
-                    list.Add(new RuntimeResolutionPlanListParameter(argType.GenericTypeArguments[0], Ioc.Container));
+                    list.Add(new RuntimeResolutionPlanListParameter(resolver.TryGetAllResolutions(argType.GenericTypeArguments[0])));
                 else
-                    list.Add(new RuntimeResolutionPlanSingleParameter(argType, Ioc.Container));
+                    list.Add(new RuntimeResolutionPlanSingleParameter(resolver.TryGetResolution(argType)));
             }
 
             return list;
@@ -112,5 +117,21 @@ namespace ZarDevs.DependencyInjection
         }
 
         #endregion Methods
+    }
+
+    /// <summary>
+    /// <see cref="IIocContainer"/> extensions
+    /// </summary>
+    public static class IIocContainerExtensions
+    {
+        /// <summary>
+        /// Cast the current container to <see cref="IDependencyResolver"/>.
+        /// </summary>
+        /// <param name="container">The container to cast</param>
+        /// <returns></returns>
+        public static IDependencyResolver Resolver(this IIocContainer container)
+        {
+            return (IDependencyResolver)container;
+        }
     }
 }

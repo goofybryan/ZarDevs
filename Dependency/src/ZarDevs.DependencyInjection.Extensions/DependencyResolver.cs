@@ -9,6 +9,39 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public interface IDependencyResolver : IIocContainer<IDependencyInstanceResolution>
     {
+        #region Methods
+
+        /// <summary>
+        /// Try and get all the resolutions for the type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">The type to resolve</typeparam>
+        /// <returns></returns>
+        IDependencyResolutions TryGetAllResolutions<T>();
+
+        /// <summary>
+        /// Try and get all the resolutions for the type <paramref name="typeToResolve"/>
+        /// </summary>
+        /// <param name="typeToResolve">The type to resolve</param>
+        /// <returns></returns>
+        IDependencyResolutions TryGetAllResolutions(Type typeToResolve);
+
+        /// <summary>
+        /// Try and get the resolution for the type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">The type to resolve</typeparam>
+        /// <param name="key">An optional key, to only resolve those.</param>
+        /// <returns></returns>
+        IDependencyResolution TryGetResolution<T>(object key = null);
+
+        /// <summary>
+        /// Try and get the resolution for the type <paramref name="typeToResolve"/>
+        /// </summary>
+        /// <param name="typeToResolve">The type to resolve</param>
+        /// <param name="key">An optional key, to only resolve those.</param>
+        /// <returns></returns>
+        IDependencyResolution TryGetResolution(Type typeToResolve, object key = null);
+
+        #endregion Methods
     }
 
     /// <summary>
@@ -226,6 +259,49 @@ namespace ZarDevs.DependencyInjection
         public T ResolveWithKey<T>(object key) where T : class
         {
             return (T)Kernel.GetResolution(key, typeof(T)).Resolve();
+        }
+
+        /// <summary>
+        /// Try and get all the resolutions for the type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">The type to resolve</typeparam>
+        /// <returns></returns>
+        public IDependencyResolutions TryGetAllResolutions<T>()
+        {
+            return Kernel.GetAllResolutions(typeof(T));
+        }
+
+        /// <summary>
+        /// Try and get all the resolutions for the type <paramref name="typeToResolve"/>
+        /// </summary>
+        /// <param name="typeToResolve">The type to resolve</param>
+        /// <returns></returns>
+        public IDependencyResolutions TryGetAllResolutions(Type typeToResolve)
+        {
+            return Kernel.GetAllResolutions(typeToResolve);
+        }
+
+        /// <summary>
+        /// Try and get the resolution for the type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">The type to resolve</typeparam>
+        /// <param name="key">An optional key, to only resolve those.</param>
+        /// <returns></returns>
+        public IDependencyResolution TryGetResolution<T>(object key = null)
+        {
+            Type typeToResolve = typeof(T);
+            return key == null ? Kernel.TryGetResolution(typeToResolve) : Kernel.TryGetResolution(key, typeToResolve);
+        }
+
+        /// <summary>
+        /// Try and get the resolution for the type <paramref name="typeToResolve"/>
+        /// </summary>
+        /// <param name="typeToResolve">The type to resolve</param>
+        /// <param name="key">An optional key, to only resolve those.</param>
+        /// <returns></returns>
+        public IDependencyResolution TryGetResolution(Type typeToResolve, object key = null)
+        {
+            return key == null ? Kernel.TryGetResolution(typeToResolve) : Kernel.TryGetResolution(key, typeToResolve);
         }
 
         /// <summary>

@@ -545,6 +545,36 @@
             Dependency resolver used when a custom resololution is required.
             </summary>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolver.TryGetAllResolutions``1">
+            <summary>
+            Try and get all the resolutions for the type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type to resolve</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolver.TryGetAllResolutions(System.Type)">
+            <summary>
+            Try and get all the resolutions for the type <paramref name="typeToResolve"/>
+            </summary>
+            <param name="typeToResolve">The type to resolve</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolver.TryGetResolution``1(System.Object)">
+            <summary>
+            Try and get the resolution for the type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type to resolve</typeparam>
+            <param name="key">An optional key, to only resolve those.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolver.TryGetResolution(System.Type,System.Object)">
+            <summary>
+            Try and get the resolution for the type <paramref name="typeToResolve"/>
+            </summary>
+            <param name="typeToResolve">The type to resolve</param>
+            <param name="key">An optional key, to only resolve those.</param>
+            <returns></returns>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyResolver">
             <summary>
             Dependency resolver used when a custom resololution is required.
@@ -696,6 +726,36 @@
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryGetAllResolutions``1">
+            <summary>
+            Try and get all the resolutions for the type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type to resolve</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryGetAllResolutions(System.Type)">
+            <summary>
+            Try and get all the resolutions for the type <paramref name="typeToResolve"/>
+            </summary>
+            <param name="typeToResolve">The type to resolve</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryGetResolution``1(System.Object)">
+            <summary>
+            Try and get the resolution for the type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type to resolve</typeparam>
+            <param name="key">An optional key, to only resolve those.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryGetResolution(System.Type,System.Object)">
+            <summary>
+            Try and get the resolution for the type <paramref name="typeToResolve"/>
+            </summary>
+            <param name="typeToResolve">The type to resolve</param>
+            <param name="key">An optional key, to only resolve those.</param>
+            <returns></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryResolve(System.Type)">
             <summary>

@@ -6,24 +6,22 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private readonly IIocContainer _ioc;
-        private readonly Type _resolveType;
+        private readonly IDependencyResolution _resolution;
 
         #endregion Fields
 
         #region Constructors
 
-        public RuntimeResolutionPlanSingleParameter(Type resolveType, IIocContainer ioc)
+        public RuntimeResolutionPlanSingleParameter(IDependencyResolution resolution)
         {
-            _resolveType = resolveType ?? throw new ArgumentNullException(nameof(resolveType));
-            _ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+            _resolution = resolution ?? throw new ArgumentNullException(nameof(resolution));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public object Resolve() => _ioc.TryResolve(_resolveType);
+        public object Resolve() => _resolution.Resolve();
 
         #endregion Methods
     }
