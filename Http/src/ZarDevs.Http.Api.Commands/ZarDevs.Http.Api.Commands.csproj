@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
-    <RootNamespace>ZarDevs.Http.Commands</RootNamespace>
+    <RootNamespace>ZarDevs.Http.Api</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>ZarDevs.Http.Abstractions.xml</DocumentationFile>
+    <DocumentationFile>ZarDevs.Http.Api.Commands.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

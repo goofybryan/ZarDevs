@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.Http.Security</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.Http.Security.IHttpSecurityFactory">
+            <summary>
+            Http factory interface that will be used to create the core security handlers.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.IHttpSecurityRequestHandler">
+            <summary>
+            Http Security request handler that will be used to validate current request and inject the appropriate http headers in the request.
+            </summary>
+        </member>
+    </members>
+</doc>

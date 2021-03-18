@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
-    <RootNamespace>ZarDevs.Http.Commands</RootNamespace>
+    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>    
+    <RootNamespace>ZarDevs.Http.Security</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
@@ -15,8 +15,8 @@
     <LangVersion>9</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>ZarDevs.Http.Abstractions.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>ZarDevs.Http.Security.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

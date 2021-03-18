@@ -15,6 +15,10 @@
     <LangVersion>9</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>ZarDevs.Http.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
   </ItemGroup>
