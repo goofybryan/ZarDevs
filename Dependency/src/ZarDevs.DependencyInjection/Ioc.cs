@@ -61,6 +61,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         public void Dispose()
         {
+
             _kernel?.Dispose();
             _kernel = null;
         }

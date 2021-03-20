@@ -16,7 +16,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency info describing the resolution.</param>
         protected DependencyResolution(TInfo info)
         {
-            if (info is null) throw new ArgumentNullException("Info cannot be null", nameof(info));
+            if (info is null) throw new ArgumentNullException(nameof(info), "Info cannot be null");
 
             Info = info;
         }
@@ -34,6 +34,11 @@ namespace ZarDevs.DependencyInjection
         /// The key that is associated to this resolution.
         /// </summary>
         public object Key => Info.Key;
+
+        /// <summary>
+        /// Get the type that this resolution is for.
+        /// </summary>
+        public Type RequestType => Info.RequestType;
 
         #endregion Properties
 

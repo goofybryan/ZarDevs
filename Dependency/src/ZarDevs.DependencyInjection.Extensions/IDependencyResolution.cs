@@ -14,6 +14,11 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         object Key { get; }
 
+        /// <summary>
+        /// Get the request type that this resolution is for.
+        /// </summary>
+        Type RequestType { get; }
+
         #endregion Properties
 
         #region Methods

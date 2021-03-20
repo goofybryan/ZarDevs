@@ -16,7 +16,7 @@ namespace ZarDevs.DependencyInjection
         {
             DependencyResolutionConfiguration configuration = new();
             InstanceResolution = new DependencyInstanceResolution(configuration);
-            Activator = new RuntimeDependencyActivator(InspectConstructor.Instance, Create.Instance);
+            Activator = new RuntimeDependencyActivator(InspectConstructor.Instance, Create.Instance, new RuntimeResolutionPlanCreator(InspectConstructor.Instance, true));
             Container = new DependencyContainer(configuration, Activator, new DependencyFactory(InspectMethod.Instance));
         }
 

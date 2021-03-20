@@ -31,6 +31,8 @@ namespace ZarDevs.DependencyInjection
 
         public object Key => null;
 
+        public Type RequestType => _requestType;
+
         #endregion Properties
 
         #region Methods

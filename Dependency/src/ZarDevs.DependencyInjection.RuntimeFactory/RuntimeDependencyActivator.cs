@@ -1,28 +1,56 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
+    internal interface IRuntimeDependencyActivator : IDependencyTypeActivator
+    {
+    }
+
+    /// <summary>
+    /// <see cref="IIocContainer"/> extensions
+    /// </summary>
+    public static class IIocContainerExtensions
+    {
+        #region Methods
+
+        /// <summary>
+        /// Cast the current container to <see cref="IDependencyResolver"/>.
+        /// </summary>
+        /// <param name="container">The container to cast</param>
+        /// <returns></returns>
+        public static IDependencyResolver Resolver(this IIocContainer container)
+        {
+            return (IDependencyResolver)container;
+        }
+
+        #endregion Methods
+    }
+
     internal class RuntimeDependencyActivator : IDependencyTypeActivator
     {
         #region Fields
 
         private readonly ICreate _creation;
         private readonly IInspectConstructor _inspection;
-        private readonly IDictionary<Type, RuntimeResolutionPlan> _resolutionPlan;
+        private readonly IRuntimeResolutionPlanCreator _planCreator;
+        private readonly IDictionary<Type, IRuntimeResolutionPlan> _resolutionPlan;
 
         #endregion Fields
 
         #region Constructors
 
-        public RuntimeDependencyActivator(IInspectConstructor inspection, ICreate creation)
+        public RuntimeDependencyActivator(IInspectConstructor inspection, ICreate creation, IRuntimeResolutionPlanCreator planCreator)
         {
             _inspection = inspection ?? throw new ArgumentNullException(nameof(inspection));
             _creation = creation ?? throw new ArgumentNullException(nameof(creation));
-            _resolutionPlan = new Dictionary<Type, RuntimeResolutionPlan>();
+            _planCreator = planCreator ?? throw new ArgumentNullException(nameof(planCreator));
+            _resolutionPlan = new Dictionary<Type, IRuntimeResolutionPlan>();
         }
 
         #endregion Constructors
@@ -44,7 +72,8 @@ namespace ZarDevs.DependencyInjection
             var type = info.ResolvedType;
             if (!_resolutionPlan.TryGetValue(type, out var resolution))
             {
-                resolution = _resolutionPlan[type] = RuntimeResolutionPlan.FromType(_inspection, type);
+                var plan = _planCreator.FromInfo(info);
+                resolution = _resolutionPlan[type] = _planCreator.UseExpressions ? _planCreator.ToExpressionPlan(plan) : plan;
             }
 
             return resolution.Resolve();
@@ -53,12 +82,19 @@ namespace ZarDevs.DependencyInjection
         #endregion Methods
     }
 
-    internal class RuntimeResolutionPlan
+    internal class RuntimeResolutionPlanType : IRuntimeResolutionPlan
     {
+        #region Fields
+
+        private readonly IRuntimeResolutionPlanCreator _planCreator;
+
+        #endregion Fields
+
         #region Constructors
 
-        public RuntimeResolutionPlan(ConstructorInfo constructor, IList<Type> constructorArgs)
+        public RuntimeResolutionPlanType(IRuntimeResolutionPlanCreator planCreator, ConstructorInfo constructor, IList<Type> constructorArgs)
         {
+            _planCreator = planCreator ?? throw new ArgumentNullException(nameof(planCreator));
             Constructor = constructor ?? throw new ArgumentNullException(nameof(constructor));
             ConstructorArgs = CreateParameterResolvers(constructorArgs ?? throw new ArgumentNullException(nameof(constructorArgs)));
         }
@@ -74,17 +110,21 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public static RuntimeResolutionPlan FromType(IInspectConstructor inspect, Type instanceType)
+        public Expression CreateExpression()
         {
-            var (constructor, args) = inspect.GetConstructorParameterMap(instanceType);
-            return new RuntimeResolutionPlan(constructor, args);
+            if (ConstructorArgs.Count > 0)
+            {
+                return Expression.New(Constructor, ConstructorArgs.Select(c => c.GetExpression()));
+            }
+
+            return Expression.New(Constructor);
         }
 
         public object Resolve() => Constructor.Invoke(ResolveParameters());
 
         public object[] ResolveParameters()
         {
-            return (ConstructorArgs.Count == 0) ? new object[0] : ResolveArgs();
+            return (ConstructorArgs.Count == 0) ? Array.Empty<object>() : ResolveArgs();
         }
 
         private IList<IRuntimeResolutionPlanParameterResolver> CreateParameterResolvers(IList<Type> constructorArgs)
@@ -95,11 +135,11 @@ namespace ZarDevs.DependencyInjection
             foreach (Type argType in constructorArgs)
             {
                 if (argType.IsArray)
-                    list.Add(new RuntimeResolutionPlanListParameter(resolver.TryGetAllResolutions(argType.GetElementType())));
+                    list.Add(new RuntimeResolutionPlanListParameter(_planCreator, resolver.TryGetAllResolutions(argType.GetElementType())));
                 else if (typeof(IEnumerable).IsAssignableFrom(argType) && argType.GenericTypeArguments.Length > 0)
-                    list.Add(new RuntimeResolutionPlanListParameter(resolver.TryGetAllResolutions(argType.GenericTypeArguments[0])));
+                    list.Add(new RuntimeResolutionPlanListParameter(_planCreator, resolver.TryGetAllResolutions(argType.GenericTypeArguments[0])));
                 else
-                    list.Add(new RuntimeResolutionPlanSingleParameter(resolver.TryGetResolution(argType)));
+                    list.Add(new RuntimeResolutionPlanSingleParameter(_planCreator, resolver.TryGetResolution(argType)));
             }
 
             return list;
@@ -117,21 +157,5 @@ namespace ZarDevs.DependencyInjection
         }
 
         #endregion Methods
-    }
-
-    /// <summary>
-    /// <see cref="IIocContainer"/> extensions
-    /// </summary>
-    public static class IIocContainerExtensions
-    {
-        /// <summary>
-        /// Cast the current container to <see cref="IDependencyResolver"/>.
-        /// </summary>
-        /// <param name="container">The container to cast</param>
-        /// <returns></returns>
-        public static IDependencyResolver Resolver(this IIocContainer container)
-        {
-            return (IDependencyResolver)container;
-        }
     }
 }

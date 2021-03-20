@@ -24,7 +24,7 @@ namespace ZarDevs.DependencyInjection
 
         #region Properties
 
-        private IIocContainer Ioc => DependencyInjection.Ioc.Container;
+        private static IIocContainer Ioc => DependencyInjection.Ioc.Container;
         private IServiceProvider ServiceProvider => _serviceProvider ??= Ioc.Resolve<IServiceProvider>();
 
         #endregion Properties

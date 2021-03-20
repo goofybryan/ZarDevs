@@ -7,8 +7,17 @@ namespace ZarDevs.DependencyInjection
     /// <summary>
     /// Interface for resolving multiple resolutions.
     /// </summary>
-    public interface IDependencyResolutions
+    public interface IDependencyResolutions : IEnumerable<IDependencyResolution>
     {
+        #region Properties
+
+        /// <summary>
+        /// Get the request type that this resolution is for.
+        /// </summary>
+        Type RequestType { get; }
+
+        #endregion Properties
+
         #region Methods
 
         /// <summary>
@@ -46,7 +55,23 @@ namespace ZarDevs.DependencyInjection
 
         #endregion Constructors
 
+        #region Properties
+
+        public Type RequestType => _requestType;
+
+        #endregion Properties
+
         #region Methods
+
+        public IEnumerator<IDependencyResolution> GetEnumerator()
+        {
+            return _resolutions.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         public IEnumerable<T> Resolve<T>()
         {

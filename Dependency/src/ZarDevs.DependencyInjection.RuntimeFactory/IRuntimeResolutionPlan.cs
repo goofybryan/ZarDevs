@@ -2,11 +2,11 @@
 
 namespace ZarDevs.DependencyInjection
 {
-    internal interface IRuntimeResolutionPlanParameterResolver
+    internal interface IRuntimeResolutionPlan
     {
         #region Methods
 
-        Expression GetExpression();
+        Expression CreateExpression();
 
         object Resolve();
 

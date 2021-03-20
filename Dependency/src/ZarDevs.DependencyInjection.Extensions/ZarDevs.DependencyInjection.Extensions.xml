@@ -346,6 +346,11 @@
             The key that is associated to this resolution.
             </summary>
         </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyResolution`1.RequestType">
+            <summary>
+            Get the type that this resolution is for.
+            </summary>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.MakeConcrete(System.Type)">
             <summary>
             Create a concrete resolution out of a generic.
@@ -525,6 +530,11 @@
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolutions">
             <summary>
             Interface for resolving multiple resolutions.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyResolutions.RequestType">
+            <summary>
+            Get the request type that this resolution is for.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyResolutions.Resolve``1">
@@ -915,6 +925,11 @@
             The key that is associated to this resolution.
             </summary>
         </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencySingletionResolution`2.RequestType">
+            <summary>
+            Get the request type that this resolution is for.
+            </summary>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletionResolution`2.Dispose">
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
@@ -983,6 +998,11 @@
         <member name="P:ZarDevs.DependencyInjection.DependencySingletonInstance.Key">
             <summary>
             The key that is associated to this resolution.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencySingletonInstance.RequestType">
+            <summary>
+            Get the request type that this resolution is for.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletonInstance.Dispose">
@@ -1086,6 +1106,11 @@
         <member name="P:ZarDevs.DependencyInjection.IDependencyResolution.Key">
             <summary>
             The key that is associated to this resolution.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyResolution.RequestType">
+            <summary>
+            Get the request type that this resolution is for.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyResolution.MakeConcrete(System.Type)">
