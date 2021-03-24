@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
@@ -31,9 +32,23 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
+        public Expression<Func<object, IDependencyContext, object>> GetExpression()
+        {
+            var factoryObjectExpression = Expression.Parameter(typeof(object));
+            var contextExpression = Expression.Parameter(typeof(IDependencyContext));
+
+            var call = Expression.Call(Expression.Constant(this), nameof(Resolve), null, factoryObjectExpression, contextExpression);
+            return Expression.Lambda<Func<object, IDependencyContext, object>>(call, factoryObjectExpression, contextExpression);
+        }
+
         public object Resolve(object factory, IDependencyContext context)
         {
             var args = context.GetArguments();
+            return ResolveMethod(factory, args);
+        }
+
+        private object ResolveMethod(object factory, object[] args)
+        {
             var method = _inspectMethod.FindMethodForArguments(_factoryType, _methodName, args);
             return method.Invoke(factory, args);
         }

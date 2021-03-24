@@ -52,6 +52,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
+        private readonly bool _enableExpressions;
         private readonly List<IDependencyFactoryInfo> _factoryInfos;
         private readonly IInspectMethod _inspectMethod;
         private readonly ConcurrentDictionary<Type, IDependencyFactoryResolutionPlan> _resolutionPlans;
@@ -64,10 +65,15 @@ namespace ZarDevs.DependencyInjection
         /// Create new instance of dependnecy factory.
         /// </summary>
         /// <param name="inspectMethod">The runtime method inspector.</param>
-        public DependencyFactory(IInspectMethod inspectMethod)
+        /// <param name="enableExpressions">
+        /// Enable the resolving to make use of <see cref="System.Linq.Expressions.Expression"/> to
+        /// execute the factory. Default is true/&gt;
+        /// </param>
+        public DependencyFactory(IInspectMethod inspectMethod, bool enableExpressions = true)
         {
             _resolutionPlans = new ConcurrentDictionary<Type, IDependencyFactoryResolutionPlan>();
             _inspectMethod = inspectMethod ?? throw new ArgumentNullException(nameof(inspectMethod));
+            _enableExpressions = enableExpressions;
             _factoryInfos = new List<IDependencyFactoryInfo>();
         }
 
@@ -126,7 +132,9 @@ namespace ZarDevs.DependencyInjection
         {
             _factoryInfos.Add(info);
             var (method, parameters) = InspectMethod.GetMethodParameterMap(info.FactoryType, info.MethodName);
-            return new DependencyFactoryResolveResolutionPlan(method, parameters);
+            var plan = new DependencyFactoryResolveResolutionPlan(method, parameters);
+
+            return _enableExpressions ? new DependencyFactoryResolveExpressionPlan(plan.GetExpression()) : plan;
         }
 
         #endregion Methods

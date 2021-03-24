@@ -131,6 +131,14 @@
             <param name="methodName">The method name.</param>
             <returns></returns>
         </member>
+        <member name="M:ZarDevs.Runtime.IInspectMethod.GetMethods(System.Type,System.String)">
+            <summary>
+            Get all the available methods for the <paramref name="methodName"/>.
+            </summary>
+            <param name="target">The target type.</param>
+            <param name="methodName">The method name.</param>
+            <returns>A list of methods.</returns>
+        </member>
         <member name="T:ZarDevs.Runtime.InspectMethod">
             <summary>
             Runtime method inpsection.
@@ -157,6 +165,14 @@
             <param name="target">The target object type.</param>
             <param name="methodName">The method name.</param>
             <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectMethod.GetMethods(System.Type,System.String)">
+            <summary>
+            Get all the available methods for the <paramref name="methodName"/>.
+            </summary>
+            <param name="target">The target type.</param>
+            <param name="methodName">The method name.</param>
+            <returns>A list of methods.</returns>
         </member>
     </members>
 </doc>

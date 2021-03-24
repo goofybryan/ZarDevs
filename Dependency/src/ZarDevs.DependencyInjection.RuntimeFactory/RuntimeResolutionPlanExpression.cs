@@ -36,7 +36,7 @@ namespace ZarDevs.DependencyInjection
             return _function();
         }
 
-        private Expression<Func<object>> CreateFunction(Expression expression)
+        private static Expression<Func<object>> CreateFunction(Expression expression)
         {
             if (expression is null)
             {

@@ -1,4 +1,7 @@
-﻿namespace ZarDevs.DependencyInjection
+﻿using System;
+using System.Linq.Expressions;
+
+namespace ZarDevs.DependencyInjection
 {
     /// <summary>
     /// Dependency resolution factory plan.
@@ -6,6 +9,12 @@
     public interface IDependencyFactoryResolutionPlan
     {
         #region Methods
+
+        /// <summary>
+        /// Get an expression of the what needs to happen/
+        /// </summary>
+        /// <returns></returns>
+        Expression<Func<object, IDependencyContext, object>> GetExpression();
 
         /// <summary>
         /// Resolve the factory method.

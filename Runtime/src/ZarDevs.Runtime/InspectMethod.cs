@@ -29,6 +29,14 @@ namespace ZarDevs.Runtime
         /// <returns></returns>
         (MethodInfo, IList<Type>) GetMethodParameterMap(Type target, string methodName);
 
+        /// <summary>
+        /// Get all the available methods for the <paramref name="methodName"/>.
+        /// </summary>
+        /// <param name="target">The target type.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>A list of methods.</returns>
+        IEnumerable<MemberInfo> GetMethods(Type target, string methodName);
+
         #endregion Methods
     }
 
@@ -37,6 +45,12 @@ namespace ZarDevs.Runtime
     /// </summary>
     public class InspectMethod : IInspectMethod
     {
+        #region Fields
+
+        private const BindingFlags _bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
+
+        #endregion Fields
+
         #region Properties
 
         /// <summary>
@@ -56,7 +70,7 @@ namespace ZarDevs.Runtime
         /// <param name="argumentValuesInOrder"></param>
         public MethodInfo FindMethodForArguments(Type target, string methodName, IList<object> argumentValuesInOrder)
         {
-            return target.GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance, null, argumentValuesInOrder.Select(o => o?.GetType()).ToArray(), null);
+            return target.GetMethod(methodName, _bindingFlags, null, argumentValuesInOrder.Select(o => o?.GetType()).ToArray(), null);
         }
 
         /// <summary>
@@ -72,9 +86,17 @@ namespace ZarDevs.Runtime
             return constructors.First();
         }
 
-        private IEnumerable<MethodInfo> GetMethodInfos(Type target, string methodName)
+        /// <summary>
+        /// Get all the available methods for the <paramref name="methodName"/>.
+        /// </summary>
+        /// <param name="target">The target type.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>A list of methods.</returns>
+        public IEnumerable<MemberInfo> GetMethods(Type target, string methodName) => target.GetMethods(_bindingFlags).Where(m => m.Name == methodName);
+
+        private static IEnumerable<MethodInfo> GetMethodInfos(Type target, string methodName)
         {
-            return target.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(m => m.Name == methodName);
+            return target.GetMethods(_bindingFlags).Where(m => m.Name == methodName);
         }
 
         #endregion Methods

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace ZarDevs.DependencyInjection
@@ -19,12 +21,25 @@ namespace ZarDevs.DependencyInjection
         public DependencyFactoryResolveResolutionPlan(MethodInfo method, IList<Type> parameterTypes)
         {
             _method = method ?? throw new ArgumentNullException(nameof(method));
-            _parameterTypes = parameterTypes ?? new Type[0];
+            _parameterTypes = parameterTypes ?? Array.Empty<Type>();
         }
 
         #endregion Constructors
 
         #region Methods
+
+        public Expression<Func<object, IDependencyContext, object>> GetExpression()
+        {
+            var factoryObjectExpression = Expression.Parameter(typeof(object), "factory");
+            var contextExpression = Expression.Parameter(typeof(IDependencyContext), "ctx");
+
+            var castFactory = Expression.Convert(factoryObjectExpression, _method.DeclaringType);
+            var iocExpression = Expression.PropertyOrField(contextExpression, nameof(IDependencyContext.Ioc));
+
+            var resolver = Expression.Call(castFactory, _method, CreateVariablesExpression(iocExpression).ToArray());
+
+            return Expression.Lambda<Func<object, IDependencyContext, object>>(resolver, factoryObjectExpression, contextExpression);
+        }
 
         public object Resolve(object factory, IDependencyContext context)
         {
@@ -55,6 +70,35 @@ namespace ZarDevs.DependencyInjection
             }
 
             return _method.Invoke(factory, parameters);
+        }
+
+        private static Expression ResolveAllArrayExpression(Expression iocExpression, Type typeToResolve)
+        {
+            return Expression.Call(typeof(Enumerable), nameof(Enumerable.ToArray), new[] { typeToResolve }, Expression.Call(iocExpression, nameof(IIocContainer.ResolveAll), new[] { typeToResolve }));
+        }
+
+        private static Expression ResolveAllExpression(Expression iocExpression, Type returnType, Type typeToResolve)
+        {
+            return Expression.Convert(Expression.Call(iocExpression, nameof(IIocContainer.ResolveAll), new[] { typeToResolve }), returnType);
+        }
+
+        private static Expression TryResolveExpression(Expression iocExpression, Type typeToResolve)
+        {
+            return Expression.Call(iocExpression, nameof(IIocContainer.TryResolve), new[] { typeToResolve });
+        }
+
+        private IEnumerable<Expression> CreateVariablesExpression(Expression iocExpression)
+        {
+            for (int i = 0; i < _parameterTypes.Count; i++)
+            {
+                var requestType = _parameterTypes[i];
+                if (requestType.IsArray)
+                    yield return ResolveAllArrayExpression(iocExpression, requestType.GetElementType());
+                else if (typeof(IEnumerable).IsAssignableFrom(requestType) && requestType.GenericTypeArguments.Length > 0)
+                    yield return ResolveAllExpression(iocExpression, requestType, requestType.GenericTypeArguments[0]);
+                else
+                    yield return TryResolveExpression(iocExpression, requestType);
+            }
         }
 
         #endregion Methods
