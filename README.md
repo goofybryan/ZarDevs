@@ -2,7 +2,7 @@
 
 ## Introduction
 
-I have been working in the .Net environment for years, and as everyone knows, you generate a style of how you code. So when it comes to new projects, I always tend to have the same thought patterns. So I decided to take some of the ideas I have been toying with and make them available, without time constraints.
+I have been working in the .Net environment for years, and as everyone knows, you generate a style of how you code. So when it comes to new projects, I always tend to have the same thought patterns. So I decided to take some of the ideas I have been toying with and make them available, without time constraints. I am also using this to play around with new ideas and technologies.
 
 ## What is there?
 
@@ -26,7 +26,7 @@ With one of my projects, I wrote a way to handle API calls that included refresh
 
 ### Model and PropertyChanged Abstractions (To be started)
 
-During my time I was doing some R&D development and what troubled me was the way that models and the changes that occur to them are handled. This came from how I normally saw them implemented. There is normally a base class with a dictionary that maps the property and changes and some complex code that manages this. What if you could take away that need on a model class and just let something else worry about that and let a model just say it's changed something.
+During my time I was doing some R&D development and what troubled me was the way that models and the changes that occur to them are handled. This came from how I normally saw them implemented. There is normally a base class with a dictionary that maps the property and changes and some complex code that manages this. What if you could take away that need on a model class and just let something else worry about that and let a model just say it's changed something. This one will take some time as I am busy with the others.
 
 [Link to repo](./Models)
 
@@ -35,6 +35,12 @@ During my time I was doing some R&D development and what troubled me was the way
 This isn't really something I dreamed of doing, this is just a generic project that houses the shared runtime logic I need to make some of the magic happen.
 
 [Link to repo](./Runtime)
+
+## To do
+
+1. Deploy packages to NuGet server.
+1. Split projects into smaller projects once NuGet deployement is completed.
+1. Examples that makes use of all the things I am building.
 
 ## Links
 
