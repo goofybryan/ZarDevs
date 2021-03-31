@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
     public class ApiHttpRequestHandler : IApiHttpRequestHandler
     {

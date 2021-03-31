@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
     internal class ApiHttpClient : IApiHttpClient
     {
@@ -11,7 +11,7 @@ namespace ZarDevs.Http
         private readonly HttpClient _httpClient;
         private readonly IApiHttpRequestHandler _requestHandler;
 
-        private bool disposedValue = false;
+        private bool _isDisposed = false;
 
         #endregion Fields
 
@@ -44,6 +44,14 @@ namespace ZarDevs.Http
             return await SendAsync(request);
         }
 
+#if NET5_0_OR_GREATER
+        public async Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
+        {
+            var request = CreateRequest(HttpMethod.Patch, apiUri, httpContent);
+            return await SendAsync(request);
+        }
+#endif
+
         public async Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent)
         {
             var request = CreateRequest(HttpMethod.Post, apiUri, httpContent);
@@ -64,19 +72,19 @@ namespace ZarDevs.Http
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_isDisposed)
             {
                 if (disposing)
                 {
                     _httpClient.Dispose();
                 }
-                disposedValue = true;
+                _isDisposed = true;
             }
         }
 
-        private HttpRequestMessage CreateRequest(HttpMethod method, Uri apiUri, HttpContent httpContent = null)
+        private static HttpRequestMessage CreateRequest(HttpMethod method, Uri apiUri, HttpContent httpContent = null)
         {
-            HttpRequestMessage message = new HttpRequestMessage(method, apiUri)
+            HttpRequestMessage message = new(method, apiUri)
             {
                 Content = httpContent
             };
@@ -84,6 +92,6 @@ namespace ZarDevs.Http
             return message;
         }
 
-        #endregion Methods
+#endregion Methods
     }
 }

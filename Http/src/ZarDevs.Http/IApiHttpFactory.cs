@@ -1,4 +1,4 @@
-﻿namespace ZarDevs.Http
+﻿namespace ZarDevs.Http.Client
 {
     public interface IApiHttpFactory
     {

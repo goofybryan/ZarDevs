@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
     internal class ApiHttpRequestHandlerBinding<THandler> : IApiHttpRequestHandlerBinding where THandler : class, IApiHttpRequestHandler
     {

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
-    <ProjectReference Include="..\ZarDevs.Http\ZarDevs.Http.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http\ZarDevs.Http.Client.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using System.Net.Http;
 using ZarDevs.Runtime;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
     public class ApiHttpFactory : IApiHttpFactory
     {
