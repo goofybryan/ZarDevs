@@ -14,7 +14,6 @@ namespace ZarDevs.Http.Client
 
         public ApiHttpRequestHandlerBinding(IApiHttpHandlerFactory factory)
         {
-            Name = "";
             _factory = factory ?? throw new System.ArgumentNullException(nameof(factory));
         }
 
@@ -22,7 +21,7 @@ namespace ZarDevs.Http.Client
 
         #region Properties
 
-        public string Name { get; private set; }
+        public object Name { get; private set; }
 
         internal IList<IApiHttpRequestHandlerBinding> Bindings { get; } = new List<IApiHttpRequestHandlerBinding>();
         internal IApiHttpRequestHandlerBinding Next { get; private set; }
@@ -44,7 +43,7 @@ namespace ZarDevs.Http.Client
 
             if (Next != null)
             {
-                handler.SetInnerHandler(Next.Build());
+                handler.SetNextHandler(Next.Build());
             }
 
             foreach (var binding in Bindings)
@@ -55,16 +54,16 @@ namespace ZarDevs.Http.Client
             return handler;
         }
 
-        public IApiHttpRequestHandlerBinding Chain<TNext>() where TNext : class, IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding Link<TNext>() where TNext : class, IApiHttpRequestHandler
         {
             var binding = new ApiHttpRequestHandlerBinding<TNext>(_factory);
             Next = binding;
             return binding;
         }
 
-        public IApiHttpRequestHandlerBinding Named(string name)
+        public IApiHttpRequestHandlerBinding Named(object name)
         {
-            Name = name ?? "";
+            Name = name;
             return this;
         }
 

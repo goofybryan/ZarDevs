@@ -19,7 +19,7 @@ namespace ZarDevs.Http.Client
 
         public ApiHttpClient(IApiHttpRequestHandler requestHandler, HttpClient httpClient)
         {
-            _requestHandler = requestHandler ?? throw new ArgumentNullException(nameof(requestHandler));
+            _requestHandler = requestHandler;
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
@@ -44,13 +44,16 @@ namespace ZarDevs.Http.Client
             return await SendAsync(request);
         }
 
-#if NET5_0_OR_GREATER
         public async Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
         {
-            var request = CreateRequest(HttpMethod.Patch, apiUri, httpContent);
+#if NET5_0_OR_GREATER
+            HttpMethod method = HttpMethod.Patch;
+#else
+            HttpMethod method = new("PATCH");
+#endif
+            var request = CreateRequest(method, apiUri, httpContent);
             return await SendAsync(request);
         }
-#endif
 
         public async Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent)
         {
@@ -66,7 +69,7 @@ namespace ZarDevs.Http.Client
 
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
-            await _requestHandler.HandleAsync(request);
+            await _requestHandler?.HandleAsync(request);
             return await _httpClient.SendAsync(request);
         }
 
@@ -92,6 +95,6 @@ namespace ZarDevs.Http.Client
             return message;
         }
 
-#endregion Methods
+        #endregion Methods
     }
 }

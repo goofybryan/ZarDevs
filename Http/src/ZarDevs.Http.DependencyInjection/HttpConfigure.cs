@@ -1,5 +1,7 @@
 ﻿using System;
 using ZarDevs.DependencyInjection;
+using ZarDevs.Http.Client;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.Http
 {
@@ -24,16 +26,14 @@ namespace ZarDevs.Http
         /// Configure the API HTTP factory for the solution.
         /// </summary>
         /// <param name="builder">The dependency builder.</param>
-        /// <param name="useIocHttpHandlerFactory">
-        /// Specify if to use the <see cref="DependencyApiHttpFactoryHandler"/>. If false, the
-        /// default factory will be used, see <see cref="DefaultHttpHandlerFactory"/>. This factory
-        /// uses runtime activation to create the handlers, <seealso cref="Runtime.Create"/>.
+        /// <param name="useIocHttpHandlerFactory">Specify if to use the <see cref="DependencyApiHttpFactoryHandler"/>. If false, the default factory will be used, see <see cref="DefaultHttpHandlerFactory"/>. 
+        /// This factory uses runtime activation to create the handlers, <seealso cref="Runtime.Create"/>.
         /// </param>
         /// <returns></returns>
         public static IDependencyBuilder ConfigureHttp(this IDependencyBuilder builder, bool useIocHttpHandlerFactory)
         {
-            if (useIocHttpHandlerFactory) builder.ConfigureHttp(new DependencyApiHttpFactoryHandler(Ioc.Container));
-            else builder.ConfigureHttp(new DefaultHttpHandlerFactory());
+            if (useIocHttpHandlerFactory) builder.ConfigureHttp(new DependencyApiHttpFactoryHandler());
+            else builder.ConfigureHttp(new DefaultHttpHandlerFactory(Create.Instance));
             return builder;
         }
 

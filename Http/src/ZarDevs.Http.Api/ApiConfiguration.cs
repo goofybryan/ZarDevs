@@ -1,4 +1,6 @@
-﻿namespace ZarDevs.Http.Api
+﻿using ZarDevs.Http.Client;
+
+namespace ZarDevs.Http.Api
 {
     public static class ApiConfiguration
     {
@@ -22,6 +24,11 @@
         public static IApiHttpRequestHandlerBinding ConfigurePutApi<THandler>(this IApiHttpFactory factory) where THandler : class, IApiHttpRequestHandler
         {
             return factory.AddRequestHandler<THandler>().Named(HttpRequestType.Put.ToString());
+        }
+
+        public static IApiHttpRequestHandlerBinding ConfigurePatchApi<THandler>(this IApiHttpFactory factory) where THandler : class, IApiHttpRequestHandler
+        {
+            return factory.AddRequestHandler<THandler>().Named(HttpRequestType.Patch.ToString());
         }
 
         #endregion Methods

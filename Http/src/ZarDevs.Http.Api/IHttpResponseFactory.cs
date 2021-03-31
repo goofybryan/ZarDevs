@@ -18,7 +18,7 @@ namespace ZarDevs.Http.Api
 
         Task<TResponse> CreateWithContent<TResponse, TContent>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage, Func<HttpContent, Task<TContent>> GetContentAsync) where TResponse : ApiCommandContentResponse<TContent>;
 
-        Task<ApiCommandJsonResponse> CreateWithJsonContent(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage);
+        Task<ApiCommandJsonResponse> CreateWithContent(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage);
 
         #endregion Methods
     }

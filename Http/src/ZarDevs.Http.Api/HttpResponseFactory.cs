@@ -40,7 +40,7 @@ namespace ZarDevs.Http.Api
             return await CreateWithContent<ApiCommandContentResponse<TContent>, TContent>(originalRequest, httpResponseMessage, GetContentAsync);
         }
 
-        public async Task<ApiCommandJsonResponse> CreateWithJsonContent(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
+        public async Task<ApiCommandJsonResponse> CreateWithContent(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
         {
             return await CreateWithContent<ApiCommandJsonResponse, string>(originalRequest, httpResponseMessage, (content) => content.ReadAsStringAsync());
         }

@@ -1,5 +1,7 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
@@ -31,6 +33,7 @@ namespace ZarDevs.Http.Api
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public async Task<TResponse> ExecuteAsync(TRequest request)

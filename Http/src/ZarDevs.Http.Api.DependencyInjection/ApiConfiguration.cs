@@ -2,6 +2,9 @@
 
 namespace ZarDevs.Http.Api
 {
+    /// <summary>
+    /// Configure the Api
+    /// </summary>
     public static class ApiConfiguration
     {
         #region Methods

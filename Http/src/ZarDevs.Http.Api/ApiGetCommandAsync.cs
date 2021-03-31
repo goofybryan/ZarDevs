@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
@@ -24,7 +25,7 @@ namespace ZarDevs.Http.Api
 
         protected override async Task<ApiCommandJsonResponse> CreateResponse(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
         {
-            return await _responseFactory.CreateWithJsonContent(originalRequest, httpResponseMessage);
+            return await _responseFactory.CreateWithContent(originalRequest, httpResponseMessage);
         }
 
         protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandRequest request)

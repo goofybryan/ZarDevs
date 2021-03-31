@@ -64,6 +64,9 @@ namespace ZarDevs.Runtime
         /// <returns>A new instance.</returns>
         public object New(Type type, params object[] constructorArgs)
         {
+            if (constructorArgs?.Length == 0)
+                return Activator.CreateInstance(type);
+
             var value = Activator.CreateInstance(type, constructorArgs);
             return value;
         }
