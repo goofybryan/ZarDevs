@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>ZarDevs.Commands.Api.DependencyInjection</name>
+        <name>ZarDevs.Http.Api.DependencyInjection</name>
     </assembly>
     <members>
         <member name="T:ZarDevs.Http.Api.ApiConfiguration">

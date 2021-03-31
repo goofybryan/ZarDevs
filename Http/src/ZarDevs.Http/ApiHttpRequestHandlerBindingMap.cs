@@ -6,6 +6,7 @@ namespace ZarDevs.Http.Client
     {
         #region Fields
 
+        private readonly object _noKey = new ();
         private readonly Dictionary<object, IApiHttpRequestHandlerBinding> _map;
 
         #endregion Fields
@@ -23,23 +24,23 @@ namespace ZarDevs.Http.Client
 
         public IApiHttpRequestHandlerBinding this[object key]
         {
-            get => TryGetBinding(key);
-            set => TrySetBinding(key, value);
+            get => TryGet(key);
+            set => TrySet(key, value);
         }
 
         #endregion Indexers
 
         #region Methods
 
-        public IApiHttpRequestHandlerBinding TryGetBinding(object key)
+        public IApiHttpRequestHandlerBinding TryGet(object key)
         {
-            _map.TryGetValue(key ?? string.Empty, out IApiHttpRequestHandlerBinding value);
+            _map.TryGetValue(key ?? _noKey, out IApiHttpRequestHandlerBinding value);
             return value;
         }
 
-        public void TrySetBinding(object key, IApiHttpRequestHandlerBinding binding)
+        public void TrySet(object key, IApiHttpRequestHandlerBinding binding)
         {
-            _map[key ?? ""] = binding;
+            _map[key ?? _noKey] = binding;
         }
 
         #endregion Methods

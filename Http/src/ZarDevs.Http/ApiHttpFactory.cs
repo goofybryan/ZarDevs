@@ -51,7 +51,14 @@ namespace ZarDevs.Http.Client
         /// <returns>A <see cref="IApiHttpRequestHandlerBinding"/> where you can link multiple additional handlers.</returns>
         public IApiHttpRequestHandlerBinding AddRequestHandler<THandler>(object key = null) where THandler : class, IApiHttpRequestHandler
         {
-            var binding = GetOrCreateBinding<THandler>(key);
+            var binding = _handlerMappings.TryGet(key);
+
+            if (binding == null)
+            {
+                binding = _handlerFactory.CreateHandlerBinding<THandler>();
+                _handlerMappings.TrySet(key, binding);
+            }
+
             return binding;
         }
 
@@ -62,17 +69,9 @@ namespace ZarDevs.Http.Client
         /// <returns>An new instance of the <see cref="IApiHttpClient"/></returns>
         public IApiHttpClient NewClient(object key = null)
         {
-            var binding = GetOrCreateBinding<ApiHttpRequestHandler>(key);
-            return NewClient(binding?.Build());
-        }
+            var binding = _handlerMappings.TryGet(key);
+            var handler = binding?.Build();
 
-        private IApiHttpRequestHandlerBinding GetOrCreateBinding<THandler>(object key) where THandler : class, IApiHttpRequestHandler
-        {
-            return _handlerMappings?.TryGetBinding(key) ?? new ApiHttpRequestHandlerBinding<THandler>(_handlerFactory);
-        }
-
-        private IApiHttpClient NewClient(IApiHttpRequestHandler handler)
-        {
             return new ApiHttpClient(handler, _httpClient);
         }
 

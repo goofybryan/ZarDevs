@@ -6,7 +6,7 @@ namespace ZarDevs.Http.Client
     /// <summary>
     /// Default http handler factory. This uses <see cref="Create"/> object that makes use of reflection.
     /// </summary>
-    public class DefaultHttpHandlerFactory : IApiHttpHandlerFactory
+    public class DefaultHttpHandlerFactory : ApiHttpHandlerFactoryBase
     {
         private readonly ICreate _create;
 
@@ -26,7 +26,7 @@ namespace ZarDevs.Http.Client
         /// </summary>
         /// <typeparam name="THandler">The type of handler to get or create.</typeparam>
         /// <returns>The <typeparamref name="THandler"/> instance.</returns>
-        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler
+        public override IApiHttpRequestHandler GetHandler<THandler>() 
         {
             return _create.New<THandler>();
         }

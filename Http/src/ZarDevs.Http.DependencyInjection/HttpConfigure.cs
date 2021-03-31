@@ -1,10 +1,12 @@
 ﻿using System;
 using ZarDevs.DependencyInjection;
-using ZarDevs.Http.Client;
 using ZarDevs.Runtime;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
+    /// <summary>
+    /// Configure the Http bindings.
+    /// </summary>
     public static class HttpConfigure
     {
         #region Methods

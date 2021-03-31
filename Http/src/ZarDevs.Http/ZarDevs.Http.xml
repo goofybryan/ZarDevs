@@ -111,10 +111,36 @@
             <typeparam name="THandler">The type of handler to get or create.</typeparam>
             <returns>The <typeparamref name="THandler"/> instance.</returns>
         </member>
+        <member name="T:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase">
+            <summary>
+            Abstract implementation of the <see cref="T:ZarDevs.Http.Client.IApiHttpHandlerFactory"/>. This class handles the method <see cref="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.CreateHandlerBinding``1"/> but requires the <see cref="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler``1"/> method to be implemented.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.CreateHandlerBinding``1">
+            <summary>
+            Create a new instance of the handler <typeparamref name="THandler"/> binding.
+            </summary>
+            <typeparam name="THandler">The handler the binding will be valid for.</typeparam>
+            <returns>An instance of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.GetHandler``1">
+            <summary>
+            Get or create an instance of <typeparamref name="THandler"/>
+            </summary>
+            <typeparam name="THandler">The type of handler to get or create.</typeparam>
+            <returns>The <typeparamref name="THandler"/> instance.</returns>
+        </member>
         <member name="T:ZarDevs.Http.Client.IApiHttpClient">
             <summary>
             Http api client class that is used to wrap
             </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpClient.DeleteAsync(System.String)">
+            <summary>
+            Request a delete from the api.
+            </summary>
+            <param name="apiUrl">The api uri</param>
+            <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
         </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpClient.DeleteAsync(System.Uri)">
             <summary>
@@ -123,11 +149,26 @@
             <param name="apiUri">The api uri</param>
             <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
         </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpClient.GetAsync(System.String)">
+            <summary>
+            Request a get from the api.
+            </summary>
+            <param name="apiUrl">The api uri</param>
+            <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
+        </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpClient.GetAsync(System.Uri)">
             <summary>
             Request a get from the api.
             </summary>
             <param name="apiUri">The api uri</param>
+            <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpClient.PatchAsync(System.String,System.Net.Http.HttpContent)">
+            <summary>
+            Request a patch from the api.
+            </summary>
+            <param name="apiUrl">The api uri</param>
+            <param name="httpContent">The content to patch.</param>
             <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
         </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent)">
@@ -138,12 +179,28 @@
             <param name="httpContent">The content to patch.</param>
             <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
         </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpClient.PostAsync(System.String,System.Net.Http.HttpContent)">
+            <summary>
+            Request a post from the api.
+            </summary>
+            <param name="apiUrl">The api uri</param>
+            <param name="httpContent">The content to post.</param>
+            <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
+        </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent)">
             <summary>
             Request a post from the api.
             </summary>
             <param name="apiUri">The api uri</param>
             <param name="httpContent">The content to post.</param>
+            <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpClient.PutAsync(System.String,System.Net.Http.HttpContent)">
+            <summary>
+            Request a put from the api.
+            </summary>
+            <param name="apiUrl">The api url</param>
+            <param name="httpContent">The content to put.</param>
             <returns>A <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
         </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent)">
@@ -185,6 +242,13 @@
             <summary>
             Api handler factory that is used to get or create the required handlers.
             </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.CreateHandlerBinding``1">
+            <summary>
+            Create a new instance of the handler <typeparamref name="THandler"/> binding.
+            </summary>
+            <typeparam name="THandler">The handler the binding will be valid for.</typeparam>
+            <returns>An instance of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/></returns>
         </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler``1">
             <summary>
@@ -242,7 +306,7 @@
             <typeparam name="TNext">The next handler to be executed.</typeparam>
             <returns>The next binding.</returns>
         </member>
-        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.Named(System.String)">
+        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.Named(System.Object)">
             <summary>
             Give the the handler that is used when requiring a specific handler.
             </summary>

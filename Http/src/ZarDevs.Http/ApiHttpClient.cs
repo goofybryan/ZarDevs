@@ -33,6 +33,11 @@ namespace ZarDevs.Http.Client
             return await SendAsync(request);
         }
 
+        public Task<HttpResponseMessage> DeleteAsync(string apiUrl)
+        {
+            return DeleteAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute));
+        }
+
         void IDisposable.Dispose()
         {
             Dispose(true);
@@ -42,6 +47,11 @@ namespace ZarDevs.Http.Client
         {
             var request = CreateRequest(HttpMethod.Get, apiUri);
             return await SendAsync(request);
+        }
+
+        public Task<HttpResponseMessage> GetAsync(string apiUrl)
+        {
+            return GetAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute));
         }
 
         public async Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
@@ -55,16 +65,31 @@ namespace ZarDevs.Http.Client
             return await SendAsync(request);
         }
 
+        public Task<HttpResponseMessage> PatchAsync(string apiUrl, HttpContent httpContent)
+        {
+            return PatchAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
+        }
+
         public async Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent)
         {
             var request = CreateRequest(HttpMethod.Post, apiUri, httpContent);
             return await SendAsync(request);
         }
 
+        public Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent)
+        {
+            return PostAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
+        }
+
         public async Task<HttpResponseMessage> PutAsync(Uri apiUri, HttpContent httpContent)
         {
             var request = CreateRequest(HttpMethod.Put, apiUri, httpContent);
             return await SendAsync(request);
+        }
+
+        public Task<HttpResponseMessage> PutAsync(string apiUrl, HttpContent httpContent)
+        {
+            return PutAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
         }
 
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)

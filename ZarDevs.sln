@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api", "Http\sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Runtime", "Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj", "{2D26F10A-360D-4497-A9AC-2F46DC2C8550}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.DependencyInjection", "Http\src\ZarDevs.Http.DependencyInjection\ZarDevs.Http.DependencyInjection.csproj", "{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Client.DependencyInjection", "Http\src\ZarDevs.Http.DependencyInjection\ZarDevs.Http.Client.DependencyInjection.csproj", "{DF9D6F44-94F4-4FF9-9CD3-59C39E97EFB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.DependencyInjection", "Http\src\ZarDevs.Http.Api.DependencyInjection\ZarDevs.Http.Api.DependencyInjection.csproj", "{B542BDDD-BC5D-43AF-9E2E-1B1FBDA09E7B}"
 EndProject
@@ -79,7 +79,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.Commands",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Security", "Http\src\ZarDevs.Http.Security\ZarDevs.Http.Security.csproj", "{4A860210-52DD-4D1F-B319-7B7293FB5456}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Security.Jwt", "ZarDevs.Http.Security.Jwt\ZarDevs.Http.Security.Jwt.csproj", "{A7B06000-46CB-4A82-9F61-7F984F75D5EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Security.Jwt", "Http\src\ZarDevs.Http.Security.Jwt\ZarDevs.Http.Security.Jwt.csproj", "{A7B06000-46CB-4A82-9F61-7F984F75D5EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC0FCEE6-0B35-4212-B863-30D99721ABA2}"
 EndProject

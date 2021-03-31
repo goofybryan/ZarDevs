@@ -23,7 +23,11 @@ namespace ZarDevs.Http.Tests.WebServer
 
         Test GetCreated(int id);
 
+        Test GetUpdated(int id);
+
         bool IsDeleted(int id);
+
+        void Update(Test test);
 
         #endregion Methods
     }
@@ -36,6 +40,7 @@ namespace ZarDevs.Http.Tests.WebServer
         private readonly IDictionary<int, Test> _changed;
         private readonly IDictionary<int, Test> _created;
         private readonly IList<int> _deleted;
+        private readonly IDictionary<int, Test> _update;
 
         #endregion Fields
 
@@ -47,6 +52,7 @@ namespace ZarDevs.Http.Tests.WebServer
             _created = new Dictionary<int, Test>();
             _deleted = new List<int>();
             _changed = new Dictionary<int, Test>();
+            _update = new Dictionary<int, Test>();
         }
 
         #endregion Constructors
@@ -73,7 +79,7 @@ namespace ZarDevs.Http.Tests.WebServer
         {
             int id = new Random().Next(0, 100000);
 
-            if (_added.ContainsKey(id))
+            if (_created.ContainsKey(id))
                 return Create();
 
             var newItem = new Test { Id = id };
@@ -83,12 +89,12 @@ namespace ZarDevs.Http.Tests.WebServer
 
         public Test Create(int id)
         {
-            var test = GetAdded(id);
+            var test = GetCreated(id);
 
             if (test == null)
             {
                 test = new Test { Id = id };
-                _added.Add(id, test);
+                _created.Add(id, test);
             }
 
             return test;
@@ -105,7 +111,14 @@ namespace ZarDevs.Http.Tests.WebServer
 
         public Test GetCreated(int id) => _created.TryGetValue(id, out var value) ? value : null;
 
+        public Test GetUpdated(int id) => _update.TryGetValue(id, out var value) ? value : null;
+
         public bool IsDeleted(int id) => _deleted.Contains(id);
+
+        public void Update(Test test)
+        {
+            _update.Add(test.Id, test);
+        }
 
         #endregion Methods
     }

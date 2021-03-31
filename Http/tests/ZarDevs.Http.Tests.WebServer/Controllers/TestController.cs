@@ -59,7 +59,14 @@ namespace ZarDevs.Http.Tests.WebServer.Controllers
             _testFactory.Change(id, item);
         }
 
-        [HttpPut]
+        [HttpPost("{id}")]
+        public void Post([FromBody] Test item)
+        {
+            _logger.LogDebug($"Post called, updating test object id={item.Id}.");
+            _testFactory.Update(item);
+        }
+
+        [HttpPut("{id}")]
         public void Put([FromBody] Test item)
         {
             _logger.LogDebug($"Put called, adding test object id={item.Id}.");

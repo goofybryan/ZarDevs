@@ -1,9 +1,8 @@
 ﻿using ZarDevs.DependencyInjection;
-using ZarDevs.Http.Client;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
-    internal class DependencyApiHttpFactoryHandler : IApiHttpHandlerFactory
+    internal class DependencyApiHttpFactoryHandler : ApiHttpHandlerFactoryBase
     {
         #region Properties
 
@@ -13,7 +12,7 @@ namespace ZarDevs.Http
 
         #region Methods
 
-        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler
+        public override IApiHttpRequestHandler GetHandler<THandler>()
         {
             return Ioc.Resolve<THandler>();
         }

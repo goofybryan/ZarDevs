@@ -4,5 +4,15 @@
         <name>ZarDevs.Http.Api</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.Http.Api.IApiPutCommandAsync">
+            <summary>
+            Api PUT command interface.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Api.ApiPutCommandAsync">
+            <summary>
+            Api PUT command that will send a PUT request to the server. The request must have a body.
+            </summary>
+        </member>
     </members>
 </doc>
