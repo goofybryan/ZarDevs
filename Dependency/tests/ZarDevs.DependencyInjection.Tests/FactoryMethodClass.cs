@@ -42,6 +42,8 @@
         #endregion Properties
     }
 
+    public interface IFactoryMethodResolutionNamedClass : IFactoryMethodResolutionClass { }
+
     public interface IFactoryMethodResolutionSingletonClass : IFactoryMethodResolutionClass { }
 
     public interface IFactoryMethodResolutionSingletonClass<T> : IFactoryMethodResolutionClass<T> { }
@@ -80,7 +82,7 @@
         #endregion Methods
     }
 
-    public class FactoryMethodResolutionClass : IFactoryMethodResolutionClass, IFactoryMethodResolutionSingletonClass
+    public class FactoryMethodResolutionClass : IFactoryMethodResolutionClass, IFactoryMethodResolutionSingletonClass, IFactoryMethodResolutionNamedClass
     {
         #region Constructors
 
