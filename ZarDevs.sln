@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.Microsoft", "Dependency\src\ZarDevs.DependencyInjection.Microsoft\ZarDevs.DependencyInjection.Microsoft.csproj", "{566F52B4-AC6F-40DF-9D2F-0C32BF23B5F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Abstractions", "Http\src\ZarDevs.Http.Abstractions\ZarDevs.Http.Abstractions.csproj", "{50BA1813-544B-4A3C-BD52-36095442ABFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.Abstractions", "Http\src\ZarDevs.Http.Abstractions\ZarDevs.Http.Api.Abstractions.csproj", "{50BA1813-544B-4A3C-BD52-36095442ABFC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Client", "Http\src\ZarDevs.Http\ZarDevs.Http.Client.csproj", "{0DAD181E-A7A5-4EE5-8AB4-DB1E10A89D00}"
 EndProject
@@ -83,9 +83,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Security.Jwt",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC0FCEE6-0B35-4212-B863-30D99721ABA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Http.Tests.WebServer", "Http\tests\ZarDevs.Http.Tests.WebServer\ZarDevs.Http.Tests.WebServer.csproj", "{EF6A89CD-9A16-48F0-B0AE-1FDFED706945}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Tests.WebServer", "Http\tests\ZarDevs.Http.Tests.WebServer\ZarDevs.Http.Tests.WebServer.csproj", "{EF6A89CD-9A16-48F0-B0AE-1FDFED706945}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Http.Client.Tests", "Http\tests\ZarDevs.Http.Client.Tests\ZarDevs.Http.Client.Tests.csproj", "{13716C17-5F81-46ED-890A-ED37CF18DAEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Client.Tests", "Http\tests\ZarDevs.Http.Client.Tests\ZarDevs.Http.Client.Tests.csproj", "{13716C17-5F81-46ED-890A-ED37CF18DAEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Http.Api.Serializers", "Http\src\ZarDevs.Http.Api.Serializers\ZarDevs.Http.Api.Serializers.csproj", "{8E5EB80A-6292-4376-B3B3-516E39B3D2CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -193,6 +195,10 @@ Global
 		{13716C17-5F81-46ED-890A-ED37CF18DAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13716C17-5F81-46ED-890A-ED37CF18DAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13716C17-5F81-46ED-890A-ED37CF18DAEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E5EB80A-6292-4376-B3B3-516E39B3D2CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5EB80A-6292-4376-B3B3-516E39B3D2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5EB80A-6292-4376-B3B3-516E39B3D2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5EB80A-6292-4376-B3B3-516E39B3D2CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,6 +236,7 @@ Global
 		{AC0FCEE6-0B35-4212-B863-30D99721ABA2} = {6FC4B09E-1759-4B42-8EEC-C626A6B928C2}
 		{EF6A89CD-9A16-48F0-B0AE-1FDFED706945} = {AC0FCEE6-0B35-4212-B863-30D99721ABA2}
 		{13716C17-5F81-46ED-890A-ED37CF18DAEA} = {AC0FCEE6-0B35-4212-B863-30D99721ABA2}
+		{8E5EB80A-6292-4376-B3B3-516E39B3D2CC} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BBC94B1-CE12-4692-BE35-086344F06179}

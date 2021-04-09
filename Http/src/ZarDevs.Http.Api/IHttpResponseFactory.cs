@@ -1,24 +1,25 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 
 namespace ZarDevs.Http.Api
 {
+    /// <summary>
+    /// Http response factory that is used to create instances for the response and deserialization.
+    /// </summary>
     public interface IHttpResponseFactory
     {
         #region Methods
 
-        TResponse Create<TResponse>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage) where TResponse : ApiCommandResponse;
+        /// <summary>
+        /// Create the a <see cref="IApiCommandResponse"/> response from the <see cref="HttpResponseMessage"/> <paramref name="response"/>.
+        /// </summary>
+        /// <param name="response">The <see cref="HttpResponseMessage"/> from the client.</param>
+        IApiCommandResponse CreateResponse(HttpResponseMessage response);
 
-        ApiCommandResponse CreateDefault(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage);
-
-        Task<ApiCommandResponse> CreateWithContent<TContent>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage, Func<HttpContent, Task<TContent>> GetContentAsync);
-
-        Task<TResponse> CreateWithContent<TResponse, TContent>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage) where TResponse : ApiCommandContentResponse<TContent>;
-
-        Task<TResponse> CreateWithContent<TResponse, TContent>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage, Func<HttpContent, Task<TContent>> GetContentAsync) where TResponse : ApiCommandContentResponse<TContent>;
-
-        Task<ApiCommandJsonResponse> CreateWithContent(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage);
+        /// <summary>
+        /// Get the deserializer for the <paramref name="mediaType"/>
+        /// </summary>
+        /// <param name="mediaType">The media type of the message.</param>
+        IApiCommandContentDeserializer GetDeserializer(string mediaType);
 
         #endregion Methods
     }

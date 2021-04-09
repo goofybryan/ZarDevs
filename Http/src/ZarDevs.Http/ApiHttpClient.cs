@@ -11,8 +11,6 @@ namespace ZarDevs.Http.Client
         private readonly HttpClient _httpClient;
         private readonly IApiHttpRequestHandler _requestHandler;
 
-        private bool _isDisposed = false;
-
         #endregion Fields
 
         #region Constructors
@@ -27,6 +25,16 @@ namespace ZarDevs.Http.Client
 
         #region Methods
 
+        public HttpRequestMessage CreateRequest(HttpMethod method, Uri apiUri, HttpContent httpContent = null)
+        {
+            HttpRequestMessage message = new(method, apiUri)
+            {
+                Content = httpContent
+            };
+
+            return message;
+        }
+
         public async Task<HttpResponseMessage> DeleteAsync(Uri apiUri)
         {
             var request = CreateRequest(HttpMethod.Delete, apiUri);
@@ -36,11 +44,6 @@ namespace ZarDevs.Http.Client
         public Task<HttpResponseMessage> DeleteAsync(string apiUrl)
         {
             return DeleteAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute));
-        }
-
-        void IDisposable.Dispose()
-        {
-            Dispose(true);
         }
 
         public async Task<HttpResponseMessage> GetAsync(Uri apiUri)
@@ -96,28 +99,6 @@ namespace ZarDevs.Http.Client
         {
             await _requestHandler?.HandleAsync(request);
             return await _httpClient.SendAsync(request);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                if (disposing)
-                {
-                    _httpClient.Dispose();
-                }
-                _isDisposed = true;
-            }
-        }
-
-        private static HttpRequestMessage CreateRequest(HttpMethod method, Uri apiUri, HttpContent httpContent = null)
-        {
-            HttpRequestMessage message = new(method, apiUri)
-            {
-                Content = httpContent
-            };
-
-            return message;
         }
 
         #endregion Methods

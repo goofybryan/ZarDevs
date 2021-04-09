@@ -1,24 +1,15 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    /// <summary>
-    /// Api PUT command interface.
-    /// </summary>
-    public interface IApiPutCommandAsync : ICommandAsync<ApiCommandRequest, ApiCommandResponse>
-    {
-    }
-
-    /// <summary>
-    /// Api PUT command that will send a PUT request to the server. The request must have a body.
-    /// </summary>
-    public class ApiPutCommandAsync : ApiContentCommandAsync, IApiPutCommandAsync
+    internal class ApiPutCommandAsync : ApiContentCommandAsync
     {
         #region Constructors
 
-        public ApiPutCommandAsync(IApiHttpClient httpClient, IHttpResponseFactory factory) : base(httpClient, factory)
+        public ApiPutCommandAsync(IApiHttpClient httpClient, IApiCommandContentSerializer serializer, IHttpResponseFactory factory) : base(httpClient, serializer, factory)
         {
         }
 
@@ -26,9 +17,9 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandContentRequest contentRequest)
+        protected override async Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content)
         {
-            return await HttpClient.PutAsync(contentRequest.ApiUri, contentRequest.Content.WriteAsJson());
+            return await HttpClient.PutAsync(apiUri, content);
         }
 
         #endregion Methods

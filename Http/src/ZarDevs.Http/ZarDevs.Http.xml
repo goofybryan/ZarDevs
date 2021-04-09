@@ -135,6 +135,15 @@
             Http api client class that is used to wrap
             </summary>
         </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpClient.CreateRequest(System.Net.Http.HttpMethod,System.Uri,System.Net.Http.HttpContent)">
+            <summary>
+            Create a request message for the <paramref name="method"/>
+            </summary>
+            <param name="method">The <see cref="T:System.Net.Http.HttpMethod"/> the request is for.</param>
+            <param name="apiUri">The api url.</param>
+            <param name="httpContent">Optional http content.</param>
+            <returns></returns>
+        </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpClient.DeleteAsync(System.String)">
             <summary>
             Request a delete from the api.

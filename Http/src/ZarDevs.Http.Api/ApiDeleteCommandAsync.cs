@@ -4,7 +4,7 @@ using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public class ApiDeleteCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandResponse>, IApiDeleteCommandAsync
+    internal class ApiDeleteCommandAsync : ApiCommandAsyncBase
     {
         #region Fields
 
@@ -23,12 +23,12 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        protected override Task<ApiCommandResponse> CreateResponse(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
+        protected override IApiCommandResponse CreateResponse(HttpResponseMessage httpResponseMessage)
         {
-            return Task.FromResult(_responseFactory.CreateDefault(originalRequest, httpResponseMessage));
+            return _responseFactory.CreateResponse(httpResponseMessage);
         }
 
-        protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandRequest request)
+        protected override async Task<HttpResponseMessage> OnApiCall(IApiCommandRequest request)
         {
             return await HttpClient.DeleteAsync(request.ApiUri);
         }

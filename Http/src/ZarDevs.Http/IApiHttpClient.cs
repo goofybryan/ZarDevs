@@ -7,9 +7,18 @@ namespace ZarDevs.Http.Client
     /// <summary>
     /// Http api client class that is used to wrap
     /// </summary>
-    public interface IApiHttpClient : IDisposable
+    public interface IApiHttpClient
     {
         #region Methods
+
+        /// <summary>
+        /// Create a request message for the <paramref name="method"/>
+        /// </summary>
+        /// <param name="method">The <see cref="HttpMethod"/> the request is for.</param>
+        /// <param name="apiUri">The api url.</param>
+        /// <param name="httpContent">Optional http content.</param>
+        /// <returns></returns>
+        HttpRequestMessage CreateRequest(HttpMethod method, Uri apiUri, HttpContent httpContent = null);
 
         /// <summary>
         /// Request a delete from the api.

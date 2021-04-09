@@ -15,9 +15,9 @@ namespace ZarDevs.Http.Client
         /// This is used to create HttpRequest handler bindings that can be used to alter the Http request.
         /// </summary>
         /// <typeparam name="THandler">The request handler that must inherit <see cref="IApiHttpRequestHandler"/></typeparam>
-        /// <param name="name">The name of the handler, by default it's string.empty.</param>
+        /// <param name="name">The name of the handler, by default it's null.</param>
         /// <returns></returns>
-        public static IApiHttpRequestHandlerBinding AddHttpRequestHandler<THandler>(string name = "") where THandler : class, IApiHttpRequestHandler
+        public static IApiHttpRequestHandlerBinding AddHttpRequestHandler<THandler>(object name = null) where THandler : class, IApiHttpRequestHandler
         {
             if (ApiHttpFactory.Instance == null) throw new InvalidOperationException("Please configure the HttpFactory using ConfigureHttp method.");
 
@@ -34,15 +34,16 @@ namespace ZarDevs.Http.Client
         /// <returns></returns>
         public static IDependencyBuilder ConfigureHttp(this IDependencyBuilder builder, bool useIocHttpHandlerFactory)
         {
-            if (useIocHttpHandlerFactory) builder.ConfigureHttp(new DependencyApiHttpFactoryHandler());
-            else builder.ConfigureHttp(new DefaultHttpHandlerFactory(Create.Instance));
-            return builder;
+            IApiHttpHandlerFactory handlerFactory = useIocHttpHandlerFactory ? new DependencyApiHttpFactoryHandler() : new DefaultHttpHandlerFactory(Create.Instance);
+
+            return builder.ConfigureHttp(handlerFactory);
         }
 
         /// <summary>
         /// Configure the API HTTP factory for the solution.
         /// </summary>
         /// <param name="builder">The dependency builder.</param>
+        /// <param name="handlerFactory">Specify the handler factory.</param>
         /// <returns></returns>
         public static IDependencyBuilder ConfigureHttp(this IDependencyBuilder builder, IApiHttpHandlerFactory handlerFactory)
         {
@@ -54,7 +55,7 @@ namespace ZarDevs.Http.Client
             ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory);
 
             builder.Bind<IApiHttpFactory>().To(ApiHttpFactory.Instance);
-            builder.Bind<IApiHttpClient>().To((ctx) => ctx.Ioc.Resolve<IApiHttpFactory>().NewClient(ctx.Info.Key)).InTransientScope();
+            builder.Bind<IApiHttpClient>().To((ctx) => ApiHttpFactory.Instance.NewClient(ctx.Info.Key)).InTransientScope();
 
             return builder;
         }

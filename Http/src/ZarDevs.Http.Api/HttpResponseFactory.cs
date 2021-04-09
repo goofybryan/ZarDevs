@@ -1,48 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
 {
-    public class HttpResponseFactory : IHttpResponseFactory
+    internal class HttpResponseFactory : IHttpResponseFactory
     {
+        private readonly IList<IApiCommandContentDeserializer> _deserializers;
+
+        public HttpResponseFactory(IList<IApiCommandContentDeserializer> deserializers)
+        {
+            _deserializers = deserializers ?? throw new ArgumentNullException(nameof(deserializers));
+        }
+
         #region Methods
 
-        public TResponse Create<TResponse>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage) where TResponse : ApiCommandResponse
+        public IApiCommandResponse CreateResponse(HttpResponseMessage response)
         {
-            var response = Runtime.Create.Instance.New<TResponse>(httpResponseMessage);
-            response.RequestId = originalRequest?.Id;
-            return response;
+            return new ApiCommandResponse(this, response);
         }
 
-        public ApiCommandResponse CreateDefault(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
+        public IApiCommandContentDeserializer GetDeserializer(string mediaType)
         {
-            return Create<ApiCommandResponse>(originalRequest, httpResponseMessage);
-        }
-
-        public Task<TResponse> CreateWithContent<TResponse, TContent>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage) where TResponse : ApiCommandContentResponse<TContent>
-        {
-            return CreateWithContent<TResponse, TContent>(originalRequest, httpResponseMessage, content => content.ReadAsJsonAsync<TContent>());
-        }
-
-        public async Task<TResponse> CreateWithContent<TResponse, TContent>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage, Func<HttpContent, Task<TContent>> GetContentAsync) where TResponse : ApiCommandContentResponse<TContent>
-        {
-            var response = Create<TResponse>(originalRequest, httpResponseMessage);
-            if (response.IsSuccess)
-            {
-                response.Content = await GetContentAsync(httpResponseMessage.Content);
-            }
-            return response;
-        }
-
-        public async Task<ApiCommandResponse> CreateWithContent<TContent>(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage, Func<HttpContent, Task<TContent>> GetContentAsync)
-        {
-            return await CreateWithContent<ApiCommandContentResponse<TContent>, TContent>(originalRequest, httpResponseMessage, GetContentAsync);
-        }
-
-        public async Task<ApiCommandJsonResponse> CreateWithContent(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
-        {
-            return await CreateWithContent<ApiCommandJsonResponse, string>(originalRequest, httpResponseMessage, (content) => content.ReadAsStringAsync());
+            return _deserializers.FirstOrDefault(d => d.IsValidFor(mediaType));
         }
 
         #endregion Methods

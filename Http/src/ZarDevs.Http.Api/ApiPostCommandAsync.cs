@@ -5,11 +5,11 @@ using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public class ApiPostCommandAsync : ApiContentCommandAsync, IApiPostCommandAsync
+    internal class ApiPostCommandAsync : ApiContentCommandAsync
     {
         #region Constructors
 
-        public ApiPostCommandAsync(IApiHttpClient httpClient, IHttpResponseFactory responseFactory) : base(httpClient, responseFactory)
+        public ApiPostCommandAsync(IApiHttpClient httpClient, IApiCommandContentSerializer serializer, IHttpResponseFactory responseFactory) : base(httpClient, serializer, responseFactory)
         {
         }
 
@@ -17,9 +17,9 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandContentRequest contentRequest)
+        protected override Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content)
         {
-            return await HttpClient.PostAsync(contentRequest.ApiUri, contentRequest.Content.WriteAsJson());
+            return HttpClient.PostAsync(apiUri, content);
         }
 
         #endregion Methods

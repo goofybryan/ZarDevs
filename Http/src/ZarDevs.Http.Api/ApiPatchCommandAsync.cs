@@ -5,29 +5,21 @@ using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public class ApiPatchCommandAsync : ApiContentCommandAsync, IApiPutCommandAsync
+    internal class ApiPatchCommandAsync : ApiContentCommandAsync
     {
-        #region Fields
-
-        private readonly IHttpResponseFactory _responseFactory;
-
-        #endregion Fields
-
         #region Constructors
 
-        public ApiPatchCommandAsync(IApiHttpClient httpClient, IHttpResponseFactory factory) : base(httpClient, factory)
+        public ApiPatchCommandAsync(IApiHttpClient httpClient, IApiCommandContentSerializer serializer, IHttpResponseFactory factory) : base(httpClient, serializer, factory)
         {
-            _responseFactory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandContentRequest contentRequest)
+        protected override async Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content)
         {
-
-            return await HttpClient.PatchAsync(contentRequest.ApiUri, contentRequest.Content.WriteAsJson());
+            return await HttpClient.PatchAsync(apiUri, content);
         }
 
         #endregion Methods

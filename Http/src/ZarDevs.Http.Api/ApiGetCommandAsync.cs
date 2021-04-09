@@ -4,7 +4,7 @@ using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public class ApiGetCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandJsonResponse>, IApiGetCommandAsync
+    internal class ApiGetCommandAsync : ApiCommandAsyncBase
     {
         #region Fields
 
@@ -23,12 +23,12 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        protected override async Task<ApiCommandJsonResponse> CreateResponse(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
+        protected override IApiCommandResponse CreateResponse(HttpResponseMessage httpResponseMessage)
         {
-            return await _responseFactory.CreateWithContent(originalRequest, httpResponseMessage);
+            return _responseFactory.CreateResponse(httpResponseMessage);
         }
 
-        protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandRequest request)
+        protected override async Task<HttpResponseMessage> OnApiCall(IApiCommandRequest request)
         {
             return await HttpClient.GetAsync(request.ApiUri);
         }

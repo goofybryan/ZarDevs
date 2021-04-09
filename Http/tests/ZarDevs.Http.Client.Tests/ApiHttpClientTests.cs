@@ -11,19 +11,19 @@ using ZarDevs.Http.Tests.WebServer;
 
 namespace ZarDevs.Http.Client.Tests
 {
-    public class ApiHttpClientTests : IClassFixture<WebApplicationFactory<Http.Tests.WebServer.Startup>>
+    public class ApiHttpClientTests : IClassFixture<WebApplicationFactory<Startup>>
     {
         #region Fields
 
-        private readonly WebApplicationFactory<Http.Tests.WebServer.Startup> _factory;
+        private readonly WebApplicationFactory<Startup> _factory;
 
         #endregion Fields
 
         #region Constructors
 
-        public ApiHttpClientTests(WebApplicationFactory<Http.Tests.WebServer.Startup> factory)
+        public ApiHttpClientTests(WebApplicationFactory<Startup> factory)
         {
-            _factory = factory ?? throw new System.ArgumentNullException(nameof(factory));
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         #endregion Constructors
@@ -31,7 +31,7 @@ namespace ZarDevs.Http.Client.Tests
         #region Methods
 
         [Fact]
-        public async Task ApiCall_Delete_ReturnsObject()
+        public async Task DeleteAsync_ApiCall_ExpectedBehaviour()
         {
             // Arrange
             IApiHttpRequestHandler handlerMock = Substitute.For<IApiHttpRequestHandler>();
@@ -54,7 +54,7 @@ namespace ZarDevs.Http.Client.Tests
         }
 
         [Fact]
-        public async Task ApiCall_Get_ReturnsList()
+        public async Task GetAsync_ApiCall_ReturnsList()
         {
             // Arrange
             IApiHttpRequestHandler handlerMock = Substitute.For<IApiHttpRequestHandler>();
@@ -81,7 +81,7 @@ namespace ZarDevs.Http.Client.Tests
         }
 
         [Fact]
-        public async Task ApiCall_GetWithId_ReturnsObject()
+        public async Task GetAsync_ApiCallWithId_ReturnsObject()
         {
             // Arrange
             IApiHttpRequestHandler handlerMock = Substitute.For<IApiHttpRequestHandler>();
@@ -108,14 +108,14 @@ namespace ZarDevs.Http.Client.Tests
         }
 
         [Fact]
-        public async Task ApiCall_Patch_ReturnsObject()
+        public async Task PatchAsync_ApiCall_ExpectedBehaviour()
         {
             // Arrange
             IApiHttpRequestHandler handlerMock = Substitute.For<IApiHttpRequestHandler>();
             var apiClient = CreatClient(handlerMock);
 
             int id = new Random().Next(-100000, 100000);
-            Test content = new Test { Id = id };
+            Test content = new() { Id = id };
 
             // Act
             var response = await apiClient.PatchAsync($"/Test/{id}", CreateContent(content));
@@ -132,14 +132,14 @@ namespace ZarDevs.Http.Client.Tests
         }
 
         [Fact]
-        public async Task ApiCall_Post_ReturnsObject()
+        public async Task PostAsync_ApiCall_ExpectedBehaviour()
         {
             // Arrange
             IApiHttpRequestHandler handlerMock = Substitute.For<IApiHttpRequestHandler>();
             var apiClient = CreatClient(handlerMock);
 
             int id = new Random().Next(-100000, 100000);
-            Test content = new Test { Id = id };
+            Test content = new() { Id = id };
 
             // Act
             var response = await apiClient.PostAsync($"/Test/{id}", CreateContent(content));
@@ -156,14 +156,14 @@ namespace ZarDevs.Http.Client.Tests
         }
 
         [Fact]
-        public async Task ApiCall_Put_ReturnsObject()
+        public async Task PutAsync_ApiCall_ExpectedBehaviour()
         {
             // Arrange
             IApiHttpRequestHandler handlerMock = Substitute.For<IApiHttpRequestHandler>();
             var apiClient = CreatClient(handlerMock);
 
             int id = new Random().Next(-100000, 100000);
-            Test content = new Test { Id = id };
+            Test content = new() { Id = id };
 
             // Act
             var response = await apiClient.PutAsync($"/Test/{id}", CreateContent(content));
@@ -179,14 +179,14 @@ namespace ZarDevs.Http.Client.Tests
             await handlerMock.Received(1).HandleAsync(Arg.Any<HttpRequestMessage>());
         }
 
+        private static HttpContent CreateContent<T>(T content) => JsonContent.Create(content);
+
         private ApiHttpClient CreatClient(IApiHttpRequestHandler handlerMock)
         {
             handlerMock.HandleAsync(Arg.Any<HttpRequestMessage>()).Returns(Task.CompletedTask);
             var httpClient = _factory.CreateClient();
             return new ApiHttpClient(handlerMock, httpClient);
         }
-
-        private HttpContent CreateContent<T>(T content) => JsonContent.Create(content);
 
         #endregion Methods
     }

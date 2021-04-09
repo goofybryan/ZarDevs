@@ -20,16 +20,6 @@ namespace ZarDevs.Http.Client
 
         #endregion Constructors
 
-        #region Indexers
-
-        public IApiHttpRequestHandlerBinding this[object key]
-        {
-            get => TryGet(key);
-            set => TrySet(key, value);
-        }
-
-        #endregion Indexers
-
         #region Methods
 
         public IApiHttpRequestHandlerBinding TryGet(object key)

@@ -6,16 +6,35 @@ using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
 {
+    /// <summary>
+    /// Api command exception that is used when there is api command errors. These exceptions are meant to be handled as they are thrown due to API communication or server errors and can be recovered.
+    /// </summary>
     public class ApiCommandException : Exception
     {
+        #region Fields
+
+        private readonly string _errorContent;
+
+        #endregion Fields
+
         #region Constructors
 
-        public ApiCommandException(ApiCommandResponse response, string message) : base(message)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiCommandException"/> with the response and message.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="message"></param>
+        /// <param name="errorContent">Optionally add the error content</param>
+        public ApiCommandException(IApiCommandResponse response, string message, string errorContent = null) : base(message)
         {
             StatusCode = Response.StatusCode;
             Response = response ?? throw new ArgumentNullException(nameof(response));
+            _errorContent = errorContent;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiCommandException"/> class with serialized data.
+        /// </summary>
         protected ApiCommandException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
@@ -24,36 +43,47 @@ namespace ZarDevs.Http.Api
 
         #region Properties
 
-        public ApiCommandResponse Response { get; }
+        /// <summary>
+        /// Get the <see cref="IApiCommandResponse"/> that came from the server.
+        /// </summary>
+        public IApiCommandResponse Response { get; }
+
+        /// <summary>
+        /// Get the <see cref="HttpStatusCode"/> received from the server.
+        /// </summary>
         public HttpStatusCode StatusCode { get; set; }
 
         #endregion Properties
 
         #region Methods
 
-        public async Task<string> GetErrorBodyAsync()
+        /// <summary>
+        /// Get any error that has been serialized in the response body.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<TError> GetErrorBodyAsync<TError>()
         {
-            return await Response?.Response?.Content.ReadAsStringAsync();
+            if (Response == null)
+                return default;
+
+            return await Response.TryGetContent<TError>();
         }
 
+        /// <summary>
+        /// Returns a human readable
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            var detailTask = ToStringAsync();
-            detailTask.Wait();
-            return detailTask.Result;
-        }
-
-        public async Task<string> ToStringAsync()
-        {
             var message = new StringBuilder(Message).AppendLine()
-                .AppendFormat("StatusCode:{0}", StatusCode);
+                .Append("StatusCode:").Append(StatusCode);
 
-            var detail = await GetErrorBodyAsync();
+            var detail = _errorContent?.ToString();
             if (string.IsNullOrWhiteSpace(detail))
                 return message.ToString();
 
             return message.AppendLine()
-                .AppendFormat("Detail:{0}", detail)
+                .Append("Detail:").Append(detail)
                 .ToString();
         }
 

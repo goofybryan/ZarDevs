@@ -1,46 +1,98 @@
 ﻿using System;
-using ZarDevs.DependencyInjection;
+using System.Collections.Generic;
+using System.Net.Http;
+using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public interface IApiCommandFactory
+    internal class ApiCommandFactory : IApiCommandFactory
     {
-        #region Methods
-
-        IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse;
-
-        IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse;
-
-        #endregion Methods
-    }
-
-    public class ApiCommandFactory : IApiCommandFactory
-    {
+        private readonly IApiHttpFactory _httpFactory;
         #region Fields
 
-        private readonly IIocContainer _ioc;
+        private readonly IHttpResponseFactory _responseFactory;
+        private readonly IDictionary<string, IApiCommandContentSerializer> _serializers;
 
         #endregion Fields
 
         #region Constructors
 
-        public ApiCommandFactory(IIocContainer ioc)
+        public ApiCommandFactory(IApiHttpFactory httpFactory, IHttpResponseFactory responseFactory, IList<IApiCommandContentSerializer> serializers)
         {
-            _ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+            if (serializers is null)
+            {
+                throw new ArgumentNullException(nameof(serializers));
+            }
+
+            if (serializers.Count == 0)
+            {
+                throw new ArgumentException($"{nameof(serializers)} cannot be an empty collection.", nameof(serializers));
+            }
+            _httpFactory = httpFactory ?? throw new ArgumentNullException(nameof(httpFactory));
+            _responseFactory = responseFactory ?? throw new ArgumentNullException(nameof(responseFactory));
+            _serializers = new Dictionary<string, IApiCommandContentSerializer>();
+            foreach (var serializer in serializers)
+            {
+                foreach (var mediaType in serializer.MediaTypes)
+                {
+                    _serializers[mediaType] = serializer;
+                }
+            }
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
+        public IApiCommandAsync CreateDeleteCommand(object apiClientKey = null)
         {
-            return Create<TRequest, TResponse>(name);
+            var client = _httpFactory.NewClient(apiClientKey);
+
+            return new ApiDeleteCommandAsync(client, _responseFactory);
         }
 
-        public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
+        public IApiCommandAsync CreateGetCommand(object apiClientKey = null)
         {
-            return _ioc.Resolve<IApiCommandAsync<TRequest, TResponse>>(name);
+            var client = _httpFactory.NewClient(apiClientKey);
+
+            return new ApiGetCommandAsync(client, _responseFactory);
+        }
+
+        public IApiCommandAsync CreatePatchCommand(string mediaType, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiPatchCommandAsync(client, serializer, _responseFactory);
+        }
+
+        public IApiCommandAsync CreatePostCommand(string mediaType, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiPostCommandAsync(client, serializer, _responseFactory);
+        }
+
+        public IApiCommandAsync CreatePutCommand(string mediaType, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiPutCommandAsync(client, serializer, _responseFactory);
+        }
+
+        public IApiCommandRequest CreateRequest(Uri apiUrl, object content = null)
+        {
+            return new ApiCommandRequest(apiUrl, content);
+        }
+
+        public IApiCommandAsync CreateSendCommand(string mediaType, HttpMethod sendMethod, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiSendCommandAsync(client, serializer, _responseFactory, sendMethod);
         }
 
         #endregion Methods

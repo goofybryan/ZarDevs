@@ -2,20 +2,19 @@
 
 namespace ZarDevs.Http.Api
 {
-    public class ApiCommandRequest : IApiCommandRequest
+    internal class ApiCommandRequest : IApiCommandRequest
     {
         #region Constructors
 
-        public ApiCommandRequest(HttpRequestType requestType, string apiPath)
-            : this(requestType, new Uri(apiPath))
+        public ApiCommandRequest(string apiPath, object content = null)
+            : this(new Uri(apiPath, UriKind.RelativeOrAbsolute), content)
         {
         }
 
-        public ApiCommandRequest(HttpRequestType requestType, Uri apiUri)
+        public ApiCommandRequest(Uri apiUri, object content = null)
         {
-            Id = Guid.NewGuid();
-            RequestType = requestType;
             ApiUri = apiUri ?? throw new ArgumentNullException(nameof(apiUri));
+            Content = content;
         }
 
         #endregion Constructors
@@ -23,8 +22,8 @@ namespace ZarDevs.Http.Api
         #region Properties
 
         public Uri ApiUri { get; }
-        public Guid Id { get; }
-        public HttpRequestType RequestType { get; }
+        public object Content { get; set; }
+        public bool HasContent => Content != null;
 
         #endregion Properties
     }
