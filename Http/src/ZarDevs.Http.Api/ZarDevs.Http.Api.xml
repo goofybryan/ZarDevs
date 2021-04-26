@@ -4,116 +4,56 @@
         <name>ZarDevs.Http.Api</name>
     </assembly>
     <members>
-        <member name="T:ZarDevs.Http.Api.ApiCommandException">
+        <member name="T:ZarDevs.Http.Api.ApiCommandRequest">
             <summary>
-            Api command exception that is used when there is api command errors. These exceptions are meant to be handled as they are thrown due to API communication or server errors and can be recovered.
+            API command request
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandException.#ctor(ZarDevs.Http.Api.IApiCommandResponse,System.String,System.String)">
+        <member name="M:ZarDevs.Http.Api.ApiCommandRequest.#ctor(System.String,System.Object)">
             <summary>
-            Initializes a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandException"/> with the response and message.
+            Create a new instance with the <paramref name="apiPath"/> and optional <paramref name="content"/>
             </summary>
-            <param name="response"></param>
-            <param name="message"></param>
-            <param name="errorContent">Optionally add the error content</param>
+            <param name="apiPath">The url path, can be relative or absolute.</param>
+            <param name="content">Optionally specify the content.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+        <member name="M:ZarDevs.Http.Api.ApiCommandRequest.#ctor(System.Uri,System.Object)">
             <summary>
-            Initializes a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandException"/> class with serialized data.
+            Create a new instance with the <paramref name="apiPath"/> and optional <paramref name="content"/>
             </summary>
+            <param name="apiUri">Specify the uri path.</param>
+            <param name="content">Optionally specify the content.</param>
         </member>
-        <member name="P:ZarDevs.Http.Api.ApiCommandException.Response">
+        <member name="P:ZarDevs.Http.Api.ApiCommandRequest.ApiUri">
             <summary>
-            Get the <see cref="T:ZarDevs.Http.Api.IApiCommandResponse"/> that came from the server.
-            </summary>
-        </member>
-        <member name="P:ZarDevs.Http.Api.ApiCommandException.StatusCode">
-            <summary>
-            Get the <see cref="T:System.Net.HttpStatusCode"/> received from the server.
+            The API url the request is for. By default, if not specified, url can be set to <see cref="F:System.UriKind.RelativeOrAbsolute"/>.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandException.GetErrorBodyAsync``1">
+        <member name="P:ZarDevs.Http.Api.ApiCommandRequest.Content">
             <summary>
-            Get any error that has been serialized in the response body.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandException.ToString">
-            <summary>
-            Returns a human readable
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:ZarDevs.Http.Api.IApiCommandFactory">
-            <summary>
-            Api command factory used to create commands
+            And optional content that will be serialized and added to the content.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateDeleteCommand(System.Object)">
+        <member name="P:ZarDevs.Http.Api.ApiCommandRequest.HasContent">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
+            Returns a value if there is content specified.
             </summary>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. Default is no key (null)</param>
-        </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateGetCommand(System.Object)">
-            <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
-            </summary>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. Default is no key (null)</param>
-        </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePatchCommand(System.String,System.Object)">
-            <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
-            </summary>
-            <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. Default is no key (null)</param>
-        </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePostCommand(System.String,System.Object)">
-            <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
-            </summary>
-            <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. Default is no key (null)</param>
-        </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePutCommand(System.String,System.Object)">
-            <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
-            </summary>
-            <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. Default is no key (null)</param>
-        </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateRequest(System.Uri,System.Object)">
-            <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/>
-            </summary>
-            <param name="apiUrl">Specify the api url</param>
-            <param name="content">Specify any content that is needed to be sent.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateSendCommand(System.String,System.Net.Http.HttpMethod,System.Object)">
-            <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>. This command is meant to be used as a custom command when the normal pattern does not fit.
-            </summary>
-            <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
-            <param name="sendMethod">Specify the <see cref="T:System.Net.Http.HttpMethod"/> that the command with use.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. Default is no key (null)</param>
-        </member>
-        <member name="T:ZarDevs.Http.Api.IApiCommandAsync">
-            <summary>
-            Api command interface that defines the base construct of the API Command infrastructure.
-            </summary>
-        </member>
-        <member name="M:ZarDevs.Http.Api.IApiCommandAsync.ExecuteAsync(ZarDevs.Http.Api.IApiCommandRequest)">
-            <summary>
-            Execute the command asyncronously. The command requires a request, that will be sent and processed and return a response.
-            </summary>
-            <param name="request">The request that will be sent to the server.</param>
-            <returns>The response from the server.</returns>
         </member>
         <member name="T:ZarDevs.Http.Api.IHttpResponseFactory">
             <summary>
             Http response factory that is used to create instances for the response and deserialization.
             </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.IHttpResponseFactory.CreateResponse(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Create the a <see cref="T:ZarDevs.Http.Api.IApiCommandResponse"/> response from the <see cref="T:System.Net.Http.HttpResponseMessage"/> <paramref name="response"/>.
+            </summary>
+            <param name="response">The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the client.</param>
+        </member>
+        <member name="M:ZarDevs.Http.Api.IHttpResponseFactory.GetDeserializer(System.String)">
+            <summary>
+            Get the deserializer for the <paramref name="mediaType"/>
+            </summary>
+            <param name="mediaType">The media type of the message.</param>
         </member>
     </members>
 </doc>

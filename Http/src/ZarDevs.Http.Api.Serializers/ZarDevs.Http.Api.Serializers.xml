@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.Http.Api.Serializers</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded">
+            <summary>
+            Form url encoded serializer that can handle content that are of type '<see cref="T:System.Collections.Generic.IEnumerable`1"/>' 
+            where T is <see cref="T:System.Collections.Generic.KeyValuePair`2"/>, <see cref="T:System.ValueTuple`2"/> and <see cref="T:System.Tuple`2"/>.
+            T1 and T2 is (<see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded.MediaTypes">
+            <summary>
+            Get the content type that can be added to the headers or compared to.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded.IsValidFor(System.String)">
+            <summary>
+            Check if the <paramref name="mediaType"/> is valid for this serializer.
+            </summary>
+            <param name="mediaType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded.Serialize(ZarDevs.Http.Api.IApiCommandRequest)">
+            <summary>
+            Serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to a <see cref="T:System.Net.Http.HttpContent"/>
+            </summary>
+            <param name="request">The request to serialize.</param>
+            <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
+        </member>
+        <member name="P:ZarDevs.Http.Api.ApiCommandContentSerializerJson.MediaTypes">
+            <summary>
+            Get the content type that can be added to the headers or compared to.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.DeserializeAsync``1(System.Net.Http.HttpContent)">
+            <summary>
+            Deserialize the content to the expected type <typeparamref name="TContent"/>
+            </summary>
+            <param name="content">The Http content to deserialize.</param>
+            <typeparam name="TContent">The expected content type</typeparam>
+            <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.IsValidFor(System.String)">
+            <summary>
+            Check if the <paramref name="mediaType"/> is valid for this serializer.
+            </summary>
+            <param name="mediaType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.Serialize(ZarDevs.Http.Api.IApiCommandRequest)">
+            <summary>
+            Serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to a <see cref="T:System.Net.Http.HttpContent"/>
+            </summary>
+            <param name="request">The request to serialize.</param>
+            <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
+        </member>
+        <member name="P:ZarDevs.Http.Api.ApiCommandContentSerializerString.MediaTypes">
+            <summary>
+            Get the content type that can be added to the headers or compared to.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerString.DeserializeAsync``1(System.Net.Http.HttpContent)">
+            <summary>
+            Deserialize the content to the expected type <typeparamref name="TContent"/>
+            </summary>
+            <param name="content">The Http content to deserialize.</param>
+            <typeparam name="TContent">The expected content type</typeparam>
+            <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerString.IsValidFor(System.String)">
+            <summary>
+            Check if the <paramref name="mediaType"/> is valid for this serializer.
+            </summary>
+            <param name="mediaType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerString.Serialize(ZarDevs.Http.Api.IApiCommandRequest)">
+            <summary>
+            Serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to a <see cref="T:System.Net.Http.HttpContent"/>
+            </summary>
+            <param name="request">The request to serialize.</param>
+            <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
+        </member>
+        <member name="P:ZarDevs.Http.Api.ApiCommandContentSerializerXml.MediaTypes">
+            <summary>
+            Get the content type that can be added to the headers or compared to.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerXml.DeserializeAsync``1(System.Net.Http.HttpContent)">
+            <summary>
+            Deserialize the content to the expected type <typeparamref name="TContent"/>
+            </summary>
+            <param name="content">The Http content to deserialize.</param>
+            <typeparam name="TContent">The expected content type</typeparam>
+            <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerXml.IsValidFor(System.String)">
+            <summary>
+            Check if the <paramref name="mediaType"/> is valid for this serializer.
+            </summary>
+            <param name="mediaType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerXml.Serialize(ZarDevs.Http.Api.IApiCommandRequest)">
+            <summary>
+            Serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to a <see cref="T:System.Net.Http.HttpContent"/>
+            </summary>
+            <param name="request">The request to serialize.</param>
+            <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
+        </member>
+    </members>
+</doc>

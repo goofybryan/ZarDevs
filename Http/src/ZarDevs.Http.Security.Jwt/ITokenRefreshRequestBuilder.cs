@@ -3,7 +3,7 @@
     /// <summary>
     /// Refresh toke request builder.
     /// </summary>
-    public interface IRefreshTokenRequestBuilder : ITokenRequestBuilder
+    public interface ITokenRefreshRequestBuilder : ITokenRequestBuilder
     {
         #region Properties
 
@@ -21,7 +21,7 @@
         /// </summary>
         /// <param name="refreshToken">The refresh token to set.</param>
         /// <returns>The current instance.</returns>
-        IRefreshTokenRequestBuilder SetRefreshToken(string refreshToken);
+        ITokenRefreshRequestBuilder SetRefreshToken(string refreshToken);
 
         #endregion Methods
     }

@@ -56,7 +56,7 @@ namespace ZarDevs.Http.Security
             return this;
         }
 
-        protected void Add(IDictionary<string, string> parameters, string key, string value)
+        protected static void Add(IDictionary<string, string> parameters, string key, string value)
         {
             if (!TryAdd(parameters, key, value))
                 throw new InvalidOperationException($"The value for '{key}' can not be an empty value.");
@@ -64,7 +64,7 @@ namespace ZarDevs.Http.Security
 
         protected abstract void OnBuild(IDictionary<string, string> parameters);
 
-        protected bool TryAdd(IDictionary<string, string> parameters, string key, string value)
+        protected static bool TryAdd(IDictionary<string, string> parameters, string key, string value)
         {
             if (string.IsNullOrWhiteSpace(key))
             {

@@ -36,9 +36,16 @@ namespace ZarDevs.Http.Api
         #region Methods
 
         /// <summary>
+        /// Ensure that the response returned a success code. Throws this exception when <see cref="HttpResponseMessage.IsSuccessStatusCode"/> returns false. The <see cref="HttpResponseMessage.ReasonPhrase"/> will be set as the exception message.
+        /// </summary>
+        /// <exception cref="ApiCommandException">Throws this exception when <see cref="HttpResponseMessage"/>.<see cref="HttpResponseMessage.IsSuccessStatusCode"/> returns false.</exception>
+        void EnsureSuccess();
+
+        /// <summary>
         /// Try and deserialize the <see cref="Response"/> content (<see cref="HttpResponseMessage.Content"/>) if any to the requested type of <typeparamref name="TContent"/>. Returns a value if there is content deserialize, otherwise default(<typeparamref name="TContent"/>).
         /// </summary>
         /// <typeparam name="TContent">The expected type of content.</typeparam>
+        /// <exception cref="ApiCommandException">Calls <see cref="EnsureSuccess"/> before trying to get content.</exception>
         Task<TContent> TryGetContent<TContent>();
 
         #endregion Methods

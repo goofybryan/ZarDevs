@@ -10,9 +10,9 @@ namespace ZarDevs.Http.Api
         #region Methods
 
         /// <summary>
-        /// Serialize the content
+        /// Serialize the <see cref="IApiCommandRequest.Content"/> to a <see cref="HttpContent"/>
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request to serialize.</param>
         /// <returns>The <see cref="HttpContent"/> abstract object.</returns>
         HttpContent Serialize(IApiCommandRequest request);
 

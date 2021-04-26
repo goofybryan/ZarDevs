@@ -2,11 +2,11 @@
 
 namespace ZarDevs.Http.Security
 {
-    internal class RefreshTokenRequestBuilder : TokenRequestParameterBuilder, IRefreshTokenRequestBuilder
+    internal class TokenRefreshRequestBuilder : TokenRequestParameterBuilder, ITokenRefreshRequestBuilder
     {
         #region Constructors
 
-        public RefreshTokenRequestBuilder(string grantType) : base(grantType)
+        public TokenRefreshRequestBuilder() : base("refresh_token")
         {
         }
 
@@ -20,7 +20,7 @@ namespace ZarDevs.Http.Security
 
         #region Methods
 
-        public IRefreshTokenRequestBuilder SetRefreshToken(string refreshToken)
+        public ITokenRefreshRequestBuilder SetRefreshToken(string refreshToken)
         {
             RefreshToken = refreshToken;
             return this;

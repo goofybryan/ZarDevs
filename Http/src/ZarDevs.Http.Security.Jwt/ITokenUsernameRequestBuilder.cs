@@ -5,7 +5,7 @@ namespace ZarDevs.Http.Security
     /// <summary>
     /// Access token request builder for username and password requests.
     /// </summary>
-    public interface IAccessTokenUsernameRequestBuilder : ITokenRequestBuilder
+    public interface ITokenUsernameRequestBuilder : ITokenRequestBuilder
     {
         #region Properties
 
@@ -33,7 +33,14 @@ namespace ZarDevs.Http.Security
         /// </summary>
         /// <param name="scopes">A list of scopes to add.</param>
         /// <returns>The current instance</returns>
-        IAccessTokenUsernameRequestBuilder AddScopes(params string[] scopes);
+        ITokenUsernameRequestBuilder AddScopes(params string[] scopes);
+
+        /// <summary>
+        /// Add scopes to the request
+        /// </summary>
+        /// <param name="scopes">A list of scopes to add.</param>
+        /// <returns>The current instance</returns>
+        ITokenUsernameRequestBuilder AddScopes(IEnumerable<string> scopes);
 
         /// <summary>
         /// Add the <see cref="Username"/> and <see cref="Password"/> for the request
@@ -41,7 +48,7 @@ namespace ZarDevs.Http.Security
         /// <param name="username">The username</param>
         /// <param name="password">The password</param>
         /// <returns>The current instance</returns>
-        IAccessTokenUsernameRequestBuilder SetCredendials(string username, string password);
+        ITokenUsernameRequestBuilder SetCredendials(string username, string password);
 
         #endregion Methods
     }

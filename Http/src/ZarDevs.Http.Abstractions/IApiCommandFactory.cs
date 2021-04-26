@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {

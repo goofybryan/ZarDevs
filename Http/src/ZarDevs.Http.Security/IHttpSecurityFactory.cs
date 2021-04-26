@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Security
 {
@@ -9,6 +7,21 @@ namespace ZarDevs.Http.Security
     /// </summary>
     public interface IHttpSecurityFactory
     {
-        IHttpSecurityRequestHandler CreateHandler();
+        #region Methods
+
+        /// <summary>
+        /// Create the http security request handler.
+        /// </summary>
+        IApiHttpRequestHandler CreateAuthHeaderHandler();
+
+        /// <summary>
+        /// Create the token refresh handler.
+        /// </summary>
+        /// <returns></returns>
+        IApiHttpRequestHandler CreateTokenRefreshHandler();
+
+        IApiHttpRequestHandler CreateTokenRenewHandler(ILoginUserPasswordAsync userLoginCommand);
+
+        #endregion Methods
     }
 }

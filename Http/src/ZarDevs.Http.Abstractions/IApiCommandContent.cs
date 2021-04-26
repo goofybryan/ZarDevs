@@ -15,5 +15,16 @@ namespace ZarDevs.Http.Api
         IList<string> MediaTypes { get; }
 
         #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Check if the <paramref name="mediaType"/> is valid for this serializer.
+        /// </summary>
+        /// <param name="mediaType"></param>
+        /// <returns></returns>
+        bool IsValidFor(string mediaType);
+
+        #endregion Methods
     }
 }

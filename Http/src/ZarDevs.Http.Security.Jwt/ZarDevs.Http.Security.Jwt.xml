@@ -4,54 +4,19 @@
         <name>ZarDevs.Http.Security.Jwt</name>
     </assembly>
     <members>
-        <member name="T:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder">
-            <summary>
-            Access token request builder for username and password requests.
-            </summary>
-        </member>
-        <member name="P:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder.Password">
-            <summary>
-            Get the password.
-            </summary>
-        </member>
-        <member name="P:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder.Scope">
-            <summary>
-            Get the list of scopes
-            </summary>
-        </member>
-        <member name="P:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder.Username">
-            <summary>
-            Get the username
-            </summary>
-        </member>
-        <member name="M:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder.AddScopes(System.String[])">
-            <summary>
-            Add scopes to the request
-            </summary>
-            <param name="scopes">A list of scopes to add.</param>
-            <returns>The current instance</returns>
-        </member>
-        <member name="M:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder.SetCredendials(System.String,System.String)">
-            <summary>
-            Add the <see cref="P:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder.Username"/> and <see cref="P:ZarDevs.Http.Security.IAccessTokenUsernameRequestBuilder.Password"/> for the request
-            </summary>
-            <param name="username">The username</param>
-            <param name="password">The password</param>
-            <returns>The current instance</returns>
-        </member>
-        <member name="T:ZarDevs.Http.Security.IRefreshTokenRequestBuilder">
+        <member name="T:ZarDevs.Http.Security.ITokenRefreshRequestBuilder">
             <summary>
             Refresh toke request builder.
             </summary>
         </member>
-        <member name="P:ZarDevs.Http.Security.IRefreshTokenRequestBuilder.RefreshToken">
+        <member name="P:ZarDevs.Http.Security.ITokenRefreshRequestBuilder.RefreshToken">
             <summary>
             The refesh token
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Security.IRefreshTokenRequestBuilder.SetRefreshToken(System.String)">
+        <member name="M:ZarDevs.Http.Security.ITokenRefreshRequestBuilder.SetRefreshToken(System.String)">
             <summary>
-            Set the <see cref="P:ZarDevs.Http.Security.IRefreshTokenRequestBuilder.RefreshToken"/>
+            Set the <see cref="P:ZarDevs.Http.Security.ITokenRefreshRequestBuilder.RefreshToken"/>
             </summary>
             <param name="refreshToken">The refresh token to set.</param>
             <returns>The current instance.</returns>
@@ -94,6 +59,48 @@
             Add the <see cref="P:ZarDevs.Http.Security.ITokenRequestBuilder.ClientSecret"/>
             </summary>
             <param name="clientSecret">The client secret</param>
+            <returns>The current instance</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Security.ITokenUsernameRequestBuilder">
+            <summary>
+            Access token request builder for username and password requests.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.Password">
+            <summary>
+            Get the password.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.Scope">
+            <summary>
+            Get the list of scopes
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.Username">
+            <summary>
+            Get the username
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.AddScopes(System.String[])">
+            <summary>
+            Add scopes to the request
+            </summary>
+            <param name="scopes">A list of scopes to add.</param>
+            <returns>The current instance</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.AddScopes(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Add scopes to the request
+            </summary>
+            <param name="scopes">A list of scopes to add.</param>
+            <returns>The current instance</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.SetCredendials(System.String,System.String)">
+            <summary>
+            Add the <see cref="P:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.Username"/> and <see cref="P:ZarDevs.Http.Security.ITokenUsernameRequestBuilder.Password"/> for the request
+            </summary>
+            <param name="username">The username</param>
+            <param name="password">The password</param>
             <returns>The current instance</returns>
         </member>
         <member name="T:ZarDevs.Http.Security.ITokenReader`1">

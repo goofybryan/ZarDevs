@@ -25,4 +25,9 @@
     <DocumentationFile>ZarDevs.Http.Security.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ZarDevs.Http.Abstractions\ZarDevs.Http.Api.Abstractions.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http.Api\ZarDevs.Http.Api.csproj" />
+  </ItemGroup>
+
 </Project>

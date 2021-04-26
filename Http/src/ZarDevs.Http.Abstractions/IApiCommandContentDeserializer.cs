@@ -8,6 +8,7 @@ namespace ZarDevs.Http.Api
     /// </summary>
     public interface IApiCommandContentDeserializer : IApiCommandContent
     {
+        #region Methods
 
         /// <summary>
         /// Deserialize the content to the expected type <typeparamref name="TContent"/>
@@ -17,11 +18,6 @@ namespace ZarDevs.Http.Api
         /// <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
         Task<TContent> DeserializeAsync<TContent>(HttpContent content);
 
-        /// <summary>
-        /// Get an indicator if the deserializer is valid for the <paramref name="mediaType"/>
-        /// </summary>
-        /// <param name="mediaType">The media type to check.</param>
-        /// <returns></returns>
-        bool IsValidFor(string mediaType);
+        #endregion Methods
     }
 }

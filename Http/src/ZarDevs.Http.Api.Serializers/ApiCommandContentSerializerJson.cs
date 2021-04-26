@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
 {
-    internal class ApiCommandContentSerializerJson : IApiCommandContentSerializer, IApiCommandContentDeserializer
+    public class ApiCommandContentSerializerJson : IApiCommandContentSerializer, IApiCommandContentDeserializer
     {
         #region Fields
 
-        private const string _mediaType = "application/json";
         private readonly Encoding _encoding;
         private readonly Formatting _formatting;
-        private readonly IList<string> _mediaTypes;
 
         #endregion Fields
 
@@ -25,19 +23,27 @@ namespace ZarDevs.Http.Api
         {
             _encoding = encoding ?? Encoding.Default;
             _formatting = formatting;
-            _mediaTypes = new List<string> { _mediaType };
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IList<string> MediaTypes => _mediaTypes;
+        /// <summary>
+        /// Get the content type that can be added to the headers or compared to.
+        /// </summary>
+        public IList<string> MediaTypes => HttpContentType.Json;
 
         #endregion Properties
 
         #region Methods
 
+        /// <summary>
+        /// Deserialize the content to the expected type <typeparamref name="TContent"/>
+        /// </summary>
+        /// <param name="content">The Http content to deserialize.</param>
+        /// <typeparam name="TContent">The expected content type</typeparam>
+        /// <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
         public async Task<TContent> DeserializeAsync<TContent>(HttpContent content)
         {
             string json = await content.ReadAsStringAsync();
@@ -45,8 +51,18 @@ namespace ZarDevs.Http.Api
             return value;
         }
 
-        public bool IsValidFor(string mediaType) => _mediaTypes.Any(type => StringComparer.OrdinalIgnoreCase.Equals(mediaType, type));
+        /// <summary>
+        /// Check if the <paramref name="mediaType"/> is valid for this serializer.
+        /// </summary>
+        /// <param name="mediaType"></param>
+        /// <returns></returns>
+        public bool IsValidFor(string mediaType) => MediaTypes.Any(type => StringComparer.OrdinalIgnoreCase.Equals(mediaType, type));
 
+        /// <summary>
+        /// Serialize the <see cref="IApiCommandRequest.Content"/> to a <see cref="HttpContent"/>
+        /// </summary>
+        /// <param name="request">The request to serialize.</param>
+        /// <returns>The <see cref="HttpContent"/> abstract object.</returns>
         public HttpContent Serialize(IApiCommandRequest request)
         {
             if (!request.HasContent)
@@ -54,7 +70,7 @@ namespace ZarDevs.Http.Api
 
             var value = request.Content;
             var jsonString = JsonConvert.SerializeObject(value, _formatting);
-            var content = new StringContent(jsonString, _encoding, _mediaType);
+            var content = new StringContent(jsonString, _encoding, MediaTypes[0]);
 
             return content;
         }

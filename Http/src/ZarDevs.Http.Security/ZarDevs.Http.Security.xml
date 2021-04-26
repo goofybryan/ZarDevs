@@ -9,10 +9,53 @@
             Http factory interface that will be used to create the core security handlers.
             </summary>
         </member>
+        <member name="M:ZarDevs.Http.Security.IHttpSecurityFactory.CreateAuthHeaderHandler">
+            <summary>
+            Create the http security request handler.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.IHttpSecurityFactory.CreateTokenRefreshHandler">
+            <summary>
+            Create the token refresh handler.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ZarDevs.Http.Security.IHttpSecurityRequestHandler">
             <summary>
             Http Security request handler that will be used to validate current request and inject the appropriate http headers in the request.
             </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.ILoginUserPasswordAsync">
+            <summary>
+            Interface that is used to get the user name and password used during the login process.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ILoginUserPasswordAsync.RetrieveAsync">
+            <summary>
+            Retrieve the login details and return the <see cref="T:ZarDevs.Http.Security.LoginDetails"/>
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.ISecurityConfiguration">
+            <summary>
+            Security configuration used
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ISecurityConfiguration.TryGet``1(System.String,``0@)">
+            <summary>
+            Get the specified <typeparamref name="TValue"/> value from the configuration
+            </summary>
+            <typeparam name="TValue">The value type that needs to be returned.</typeparam>
+            <param name="name">Specify the name of the configuration to get.</param>
+            <param name="value">The value is returned if the value exists for the configuration name.</param>
+            <returns>Returns a true if the value exists and is returned.</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ISecurityConfiguration.Update``1(System.String,``0)">
+            <summary>
+            Update the configuration value.
+            </summary>
+            <typeparam name="TValue">The value type that needs to be returned.</typeparam>
+            <param name="name">Specify the name of the configuration to update.</param>
+            <param name="value">The value to update.</param>
         </member>
     </members>
 </doc>

@@ -165,6 +165,8 @@ What I like about it is the fact that you allow the infrastructure to give you t
 1. More tests
 1. Implement a scoped implementation as extension
 1. Optimize the Factory dependency expression builder to allow for passed in parameters plans
+1. IAsyncDisposable support
+1. Investigate code source generation for IOC (https://devblogs.microsoft.com/dotnet/using-c-source-generators-to-create-an-external-dsl/)
 1. Create examples:
     1. Example web server project
     1. Example Xamarin Forms project with both Android and iOS

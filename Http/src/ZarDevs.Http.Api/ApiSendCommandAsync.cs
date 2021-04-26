@@ -14,6 +14,11 @@ namespace ZarDevs.Http.Api
             _httpMethod = httpMethod ?? throw new ArgumentNullException(nameof(httpMethod));
         }
 
+        public Task<IApiCommandResponse> ExecuteAsync(HttpContent content)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content)
         {
             return HttpClient.SendAsync(HttpClient.CreateRequest(_httpMethod, apiUri, content));
