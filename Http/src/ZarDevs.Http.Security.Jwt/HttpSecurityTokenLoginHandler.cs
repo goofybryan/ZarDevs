@@ -31,6 +31,9 @@ namespace ZarDevs.Http.Security
         {
             var details = await _userLoginCommand.RetrieveAsync();
 
+            if (details.Cancelled)
+                throw new HttpSecurityException("The login process has been cancelled.");
+
             var builder = _requestBuilder
                 .SetCredendials(details.Username, details.Password);
 

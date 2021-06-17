@@ -4,6 +4,20 @@
         <name>ZarDevs.Http.Security.Jwt</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.Http.Security.Jwt.ConfigureSecurityApi">
+            <summary>
+            Configure the security the API
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.Jwt.ConfigureSecurityApi.ConfigureUserNamePasswordJwt(ZarDevs.Http.Client.IApiHttpFactory)">
+            <summary>
+            Configure the JWT pipeline, first the refresh token handler -> login handler -> auth handler. Note, these handlers will be ignored if Auth header has already been filled in.
+            1. The token handler will try and refresh the token if the access token is expired
+            2. The login handler will call the <see cref="T:ZarDevs.Http.Security.ILoginUserPasswordAsync"/> to request the the username and password and will request the server for a new access token.
+            3. Will add the access token to the appropriate header value.
+            </summary>
+            <param name="factory"></param>
+        </member>
         <member name="T:ZarDevs.Http.Security.ITokenRefreshRequestBuilder">
             <summary>
             Refresh toke request builder.
@@ -116,6 +130,46 @@
             <param name="token">The token in string format</param>
             <returns>The converted token.</returns>
         </member>
+        <member name="T:ZarDevs.Http.Security.LoginToken">
+            <summary>
+            Login token model
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.LoginToken.AccessToken">
+            <summary>
+            Get or set the token type
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.LoginToken.ClientId">
+            <summary>
+            Get or set the refresh token
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.LoginToken.ClientSecret">
+            <summary>
+            Get or set the client secret
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.LoginToken.RefreshToken">
+            <summary>
+            Get or set the access token
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.LoginToken.TokenType">
+            <summary>
+            Get or set the token type
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.LoginToken.ValidTo">
+            <summary>
+            Get or set the token valid to
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.SecurityTokenConstants">
+            <summary>
+            Constants class used by security API
+            </summary>
+        </member>
         <member name="T:ZarDevs.Http.Security.TokenValidationExtentions">
             <summary>
             <see cref="T:Microsoft.IdentityModel.Tokens.SecurityToken"/> extention class.
@@ -125,8 +179,19 @@
             <summary>
             Check if the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityToken"/> has expired.
             </summary>
-            <param name="token">The token to validate, can be null.</param>
+            Validate if the <paramref name="token"/> has expired. This will check if the is still valid at the current date and time i.e. <see cref="P:Microsoft.IdentityModel.Tokens.SecurityToken.ValidTo"/> is less or equal to <see cref="P:System.DateTime.UtcNow"/>
             <returns>A true if the token has expired.</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Security.ITokenValidator">
+            <summary>
+            Token validator interface used to read a JWT access token <see cref="T:System.String"/> and validate if it is valid or return the actual <see cref="T:Microsoft.IdentityModel.Tokens.SecurityToken"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ITokenValidator.ReadJwtToken(System.String)">
+            <summary>
+            Load the current access token and return a <see cref="T:Microsoft.IdentityModel.Tokens.SecurityToken"/>. If <paramref name="accessToken"/> is not a valid token <see cref="T:System.String"/> then a <c>null</c> value will be returned.
+            </summary>
+            <param name="accessToken">A valid access token string.</param>
         </member>
     </members>
 </doc>

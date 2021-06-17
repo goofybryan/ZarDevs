@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace ZarDevs.Http.Api
 {
     /// <summary>
-    /// Serialize a <see cref="IApiCommandRequest"/> content to deserialize a <see cref="HttpResponseMessage"/>.
+    /// Deserialize the content of a <see cref="HttpResponseMessage"/>.
     /// </summary>
     public interface IApiCommandContentDeserializer : IApiCommandContent
     {

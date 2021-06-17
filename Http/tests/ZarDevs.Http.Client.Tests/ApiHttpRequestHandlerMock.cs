@@ -5,11 +5,15 @@ namespace ZarDevs.Http.Client.Tests
 {
     internal class ApiHttpRequestHandlerMock : ApiHttpRequestHandler
     {
+        public ApiHttpRequestHandlerMock() : base()
+        {
+        }
+
         public HttpRequestMessage RequestMessage { get; private set; }
 
         protected override Task OnHandleRequestAsync(HttpRequestMessage request)
         {
-            RequestMessage = request;
+            RequestMessage = request;;
             return Task.CompletedTask;
         }
     }

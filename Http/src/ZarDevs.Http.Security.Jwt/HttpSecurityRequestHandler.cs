@@ -38,7 +38,7 @@ namespace ZarDevs.Http.Security
 
         protected abstract Task OnHandleRequestAsync(HttpRequestMessage message, LoginToken token);
 
-        protected virtual bool ValidateToken(LoginToken token) => token != null && !_validator.HasExpired(token.AccessToken);
+        protected virtual bool ValidateToken(LoginToken token) => token != null && !_validator.ReadJwtToken(token.AccessToken).HasExpired();
 
         #endregion Methods
     }

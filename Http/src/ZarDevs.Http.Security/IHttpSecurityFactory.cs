@@ -20,6 +20,11 @@ namespace ZarDevs.Http.Security
         /// <returns></returns>
         IApiHttpRequestHandler CreateTokenRefreshHandler();
 
+        /// <summary>
+        /// Create the token refresh handler.
+        /// </summary>
+        /// <param name="userLoginCommand">Specify the user login command.</param>
+        /// <returns></returns>
         IApiHttpRequestHandler CreateTokenRenewHandler(ILoginUserPasswordAsync userLoginCommand);
 
         #endregion Methods

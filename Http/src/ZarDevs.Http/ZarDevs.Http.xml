@@ -95,7 +95,7 @@
         </member>
         <member name="T:ZarDevs.Http.Client.DefaultHttpHandlerFactory">
             <summary>
-            Default http handler factory. This uses <see cref="T:ZarDevs.Runtime.Create"/> object that makes use of reflection.
+            Default http handler factory. This uses <see cref="T:ZarDevs.Runtime.ICreate"/> or custom registered functions to get the requested handlers.
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.#ctor(ZarDevs.Runtime.ICreate)">
@@ -103,6 +103,13 @@
             Create a new instance.
             </summary>
             <param name="create">And instance of <see cref="T:ZarDevs.Runtime.ICreate"/></param>
+        </member>
+        <member name="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.AddHandlerCreation``1(System.Func{ZarDevs.Http.Client.IApiHttpRequestHandler})">
+            <summary>
+            Add a creation function for the <typeparamref name="THandler"/> type. This will be checked first before using runtime ( <see cref="T:ZarDevs.Runtime.ICreate"/>) to create a handler when calling <see cref="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler``1"/>
+            </summary>
+            <typeparam name="THandler">The type of handler to get or create.</typeparam>
+            <param name="creatorFunc"></param>
         </member>
         <member name="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler``1">
             <summary>
@@ -234,17 +241,30 @@
         </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpFactory.AddRequestHandler``1(System.Object)">
             <summary>
-            Add a request handler to the <see cref="T:ZarDevs.Http.Client.ApiHttpFactory"/>. This will append the handler to any new <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> created.
+            Add a request handler to the <see cref="T:ZarDevs.Http.Client.ApiHttpFactory"/>. This will append the handler
+            to any new <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> created.
             </summary>
-            <typeparam name="THandler">Add the <typeparamref name="THandler"/> handler for the specified key.</typeparam>
-            <param name="key">Specify an optional key for the handler. If a key is specified, it will only be added to new <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> with the same key. Default is null.</param>
-            <returns>A <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/> where you can link multiple additional handlers.</returns>
+            <typeparam name="THandler">
+            Add the <typeparamref name="THandler"/> handler for the specified key.
+            </typeparam>
+            <param name="key">
+            Specify an optional key for the handler. If a key is specified, it will only be added to
+            new <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> with the same key. Default is null.
+            </param>
+            <returns>
+            A <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/> where you can link multiple additional handlers.
+            </returns>
         </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpFactory.NewClient(System.Object)">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. This will append any registered <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandler"/> for the specified <paramref name="key"/>.
+            Create a new instance of the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>. This will append any
+            registered <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandler"/> for the specified <paramref name="key"/>.
             </summary>
-            <param name="key">Specify an optional key. This will append any registered <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandler"/> for the specified <paramref name="key"/> otherwise use the default handlers(those registered with null)</param>
+            <param name="key">
+            Specify an optional key. This will append any registered <see
+            cref="T:ZarDevs.Http.Client.IApiHttpRequestHandler"/> for the specified <paramref name="key"/> otherwise use
+            the default handlers(those registered with null)
+            </param>
             <returns>An new instance of the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/></returns>
         </member>
         <member name="T:ZarDevs.Http.Client.IApiHttpHandlerFactory">

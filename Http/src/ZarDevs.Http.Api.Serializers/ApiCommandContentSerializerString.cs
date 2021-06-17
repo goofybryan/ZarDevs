@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
 {
+    /// <summary>
+    /// Serialize a <see cref="IApiCommandRequest"/> content to HttpContent and deserialize the content of a <see cref="HttpResponseMessage"/> using the text format.
+    /// </summary>
     public class ApiCommandContentSerializerString : IApiCommandContentSerializer, IApiCommandContentDeserializer
     {
         #region Fields
@@ -18,6 +21,10 @@ namespace ZarDevs.Http.Api
 
         #region Constructors
 
+        /// <summary>
+        /// Create a new instance of the class.
+        /// </summary>
+        /// <param name="encoding">Optionally specify the content encoding, otherwise defaults <see cref="Encoding.Default"/></param>
         public ApiCommandContentSerializerString(Encoding encoding = null)
         {
             _encoding = encoding ?? Encoding.Default;

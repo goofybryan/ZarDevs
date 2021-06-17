@@ -9,6 +9,11 @@ namespace ZarDevs.Http.Api
     {
         #region Methods
 
+        /// <summary>
+        /// Configure the <see cref="IHttpResponseFactory"/> and <see cref="IApiCommandFactory"/> and bind the <see cref="IApiCommandAsync"/> for all commands under <see cref="HttpRequestType"/> 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static IDependencyBuilder ConfigureApi(this IDependencyBuilder builder)
         {
             builder.Bind<IHttpResponseFactory>().To<HttpResponseFactory>().InSingletonScope();

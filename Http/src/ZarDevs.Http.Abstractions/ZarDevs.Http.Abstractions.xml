@@ -115,7 +115,7 @@
         </member>
         <member name="T:ZarDevs.Http.Api.IApiCommandContentDeserializer">
             <summary>
-            Serialize a <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/> content to deserialize a <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            Deserialize the content of a <see cref="T:System.Net.Http.HttpResponseMessage"/>.
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandContentDeserializer.DeserializeAsync``1(System.Net.Http.HttpContent)">
@@ -147,34 +147,34 @@
             <summary>
             Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
             </summary>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="!:IApiHttpClient"/>. Default is no key (null)</param>
+            <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateGetCommand(System.Object)">
             <summary>
             Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
             </summary>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="!:IApiHttpClient"/>. Default is no key (null)</param>
+            <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePatchCommand(System.String,System.Object)">
             <summary>
             Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
             </summary>
             <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="!:IApiHttpClient"/>. Default is no key (null)</param>
+            <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePostCommand(System.String,System.Object)">
             <summary>
             Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
             </summary>
             <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="!:IApiHttpClient"/>. Default is no key (null)</param>
+            <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePutCommand(System.String,System.Object)">
             <summary>
             Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
             </summary>
             <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="!:IApiHttpClient"/>. Default is no key (null)</param>
+            <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateRequest(System.Uri,System.Object)">
             <summary>
@@ -190,7 +190,7 @@
             </summary>
             <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
             <param name="sendMethod">Specify the <see cref="T:System.Net.Http.HttpMethod"/> that the command with use.</param>
-            <param name="apiClientKey">An option api client key that will be used to resolve the <see cref="!:IApiHttpClient"/>. Default is no key (null)</param>
+            <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="T:ZarDevs.Http.Api.IApiCommandRequest">
             <summary>

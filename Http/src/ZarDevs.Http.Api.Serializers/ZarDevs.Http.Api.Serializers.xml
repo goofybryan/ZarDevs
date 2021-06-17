@@ -30,6 +30,18 @@
             <param name="request">The request to serialize.</param>
             <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
         </member>
+        <member name="T:ZarDevs.Http.Api.ApiCommandContentSerializerJson">
+            <summary>
+            Serialize a <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/> content to HttpContent and deserialize the content of a <see cref="T:System.Net.Http.HttpResponseMessage"/> using the JSON format.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.#ctor(System.Text.Encoding,Newtonsoft.Json.Formatting)">
+            <summary>
+            Create a new instance of this class
+            </summary>
+            <param name="encoding">Optionally specify the content encoding, otherwise defaults <see cref="P:System.Text.Encoding.Default"/></param>
+            <param name="formatting">Optionally specift the formatting, otherwise defaults to <see cref="F:Newtonsoft.Json.Formatting.None"/></param>
+        </member>
         <member name="P:ZarDevs.Http.Api.ApiCommandContentSerializerJson.MediaTypes">
             <summary>
             Get the content type that can be added to the headers or compared to.
@@ -57,6 +69,17 @@
             <param name="request">The request to serialize.</param>
             <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
         </member>
+        <member name="T:ZarDevs.Http.Api.ApiCommandContentSerializerString">
+            <summary>
+            Serialize a <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/> content to HttpContent and deserialize the content of a <see cref="T:System.Net.Http.HttpResponseMessage"/> using the text format.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerString.#ctor(System.Text.Encoding)">
+            <summary>
+            Create a new instance of the class.
+            </summary>
+            <param name="encoding">Optionally specify the content encoding, otherwise defaults <see cref="P:System.Text.Encoding.Default"/></param>
+        </member>
         <member name="P:ZarDevs.Http.Api.ApiCommandContentSerializerString.MediaTypes">
             <summary>
             Get the content type that can be added to the headers or compared to.
@@ -83,6 +106,17 @@
             </summary>
             <param name="request">The request to serialize.</param>
             <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Api.ApiCommandContentSerializerXml">
+            <summary>
+            Serialize a <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/> content to HttpContent and deserialize the content of a <see cref="T:System.Net.Http.HttpResponseMessage"/> using the xml format.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerXml.#ctor(System.Text.Encoding)">
+            <summary>
+            Create a new instance of the class.
+            </summary>
+            <param name="encoding">Optionally specify the content encoding, otherwise defaults <see cref="P:System.Text.Encoding.Default"/></param>
         </member>
         <member name="P:ZarDevs.Http.Api.ApiCommandContentSerializerXml.MediaTypes">
             <summary>

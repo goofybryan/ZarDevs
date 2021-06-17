@@ -9,8 +9,8 @@ namespace ZarDevs.Http.Security
     public interface ILoginUserPasswordAsync
     {
         /// <summary>
-        /// Retrieve the login details and return the <see cref="LoginDetails"/>
+        /// Retrieve the login details and return the <see cref="UserLoginParameters"/>
         /// </summary>
-        Task<LoginDetails> RetrieveAsync();
+        Task<UserLoginParameters> RetrieveAsync();
     }
 }

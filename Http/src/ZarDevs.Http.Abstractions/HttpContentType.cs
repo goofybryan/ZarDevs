@@ -89,6 +89,8 @@ namespace ZarDevs.Http.Api
 
         #endregion Fields
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
         #region Properties
 
         public static IList<string> Aac => aac;
@@ -246,5 +248,7 @@ namespace ZarDevs.Http.Api
         public static IList<string> Zip => zip;
 
         #endregion Properties
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }

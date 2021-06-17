@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 
 namespace ZarDevs.Http.Api
 {
+    /// <summary>
+    /// Serialize a <see cref="IApiCommandRequest"/> content to HttpContent and deserialize the content of a <see cref="HttpResponseMessage"/> using the xml format.
+    /// </summary>
     public class ApiCommandContentSerializerXml : IApiCommandContentSerializer, IApiCommandContentDeserializer
     {
         #region Fields
@@ -19,6 +22,10 @@ namespace ZarDevs.Http.Api
 
         #region Constructors
 
+        /// <summary>
+        /// Create a new instance of the class.
+        /// </summary>
+        /// <param name="encoding">Optionally specify the content encoding, otherwise defaults <see cref="Encoding.Default"/></param>
         public ApiCommandContentSerializerXml(Encoding encoding = null)
         {
             _encoding = encoding ?? Encoding.Default;

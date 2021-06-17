@@ -9,5 +9,12 @@
             Configure the Api
             </summary>
         </member>
+        <member name="M:ZarDevs.Http.Api.ApiConfiguration.ConfigureApi(ZarDevs.DependencyInjection.IDependencyBuilder)">
+            <summary>
+            Configure the <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> and <see cref="T:ZarDevs.Http.Api.IApiCommandFactory"/> and bind the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/> for all commands under <see cref="T:ZarDevs.Http.Api.HttpRequestType"/> 
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

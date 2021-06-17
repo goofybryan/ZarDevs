@@ -4,21 +4,21 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace ZarDevs.Http.Security
 {
+    /// <summary>
+    /// Token validator interface used to read a JWT access token <see cref="string"/> and validate if it is valid or return the actual <see cref="SecurityToken"/>
+    /// </summary>
     public interface ITokenValidator
     {
-        bool HasExpired(string accessToken);
+        /// <summary>
+        /// Load the current access token and return a <see cref="SecurityToken"/>. If <paramref name="accessToken"/> is not a valid token <see cref="string"/> then a <c>null</c> value will be returned.
+        /// </summary>
+        /// <param name="accessToken">A valid access token string.</param>
         SecurityToken ReadJwtToken(string accessToken);
     }
 
     internal class TokenValidator : ITokenValidator
     {
         #region Methods
-
-        public bool HasExpired(string accessToken)
-        {
-            var token = ReadJwtToken(accessToken);
-            return token.ValidTo <= DateTime.UtcNow;
-        }
 
         public SecurityToken ReadJwtToken(string accessToken)
         {

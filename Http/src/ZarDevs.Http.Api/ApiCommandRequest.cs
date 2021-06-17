@@ -20,7 +20,7 @@ namespace ZarDevs.Http.Api
         }
 
         /// <summary>
-        /// Create a new instance with the <paramref name="apiPath"/> and optional <paramref name="content"/>
+        /// Create a new instance with the <paramref name="apiUri"/> and optional <paramref name="content"/>
         /// </summary>
         /// <param name="apiUri">Specify the uri path.</param>
         /// <param name="content">Optionally specify the content.</param>
