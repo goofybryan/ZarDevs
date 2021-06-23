@@ -9,12 +9,13 @@
             Http Api factory that creates new instance of the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/>
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Client.ApiHttpFactory.#ctor(System.Net.Http.HttpClient,ZarDevs.Http.Client.IApiHttpHandlerFactory)">
+        <member name="M:ZarDevs.Http.Client.ApiHttpFactory.#ctor(System.Net.Http.HttpClient,ZarDevs.Http.Client.IApiHttpHandlerFactory,ZarDevs.Http.Client.IApiHttpRequestHandlerBindingMap)">
             <summary>
             Create a new instance of the factory.
             </summary>
             <param name="httpClient">The <see cref="T:System.Net.Http.HttpClient"/> object that all <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> will use.</param>
             <param name="handlerFactory">The handler factory that will be used to create the instances of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandler"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/> bindings.</param>
+            <param name="handlerMappings">The handler mapping that is used to store the handlers when getting a new client.</param>
         </member>
         <member name="P:ZarDevs.Http.Client.ApiHttpFactory.Instance">
             <summary>
@@ -93,6 +94,30 @@
             <param name="request">The request message.</param>
             <returns></returns>
         </member>
+        <member name="T:ZarDevs.Http.Client.ApiHttpRequestHandlerBindingMap">
+            <summary>
+            Binding map that defines how to get or set a binding for a key.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.ApiHttpRequestHandlerBindingMap.#ctor">
+            <summary>
+            Create new instance of the binding map.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.ApiHttpRequestHandlerBindingMap.TryAdd(System.Object,ZarDevs.Http.Client.IApiHttpRequestHandlerBinding)">
+            <summary>
+            Try and set the <paramref name="binding"/> for the <paramref name="key"/>. If it exists, it will be overwritten.
+            </summary>
+            <param name="key">Specify the key for the binding. Can be null.</param>
+            <param name="binding">The binding to add.</param>
+        </member>
+        <member name="M:ZarDevs.Http.Client.ApiHttpRequestHandlerBindingMap.TryGet(System.Object)">
+            <summary>
+            Try and get the binding for the <paramref name="key"/>
+            </summary>
+            <param name="key">Specify the key for the binding. Can be null.</param>
+            <returns></returns>
+        </member>
         <member name="T:ZarDevs.Http.Client.DefaultHttpHandlerFactory">
             <summary>
             Default http handler factory. This uses <see cref="T:ZarDevs.Runtime.ICreate"/> or custom registered functions to get the requested handlers.
@@ -104,23 +129,18 @@
             </summary>
             <param name="create">And instance of <see cref="T:ZarDevs.Runtime.ICreate"/></param>
         </member>
-        <member name="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.AddHandlerCreation``1(System.Func{ZarDevs.Http.Client.IApiHttpRequestHandler})">
+        <member name="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.AddHandlerCreation``1(System.Func{System.Type,ZarDevs.Http.Client.IApiHttpRequestHandler})">
             <summary>
-            Add a creation function for the <typeparamref name="THandler"/> type. This will be checked first before using runtime ( <see cref="T:ZarDevs.Runtime.ICreate"/>) to create a handler when calling <see cref="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler``1"/>
+            Add a creation function for the <typeparamref name="THandler"/> type. This will be checked first before using runtime ( <see cref="T:ZarDevs.Runtime.ICreate"/>) to create a handler when calling <see cref="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler(System.Type)"/>
             </summary>
             <typeparam name="THandler">The type of handler to get or create.</typeparam>
             <param name="creatorFunc"></param>
         </member>
-        <member name="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler``1">
-            <summary>
-            Get or create an instance of <typeparamref name="THandler"/>
-            </summary>
-            <typeparam name="THandler">The type of handler to get or create.</typeparam>
-            <returns>The <typeparamref name="THandler"/> instance.</returns>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler(System.Type)" -->
         <member name="T:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase">
             <summary>
-            Abstract implementation of the <see cref="T:ZarDevs.Http.Client.IApiHttpHandlerFactory"/>. This class handles the method <see cref="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.CreateHandlerBinding``1"/> but requires the <see cref="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler``1"/> method to be implemented.
+            Abstract implementation of the <see cref="T:ZarDevs.Http.Client.IApiHttpHandlerFactory"/>. This class handles the method <see cref="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.CreateHandlerBinding``1"/> but requires the <see
+            cref="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler``1"/> method to be implemented.
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.CreateHandlerBinding``1">
@@ -130,6 +150,13 @@
             <typeparam name="THandler">The handler the binding will be valid for.</typeparam>
             <returns>An instance of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/></returns>
         </member>
+        <member name="M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.CreateHandlerBinding(System.Type)">
+            <summary>
+            Create a new instance of the handler <paramref name="handlerType"/> binding.
+            </summary>
+            <param name="handlerType">The handler the binding will be valid for.</param>
+            <returns>An instance of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/></returns>
+        </member>
         <member name="M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.GetHandler``1">
             <summary>
             Get or create an instance of <typeparamref name="THandler"/>
@@ -137,6 +164,7 @@
             <typeparam name="THandler">The type of handler to get or create.</typeparam>
             <returns>The <typeparamref name="THandler"/> instance.</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.GetHandler(System.Type)" -->
         <member name="T:ZarDevs.Http.Client.IApiHttpClient">
             <summary>
             Http api client class that is used to wrap
@@ -272,6 +300,13 @@
             Api handler factory that is used to get or create the required handlers.
             </summary>
         </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.CreateHandlerBinding(System.Type)">
+            <summary>
+            Create a new instance of the handler <paramref name="handlerType"/> binding.
+            </summary>
+            <param name="handlerType">The handler the binding will be valid for.</param>
+            <returns>An instance of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/></returns>
+        </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.CreateHandlerBinding``1">
             <summary>
             Create a new instance of the handler <typeparamref name="THandler"/> binding.
@@ -279,6 +314,7 @@
             <typeparam name="THandler">The handler the binding will be valid for.</typeparam>
             <returns>An instance of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/></returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler(System.Type)" -->
         <member name="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler``1">
             <summary>
             Get or create an instance of <typeparamref name="THandler"/>
@@ -315,9 +351,23 @@
             Api handler binding that be used to build up a linked or an added handler.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.Add``1">
+        <member name="P:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.HandlerType">
             <summary>
-            Add a new binding to the current <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/>. This will add the <typeparamref name="THandler"/> to a list of handlers that will be executed when called. This is useful when you have multiple independendent paths to follow.
+            Get the type that this handler is valid for.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.AppendHandler(System.Type)">
+            <summary>
+            Add a new binding to the current <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/>. This will add the <paramref name="handlerType"/> to a list of handlers that will be executed when called. This
+            is useful when you have multiple independendent paths to follow.
+            </summary>
+            <param name="handlerType">The type of handler to add.</param>
+            <returns>The added binding.</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.AppendHandler``1">
+            <summary>
+            Add a new binding to the current <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/>. This will add the <typeparamref name="THandler"/> to a list of handlers that will be executed when called.
+            This is useful when you have multiple independendent paths to follow.
             </summary>
             <typeparam name="THandler">The type of handler to add.</typeparam>
             <returns>The added binding.</returns>
@@ -328,19 +378,45 @@
             </summary>
             <returns>The request handler.</returns>
         </member>
-        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.Link``1">
-            <summary>
-            Link the <typeparamref name="TNext"/> handler to executed after the current handler has been completed. This is usefull when you want to execute a chain of tasks.
-            </summary>
-            <typeparam name="TNext">The next handler to be executed.</typeparam>
-            <returns>The next binding.</returns>
-        </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.Named(System.Object)">
             <summary>
             Give the the handler that is used when requiring a specific handler.
             </summary>
             <param name="name">The name of the handler.</param>
             <returns>The current binding.</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.SetNextHandler(System.Type)">
+            <summary>
+            Link the <paramref name="handlerType"/> handler to executed after the current handler has been completed. This is usefull when you want to execute a chain of tasks.
+            </summary>
+            <param name="handlerType">The next handler to be executed.</param>
+            <returns>The next binding.</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding.SetNextHandler``1">
+            <summary>
+            Link the <typeparamref name="TNext"/> handler to executed after the current handler has been completed. This is usefull when you want to execute a chain of tasks.
+            </summary>
+            <typeparam name="TNext">The next handler to be executed.</typeparam>
+            <returns>The next binding.</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBindingMap">
+            <summary>
+            Binding map interface that defines how to get or set a binding for a key.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBindingMap.TryAdd(System.Object,ZarDevs.Http.Client.IApiHttpRequestHandlerBinding)">
+            <summary>
+            Try and set the <paramref name="binding"/> for the <paramref name="key"/>. If it exists, it will be overwritten.
+            </summary>
+            <param name="key">Specify the key for the binding. Can be null.</param>
+            <param name="binding">The binding to add.</param>
+        </member>
+        <member name="M:ZarDevs.Http.Client.IApiHttpRequestHandlerBindingMap.TryGet(System.Object)">
+            <summary>
+            Try and get the binding for the <paramref name="key"/>
+            </summary>
+            <param name="key">Specify the key for the binding. Can be null.</param>
+            <returns></returns>
         </member>
     </members>
 </doc>

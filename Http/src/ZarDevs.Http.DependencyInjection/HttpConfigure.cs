@@ -52,7 +52,7 @@ namespace ZarDevs.Http.Client
                 throw new ArgumentNullException(nameof(handlerFactory));
             }
 
-            ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory);
+            ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory, new ApiHttpRequestHandlerBindingMap());
 
             builder.Bind<IApiHttpFactory>().To(ApiHttpFactory.Instance);
             builder.Bind<IApiHttpClient>().To((ctx) => ApiHttpFactory.Instance.NewClient(ctx.Info.Key)).InTransientScope();

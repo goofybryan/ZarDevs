@@ -12,7 +12,7 @@ namespace ZarDevs.Http.Client
         #region Fields
 
         private readonly ICreate _create;
-        private readonly IDictionary<Type, Func<IApiHttpRequestHandler>> _handlerMapping;
+        private readonly IDictionary<Type, Func<Type, IApiHttpRequestHandler>> _handlerMapping;
 
         #endregion Fields
 
@@ -25,7 +25,7 @@ namespace ZarDevs.Http.Client
         public DefaultHttpHandlerFactory(ICreate create)
         {
             _create = create ?? throw new ArgumentNullException(nameof(create));
-            _handlerMapping = new Dictionary<Type, Func<IApiHttpRequestHandler>>();
+            _handlerMapping = new Dictionary<Type, Func<Type, IApiHttpRequestHandler>>();
         }
 
         #endregion Constructors
@@ -33,20 +33,20 @@ namespace ZarDevs.Http.Client
         #region Methods
 
         /// <summary>
-        /// Add a creation function for the <typeparamref name="THandler"/> type. This will be checked first before using runtime ( <see cref="ICreate"/>) to create a handler when calling <see cref="GetHandler{THandler}"/>
+        /// Add a creation function for the <typeparamref name="THandler"/> type. This will be checked first before using runtime ( <see cref="ICreate"/>) to create a handler when calling <see cref="GetHandler"/>
         /// </summary>
         /// <typeparam name="THandler">The type of handler to get or create.</typeparam>
         /// <param name="creatorFunc"></param>
-        public void AddHandlerCreation<THandler>(Func<IApiHttpRequestHandler> creatorFunc) => _handlerMapping[typeof(THandler)] = creatorFunc;
+        public void AddHandlerCreation<THandler>(Func<Type, IApiHttpRequestHandler> creatorFunc) => _handlerMapping[typeof(THandler)] = creatorFunc;
 
-        /// <summary>
-        /// Get or create an instance of <typeparamref name="THandler"/>
-        /// </summary>
-        /// <typeparam name="THandler">The type of handler to get or create.</typeparam>
-        /// <returns>The <typeparamref name="THandler"/> instance.</returns>
-        public override IApiHttpRequestHandler GetHandler<THandler>()
+        /// <summary> 
+        /// Get or create an instance of <paramref name="handlerType"/> 
+        /// </summary> 
+        /// <param name="handlerType">The type of handler to get or create.</param> 
+        /// <returns>The the request handler instance.</returns>
+        public override IApiHttpRequestHandler GetHandler(Type handlerType)
         {
-            return _handlerMapping.TryGetValue(typeof(THandler), out Func<IApiHttpRequestHandler> creatorFunc) ? creatorFunc() : _create.New<THandler>();
+            return _handlerMapping.TryGetValue(handlerType, out Func<Type, IApiHttpRequestHandler> creatorFunc) ? creatorFunc(handlerType) : (IApiHttpRequestHandler)_create.New(handlerType);
         }
 
         #endregion Methods

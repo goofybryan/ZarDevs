@@ -20,8 +20,8 @@ namespace ZarDevs.Http.Security.Jwt
         public static void ConfigureUserNamePasswordJwt(this IApiHttpFactory factory)
         {
             factory.AddRequestHandler<HttpSecurityTokenRefreshHandler>(SecurityTokenConstants.ApiClientName)
-            .Link<HttpSecurityTokenLoginHandler>()
-            .Link<HttpSecurityAuthHeaderHandler>();
+            .SetNextHandler<HttpSecurityTokenLoginHandler>()
+            .SetNextHandler<HttpSecurityAuthHeaderHandler>();
         }
     }
 }

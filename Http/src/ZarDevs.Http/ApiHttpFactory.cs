@@ -12,7 +12,7 @@ namespace ZarDevs.Http.Client
         #region Fields
 
         private readonly IApiHttpHandlerFactory _handlerFactory;
-        private readonly ApiHttpRequestHandlerBindingMap _handlerMappings;
+        private readonly IApiHttpRequestHandlerBindingMap _handlerMappings;
         private readonly HttpClient _httpClient;
 
         #endregion Fields
@@ -24,11 +24,12 @@ namespace ZarDevs.Http.Client
         /// </summary>
         /// <param name="httpClient">The <see cref="HttpClient"/> object that all <see cref="IApiHttpClient"/> will use.</param>
         /// <param name="handlerFactory">The handler factory that will be used to create the instances of <see cref="IApiHttpRequestHandler"/> from the <see cref="IApiHttpRequestHandlerBinding"/> bindings.</param>
-        public ApiHttpFactory(HttpClient httpClient, IApiHttpHandlerFactory handlerFactory)
+        /// <param name="handlerMappings">The handler mapping that is used to store the handlers when getting a new client.</param>
+        public ApiHttpFactory(HttpClient httpClient, IApiHttpHandlerFactory handlerFactory, IApiHttpRequestHandlerBindingMap handlerMappings)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _handlerFactory = handlerFactory ?? throw new ArgumentNullException(nameof(handlerFactory));
-            _handlerMappings = new ApiHttpRequestHandlerBindingMap();
+            _handlerMappings = handlerMappings ?? throw new ArgumentNullException(nameof(handlerMappings));
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace ZarDevs.Http.Client
             if (binding == null)
             {
                 binding = _handlerFactory.CreateHandlerBinding<THandler>();
-                _handlerMappings.TrySet(key, binding);
+                _handlerMappings.TryAdd(key, binding);
             }
 
             return binding;

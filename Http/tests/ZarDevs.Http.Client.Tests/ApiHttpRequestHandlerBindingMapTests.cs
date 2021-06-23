@@ -19,8 +19,8 @@ namespace ZarDevs.Http.Client.Tests
             var binding2 = Substitute.For<IApiHttpRequestHandlerBinding>();
 
             // Act
-            map.TrySet(key1, binding1);
-            map.TrySet(key2, binding2);
+            map.TryAdd(key1, binding1);
+            map.TryAdd(key2, binding2);
 
             var result1 = map.TryGet(key1);
             var result2 = map.TryGet(key2);

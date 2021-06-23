@@ -9,7 +9,22 @@ namespace ZarDevs.Http.Client.Tests
         #region Methods
 
         [Fact]
-        public void CreateHandlerBinding_Execute_ReturnsNewBinding()
+        public void CreateHandlerBinding_UsingType_ReturnsNewBinding()
+        {
+            // Arrange
+            ICreate create = Substitute.For<ICreate>();
+            var factory = new DefaultHttpHandlerFactory(create);
+
+            // Act
+            var binding = factory.CreateHandlerBinding(typeof(ApiHttpRequestHandlerMock));
+
+            // Assert
+            Assert.NotNull(binding);
+            Assert.IsType<ApiHttpRequestHandlerBinding>(binding);
+        }
+
+        [Fact]
+        public void CreateHandlerBinding_UsingGeneric_ReturnsNewBinding()
         {
             // Arrange
             ICreate create = Substitute.For<ICreate>();
@@ -20,16 +35,16 @@ namespace ZarDevs.Http.Client.Tests
 
             // Assert
             Assert.NotNull(binding);
-            Assert.IsType<ApiHttpRequestHandlerBinding<ApiHttpRequestHandlerMock>>(binding);
+            Assert.IsType<ApiHttpRequestHandlerBinding>(binding);
         }
 
         [Fact]
-        public void GetHandler_Execute_ReturnsExpectedMock()
+        public void GetHandler_UsingGeneric_ReturnsExpectedMock()
         {
             // Arrange
             var mockHandler = new ApiHttpRequestHandlerMock();
             ICreate create = Substitute.For<ICreate>();
-            create.New<ApiHttpRequestHandlerMock>().Returns(mockHandler);
+            create.New(typeof(ApiHttpRequestHandlerMock)).Returns(mockHandler);
 
             var factory = new DefaultHttpHandlerFactory(create);
 
@@ -40,7 +55,27 @@ namespace ZarDevs.Http.Client.Tests
             Assert.NotNull(handler);
             Assert.Same(mockHandler, handler);
 
-            create.Received(1).New<ApiHttpRequestHandlerMock>();
+            create.Received(1).New(typeof(ApiHttpRequestHandlerMock));
+        }
+
+        [Fact]
+        public void GetHandler_UsingType_ReturnsExpectedMock()
+        {
+            // Arrange
+            var mockHandler = new ApiHttpRequestHandlerMock();
+            ICreate create = Substitute.For<ICreate>();
+            create.New(typeof(ApiHttpRequestHandlerMock)).Returns(mockHandler);
+
+            var factory = new DefaultHttpHandlerFactory(create);
+
+            // Act
+            var handler = factory.GetHandler(typeof(ApiHttpRequestHandlerMock));
+
+            // Assert
+            Assert.NotNull(handler);
+            Assert.Same(mockHandler, handler);
+
+            create.Received(1).New(typeof(ApiHttpRequestHandlerMock));
         }
 
         #endregion Methods
