@@ -15,10 +15,10 @@ namespace ZarDevs.Http.Client
 
         #region Constructors
 
-        public ApiHttpClient(IApiHttpRequestHandler requestHandler, HttpClient httpClient)
+        public ApiHttpClient(HttpClient httpClient, IApiHttpRequestHandler requestHandler = null)
         {
-            _requestHandler = requestHandler;
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _requestHandler = requestHandler;
         }
 
         #endregion Constructors

@@ -73,7 +73,7 @@ namespace ZarDevs.Http.Client
             var binding = _handlerMappings.TryGet(key);
             var handler = binding?.Build();
 
-            return new ApiHttpClient(handler, _httpClient);
+            return new ApiHttpClient(_httpClient, handler);
         }
 
         #endregion Methods

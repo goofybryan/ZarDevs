@@ -185,7 +185,7 @@ namespace ZarDevs.Http.Client.Tests
         {
             handlerMock.HandleAsync(Arg.Any<HttpRequestMessage>()).Returns(Task.CompletedTask);
             var httpClient = _factory.CreateClient();
-            return new ApiHttpClient(handlerMock, httpClient);
+            return new ApiHttpClient(httpClient, handlerMock);
         }
 
         #endregion Methods

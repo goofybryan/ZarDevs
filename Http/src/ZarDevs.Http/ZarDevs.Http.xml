@@ -136,7 +136,13 @@
             <typeparam name="THandler">The type of handler to get or create.</typeparam>
             <param name="creatorFunc"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler(System.Type)" -->
+        <member name="M:ZarDevs.Http.Client.DefaultHttpHandlerFactory.GetHandler(System.Type)">
+            <summary> 
+            Get or create an instance of <paramref name="handlerType"/> 
+            </summary> 
+            <param name="handlerType">The type of handler to get or create.</param> 
+            <returns>The the request handler instance.</returns>
+        </member>
         <member name="T:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase">
             <summary>
             Abstract implementation of the <see cref="T:ZarDevs.Http.Client.IApiHttpHandlerFactory"/>. This class handles the method <see cref="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.CreateHandlerBinding``1"/> but requires the <see
@@ -164,7 +170,13 @@
             <typeparam name="THandler">The type of handler to get or create.</typeparam>
             <returns>The <typeparamref name="THandler"/> instance.</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.GetHandler(System.Type)" -->
+        <member name="M:ZarDevs.Http.Client.ApiHttpHandlerFactoryBase.GetHandler(System.Type)">
+            <summary> 
+            Get or create an instance of <paramref name="handlerType"/> 
+            </summary> 
+            <param name="handlerType">The type of handler to get or create.</param> 
+            <returns>The the request handler instance.</returns>
+        </member>
         <member name="T:ZarDevs.Http.Client.IApiHttpClient">
             <summary>
             Http api client class that is used to wrap
@@ -314,7 +326,13 @@
             <typeparam name="THandler">The handler the binding will be valid for.</typeparam>
             <returns>An instance of <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandlerBinding"/></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler(System.Type)" -->
+        <member name="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler(System.Type)">
+            <summary>
+            Get or create an instance of <paramref name="handlerType"/>
+            </summary>
+            <param name="handlerType">The type of handler to get or create.</param>
+            <returns>The the request handler instance.</returns>
+        </member>
         <member name="M:ZarDevs.Http.Client.IApiHttpHandlerFactory.GetHandler``1">
             <summary>
             Get or create an instance of <typeparamref name="THandler"/>

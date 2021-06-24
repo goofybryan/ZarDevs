@@ -140,49 +140,48 @@
         </member>
         <member name="T:ZarDevs.Http.Api.IApiCommandFactory">
             <summary>
-            Api command factory used to create commands
+            Api command factory interface defining the methods required to create commands.
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateDeleteCommand(System.Object)">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/> that is for deleting.
             </summary>
             <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateGetCommand(System.Object)">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/> that is for getting.
             </summary>
             <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePatchCommand(System.String,System.Object)">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/> that is for patching.
             </summary>
             <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
             <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePostCommand(System.String,System.Object)">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/> that is for posting.
             </summary>
             <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
             <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreatePutCommand(System.String,System.Object)">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandAsync"/> that is for putting.
             </summary>
             <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
             <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateRequest(System.Uri,System.Object)">
             <summary>
-            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/> that is used during the request.
             </summary>
             <param name="apiUrl">Specify the api url</param>
             <param name="content">Specify any content that is needed to be sent.</param>
-            <returns></returns>
         </member>
         <member name="M:ZarDevs.Http.Api.IApiCommandFactory.CreateSendCommand(System.String,System.Net.Http.HttpMethod,System.Object)">
             <summary>
