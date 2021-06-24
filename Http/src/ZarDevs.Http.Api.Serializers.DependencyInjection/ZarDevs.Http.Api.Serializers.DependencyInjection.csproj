@@ -23,15 +23,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <DocumentationFile>ZarDevs.Http.Api.Serializers.xml</DocumentationFile>
+    <DocumentationFile>ZarDevs.Http.Api.Serializers.DependencyInjection.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ZarDevs.Http.Abstractions\ZarDevs.Http.Api.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http.Api.Serializers\ZarDevs.Http.Api.Serializers.csproj" />
   </ItemGroup>
 
 </Project>

@@ -85,9 +85,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Tests.WebServe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Client.Tests", "Http\tests\ZarDevs.Http.Client.Tests\ZarDevs.Http.Client.Tests.csproj", "{13716C17-5F81-46ED-890A-ED37CF18DAEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Http.Api.Serializers", "Http\src\ZarDevs.Http.Api.Serializers\ZarDevs.Http.Api.Serializers.csproj", "{8E5EB80A-6292-4376-B3B3-516E39B3D2CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.Serializers", "Http\src\ZarDevs.Http.Api.Serializers\ZarDevs.Http.Api.Serializers.csproj", "{8E5EB80A-6292-4376-B3B3-516E39B3D2CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Http.Api.Tests", "Http\tests\ZarDevs.Http.Api.Tests\ZarDevs.Http.Api.Tests.csproj", "{6FC96C3F-9824-4FFF-8523-2BE7A30A31FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.Tests", "Http\tests\ZarDevs.Http.Api.Tests\ZarDevs.Http.Api.Tests.csproj", "{6FC96C3F-9824-4FFF-8523-2BE7A30A31FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Http.Api.Serializers.DependencyInjection", "Http\src\ZarDevs.Http.Api.Serializers.DependencyInjection\ZarDevs.Http.Api.Serializers.DependencyInjection.csproj", "{00D2BA32-AA78-40E2-8DA4-AC90BE877472}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -199,6 +201,10 @@ Global
 		{6FC96C3F-9824-4FFF-8523-2BE7A30A31FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FC96C3F-9824-4FFF-8523-2BE7A30A31FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FC96C3F-9824-4FFF-8523-2BE7A30A31FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D2BA32-AA78-40E2-8DA4-AC90BE877472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D2BA32-AA78-40E2-8DA4-AC90BE877472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D2BA32-AA78-40E2-8DA4-AC90BE877472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D2BA32-AA78-40E2-8DA4-AC90BE877472}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,6 +243,7 @@ Global
 		{13716C17-5F81-46ED-890A-ED37CF18DAEA} = {AC0FCEE6-0B35-4212-B863-30D99721ABA2}
 		{8E5EB80A-6292-4376-B3B3-516E39B3D2CC} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
 		{6FC96C3F-9824-4FFF-8523-2BE7A30A31FE} = {AC0FCEE6-0B35-4212-B863-30D99721ABA2}
+		{00D2BA32-AA78-40E2-8DA4-AC90BE877472} = {326C7DFF-E27E-4A8B-BB19-8EC784997449}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BBC94B1-CE12-4692-BE35-086344F06179}

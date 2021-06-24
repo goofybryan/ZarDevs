@@ -4,18 +4,94 @@
         <name>ZarDevs.Http.Api</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.Http.Api.IApiCommandContentTypeMap`1">
+            <summary>
+            Api command content type map interface used to retrieve the <typeparamref name="TContentType"/> value for the media type.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Api.IApiCommandContentTypeMap`1.Item(System.String)">
+            <summary>
+            Get the <typeparamref name="TContentType"/> value from the map for the specified <paramref name="mediaType"/>
+            </summary>
+            <param name="mediaType">The media type name</param>
+            <returns>The specified <typeparamref name="TContentType"/> value.</returns>
+            <exception cref="T:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException">This is thrown when no <typeparamref name="TContentType"/> value is found for the <paramref name="mediaType"/></exception>
+        </member>
+        <member name="M:ZarDevs.Http.Api.IApiCommandContentTypeMap`1.TryGetSerializer(System.String,`0@)">
+            <summary>
+            Try and get the <typeparamref name="TContentType"/> value from the map for the specified <paramref name="mediaType"/>
+            </summary>
+            <param name="mediaType">The media type name</param>
+            <param name="contentType">Return specified <typeparamref name="TContentType"/> value.</param>
+            <returns>A <c>true</c> if the value is found.</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Api.ApiCommandContentTypeMap`1">
+            <summary>
+            Api command content serializer map used to look up the appropriate <typeparamref name="TContentType"/> value for the specified media type
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentTypeMap`1.#ctor(System.Collections.Generic.IList{`0})">
+            <summary>
+            Create a new instance of the map.
+            </summary>
+            <param name="contentTypes">Specify the list of content types to map.</param>
+        </member>
+        <member name="P:ZarDevs.Http.Api.ApiCommandContentTypeMap`1.Item(System.String)">
+            <summary>
+            Get the <typeparamref name="TContentType"/> value from the map for the specified <paramref name="mediaType"/>
+            </summary>
+            <param name="mediaType">The media type name</param>
+            <returns>The specified <typeparamref name="TContentType"/> value.</returns>
+            <exception cref="T:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException">This is thrown when no <typeparamref name="TContentType"/> value is found for the <paramref name="mediaType"/></exception>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentTypeMap`1.TryGetSerializer(System.String,`0@)">
+            <summary>
+            Try and get the <typeparamref name="TContentType"/> value from the map for the specified <paramref name="mediaType"/>
+            </summary>
+            <param name="mediaType">The media type name</param>
+            <param name="contentType">Return specified <typeparamref name="TContentType"/> value.</param>
+            <returns>A <c>true</c> if the value is found.</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException">
+            <summary>
+            Exception thrown when the <see cref="T:ZarDevs.Http.Api.ApiCommandContentTypeMap`1"/> cannot find a <see cref="T:ZarDevs.Http.Api.IApiCommandContent"/> value for the media type..
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException.#ctor(System.String)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException"/> exception.
+            </summary>
+            <param name="mediaType">The media type that could not be found.</param>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException.#ctor(System.String,System.String)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException"/> exception.
+            </summary>
+            <param name="mediaType">The media type that could not be found.</param>
+            <param name="message">The message explaining the exeption.</param>
+        </member>
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException"/> exception with serialized data.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException.MediaType">
+            <summary>
+            The media type the exeption was thrown for.
+            </summary>
+        </member>
         <member name="T:ZarDevs.Http.Api.ApiCommandFactory">
             <summary>
             Api command factory used to create commands
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandFactory.#ctor(ZarDevs.Http.Client.IApiHttpFactory,ZarDevs.Http.Api.IHttpResponseFactory,System.Collections.Generic.IList{ZarDevs.Http.Api.IApiCommandContentSerializer})">
+        <member name="M:ZarDevs.Http.Api.ApiCommandFactory.#ctor(ZarDevs.Http.Client.IApiHttpFactory,ZarDevs.Http.Api.IHttpResponseFactory,ZarDevs.Http.Api.IApiCommandContentTypeMap{ZarDevs.Http.Api.IApiCommandContentSerializer})">
             <summary>
-             Create a new instance of the command factory.
+            Create a new instance of the command factory.
             </summary>
             <param name="httpFactory">An instance of the api http factory used to get <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> instances.</param>
             <param name="responseFactory">An instance of the response factory to interpret the responses from the server.</param>
-            <param name="serializers">A list of serializers that is used deserialize the serialize the content that is sent to the server.</param>
+            <param name="serializers">A map of serializers that is used deserialize the serialize the content that is sent to the server.</param>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiCommandFactory.CreateDeleteCommand(System.Object)">
             <summary>

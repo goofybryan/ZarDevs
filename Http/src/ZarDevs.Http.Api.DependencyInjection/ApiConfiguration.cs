@@ -18,6 +18,7 @@ namespace ZarDevs.Http.Api
         {
             builder.Bind<IHttpResponseFactory>().To<HttpResponseFactory>().InSingletonScope();
             builder.Bind<IApiCommandFactory>().To<ApiCommandFactory>().InSingletonScope();
+            builder.Bind(typeof(IApiCommandContentTypeMap<>)).To(typeof(ApiCommandContentTypeMap<>));
 
             builder.Bind<IApiCommandAsync>().ToFactory<IApiCommandFactory>(nameof(IApiCommandFactory.CreateGetCommand)).WithKey(HttpRequestType.Get);
             builder.Bind<IApiCommandAsync>().ToFactory<IApiCommandFactory>(nameof(IApiCommandFactory.CreateDeleteCommand)).WithKey(HttpRequestType.Delete);

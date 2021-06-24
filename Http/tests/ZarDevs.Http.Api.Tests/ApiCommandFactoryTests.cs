@@ -1,6 +1,5 @@
 ﻿using NSubstitute;
 using System;
-using System.Collections.Generic;
 using Xunit;
 using ZarDevs.Http.Client;
 
@@ -20,13 +19,13 @@ namespace ZarDevs.Http.Api.Tests
         [Fact]
         public void CreateDeleteCommand_Execute_ReturnsCommand()
         {
-            CreateCommandTest(factory => factory.CreateDeleteCommand(_key), typeof(ApiDeleteCommandAsync));
+            CreateCommandTest(factory => factory.CreateDeleteCommand(_key), typeof(ApiDeleteCommandAsync), 0);
         }
 
         [Fact]
         public void CreateGetCommand_Execute_ReturnsCommand()
         {
-            CreateCommandTest(factory => factory.CreateGetCommand(_key), typeof(ApiGetCommandAsync));
+            CreateCommandTest(factory => factory.CreateGetCommand(_key), typeof(ApiGetCommandAsync), 0);
         }
 
         [Fact]
@@ -57,7 +56,7 @@ namespace ZarDevs.Http.Api.Tests
             IApiHttpFactory httpFactory = Substitute.For<IApiHttpFactory>();
             IHttpResponseFactory responseFactory = Substitute.For<IHttpResponseFactory>();
             IApiCommandContentSerializer serializer = Substitute.For<IApiCommandContentSerializer>();
-            IList<IApiCommandContentSerializer> serializers = new List<IApiCommandContentSerializer> { serializer };
+            IApiCommandContentTypeMap<IApiCommandContentSerializer> serializers = Substitute.For<IApiCommandContentTypeMap<IApiCommandContentSerializer>>();
 
             var factory = new ApiCommandFactory(httpFactory, responseFactory, serializers);
 
@@ -79,22 +78,22 @@ namespace ZarDevs.Http.Api.Tests
         private void CreateCommandTest(Func<ApiCommandFactory, string, IApiCommandAsync> create, Type commandType)
         {
             // Act
-            CreateCommandTest(factory => create(factory, _mediaType), commandType);
+            CreateCommandTest(factory => create(factory, _mediaType), commandType, 1);
 
             // Assert
         }
 
-        private void CreateCommandTest(Func<ApiCommandFactory, IApiCommandAsync> create, Type commandType)
+        private void CreateCommandTest(Func<ApiCommandFactory, IApiCommandAsync> create, Type commandType, int serializerMapCalls)
         {
             // Arrange
             IApiHttpFactory httpFactory = Substitute.For<IApiHttpFactory>();
             IHttpResponseFactory responseFactory = Substitute.For<IHttpResponseFactory>();
             IApiHttpClient httpClient = Substitute.For<IApiHttpClient>();
             IApiCommandContentSerializer serializer = Substitute.For<IApiCommandContentSerializer>();
-            IList<IApiCommandContentSerializer> serializers = new List<IApiCommandContentSerializer> { serializer };
+            IApiCommandContentTypeMap<IApiCommandContentSerializer> serializers = Substitute.For<IApiCommandContentTypeMap<IApiCommandContentSerializer>>();
 
+            serializers[_mediaType].Returns(serializer);
             httpFactory.NewClient(_key).Returns(httpClient);
-            serializer.MediaTypes.Returns(new[] { _mediaType });
 
             var factory = new ApiCommandFactory(httpFactory, responseFactory, serializers);
 
@@ -107,7 +106,7 @@ namespace ZarDevs.Http.Api.Tests
 
             httpFactory.Received(1).NewClient(Arg.Any<object>());
             httpFactory.Received(1).NewClient(_key);
-            _ = serializer.Received(1).MediaTypes;
+            _ = serializers.Received(serializerMapCalls)[_mediaType];
         }
 
         #endregion Methods

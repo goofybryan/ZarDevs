@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using ZarDevs.Http.Client;
 
@@ -10,45 +9,28 @@ namespace ZarDevs.Http.Api
     /// </summary>
     public class ApiCommandFactory : IApiCommandFactory
     {
-        private readonly IApiHttpFactory _httpFactory;
         #region Fields
 
+        private readonly IApiHttpFactory _httpFactory;
+
         private readonly IHttpResponseFactory _responseFactory;
-        private readonly IDictionary<string, IApiCommandContentSerializer> _serializers;
+        private readonly IApiCommandContentTypeMap<IApiCommandContentSerializer> _serializers;
 
         #endregion Fields
 
         #region Constructors
 
         /// <summary>
-        ///  Create a new instance of the command factory.
+        /// Create a new instance of the command factory.
         /// </summary>
         /// <param name="httpFactory">An instance of the api http factory used to get <see cref="IApiHttpClient"/> instances.</param>
         /// <param name="responseFactory">An instance of the response factory to interpret the responses from the server.</param>
-        /// <param name="serializers">A list of serializers that is used deserialize the serialize the content that is sent to the server.</param>
-        public ApiCommandFactory(IApiHttpFactory httpFactory, IHttpResponseFactory responseFactory, IList<IApiCommandContentSerializer> serializers)
+        /// <param name="serializers">A map of serializers that is used deserialize the serialize the content that is sent to the server.</param>
+        public ApiCommandFactory(IApiHttpFactory httpFactory, IHttpResponseFactory responseFactory, IApiCommandContentTypeMap<IApiCommandContentSerializer> serializers)
         {
-            if (serializers is null)
-            {
-                throw new ArgumentNullException(nameof(serializers));
-            }
-
-            if (serializers.Count == 0)
-            {
-                throw new ArgumentException($"{nameof(serializers)} cannot be an empty collection.", nameof(serializers));
-            }
-
             _httpFactory = httpFactory ?? throw new ArgumentNullException(nameof(httpFactory));
             _responseFactory = responseFactory ?? throw new ArgumentNullException(nameof(responseFactory));
-            _serializers = new Dictionary<string, IApiCommandContentSerializer>();
-
-            foreach (var serializer in serializers)
-            {
-                foreach (var mediaType in serializer.MediaTypes)
-                {
-                    _serializers[mediaType] = serializer;
-                }
-            }
+            _serializers = serializers ?? throw new ArgumentNullException(nameof(serializers));
         }
 
         #endregion Constructors
