@@ -8,6 +8,8 @@ namespace ZarDevs.DependencyInjection.Tests
         public const string MethodWithNoArgs = nameof(MethodWithNoArgs);
         public const string NotMethod = nameof(NotMethod);
         public const string NotResolvedName = nameof(NotResolvedName);
+        public const string Named1 = nameof(Named1);
+        public const string Named2 = nameof(Named2);
 
         #endregion Fields
 
@@ -54,6 +56,8 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest3<>)).WithKey(typeof(MultipleBindingClassTest3<>).Name);
             builder.Bind<IFactoryMethodClass>().To<FactoryMethodClass>().InSingletonScope();
             builder.Bind<IFactoryMethodResolutionClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method));
+            builder.Bind<IFactoryMethodResolutionNamedClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method)).WithKey(Named1);
+            builder.Bind<IFactoryMethodResolutionNamedClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method)).WithKey(Named2);
             builder.Bind<IFactoryMethodResolutionSingletonClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Singleton)).InSingletonScope();
             builder.Bind(typeof(IFactoryMethodClass<>)).To(typeof(FactoryMethodClass<>)).InSingletonScope();
             builder.Bind(typeof(IFactoryMethodResolutionClass<>)).ToFactory(typeof(IFactoryMethodClass<>), "Method");

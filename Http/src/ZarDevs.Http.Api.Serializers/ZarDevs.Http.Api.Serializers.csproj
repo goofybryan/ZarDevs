@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Bryan Musso</Authors>
+    <Company>ZarsDevs</Company>
+    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/goofybryan/ZarDevs/tree/master/Http</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>ZarDevs,Http,Client,Api</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>0.1.0</Version>
+    <LangVersion>9</LangVersion>
+    <Description>This project contains the dependency bindings for the API commands serializers.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\HttpApi.snk</AssemblyOriginatorKeyFile>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Copyright>Copyright (c) ZarDevs 2021</Copyright>
+    <RootNamespace>ZarDevs.Http.Api.Serializers</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>ZarDevs.Http.Api.Serializers.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZarDevs.Http.Abstractions\ZarDevs.Http.Api.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

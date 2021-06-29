@@ -1,46 +1,125 @@
 ﻿using System;
-using ZarDevs.DependencyInjection;
+using System.Net.Http;
+using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public interface IApiCommandFactory
-    {
-        #region Methods
-
-        IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse;
-
-        IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse;
-
-        #endregion Methods
-    }
-
+    /// <summary>
+    /// Api command factory used to create commands
+    /// </summary>
     public class ApiCommandFactory : IApiCommandFactory
     {
         #region Fields
 
-        private readonly IIocContainer _ioc;
+        private readonly IApiHttpFactory _httpFactory;
+
+        private readonly IHttpResponseFactory _responseFactory;
+        private readonly IApiCommandContentTypeMap<IApiCommandContentSerializer> _serializers;
 
         #endregion Fields
 
         #region Constructors
 
-        public ApiCommandFactory(IIocContainer ioc)
+        /// <summary>
+        /// Create a new instance of the command factory.
+        /// </summary>
+        /// <param name="httpFactory">An instance of the api http factory used to get <see cref="IApiHttpClient"/> instances.</param>
+        /// <param name="responseFactory">An instance of the response factory to interpret the responses from the server.</param>
+        /// <param name="serializers">A map of serializers that is used deserialize the serialize the content that is sent to the server.</param>
+        public ApiCommandFactory(IApiHttpFactory httpFactory, IHttpResponseFactory responseFactory, IApiCommandContentTypeMap<IApiCommandContentSerializer> serializers)
         {
-            _ioc = ioc ?? throw new ArgumentNullException(nameof(ioc));
+            _httpFactory = httpFactory ?? throw new ArgumentNullException(nameof(httpFactory));
+            _responseFactory = responseFactory ?? throw new ArgumentNullException(nameof(responseFactory));
+            _serializers = serializers ?? throw new ArgumentNullException(nameof(serializers));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(Enum name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
+        /// <summary>
+        /// Create a new instance of the <see cref="IApiCommandAsync"/> that is for deleting.
+        /// </summary>
+        /// <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
+        public IApiCommandAsync CreateDeleteCommand(object apiClientKey = null)
         {
-            return Create<TRequest, TResponse>(name);
+            var client = _httpFactory.NewClient(apiClientKey);
+
+            return new ApiDeleteCommandAsync(client, _responseFactory);
         }
 
-        public IApiCommandAsync<TRequest, TResponse> Create<TRequest, TResponse>(object name) where TRequest : IApiCommandRequest where TResponse : IApiCommandResponse
+        /// <summary>
+        /// Create a new instance of the <see cref="IApiCommandAsync"/> that is for getting.
+        /// </summary>
+        /// <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
+        public IApiCommandAsync CreateGetCommand(object apiClientKey = null)
         {
-            return _ioc.Resolve<IApiCommandAsync<TRequest, TResponse>>(name);
+            var client = _httpFactory.NewClient(apiClientKey);
+
+            return new ApiGetCommandAsync(client, _responseFactory);
+        }
+
+        /// <summary>
+        /// Create a new instance of the <see cref="IApiCommandAsync"/> that is for patching.
+        /// </summary>
+        /// <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
+        /// <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
+        public IApiCommandAsync CreatePatchCommand(string mediaType, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiPatchCommandAsync(client, serializer, _responseFactory);
+        }
+
+        /// <summary>
+        /// Create a new instance of the <see cref="IApiCommandAsync"/> that is for posting.
+        /// </summary>
+        /// <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
+        /// <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
+        public IApiCommandAsync CreatePostCommand(string mediaType, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiPostCommandAsync(client, serializer, _responseFactory);
+        }
+
+        /// <summary>
+        /// Create a new instance of the <see cref="IApiCommandAsync"/> that is for putting.
+        /// </summary>
+        /// <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
+        /// <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
+        public IApiCommandAsync CreatePutCommand(string mediaType, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiPutCommandAsync(client, serializer, _responseFactory);
+        }
+
+        /// <summary>
+        /// Create a new instance of the <see cref="IApiCommandRequest"/> that is used during the request.
+        /// </summary>
+        /// <param name="apiUrl">Specify the api url</param>
+        /// <param name="content">Specify any content that is needed to be sent.</param>
+        public IApiCommandRequest CreateRequest(Uri apiUrl, object content = null)
+        {
+            return new ApiCommandRequest(apiUrl, content);
+        }
+
+        /// <summary>
+        /// Create a new instance of the <see cref="IApiCommandAsync"/>. This command is meant to be used as a custom command when the normal pattern does not fit.
+        /// </summary>
+        /// <param name="mediaType">Specify the media type that will be used to send any content. This will be used to serialize any content to the api call.</param>
+        /// <param name="sendMethod">Specify the <see cref="HttpMethod"/> that the command with use.</param>
+        /// <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
+        public IApiCommandAsync CreateSendCommand(string mediaType, HttpMethod sendMethod, object apiClientKey = null)
+        {
+            var client = _httpFactory.NewClient(apiClientKey);
+            var serializer = _serializers[mediaType];
+
+            return new ApiSendCommandAsync(client, serializer, _responseFactory, sendMethod);
         }
 
         #endregion Methods

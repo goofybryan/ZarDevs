@@ -150,12 +150,12 @@ namespace ZarDevs.DependencyInjection
                 return resolutions.ToArray();
 
             if (!type.IsConstructedGenericType)
-                return new IDependencyResolution[0];
+                return Array.Empty<IDependencyResolution>();
 
             var genericType = type.GetGenericTypeDefinition();
 
             if (!_typeMap.TryGetValue(genericType, out resolutions))
-                return new IDependencyResolution[0];
+                return Array.Empty<IDependencyResolution>();
 
             return _typeMap.GetOrAdd(type, t => CreateConcreteResolutions(type, resolutions)).ToArray();
         }

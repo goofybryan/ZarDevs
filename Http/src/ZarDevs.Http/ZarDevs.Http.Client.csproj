@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Bryan Musso</Authors>
+    <Company>ZarsDevs</Company>
+    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/goofybryan/ZarDevs/tree/master/Http</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>ZarDevs,Http,Client,Api</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>0.1.0</Version>
+    <LangVersion>9</LangVersion>
+    <Description>This project contains a wrapper for the HttpClient that makes your code unit testable and allows for custome manipulation of the http headers.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\HttpApi.snk</AssemblyOriginatorKeyFile>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Copyright>Copyright (c) ZarDevs 2021</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>ZarDevs.Http.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,42 +1,25 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public class ApiPutCommandAsync : ApiCommandAsyncBase<ApiCommandRequest, ApiCommandResponse>, IApiPutCommandAsync
+    internal class ApiPutCommandAsync : ApiContentCommandAsync
     {
-        #region Fields
-
-        private readonly IHttpResponseFactory _responseFactory;
-
-        #endregion Fields
-
         #region Constructors
 
-        public ApiPutCommandAsync(IApiHttpClient httpClient, IHttpResponseFactory factory) : base(httpClient)
+        public ApiPutCommandAsync(IApiHttpClient httpClient, IApiCommandContentSerializer serializer, IHttpResponseFactory factory) : base(httpClient, serializer, factory)
         {
-            _responseFactory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        protected override async Task<ApiCommandResponse> CreateResponse(ApiCommandRequest originalRequest, HttpResponseMessage httpResponseMessage)
+        protected override async Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content)
         {
-            var response = await _responseFactory.CreateWithJsonContent(originalRequest, httpResponseMessage);
-            return response;
-        }
-
-        protected override async Task<HttpResponseMessage> OnApiCall(ApiCommandRequest request)
-        {
-            if (request is not ApiCommandContentRequest contentRequest)
-            {
-                throw new NotSupportedException("Api command request that does not inherit from ApiCommandContentRequest is not supported.");
-            }
-
-            return await HttpClient.PutAsync(request.ApiUri, contentRequest.Content.WriteAsJson());
+            return await HttpClient.PutAsync(apiUri, content);
         }
 
         #endregion Methods

@@ -1,8 +1,12 @@
 ﻿using System;
 using ZarDevs.DependencyInjection;
+using ZarDevs.Runtime;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
+    /// <summary>
+    /// Configure the Http bindings.
+    /// </summary>
     public static class HttpConfigure
     {
         #region Methods
@@ -11,9 +15,9 @@ namespace ZarDevs.Http
         /// This is used to create HttpRequest handler bindings that can be used to alter the Http request.
         /// </summary>
         /// <typeparam name="THandler">The request handler that must inherit <see cref="IApiHttpRequestHandler"/></typeparam>
-        /// <param name="name">The name of the handler, by default it's string.empty.</param>
+        /// <param name="name">The name of the handler, by default it's null.</param>
         /// <returns></returns>
-        public static IApiHttpRequestHandlerBinding AddHttpRequestHandler<THandler>(string name = "") where THandler : class, IApiHttpRequestHandler
+        public static IApiHttpRequestHandlerBinding AddHttpRequestHandler<THandler>(object name = null) where THandler : class, IApiHttpRequestHandler
         {
             if (ApiHttpFactory.Instance == null) throw new InvalidOperationException("Please configure the HttpFactory using ConfigureHttp method.");
 
@@ -24,23 +28,22 @@ namespace ZarDevs.Http
         /// Configure the API HTTP factory for the solution.
         /// </summary>
         /// <param name="builder">The dependency builder.</param>
-        /// <param name="useIocHttpHandlerFactory">
-        /// Specify if to use the <see cref="DependencyApiHttpFactoryHandler"/>. If false, the
-        /// default factory will be used, see <see cref="DefaultHttpHandlerFactory"/>. This factory
-        /// uses runtime activation to create the handlers, <seealso cref="Runtime.Create"/>.
+        /// <param name="useIocHttpHandlerFactory">Specify if to use the <see cref="DependencyApiHttpFactoryHandler"/>. If false, the default factory will be used, see <see cref="DefaultHttpHandlerFactory"/>. 
+        /// This factory uses runtime activation to create the handlers, <seealso cref="Runtime.Create"/>.
         /// </param>
         /// <returns></returns>
         public static IDependencyBuilder ConfigureHttp(this IDependencyBuilder builder, bool useIocHttpHandlerFactory)
         {
-            if (useIocHttpHandlerFactory) builder.ConfigureHttp(new DependencyApiHttpFactoryHandler(Ioc.Container));
-            else builder.ConfigureHttp(new DefaultHttpHandlerFactory());
-            return builder;
+            IApiHttpHandlerFactory handlerFactory = useIocHttpHandlerFactory ? new DependencyApiHttpFactoryHandler() : new DefaultHttpHandlerFactory(Create.Instance);
+
+            return builder.ConfigureHttp(handlerFactory);
         }
 
         /// <summary>
         /// Configure the API HTTP factory for the solution.
         /// </summary>
         /// <param name="builder">The dependency builder.</param>
+        /// <param name="handlerFactory">Specify the handler factory.</param>
         /// <returns></returns>
         public static IDependencyBuilder ConfigureHttp(this IDependencyBuilder builder, IApiHttpHandlerFactory handlerFactory)
         {
@@ -49,10 +52,10 @@ namespace ZarDevs.Http
                 throw new ArgumentNullException(nameof(handlerFactory));
             }
 
-            ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory);
+            ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory, new ApiHttpRequestHandlerBindingMap());
 
             builder.Bind<IApiHttpFactory>().To(ApiHttpFactory.Instance);
-            builder.Bind<IApiHttpClient>().To((ctx) => ctx.Ioc.Resolve<IApiHttpFactory>().NewClient(ctx.Info.Key)).InTransientScope();
+            builder.Bind<IApiHttpClient>().To((ctx) => ApiHttpFactory.Instance.NewClient(ctx.Info.Key)).InTransientScope();
 
             return builder;
         }

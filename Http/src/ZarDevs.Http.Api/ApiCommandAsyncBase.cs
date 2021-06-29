@@ -1,16 +1,11 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    public abstract class ApiCommandAsyncBase<TRequest, TResponse> : IApiCommandAsync<TRequest, TResponse> where TRequest : ApiCommandRequest where TResponse : ApiCommandResponse
-    {
-        #region Fields
-
-        private bool _disposedValue = false;
-
-        #endregion Fields
-
+    internal abstract class ApiCommandAsyncBase : IApiCommandAsync
+    { 
         #region Constructors
 
         protected ApiCommandAsyncBase(IApiHttpClient httpClient)
@@ -28,32 +23,19 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        public async Task<TResponse> ExecuteAsync(TRequest request)
+        public async Task<IApiCommandResponse> ExecuteAsync(IApiCommandRequest request)
         {
             return await OnExecuteAsync(request);
         }
 
-        protected abstract Task<TResponse> CreateResponse(TRequest originalRequest, HttpResponseMessage httpResponseMessage);
+        protected abstract IApiCommandResponse CreateResponse(HttpResponseMessage httpResponseMessage);
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                _disposedValue = true;
-            }
-        }
+        protected abstract Task<HttpResponseMessage> OnApiCall(IApiCommandRequest request);
 
-        protected abstract Task<HttpResponseMessage> OnApiCall(TRequest request);
-
-        protected virtual async Task<TResponse> OnExecuteAsync(TRequest request)
+        protected virtual async Task<IApiCommandResponse> OnExecuteAsync(IApiCommandRequest request)
         {
             var responseMessage = await OnApiCall(request);
-            return await CreateResponse(request, responseMessage);
+            return CreateResponse(responseMessage);
         }
 
         #endregion Methods

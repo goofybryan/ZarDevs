@@ -1,29 +1,26 @@
-﻿using ZarDevs.DependencyInjection;
+﻿using System;
+using ZarDevs.DependencyInjection;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
-    internal class DependencyApiHttpFactoryHandler : IApiHttpHandlerFactory
+    internal class DependencyApiHttpFactoryHandler : ApiHttpHandlerFactoryBase
     {
-        #region Constructors
-
-        public DependencyApiHttpFactoryHandler(IIocContainer ioc)
-        {
-            Ioc = ioc ?? throw new System.ArgumentNullException(nameof(ioc));
-        }
-
-        #endregion Constructors
-
         #region Properties
 
-        public IIocContainer Ioc { get; }
+        private static IIocContainer Ioc => DependencyInjection.Ioc.Container;
 
         #endregion Properties
 
         #region Methods
 
-        public IApiHttpRequestHandler GetHandler<THandler>() where THandler : class, IApiHttpRequestHandler
+        public override IApiHttpRequestHandler GetHandler<THandler>()
         {
             return Ioc.Resolve<THandler>();
+        }
+
+        public override IApiHttpRequestHandler GetHandler(Type handlerType)
+        {
+            return (IApiHttpRequestHandler) Ioc.TryResolve(handlerType) ?? throw new InvalidOperationException($"The type '{handlerType}' cannot be resolved.");
         }
 
         #endregion Methods

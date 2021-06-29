@@ -4,6 +4,53 @@
         <name>ZarDevs.Runtime</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.Runtime.ICreate">
+            <summary>
+            Create class that is uses reflection to create new objects.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.ICreate.New``1(System.Object[])">
+            <summary>
+            Create a new instance of <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type to create.</typeparam>
+            <param name="constructorArgs">The list of constructor args.</param>
+            <returns>A new instance.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.ICreate.New(System.Type,System.Object[])">
+            <summary>
+            Create a new instace of <paramref name="type"/>
+            </summary>
+            <param name="type">The type to create</param>
+            <param name="constructorArgs">The list of constructor args.</param>
+            <returns>A new instance.</returns>
+        </member>
+        <member name="T:ZarDevs.Runtime.Create">
+            <summary>
+            Create class that is uses reflection to create new objects.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Runtime.Create.Instance">
+            <summary>
+            Static instance of the <see cref="T:ZarDevs.Runtime.ICreate"/> object.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.Create.New``1(System.Object[])">
+            <summary>
+            Create a new instance of <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type to create.</typeparam>
+            <param name="constructorArgs">The list of constructor args.</param>
+            <returns>A new instance.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.Create.New(System.Type,System.Object[])">
+            <summary>
+            Create a new instace of <paramref name="type"/>
+            </summary>
+            <param name="type">The type to create</param>
+            <param name="constructorArgs">The list of constructor args.</param>
+            <returns>A new instance.</returns>
+        </member>
         <member name="T:ZarDevs.Runtime.IInspectConstructor">
             <summary>
             Runtime constructor inpsection.
