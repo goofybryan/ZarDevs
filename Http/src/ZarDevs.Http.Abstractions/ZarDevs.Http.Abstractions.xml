@@ -9,13 +9,12 @@
             Api command exception that is used when there is api command errors. These exceptions are meant to be handled as they are thrown due to API communication or server errors and can be recovered.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandException.#ctor(ZarDevs.Http.Api.IApiCommandResponse,System.String,System.String)">
+        <member name="M:ZarDevs.Http.Api.ApiCommandException.#ctor(ZarDevs.Http.Api.IApiCommandResponse,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandException"/> with the response and message.
             </summary>
             <param name="response"></param>
             <param name="message"></param>
-            <param name="errorContent">Optionally add the error content</param>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiCommandException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>

@@ -11,12 +11,6 @@ namespace ZarDevs.Http.Api
     /// </summary>
     public class ApiCommandException : Exception
     {
-        #region Fields
-
-        private readonly string _errorContent;
-
-        #endregion Fields
-
         #region Constructors
 
         /// <summary>
@@ -24,12 +18,10 @@ namespace ZarDevs.Http.Api
         /// </summary>
         /// <param name="response"></param>
         /// <param name="message"></param>
-        /// <param name="errorContent">Optionally add the error content</param>
-        public ApiCommandException(IApiCommandResponse response, string message, string errorContent = null) : base(message)
+        public ApiCommandException(IApiCommandResponse response, string message) : base(message)
         {
-            StatusCode = Response.StatusCode;
             Response = response ?? throw new ArgumentNullException(nameof(response));
-            _errorContent = errorContent;
+            StatusCode = response.StatusCode;
         }
 
         /// <summary>
@@ -75,16 +67,11 @@ namespace ZarDevs.Http.Api
         /// <returns></returns>
         public override string ToString()
         {
-            var message = new StringBuilder(Message).AppendLine()
+            var message = new StringBuilder(Message)
+                .AppendLine()
                 .Append("StatusCode:").Append(StatusCode);
 
-            var detail = _errorContent?.ToString();
-            if (string.IsNullOrWhiteSpace(detail))
-                return message.ToString();
-
-            return message.AppendLine()
-                .Append("Detail:").Append(detail)
-                .ToString();
+            return message.ToString();
         }
 
         #endregion Methods

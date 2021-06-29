@@ -14,7 +14,6 @@ namespace ZarDevs.Http.Api
         {
             _responseFactory = responseFactory ?? throw new ArgumentNullException(nameof(responseFactory));
             Response = response ?? throw new ArgumentNullException(nameof(response));
-            HasContent = Response.Content != null;
         }
 
         #endregion Constructors
@@ -25,8 +24,6 @@ namespace ZarDevs.Http.Api
         public string Reason => Response.ReasonPhrase;
         public HttpResponseMessage Response { get; }
         public HttpStatusCode StatusCode => Response.StatusCode;
-
-        public bool HasContent { get; }
 
         #endregion Properties
 
@@ -45,9 +42,6 @@ namespace ZarDevs.Http.Api
         public async Task<TContent> TryGetContent<TContent>()
         {
             EnsureSuccess();
-
-            if (Response.Content == null)
-                return default;
 
             var serializer = _responseFactory.GetDeserializer(Response.Content.Headers.ContentType.MediaType);
             TContent content = await serializer.DeserializeAsync<TContent>(Response.Content);
