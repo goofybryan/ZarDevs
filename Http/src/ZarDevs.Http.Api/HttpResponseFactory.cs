@@ -29,9 +29,9 @@ namespace ZarDevs.Http.Api
 
     internal class HttpResponseFactory : IHttpResponseFactory
     {
-        private readonly IList<IApiCommandContentDeserializer> _deserializers;
+        private readonly IApiCommandContentTypeMap<IApiCommandContentDeserializer> _deserializers;
 
-        public HttpResponseFactory(IList<IApiCommandContentDeserializer> deserializers)
+        public HttpResponseFactory(IApiCommandContentTypeMap<IApiCommandContentDeserializer> deserializers)
         {
             _deserializers = deserializers ?? throw new ArgumentNullException(nameof(deserializers));
         }
@@ -45,7 +45,7 @@ namespace ZarDevs.Http.Api
 
         public IApiCommandContentDeserializer GetDeserializer(string mediaType)
         {
-            return _deserializers.FirstOrDefault(d => d.IsValidFor(mediaType));
+            return _deserializers[mediaType];
         }
 
         #endregion Methods

@@ -2,6 +2,9 @@
 
 namespace ZarDevs.Http.Api.Serializers
 {
+    /// <summary>
+    /// Api serialization configuration.
+    /// </summary>
     public static class ApiSerializerConfiguration
     {
         #region Methods
@@ -35,10 +38,12 @@ namespace ZarDevs.Http.Api.Serializers
         /// </summary>
         public enum ApiSerializer
         {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
             Json,
             Xml,
             FormUrlEncoded,
             String
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         }
 
         #endregion Enums

@@ -98,7 +98,7 @@ namespace ZarDevs.Http.Api.Tests
         private HttpResponseMessage CreateResponse(HttpStatusCode statusCode, string reason, string response)
         {
             HttpResponseMessage message = new(statusCode) { ReasonPhrase = reason };
-            
+
             message.Content = new StringContent(response ?? "");
 
             return message;
