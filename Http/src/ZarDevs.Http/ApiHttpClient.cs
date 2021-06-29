@@ -35,10 +35,10 @@ namespace ZarDevs.Http.Client
             return message;
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(Uri apiUri)
+        public Task<HttpResponseMessage> DeleteAsync(Uri apiUri)
         {
             var request = CreateRequest(HttpMethod.Delete, apiUri);
-            return await SendAsync(request);
+            return SendAsync(request);
         }
 
         public Task<HttpResponseMessage> DeleteAsync(string apiUrl)
@@ -46,10 +46,10 @@ namespace ZarDevs.Http.Client
             return DeleteAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute));
         }
 
-        public async Task<HttpResponseMessage> GetAsync(Uri apiUri)
+        public Task<HttpResponseMessage> GetAsync(Uri apiUri)
         {
             var request = CreateRequest(HttpMethod.Get, apiUri);
-            return await SendAsync(request);
+            return SendAsync(request);
         }
 
         public Task<HttpResponseMessage> GetAsync(string apiUrl)
@@ -57,7 +57,7 @@ namespace ZarDevs.Http.Client
             return GetAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute));
         }
 
-        public async Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
+        public Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
         {
 #if NET5_0_OR_GREATER
             HttpMethod method = HttpMethod.Patch;
@@ -65,7 +65,7 @@ namespace ZarDevs.Http.Client
             HttpMethod method = new("PATCH");
 #endif
             var request = CreateRequest(method, apiUri, httpContent);
-            return await SendAsync(request);
+            return SendAsync(request);
         }
 
         public Task<HttpResponseMessage> PatchAsync(string apiUrl, HttpContent httpContent)
@@ -73,10 +73,10 @@ namespace ZarDevs.Http.Client
             return PatchAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
         }
 
-        public async Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent)
+        public Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent)
         {
             var request = CreateRequest(HttpMethod.Post, apiUri, httpContent);
-            return await SendAsync(request);
+            return SendAsync(request);
         }
 
         public Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent)
@@ -84,10 +84,10 @@ namespace ZarDevs.Http.Client
             return PostAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
         }
 
-        public async Task<HttpResponseMessage> PutAsync(Uri apiUri, HttpContent httpContent)
+        public Task<HttpResponseMessage> PutAsync(Uri apiUri, HttpContent httpContent)
         {
             var request = CreateRequest(HttpMethod.Put, apiUri, httpContent);
-            return await SendAsync(request);
+            return SendAsync(request);
         }
 
         public Task<HttpResponseMessage> PutAsync(string apiUrl, HttpContent httpContent)
