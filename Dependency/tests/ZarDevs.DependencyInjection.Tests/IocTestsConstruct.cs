@@ -121,6 +121,25 @@ namespace ZarDevs.DependencyInjection.Tests
         }
 
         [Fact]
+        public void Resolve_FactoryMethodNamedWithIocResolvedArgs_ReturnsMethodResult()
+        {
+            // Act
+            IFactoryMethodResolutionNamedClass methodClass1 = Ioc.ResolveNamed<IFactoryMethodResolutionNamedClass>(Bindings.Named1);
+            IFactoryMethodResolutionNamedClass methodClass2 = Ioc.ResolveNamed<IFactoryMethodResolutionNamedClass>(Bindings.Named2);
+
+            // Assert
+            AssertInstanceIsNotSame(methodClass1, methodClass2);
+
+            Assert.NotNull(methodClass1.NormalClass);
+            Assert.NotNull(methodClass1.MultipleBindings);
+            AssertMultipleBindings(methodClass1.MultipleBindings.ToList(), 3);
+
+            Assert.NotNull(methodClass2.NormalClass);
+            Assert.NotNull(methodClass2.MultipleBindings);
+            AssertMultipleBindings(methodClass2.MultipleBindings.ToList(), 3);
+        }
+
+        [Fact]
         public void Resolve_FactoryMethodWithPassedArgs_ReturnsMethodResult()
         {
             // Act

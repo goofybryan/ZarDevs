@@ -1,6 +1,6 @@
 # Introduction
 
-This project will contain my Http Security Abstractions. I have created the preliminary
+This project contains a testable abstraction of the http client. I liked what Microsoft did with [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-5.0) and [message handlers](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpmessagehandler?view=net-5.0). Initially I used these classes to achieve my goal of manipulating the auth header but later I decided to create my own abstraction for unit testability and control.
 
 ## What still needs to be done
 

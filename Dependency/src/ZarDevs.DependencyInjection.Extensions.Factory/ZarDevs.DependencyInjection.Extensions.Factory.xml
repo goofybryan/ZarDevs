@@ -12,8 +12,8 @@
         <member name="P:ZarDevs.DependencyInjection.IDependencyFactory.FactoryInfos">
             <summary>
             Get a list of factory dependency info that this factory can resolve. This list gets
-            updated when <see cref="M:ZarDevs.DependencyInjection.IDependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)" /> or <see
-            cref="M:ZarDevs.DependencyInjection.IDependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)" /> is called.
+            updated when <see cref="M:ZarDevs.DependencyInjection.IDependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)"/> or <see
+            cref="M:ZarDevs.DependencyInjection.IDependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)"/> is called.
             </summary>
         </member>
         <member name="P:ZarDevs.DependencyInjection.IDependencyFactory.InspectMethod">
@@ -45,13 +45,16 @@
             Create new instance of dependnecy factory.
             </summary>
             <param name="inspectMethod">The runtime method inspector.</param>
-            <param name="enableExpressions">Enable the resolving to make use of <see cref="T:System.Linq.Expressions.Expression" /> to execute the factory. Default is true /></param>
+            <param name="enableExpressions">
+            Enable the resolving to make use of <see cref="T:System.Linq.Expressions.Expression"/> to
+            execute the factory. Default is true/&gt;
+            </param>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyFactory.FactoryInfos">
             <summary>
             Get a list of factory dependency info that this factory can resolve. This list gets
-            updated when <see cref="M:ZarDevs.DependencyInjection.DependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)" /> or <see
-            cref="M:ZarDevs.DependencyInjection.DependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)" /> is called.
+            updated when <see cref="M:ZarDevs.DependencyInjection.DependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)"/> or <see
+            cref="M:ZarDevs.DependencyInjection.DependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)"/> is called.
             </summary>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyFactory.InspectMethod">

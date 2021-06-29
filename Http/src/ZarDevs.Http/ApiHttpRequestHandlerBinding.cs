@@ -1,50 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace ZarDevs.Http
+namespace ZarDevs.Http.Client
 {
-    internal class ApiHttpRequestHandlerBinding<THandler> : IApiHttpRequestHandlerBinding where THandler : class, IApiHttpRequestHandler
+    internal class ApiHttpRequestHandlerBinding : IApiHttpRequestHandlerBinding
     {
         #region Fields
 
         private readonly IApiHttpHandlerFactory _factory;
+        private readonly Type _handlerType;
 
         #endregion Fields
 
         #region Constructors
 
-        public ApiHttpRequestHandlerBinding(IApiHttpHandlerFactory factory)
+        public ApiHttpRequestHandlerBinding(IApiHttpHandlerFactory factory, Type handlerType)
         {
-            Name = "";
-            _factory = factory ?? throw new System.ArgumentNullException(nameof(factory));
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
+            _handlerType = handlerType ?? throw new ArgumentNullException(nameof(handlerType));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public string Name { get; private set; }
-
+        public Type HandlerType => _handlerType;
+        public object Name { get; private set; }
         internal IList<IApiHttpRequestHandlerBinding> Bindings { get; } = new List<IApiHttpRequestHandlerBinding>();
-        internal IApiHttpRequestHandlerBinding Next { get; private set; }
+        internal IApiHttpRequestHandlerBinding Next { get; set; }
 
         #endregion Properties
 
         #region Methods
 
-        public IApiHttpRequestHandlerBinding Add<TBinding>() where TBinding : class, IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding AppendHandler<TBinding>() where TBinding : class, IApiHttpRequestHandler
         {
-            var binding = new ApiHttpRequestHandlerBinding<TBinding>(_factory);
+            return AppendHandler(typeof(TBinding));
+        }
+
+        public IApiHttpRequestHandlerBinding AppendHandler(Type handlerType)
+        {
+            var binding = new ApiHttpRequestHandlerBinding(_factory, handlerType);
             Bindings.Add(binding);
             return binding;
         }
 
         public IApiHttpRequestHandler Build()
         {
-            var handler = _factory.GetHandler<THandler>();
+            var handler = _factory.GetHandler(_handlerType);
 
             if (Next != null)
             {
-                handler.SetInnerHandler(Next.Build());
+                handler.SetNextHandler(Next.Build());
             }
 
             foreach (var binding in Bindings)
@@ -55,17 +62,22 @@ namespace ZarDevs.Http
             return handler;
         }
 
-        public IApiHttpRequestHandlerBinding Chain<TNext>() where TNext : class, IApiHttpRequestHandler
+        public IApiHttpRequestHandlerBinding Named(object name)
         {
-            var binding = new ApiHttpRequestHandlerBinding<TNext>(_factory);
-            Next = binding;
-            return binding;
+            Name = name;
+            return this;
         }
 
-        public IApiHttpRequestHandlerBinding Named(string name)
+        public IApiHttpRequestHandlerBinding SetNextHandler<TNext>() where TNext : class, IApiHttpRequestHandler
         {
-            Name = name ?? "";
-            return this;
+            return SetNextHandler(typeof(TNext));
+        }
+
+        public IApiHttpRequestHandlerBinding SetNextHandler(Type handlerType)
+        {
+            var binding = new ApiHttpRequestHandlerBinding(_factory, handlerType);
+            Next = binding;
+            return binding;
         }
 
         #endregion Methods

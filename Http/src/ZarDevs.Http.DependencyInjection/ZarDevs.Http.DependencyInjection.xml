@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.Http.Client.DependencyInjection</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.Http.Client.HttpConfigure">
+            <summary>
+            Configure the Http bindings.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Client.HttpConfigure.AddHttpRequestHandler``1(System.Object)">
+            <summary>
+            This is used to create HttpRequest handler bindings that can be used to alter the Http request.
+            </summary>
+            <typeparam name="THandler">The request handler that must inherit <see cref="T:ZarDevs.Http.Client.IApiHttpRequestHandler"/></typeparam>
+            <param name="name">The name of the handler, by default it's null.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.HttpConfigure.ConfigureHttp(ZarDevs.DependencyInjection.IDependencyBuilder,System.Boolean)">
+            <summary>
+            Configure the API HTTP factory for the solution.
+            </summary>
+            <param name="builder">The dependency builder.</param>
+            <param name="useIocHttpHandlerFactory">Specify if to use the <see cref="T:ZarDevs.Http.Client.DependencyApiHttpFactoryHandler"/>. If false, the default factory will be used, see <see cref="T:ZarDevs.Http.Client.DefaultHttpHandlerFactory"/>. 
+            This factory uses runtime activation to create the handlers, <seealso cref="T:ZarDevs.Runtime.Create"/>.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Client.HttpConfigure.ConfigureHttp(ZarDevs.DependencyInjection.IDependencyBuilder,ZarDevs.Http.Client.IApiHttpHandlerFactory)">
+            <summary>
+            Configure the API HTTP factory for the solution.
+            </summary>
+            <param name="builder">The dependency builder.</param>
+            <param name="handlerFactory">Specify the handler factory.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

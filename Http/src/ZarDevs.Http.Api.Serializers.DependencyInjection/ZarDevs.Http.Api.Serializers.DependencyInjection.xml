@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.Http.Api.Serializers.DependencyInjection</name>
+    </assembly>
+    <members>
+        <member name="M:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ConfigureApi(ZarDevs.DependencyInjection.IDependencyBuilder)">
+            <summary>
+            Configure the <see cref="T:ZarDevs.Http.Api.IApiCommandContentSerializer"/> serializers and <see cref="T:ZarDevs.Http.Api.IApiCommandContentDeserializer"/> deserializers.
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer">
+            <summary>
+            Api serializers binded.
+            </summary>
+        </member>
+    </members>
+</doc>

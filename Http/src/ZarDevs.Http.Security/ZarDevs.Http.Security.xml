@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZarDevs.Http.Security</name>
+    </assembly>
+    <members>
+        <member name="T:ZarDevs.Http.Security.ApiConfiguration">
+            <summary>
+            Api configuration
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.ApiConfiguration.TokenEndpoint">
+            <summary>
+            Specify the token endpoint.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.HttpSecurityException">
+            <summary>
+            Http security exception that should be handled.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.HttpSecurityException.#ctor(System.String)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Security.HttpSecurityException"/>
+            </summary>
+            <param name="message">Specify the message.</param>
+        </member>
+        <member name="M:ZarDevs.Http.Security.HttpSecurityException.#ctor(System.String,System.Exception)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.Http.Security.HttpSecurityException"/>
+            </summary>
+            <param name="message">Specify the message.</param>
+            <param name="innerException">Add the original exception that occurred.</param>
+        </member>
+        <member name="M:ZarDevs.Http.Security.HttpSecurityException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Internal constructor for serialization.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.IHttpSecurityFactory">
+            <summary>
+            Http factory interface that will be used to create the core security handlers.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.IHttpSecurityFactory.CreateAuthHeaderHandler">
+            <summary>
+            Create the http security request handler.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.IHttpSecurityFactory.CreateTokenRefreshHandler">
+            <summary>
+            Create the token refresh handler.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.Http.Security.IHttpSecurityFactory.CreateTokenRenewHandler(ZarDevs.Http.Security.ILoginUserPasswordAsync)">
+            <summary>
+            Create the token refresh handler.
+            </summary>
+            <param name="userLoginCommand">Specify the user login command.</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZarDevs.Http.Security.IHttpSecurityRequestHandler">
+            <summary>
+            Http Security request handler that will be used to validate current request and inject the appropriate http headers in the request.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.ILoginUserPasswordAsync">
+            <summary>
+            Interface that is used to get the user name and password used during the login process.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ILoginUserPasswordAsync.RetrieveAsync">
+            <summary>
+            Retrieve the login details and return the <see cref="T:ZarDevs.Http.Security.UserLoginParameters"/>
+            </summary>
+        </member>
+        <member name="T:ZarDevs.Http.Security.ISecurityConfiguration">
+            <summary>
+            Security configuration used
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ISecurityConfiguration.TryGet``1(System.String,``0@)">
+            <summary>
+            Get the specified <typeparamref name="TValue"/> value from the configuration
+            </summary>
+            <typeparam name="TValue">The value type that needs to be returned.</typeparam>
+            <param name="name">Specify the name of the configuration to get.</param>
+            <param name="value">The value is returned if the value exists for the configuration name.</param>
+            <returns>Returns a true if the value exists and is returned.</returns>
+        </member>
+        <member name="M:ZarDevs.Http.Security.ISecurityConfiguration.Update``1(System.String,``0)">
+            <summary>
+            Update the configuration value.
+            </summary>
+            <typeparam name="TValue">The value type that needs to be returned.</typeparam>
+            <param name="name">Specify the name of the configuration to update.</param>
+            <param name="value">The value to update.</param>
+        </member>
+        <member name="T:ZarDevs.Http.Security.UserLoginParameters">
+            <summary>
+            User login parameters that is used when logging in using the classing username and password combination.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.UserLoginParameters.Additional">
+            <summary>
+            Get a dictional dictionary parameters that can be used. Example is adding the keyword
+            'Scopes' and the an array of valid scopes for the user.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.UserLoginParameters.Cancelled">
+            <summary>
+             Get or set a value that the process has been cancelled.
+             </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.UserLoginParameters.Password">
+            <summary>
+            Get or set the password
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Http.Security.UserLoginParameters.Username">
+            <summary>
+            Get or set the username
+            </summary>
+        </member>
+    </members>
+</doc>

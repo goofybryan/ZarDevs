@@ -4,7 +4,7 @@
 
 This project contains the Runtime implementation of the [Dependency Injection](..\ZarDevs.DependencyInjection\README.md). The intended use it that you would only add this to your start project. This will then translate the bindings made in the other projects into Runtime native bindings.
 
-This project is my own brainchild. I wanted to see if I could create a simplistic IOC that could be just as effective as any other. This obviously does not have the advanced features of more mature IOC technologies._Currently the project is RuntimeFacrto but I will rename it in the future_
+This project is my own brainchild. I wanted to see if I could create a simplistic IOC that could be just as effective as any other. This obviously does not have the advanced features of more mature IOC technologies. This is fun and I have learnt that there is something called [expressions](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression?view=net-5.0), that makes runtime manipulation ultrafast. This is a toggle, so the old mechanism using reflection is still available and any code where there is unknowns will not make use of expressions to run. _Currently the project is RuntimeFactory folder but I will rename it in the future_
 
 ## How To
 

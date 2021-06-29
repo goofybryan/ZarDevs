@@ -2,7 +2,7 @@
 
 ## Introduction
 
-I have been working in the .Net environment for years, and I as everyone know, you generate a style of how you code. So when it comes to new projects, I always tend to have the same patterns. However, I was working with a friend of mine, developing the backbone and putting place what needs to be done and his comment stuck with me. He said that what did just made it easy to follow.
+I have been working in the .Net environment for years, and I as everyone know, you generate a style of how you code. So when it comes to new projects, I always tend to have the style of coding and patterns. There are plenty of ways to skin a fish and I myself enjoy certain combinations, and try to abstract myself from any specific way of doing things. However, I do enjoy the concept of IOC and have been wanting to play in this area.
 
 The concept behind these libraries is to create a unified/standardized way to do [IOC (Inversion of Control)](https://en.wikipedia.org/wiki/Inversion_of_control). Currently everyone has their own way of how to implement it and there isn't a standard way of doing this. Either you have to choose a specific technology, like [Ninject](http://www.ninject.org/), [AutoFac](https://autofac.org/), [Microsoft](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0), etc. and use it or choose a completely different pattern. This prevents one from creating re-useable shareable code using a IOC pattern without deciding upfront which technology you are going to use.
 
@@ -12,7 +12,7 @@ My goal was to write a standardized way to create bindings and then have them "t
 
 I enjoy writing code that takes away the need to continually write complex code to do simple tasks. For example just to communicate to an authenticated server there is several steps that need to checked before and after each call to the server. And these steps are sometime very hard to cater for because you do not know where your solution will be used.
 
-What I did not cater by choice was `Scoped` variables. These are complex behaviours that can be easily overcome using other means and/or directly implementing them in the underlying technology.
+What I did not cater by choice was `Scoped` variables. I plan on implementation this for websites as an extension.
 
 To see how to use please read the following [document](./src/ZarDevs.DependencyInjection/README.md)
 
@@ -22,33 +22,24 @@ What I like about it is the fact that you allow the infrastructure to give you t
 
     ```c#
     // Illustrative purposes only.
-    public class IocExample
+    public static class IocExample
     {
-        private readonly IGetCommand _ioc;
-        private readonly IGetCommand _factory;
-
-
-        public IocExample(IIocContainer Ioc, IFactory factory)
+        public static Task<string> ExampleIoc(string url)
         {
-            _ioc = ioc ?? throw new ArgumentNullException("Ioc cannot be null", nameof(ioc));
-            _factory_ = factory ?? throw new ArgumentNullException("Factory cannot be null", nameof(factory));
-        }
-
-        public Task<string> ExampleIoc(string url)
-        {
-            // All the required classes will be injected into the GetCommand
-            var command = _ioc.Get<IGetCommand>();
+            // Using service locator pattern, you could request that the IOC give you the command (ideally you would use constructor injection but this is just an example.)
+            var command = Ioc.Get<IGetCommand>();
             return command.ExecuteAsync(url);
         }
 
-        public Task<string> ExampleFactory(string url)
+        public static Task<string> ExampleFactory(string url)
         {
-            // Very similar to IOC, great alternative, just very rigid and needs to be implemented.
-            var command = _factory.CreateGetCommand();
+            // Very similar to IOC, great alternative, just very rigid and needs to be implemented, but requires a factory object (ideally you would use constructor injection but this is just an example.)
+            var factory = new ExampleFactory();
+            var command = factory.CreateGetCommand();
             return command.ExecuteAsync(url);
         }
 
-        public Task<string> ExampleNative(string url)
+        public static Task<string> ExampleNative(string url)
         {
             // Essentially what the factory would do behind the scenes. However, testability of this code is hard.
             ILoginProcess loginProcess = new LoginProcess();
@@ -167,11 +158,20 @@ What I like about it is the fact that you allow the infrastructure to give you t
 
 1. Validation of bindings
 1. Validation tests construct
-1. Optimization (look at code and see where I can improve)
+1. Optimizations (look at code and see where I can improve)
 1. Investigate better `Build<T>().To<T>()` Pattern
 1. Perhaps support `IServiceProvider` explicitly?
 1. Memory load testing (ensure that I am not too much of an overhead)
 1. More tests
+1. Implement a scoped implementation as extension
+1. Optimize the Factory dependency expression builder to allow for passed in parameters plans
+1. IAsyncDisposable support
+1. Investigate code source generation for IOC (https://devblogs.microsoft.com/dotnet/using-c-source-generators-to-create-an-external-dsl/)
+1. Create examples:
+    1. Example web server project
+    1. Example Xamarin Forms project with both Android and iOS
+    1. Example Blazor
+    1. More examples
 
 ## Links
 

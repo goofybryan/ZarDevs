@@ -1,28 +1,37 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
-    <RootNamespace>ZarDevs.Http.Api</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
-    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/tree/master/Dependency</PackageProjectUrl>
-    <RepositoryUrl>https://dev.azure.com/ZarDevs/_git/ZarDevs</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/goofybryan/ZarDevs/tree/master/Http</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>ZarDevs Core</PackageTags>
+    <PackageTags>ZarDevs,Http,Client,Api</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
     <LangVersion>9</LangVersion>
+    <Description>This project a api driven command infrastructure. The concept is to allow for easy API driven command and response handling.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\HttpApi.snk</AssemblyOriginatorKeyFile>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Copyright>Copyright (c) ZarDevs 2021</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>ZarDevs.Http.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
-    <ProjectReference Include="..\ZarDevs.Http.Abstractions\ZarDevs.Http.Abstractions.csproj" />
-    <ProjectReference Include="..\ZarDevs.Http\ZarDevs.Http.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http.Abstractions\ZarDevs.Http.Api.Abstractions.csproj" />
+    <ProjectReference Include="..\ZarDevs.Http\ZarDevs.Http.Client.csproj" />
   </ItemGroup>
 
 </Project>
