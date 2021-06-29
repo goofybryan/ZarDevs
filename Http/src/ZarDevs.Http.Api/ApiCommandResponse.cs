@@ -7,7 +7,12 @@ namespace ZarDevs.Http.Api
 {
     internal class ApiCommandResponse : IApiCommandResponse
     {
+        #region Fields
+
         private readonly IHttpResponseFactory _responseFactory;
+
+        #endregion Fields
+
         #region Constructors
 
         public ApiCommandResponse(IHttpResponseFactory responseFactory, HttpResponseMessage response)
@@ -21,11 +26,10 @@ namespace ZarDevs.Http.Api
 
         #region Properties
 
+        public bool HasContentType { get; }
         public bool IsSuccess => Response.IsSuccessStatusCode;
         public string Reason => Response.ReasonPhrase;
         public HttpResponseMessage Response { get; }
-        public bool HasContentType { get; }
-
         public HttpStatusCode StatusCode => Response.StatusCode;
 
         #endregion Properties
