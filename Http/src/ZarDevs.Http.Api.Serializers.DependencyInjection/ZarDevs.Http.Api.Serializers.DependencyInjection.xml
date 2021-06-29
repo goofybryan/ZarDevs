@@ -4,6 +4,11 @@
         <name>ZarDevs.Http.Api.Serializers.DependencyInjection</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration">
+            <summary>
+            Api serialization configuration.
+            </summary>
+        </member>
         <member name="M:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ConfigureApi(ZarDevs.DependencyInjection.IDependencyBuilder)">
             <summary>
             Configure the <see cref="T:ZarDevs.Http.Api.IApiCommandContentSerializer"/> serializers and <see cref="T:ZarDevs.Http.Api.IApiCommandContentDeserializer"/> deserializers.

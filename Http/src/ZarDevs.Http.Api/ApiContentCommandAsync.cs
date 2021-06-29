@@ -5,28 +5,40 @@ using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
-    internal abstract class ApiContentCommandAsync : ApiCommandAsyncBase
+    /// <summary>
+    /// Api abstract command for content that implements the base construct of the API Command infrastructure.
+    /// </summary>
+    public abstract class ApiContentCommandAsync : ApiCommandAsync
     {
         private readonly IApiCommandContentSerializer _serializer;
-        private readonly IHttpResponseFactory _responseFactory;
 
-        protected ApiContentCommandAsync(IApiHttpClient httpClient, IApiCommandContentSerializer serializer, IHttpResponseFactory responseFactory) : base(httpClient)
+        /// <summary>
+        /// Protected constructor that enforces the required variables needed for this implementation.
+        /// </summary>
+        /// <param name="httpClient">The <see cref="IApiHttpClient"/> client used for sending the delete request.</param>
+        /// <param name="serializer">The serializer that is used to serialize the <see cref="IApiCommandRequest.Content"/> to <see cref="HttpContent"/>.</param>
+        /// <param name="responseFactory">The <see cref="IHttpResponseFactory"/> factory used for creating the response.</param>
+        protected ApiContentCommandAsync(IApiHttpClient httpClient, IApiCommandContentSerializer serializer, IHttpResponseFactory responseFactory) : base(httpClient, responseFactory)
         {
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
-            _responseFactory = responseFactory ?? throw new ArgumentNullException(nameof(responseFactory));
         }
 
-        protected override  IApiCommandResponse CreateResponse(HttpResponseMessage httpResponseMessage)
-        {
-            IApiCommandResponse response = _responseFactory.CreateResponse(httpResponseMessage);
-            return response;
-        }
-
+        /// <summary>
+        /// Call the specific api call for the specified <paramref name="request"/>
+        /// </summary>
+        /// <param name="request">The request message that contains the content need for the server call.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
         protected override Task<HttpResponseMessage> OnApiCall(IApiCommandRequest request)
         {
             return OnApiCall(request.ApiUri, _serializer.Serialize(request));
         }
 
+        /// <summary>
+        /// Call the specific api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
+        /// </summary>
+        /// <param name="apiUri">The api <see cref="Uri"/>.</param>
+        /// <param name="content">The <see cref="HttpContent"/> to call.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
         protected abstract Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content);
     }
 }

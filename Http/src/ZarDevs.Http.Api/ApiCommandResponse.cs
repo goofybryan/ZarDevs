@@ -14,6 +14,7 @@ namespace ZarDevs.Http.Api
         {
             _responseFactory = responseFactory ?? throw new ArgumentNullException(nameof(responseFactory));
             Response = response ?? throw new ArgumentNullException(nameof(response));
+            HasContentType = Response.Content?.Headers?.ContentType is not null;
         }
 
         #endregion Constructors
@@ -23,6 +24,8 @@ namespace ZarDevs.Http.Api
         public bool IsSuccess => Response.IsSuccessStatusCode;
         public string Reason => Response.ReasonPhrase;
         public HttpResponseMessage Response { get; }
+        public bool HasContentType { get; }
+
         public HttpStatusCode StatusCode => Response.StatusCode;
 
         #endregion Properties
@@ -42,6 +45,9 @@ namespace ZarDevs.Http.Api
         public async Task<TContent> TryGetContent<TContent>()
         {
             EnsureSuccess();
+
+            if (!HasContentType)
+                return default;
 
             var serializer = _responseFactory.GetDeserializer(Response.Content.Headers.ContentType.MediaType);
             TContent content = await serializer.DeserializeAsync<TContent>(Response.Content);
