@@ -17,7 +17,7 @@ namespace ZarDevs.Http.Api.Serializers
         /// <summary>
         /// Get the content type that can be added to the headers or compared to.
         /// </summary>
-        public IList<string> MediaTypes => HttpContentType.FormUrlEncoded;
+        public IReadOnlyList<string> MediaTypes => HttpContentType.FormUrlEncoded;
 
         #endregion Properties
 

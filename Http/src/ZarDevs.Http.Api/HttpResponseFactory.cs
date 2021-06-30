@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 
 namespace ZarDevs.Http.Api
@@ -13,7 +11,7 @@ namespace ZarDevs.Http.Api
         #region Methods
 
         /// <summary>
-        /// Create the a <see cref="IApiCommandResponse"/> response from the <see cref="HttpResponseMessage"/> <paramref name="response"/>.
+        /// Create the a <see cref="IApiCommandResponse"/> response from the <see cref="HttpResponseMessage"/><paramref name="response"/>.
         /// </summary>
         /// <param name="response">The <see cref="HttpResponseMessage"/> from the client.</param>
         IApiCommandResponse CreateResponse(HttpResponseMessage response);
@@ -29,12 +27,20 @@ namespace ZarDevs.Http.Api
 
     internal class HttpResponseFactory : IHttpResponseFactory
     {
+        #region Fields
+
         private readonly IApiCommandContentTypeMap<IApiCommandContentDeserializer> _deserializers;
+
+        #endregion Fields
+
+        #region Constructors
 
         public HttpResponseFactory(IApiCommandContentTypeMap<IApiCommandContentDeserializer> deserializers)
         {
             _deserializers = deserializers ?? throw new ArgumentNullException(nameof(deserializers));
         }
+
+        #endregion Constructors
 
         #region Methods
 

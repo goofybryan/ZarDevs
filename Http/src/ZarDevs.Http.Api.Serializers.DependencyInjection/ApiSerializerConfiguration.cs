@@ -38,12 +38,22 @@ namespace ZarDevs.Http.Api.Serializers
         /// </summary>
         public enum ApiSerializer
         {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+            /// <summary>
+            /// <see cref="Json"/>
+            /// </summary>
             Json,
+            /// <summary>
+            /// <see cref="Xml"/>
+            /// </summary>
             Xml,
+            /// <summary>
+            /// <see cref="FormUrlEncoded"/>
+            /// </summary>
             FormUrlEncoded,
+            /// <summary>
+            /// <see cref="String"/>
+            /// </summary>
             String
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         }
 
         #endregion Enums

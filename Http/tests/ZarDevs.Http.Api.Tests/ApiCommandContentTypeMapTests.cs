@@ -129,7 +129,7 @@ namespace ZarDevs.Http.Api.Tests
         #region Properties
 
         public int IsValidForCallCount { get; set; }
-        public IList<string> MediaTypes { get; }
+        public IReadOnlyList<string> MediaTypes { get; }
 
         #endregion Properties
 

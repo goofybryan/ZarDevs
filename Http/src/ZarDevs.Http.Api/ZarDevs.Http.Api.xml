@@ -370,7 +370,7 @@
         </member>
         <member name="M:ZarDevs.Http.Api.IHttpResponseFactory.CreateResponse(System.Net.Http.HttpResponseMessage)">
             <summary>
-            Create the a <see cref="T:ZarDevs.Http.Api.IApiCommandResponse"/> response from the <see cref="T:System.Net.Http.HttpResponseMessage"/> <paramref name="response"/>.
+            Create the a <see cref="T:ZarDevs.Http.Api.IApiCommandResponse"/> response from the <see cref="T:System.Net.Http.HttpResponseMessage"/><paramref name="response"/>.
             </summary>
             <param name="response">The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the client.</param>
         </member>

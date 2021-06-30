@@ -9,83 +9,83 @@ namespace ZarDevs.Http.Api
     {
         #region Fields
 
-        private static readonly IList<string> aac = new[] { "audio/aac" };
-        private static readonly IList<string> abw = new[] { "application/x-abiword" };
-        private static readonly IList<string> arc = new[] { "application/x-freearc" };
-        private static readonly IList<string> avi = new[] { "video/x-msvideo" };
-        private static readonly IList<string> azw = new[] { "application/vnd.amazon.ebook" };
-        private static readonly IList<string> bin = new[] { "application/octet-stream" };
-        private static readonly IList<string> bmp = new[] { "image/bmp" };
-        private static readonly IList<string> bz = new[] { "application/x-bzip" };
-        private static readonly IList<string> bz2 = new[] { "application/x-bzip2" };
-        private static readonly IList<string> cda = new[] { "application/x-cdf" };
-        private static readonly IList<string> compression7z = new[] { "application/x-7z-compressed" };
-        private static readonly IList<string> csh = new[] { "application/x-csh" };
-        private static readonly IList<string> css = new[] { "text/css" };
-        private static readonly IList<string> csv = new[] { "text/csv" };
-        private static readonly IList<string> doc = new[] { "application/msword" };
-        private static readonly IList<string> docx = new[] { "application/vnd.openxmlformats-officedocument.wordprocessingml.document" };
-        private static readonly IList<string> eot = new[] { "application/vnd.ms-fontobject" };
-        private static readonly IList<string> epub = new[] { "application/epub+zip" };
-        private static readonly IList<string> formUrlEncoded = new[] { "application/x-www-form-urlencoded" };
-        private static readonly IList<string> gif = new[] { "image/gif" };
-        private static readonly IList<string> gz = new[] { "application/gzip" };
-        private static readonly IList<string> htm = new[] { "text/html" };
-        private static readonly IList<string> html = new[] { "text/html" };
-        private static readonly IList<string> ico = new[] { "image/vnd.microsoft.icon" };
-        private static readonly IList<string> ics = new[] { "text/calendar" };
-        private static readonly IList<string> jar = new[] { "application/java-archive" };
-        private static readonly IList<string> jpeg = new[] { "image/jpeg" };
-        private static readonly IList<string> jpg = new[] { "image/jpeg" };
-        private static readonly IList<string> js = new[] { "text/javascript" };
-        private static readonly IList<string> json = new[] { "application/json" };
-        private static readonly IList<string> jsonld = new[] { "application/ld+json" };
-        private static readonly IList<string> media3g2 = new[] { "video/3gpp2", "audio/3gpp2" };
-        private static readonly IList<string> media3gp = new[] { "video/3gpp", "audio/3gpp" };
-        private static readonly IList<string> mid = new[] { "audio/midi", "audio/x-midi" };
-        private static readonly IList<string> midi = new[] { "audio/midi", "audio/x-midi" };
-        private static readonly IList<string> mjs = new[] { "text/javascript" };
-        private static readonly IList<string> mp3 = new[] { "audio/mpeg" };
-        private static readonly IList<string> mp4 = new[] { "video/mp4" };
-        private static readonly IList<string> mpeg = new[] { "video/mpeg" };
-        private static readonly IList<string> mpkg = new[] { "application/vnd.apple.installer+xml" };
-        private static readonly IList<string> odp = new[] { "application/vnd.oasis.opendocument.presentation" };
-        private static readonly IList<string> ods = new[] { "application/vnd.oasis.opendocument.spreadsheet" };
-        private static readonly IList<string> odt = new[] { "application/vnd.oasis.opendocument.text" };
-        private static readonly IList<string> oga = new[] { "audio/ogg" };
-        private static readonly IList<string> ogv = new[] { "video/ogg" };
-        private static readonly IList<string> ogx = new[] { "application/ogg" };
-        private static readonly IList<string> opus = new[] { "audio/opus" };
-        private static readonly IList<string> otf = new[] { "font/otf" };
-        private static readonly IList<string> pdf = new[] { "application/pdf" };
-        private static readonly IList<string> php = new[] { "application/x-httpd-php" };
-        private static readonly IList<string> png = new[] { "image/png" };
-        private static readonly IList<string> ppt = new[] { "application/vnd.ms-powerpoint" };
-        private static readonly IList<string> pptx = new[] { "application/vnd.openxmlformats-officedocument.presentationml.presentation" };
-        private static readonly IList<string> rar = new[] { "application/vnd.rar" };
-        private static readonly IList<string> rtf = new[] { "application/rtf" };
-        private static readonly IList<string> sh = new[] { "application/x-sh" };
-        private static readonly IList<string> svg = new[] { "image/svg+xml" };
-        private static readonly IList<string> swf = new[] { "application/x-shockwave-flash" };
-        private static readonly IList<string> tar = new[] { "application/x-tar" };
-        private static readonly IList<string> tif = new[] { "image/tiff" };
-        private static readonly IList<string> tiff = new[] { "image/tiff" };
-        private static readonly IList<string> ts = new[] { "video/mp2t" };
-        private static readonly IList<string> ttf = new[] { "font/ttf" };
-        private static readonly IList<string> txt = new[] { "text/plain" };
-        private static readonly IList<string> vsd = new[] { "application/vnd.visio" };
-        private static readonly IList<string> wav = new[] { "audio/wav" };
-        private static readonly IList<string> weba = new[] { "audio/webm" };
-        private static readonly IList<string> webm = new[] { "video/webm" };
-        private static readonly IList<string> webp = new[] { "image/webp" };
-        private static readonly IList<string> woff = new[] { "font/woff" };
-        private static readonly IList<string> woff2 = new[] { "font/woff2" };
-        private static readonly IList<string> xhtml = new[] { "application/xhtml+xml" };
-        private static readonly IList<string> xls = new[] { "application/vnd.ms-excel" };
-        private static readonly IList<string> xlsx = new[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
-        private static readonly IList<string> xml = new[] { "application/xml", "text/xml" };
-        private static readonly IList<string> xul = new[] { "application/vnd.mozilla.xul+xml" };
-        private static readonly IList<string> zip = new[] { "application/zip" };
+        private static readonly IReadOnlyList<string> _aac = new[] { "audio/aac" };
+        private static readonly IReadOnlyList<string> _abw = new[] { "application/x-abiword" };
+        private static readonly IReadOnlyList<string> _arc = new[] { "application/x-freearc" };
+        private static readonly IReadOnlyList<string> _avi = new[] { "video/x-msvideo" };
+        private static readonly IReadOnlyList<string> _azw = new[] { "application/vnd.amazon.ebook" };
+        private static readonly IReadOnlyList<string> _bin = new[] { "application/octet-stream" };
+        private static readonly IReadOnlyList<string> _bmp = new[] { "image/bmp" };
+        private static readonly IReadOnlyList<string> _bz = new[] { "application/x-bzip" };
+        private static readonly IReadOnlyList<string> _bz2 = new[] { "application/x-bzip2" };
+        private static readonly IReadOnlyList<string> _cda = new[] { "application/x-cdf" };
+        private static readonly IReadOnlyList<string> _compression7z = new[] { "application/x-7z-compressed" };
+        private static readonly IReadOnlyList<string> _csh = new[] { "application/x-csh" };
+        private static readonly IReadOnlyList<string> _css = new[] { "text/css" };
+        private static readonly IReadOnlyList<string> _csv = new[] { "text/csv" };
+        private static readonly IReadOnlyList<string> _doc = new[] { "application/msword" };
+        private static readonly IReadOnlyList<string> _docx = new[] { "application/vnd.openxmlformats-officedocument.wordprocessingml.document" };
+        private static readonly IReadOnlyList<string> _eot = new[] { "application/vnd.ms-fontobject" };
+        private static readonly IReadOnlyList<string> _epub = new[] { "application/epub+zip" };
+        private static readonly IReadOnlyList<string> _formUrlEncoded = new[] { "application/x-www-form-urlencoded" };
+        private static readonly IReadOnlyList<string> _gif = new[] { "image/gif" };
+        private static readonly IReadOnlyList<string> _gz = new[] { "application/gzip" };
+        private static readonly IReadOnlyList<string> _htm = new[] { "text/html" };
+        private static readonly IReadOnlyList<string> _html = new[] { "text/html" };
+        private static readonly IReadOnlyList<string> _ico = new[] { "image/vnd.microsoft.icon" };
+        private static readonly IReadOnlyList<string> _ics = new[] { "text/calendar" };
+        private static readonly IReadOnlyList<string> _jar = new[] { "application/java-archive" };
+        private static readonly IReadOnlyList<string> _jpeg = new[] { "image/jpeg" };
+        private static readonly IReadOnlyList<string> _jpg = new[] { "image/jpeg" };
+        private static readonly IReadOnlyList<string> _js = new[] { "text/javascript" };
+        private static readonly IReadOnlyList<string> _json = new[] { "application/json" };
+        private static readonly IReadOnlyList<string> _jsonld = new[] { "application/ld+json" };
+        private static readonly IReadOnlyList<string> _media3g2 = new[] { "video/3gpp2", "audio/3gpp2" };
+        private static readonly IReadOnlyList<string> _media3gp = new[] { "video/3gpp", "audio/3gpp" };
+        private static readonly IReadOnlyList<string> _mid = new[] { "audio/midi", "audio/x-midi" };
+        private static readonly IReadOnlyList<string> _midi = new[] { "audio/midi", "audio/x-midi" };
+        private static readonly IReadOnlyList<string> _mjs = new[] { "text/javascript" };
+        private static readonly IReadOnlyList<string> _mp3 = new[] { "audio/mpeg" };
+        private static readonly IReadOnlyList<string> _mp4 = new[] { "video/mp4" };
+        private static readonly IReadOnlyList<string> _mpeg = new[] { "video/mpeg" };
+        private static readonly IReadOnlyList<string> _mpkg = new[] { "application/vnd.apple.installer+xml" };
+        private static readonly IReadOnlyList<string> _odp = new[] { "application/vnd.oasis.opendocument.presentation" };
+        private static readonly IReadOnlyList<string> _ods = new[] { "application/vnd.oasis.opendocument.spreadsheet" };
+        private static readonly IReadOnlyList<string> _odt = new[] { "application/vnd.oasis.opendocument.text" };
+        private static readonly IReadOnlyList<string> _oga = new[] { "audio/ogg" };
+        private static readonly IReadOnlyList<string> _ogv = new[] { "video/ogg" };
+        private static readonly IReadOnlyList<string> _ogx = new[] { "application/ogg" };
+        private static readonly IReadOnlyList<string> _opus = new[] { "audio/opus" };
+        private static readonly IReadOnlyList<string> _otf = new[] { "font/otf" };
+        private static readonly IReadOnlyList<string> _pdf = new[] { "application/pdf" };
+        private static readonly IReadOnlyList<string> _php = new[] { "application/x-httpd-php" };
+        private static readonly IReadOnlyList<string> _png = new[] { "image/png" };
+        private static readonly IReadOnlyList<string> _ppt = new[] { "application/vnd.ms-powerpoint" };
+        private static readonly IReadOnlyList<string> _pptx = new[] { "application/vnd.openxmlformats-officedocument.presentationml.presentation" };
+        private static readonly IReadOnlyList<string> _rar = new[] { "application/vnd.rar" };
+        private static readonly IReadOnlyList<string> _rtf = new[] { "application/rtf" };
+        private static readonly IReadOnlyList<string> _sh = new[] { "application/x-sh" };
+        private static readonly IReadOnlyList<string> _svg = new[] { "image/svg+xml" };
+        private static readonly IReadOnlyList<string> _swf = new[] { "application/x-shockwave-flash" };
+        private static readonly IReadOnlyList<string> _tar = new[] { "application/x-tar" };
+        private static readonly IReadOnlyList<string> _tif = new[] { "image/tiff" };
+        private static readonly IReadOnlyList<string> _tiff = new[] { "image/tiff" };
+        private static readonly IReadOnlyList<string> _ts = new[] { "video/mp2t" };
+        private static readonly IReadOnlyList<string> _ttf = new[] { "font/ttf" };
+        private static readonly IReadOnlyList<string> _txt = new[] { "text/plain" };
+        private static readonly IReadOnlyList<string> _vsd = new[] { "application/vnd.visio" };
+        private static readonly IReadOnlyList<string> _wav = new[] { "audio/wav" };
+        private static readonly IReadOnlyList<string> _weba = new[] { "audio/webm" };
+        private static readonly IReadOnlyList<string> _webm = new[] { "video/webm" };
+        private static readonly IReadOnlyList<string> _webp = new[] { "image/webp" };
+        private static readonly IReadOnlyList<string> _woff = new[] { "font/woff" };
+        private static readonly IReadOnlyList<string> _woff2 = new[] { "font/woff2" };
+        private static readonly IReadOnlyList<string> _xhtml = new[] { "application/xhtml+xml" };
+        private static readonly IReadOnlyList<string> _xls = new[] { "application/vnd.ms-excel" };
+        private static readonly IReadOnlyList<string> _xlsx = new[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
+        private static readonly IReadOnlyList<string> _xml = new[] { "application/xml", "text/xml" };
+        private static readonly IReadOnlyList<string> _xul = new[] { "application/vnd.mozilla.xul+xml" };
+        private static readonly IReadOnlyList<string> _zip = new[] { "application/zip" };
 
         #endregion Fields
 
@@ -93,159 +93,159 @@ namespace ZarDevs.Http.Api
 
         #region Properties
 
-        public static IList<string> Aac => aac;
+        public static IReadOnlyList<string> Aac => _aac;
+                                           
+        public static IReadOnlyList<string> Abw => _abw;
+                                           
+        public static IReadOnlyList<string> Arc => _arc;
+                                           
+        public static IReadOnlyList<string> Avi => _avi;
+                                           
+        public static IReadOnlyList<string> Azw => _azw;
+                                           
+        public static IReadOnlyList<string> Bin => _bin;
+                                           
+        public static IReadOnlyList<string> Bmp => _bmp;
 
-        public static IList<string> Abw => abw;
+        public static IReadOnlyList<string> Bz => _bz;
 
-        public static IList<string> Arc => arc;
+        public static IReadOnlyList<string> Bz2 => _bz2;
 
-        public static IList<string> Avi => avi;
+        public static IReadOnlyList<string> Cda => _cda;
 
-        public static IList<string> Azw => azw;
+        public static IReadOnlyList<string> Compression7z => _compression7z;
 
-        public static IList<string> Bin => bin;
+        public static IReadOnlyList<string> Csh => _csh;
 
-        public static IList<string> Bmp => bmp;
+        public static IReadOnlyList<string> Css => _css;
 
-        public static IList<string> Bz => bz;
+        public static IReadOnlyList<string> Csv => _csv;
 
-        public static IList<string> Bz2 => bz2;
+        public static IReadOnlyList<string> Doc => _doc;
 
-        public static IList<string> Cda => cda;
+        public static IReadOnlyList<string> Docx => _docx;
 
-        public static IList<string> Compression7z => compression7z;
+        public static IReadOnlyList<string> Eot => _eot;
 
-        public static IList<string> Csh => csh;
+        public static IReadOnlyList<string> Epub => _epub;
 
-        public static IList<string> Css => css;
+        public static IReadOnlyList<string> FormUrlEncoded => _formUrlEncoded;
 
-        public static IList<string> Csv => csv;
+        public static IReadOnlyList<string> Gif => _gif;
 
-        public static IList<string> Doc => doc;
+        public static IReadOnlyList<string> Gz => _gz;
 
-        public static IList<string> Docx => docx;
+        public static IReadOnlyList<string> Htm => _htm;
 
-        public static IList<string> Eot => eot;
+        public static IReadOnlyList<string> Html => _html;
 
-        public static IList<string> Epub => epub;
+        public static IReadOnlyList<string> Ico => _ico;
 
-        public static IList<string> FormUrlEncoded => formUrlEncoded;
+        public static IReadOnlyList<string> Ics => _ics;
 
-        public static IList<string> Gif => gif;
+        public static IReadOnlyList<string> Jar => _jar;
 
-        public static IList<string> Gz => gz;
+        public static IReadOnlyList<string> Jpeg => _jpeg;
 
-        public static IList<string> Htm => htm;
+        public static IReadOnlyList<string> Jpg => _jpg;
 
-        public static IList<string> Html => html;
+        public static IReadOnlyList<string> Js => _js;
 
-        public static IList<string> Ico => ico;
+        public static IReadOnlyList<string> Json => _json;
 
-        public static IList<string> Ics => ics;
+        public static IReadOnlyList<string> Jsonld => _jsonld;
 
-        public static IList<string> Jar => jar;
+        public static IReadOnlyList<string> Media3g2 => _media3g2;
 
-        public static IList<string> Jpeg => jpeg;
+        public static IReadOnlyList<string> Media3gp => _media3gp;
 
-        public static IList<string> Jpg => jpg;
+        public static IReadOnlyList<string> Mid => _mid;
 
-        public static IList<string> Js => js;
+        public static IReadOnlyList<string> Midi => _midi;
 
-        public static IList<string> Json => json;
+        public static IReadOnlyList<string> Mjs => _mjs;
 
-        public static IList<string> Jsonld => jsonld;
+        public static IReadOnlyList<string> Mp3 => _mp3;
 
-        public static IList<string> Media3g2 => media3g2;
+        public static IReadOnlyList<string> Mp4 => _mp4;
 
-        public static IList<string> Media3gp => media3gp;
+        public static IReadOnlyList<string> Mpeg => _mpeg;
 
-        public static IList<string> Mid => mid;
+        public static IReadOnlyList<string> Mpkg => _mpkg;
 
-        public static IList<string> Midi => midi;
+        public static IReadOnlyList<string> Odp => _odp;
 
-        public static IList<string> Mjs => mjs;
+        public static IReadOnlyList<string> Ods => _ods;
 
-        public static IList<string> Mp3 => mp3;
+        public static IReadOnlyList<string> Odt => _odt;
 
-        public static IList<string> Mp4 => mp4;
+        public static IReadOnlyList<string> Oga => _oga;
 
-        public static IList<string> Mpeg => mpeg;
+        public static IReadOnlyList<string> Ogv => _ogv;
 
-        public static IList<string> Mpkg => mpkg;
+        public static IReadOnlyList<string> Ogx => _ogx;
 
-        public static IList<string> Odp => odp;
+        public static IReadOnlyList<string> Opus => _opus;
 
-        public static IList<string> Ods => ods;
+        public static IReadOnlyList<string> Otf => _otf;
 
-        public static IList<string> Odt => odt;
+        public static IReadOnlyList<string> Pdf => _pdf;
 
-        public static IList<string> Oga => oga;
+        public static IReadOnlyList<string> Php => _php;
 
-        public static IList<string> Ogv => ogv;
+        public static IReadOnlyList<string> Png => _png;
 
-        public static IList<string> Ogx => ogx;
+        public static IReadOnlyList<string> Ppt => _ppt;
 
-        public static IList<string> Opus => opus;
+        public static IReadOnlyList<string> Pptx => _pptx;
 
-        public static IList<string> Otf => otf;
+        public static IReadOnlyList<string> Rar => _rar;
 
-        public static IList<string> Pdf => pdf;
+        public static IReadOnlyList<string> Rtf => _rtf;
 
-        public static IList<string> Php => php;
+        public static IReadOnlyList<string> Sh => _sh;
 
-        public static IList<string> Png => png;
+        public static IReadOnlyList<string> Svg => _svg;
 
-        public static IList<string> Ppt => ppt;
+        public static IReadOnlyList<string> Swf => _swf;
 
-        public static IList<string> Pptx => pptx;
+        public static IReadOnlyList<string> Tar => _tar;
 
-        public static IList<string> Rar => rar;
+        public static IReadOnlyList<string> Tif => _tif;
 
-        public static IList<string> Rtf => rtf;
+        public static IReadOnlyList<string> Tiff => _tiff;
 
-        public static IList<string> Sh => sh;
+        public static IReadOnlyList<string> Ts => _ts;
 
-        public static IList<string> Svg => svg;
+        public static IReadOnlyList<string> Ttf => _ttf;
 
-        public static IList<string> Swf => swf;
+        public static IReadOnlyList<string> Txt => _txt;
 
-        public static IList<string> Tar => tar;
+        public static IReadOnlyList<string> Vsd => _vsd;
 
-        public static IList<string> Tif => tif;
+        public static IReadOnlyList<string> Wav => _wav;
 
-        public static IList<string> Tiff => tiff;
+        public static IReadOnlyList<string> Weba => _weba;
 
-        public static IList<string> Ts => ts;
+        public static IReadOnlyList<string> Webm => _webm;
 
-        public static IList<string> Ttf => ttf;
+        public static IReadOnlyList<string> Webp => _webp;
 
-        public static IList<string> Txt => txt;
+        public static IReadOnlyList<string> Woff => _woff;
 
-        public static IList<string> Vsd => vsd;
+        public static IReadOnlyList<string> Woff2 => _woff2;
 
-        public static IList<string> Wav => wav;
+        public static IReadOnlyList<string> Xhtml => _xhtml;
 
-        public static IList<string> Weba => weba;
+        public static IReadOnlyList<string> Xls => _xls;
 
-        public static IList<string> Webm => webm;
+        public static IReadOnlyList<string> Xlsx => _xlsx;
 
-        public static IList<string> Webp => webp;
+        public static IReadOnlyList<string> Xml => _xml;
 
-        public static IList<string> Woff => woff;
+        public static IReadOnlyList<string> Xul => _xul;
 
-        public static IList<string> Woff2 => woff2;
-
-        public static IList<string> Xhtml => xhtml;
-
-        public static IList<string> Xls => xls;
-
-        public static IList<string> Xlsx => xlsx;
-
-        public static IList<string> Xml => xml;
-
-        public static IList<string> Xul => xul;
-
-        public static IList<string> Zip => zip;
+        public static IReadOnlyList<string> Zip => _zip;
 
         #endregion Properties
 
