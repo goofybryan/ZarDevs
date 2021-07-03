@@ -16,6 +16,7 @@ namespace ZarDevs.Http.Api.Serializers
         /// <returns></returns>
         public static IDependencyBuilder ConfigureApi(this IDependencyBuilder builder)
         {
+            builder.Bind<IDefaultFormUrlEncodedContentParser>().To<DefaultFormUrlEncodedContentParser>().WithKey(ApiSerializer.FormUrlEncoded);
             builder.Bind<IApiCommandContentSerializer>().To<ApiCommandContentSerializerFormUrlEncoded>().WithKey(ApiSerializer.FormUrlEncoded);
             builder.Bind<IApiCommandContentSerializer>().To<ApiCommandContentSerializerJson>().WithKey(ApiSerializer.Json);
             builder.Bind<IApiCommandContentSerializer>().To<ApiCommandContentSerializerString>().WithKey(ApiSerializer.String);
