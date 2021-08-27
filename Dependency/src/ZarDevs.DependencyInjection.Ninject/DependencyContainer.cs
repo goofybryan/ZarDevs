@@ -37,12 +37,12 @@ namespace ZarDevs.DependencyInjection
 
         public override IDependencyInfo TryGetBinding(Type requestType, object key)
         {
-            return base.TryGetBinding(requestType, key) ?? _dependencyFactory.FactoryInfos.FirstOrDefault(i => i.RequestType == requestType && i.Key == key);
+            return base.TryGetBinding(requestType, key) ?? _dependencyFactory.FactoryInfos.FirstOrDefault(i => i.ResolveType == requestType && i.Key == key);
         }
 
         protected override void OnBuild(IDependencyInfo info)
         {
-            IBindingToSyntax<object> initial = Kernel.Bind(info.RequestType);
+            IBindingToSyntax<object> initial = Kernel.Bind(info.ResolveType);
 
             IBindingWhenInNamedWithOrOnSyntax<object> binding = BuildTo(info, initial);
             BindScope(info, binding);
@@ -101,7 +101,7 @@ namespace ZarDevs.DependencyInjection
 
             if (info is IDependencyTypeInfo typeInfo)
             {
-                return initial.To(typeInfo.ResolvedType);
+                return initial.To(typeInfo.ResolutionType);
             }
 
             if (info is IDependencyInstanceInfo instanceInfo)
@@ -114,7 +114,7 @@ namespace ZarDevs.DependencyInjection
                 return initial.ToMethod(ctx => ExecuteFactory(factoryInfo, ctx));
             }
 
-            throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
+            throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.ResolveType));
         }
 
         private object ExecuteFactory(IDependencyFactoryInfo info, IContext ctx)
@@ -123,7 +123,7 @@ namespace ZarDevs.DependencyInjection
 
             if (info.IsFactoryGeneric())
             {
-                var concreteRequest = info.RequestType.MakeGenericType(ctx.GenericArguments);
+                var concreteRequest = info.ResolveType.MakeGenericType(ctx.GenericArguments);
                 executionInfo = info.As(concreteRequest);
             }
 
@@ -131,7 +131,7 @@ namespace ZarDevs.DependencyInjection
             return _dependencyFactory.Resolve(executionInfo.CreateContext(Ioc.Container).SetArguments(args));
         }
 
-        private object ExecuteMethod(IDependencyMethodInfo info, IContext ctx)
+        private static object ExecuteMethod(IDependencyMethodInfo info, IContext ctx)
         {
             var context = info.CreateContext(Ioc.Container);
             if (ctx.Parameters.Count == 0) return info.Execute(context);

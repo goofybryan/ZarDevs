@@ -8,7 +8,7 @@
         #region Properties
 
         /// <summary>
-        /// Get the instance that the IOC will resolve from the <see cref="IDependencyInfo.RequestType"/>.
+        /// Get the instance that the IOC will resolve from the <see cref="IDependencyInfo.ResolveType"/>.
         /// </summary>
         object Instance { get; }
 

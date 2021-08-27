@@ -85,7 +85,7 @@ namespace ZarDevs.DependencyInjection
 
         public void Add(IDependencyInfo dependency)
         {
-            var key = dependency.RequestType;
+            var key = dependency.ResolveType;
 
             if (!Definitions.TryGetValue(key, out IList<IDependencyInfo> definitions))
             {

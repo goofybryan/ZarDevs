@@ -227,14 +227,14 @@ namespace ZarDevs.DependencyInjection
         private (string, object)[] CreateNamedParameters(object key, Type requestType, object[] values)
         {
             if (values == null) return null;
-            if (values.Length == 0) return new (string, object)[0];
+            if (values.Length == 0) return Array.Empty<(string, object)>();
 
             var binding = _dependencyContainer.TryGetBinding(requestType, key);
 
-            if (binding is null) return new (string, object)[0];
+            if (binding is null) return Array.Empty<(string, object)>();
 
             if (binding is IDependencyTypeInfo typeInfo)
-                return InspectConstructor.Instance.FindParameterNames(typeInfo.ResolvedType, values).ToArray();
+                return InspectConstructor.Instance.FindParameterNames(typeInfo.ResolutionType, values).ToArray();
 
             var orderedParams = new (string, object)[values.Length];
             for (int i = 0; i < values.Length; i++)
@@ -245,7 +245,7 @@ namespace ZarDevs.DependencyInjection
             return orderedParams;
         }
 
-        private IParameter[] CreateParameters(IList<(string, object)> parameters)
+        private static IParameter[] CreateParameters(IList<(string, object)> parameters)
         {
             if (parameters == null)
                 return null;

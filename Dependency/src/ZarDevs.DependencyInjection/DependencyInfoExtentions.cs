@@ -34,13 +34,13 @@ namespace ZarDevs.DependencyInjection
         /// <returns>A new instance of the dependency info with the concrete information set.</returns>
         public static IDependencyTypeInfo As(this IDependencyTypeInfo typeInfo, Type concreteRequestType)
         {
-            if (!typeInfo.ResolvedType.IsGenericType)
+            if (!typeInfo.ResolutionType.IsGenericType)
                 throw new InvalidOperationException($"The info resolved type for '{typeInfo}' is not a generic type.");
 
-            var resovleType = typeInfo.ResolvedType;
+            var resovleType = typeInfo.ResolutionType;
             var concreteResolveType = resovleType.MakeGenericType(concreteRequestType.GenericTypeArguments);
 
-            return new DependencyTypeInfo(concreteResolveType, typeInfo) { RequestType = concreteRequestType };
+            return new DependencyTypeInfo(concreteResolveType, typeInfo) { ResolveType = concreteRequestType };
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace ZarDevs.DependencyInjection
             var resovleType = typeInfo.FactoryType;
             var concreteResolveType = resovleType.MakeGenericType(concreteRequestType.GenericTypeArguments);
 
-            return new DependencyFactoryInfo(concreteResolveType, typeInfo.MethodName, typeInfo) { RequestType = concreteRequestType };
+            return new DependencyFactoryInfo(concreteResolveType, typeInfo.MethodName, typeInfo) { ResolveType = concreteRequestType };
         }
 
         /// <summary>

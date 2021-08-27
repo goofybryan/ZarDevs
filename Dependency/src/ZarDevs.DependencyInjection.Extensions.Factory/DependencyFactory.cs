@@ -104,7 +104,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns></returns>
         public IDependencyFactory MakeConcrete(IDependencyFactoryInfo concreteInfo)
         {
-            _resolutionPlans.GetOrAdd(concreteInfo.RequestType, type => CreatePlanForType(concreteInfo));
+            _resolutionPlans.GetOrAdd(concreteInfo.ResolveType, type => CreatePlanForType(concreteInfo));
 
             return this;
         }
@@ -122,7 +122,7 @@ namespace ZarDevs.DependencyInjection
             if (factory == null) return null;
 
             IDependencyFactoryResolutionPlan plan = context.ArgumentCount == 0 ?
-                  _resolutionPlans.GetOrAdd(info.RequestType, type => CreatePlanForType(info)) :
+                  _resolutionPlans.GetOrAdd(info.ResolveType, type => CreatePlanForType(info)) :
                   new DependencyFactoryArgumentsResolutionPlan(info.FactoryType, info.MethodName, InspectMethod);
 
             return plan.Resolve(factory, context);

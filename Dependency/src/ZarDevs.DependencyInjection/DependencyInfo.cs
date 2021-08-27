@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Base dependency info class that describes the <see cref="RequestType"/>, <see cref="Scope"/>
+    /// Base dependency info class that describes the <see cref="ResolvedTypes"/>, <see cref="Scope"/>
     /// and optionally <see cref="Key"/> for any binding.
     /// </summary>
     public class DependencyInfo : IDependencyInfo
@@ -13,12 +15,11 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new instance with the base variables set.
         /// </summary>
-        /// <param name="requestType">Specifiy the request type, must not be null.</param>
         /// <param name="key">Specify the key, optional.</param>
         /// <param name="scope">Specify the scope, optional, default is <see cref="DependyBuilderScope.Transient"/></param>
-        public DependencyInfo(Type requestType, object key = null, DependyBuilderScope scope = DependyBuilderScope.Transient)
+        public DependencyInfo(object key = null, DependyBuilderScope scope = DependyBuilderScope.Transient)
         {
-            RequestType = requestType ?? throw new ArgumentNullException(nameof(requestType));
+            ResolvedTypes = new HashSet<Type>();
             Key = key;
             Scope = scope;
         }
@@ -34,8 +35,12 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance with copied values.
         /// </summary>
         /// <param name="copy">The base instance to copy from.</param>
-        protected DependencyInfo(IDependencyInfo copy) : this(copy.RequestType, copy.Key, copy.Scope)
+        protected DependencyInfo(IDependencyInfo copy) : this(copy.Key, copy.Scope)
         {
+            foreach (var resolvedType in copy.ResolvedTypes)
+            {
+                ResolvedTypes.Add(resolvedType);
+            }
         }
 
         #endregion Constructors
@@ -48,14 +53,14 @@ namespace ZarDevs.DependencyInjection
         public object Key { get; set; }
 
         /// <summary>
-        /// The request type that will be used to define what needs to be resolved.
+        /// Specify the resolved types for this binding.
         /// </summary>
-        public Type RequestType { get; set; }
+        public ISet<Type> ResolvedTypes { get; }
 
         /// <summary>
         /// The scope that the binding will be defined to, default is <see cref="DependyBuilderScope.Transient"/>
         /// </summary>
-        public DependyBuilderScope Scope { get; protected set; }
+        public DependyBuilderScope Scope { get; set; }
 
         #endregion Properties
 
@@ -76,12 +81,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns></returns>
         public override string ToString()
         {
-            return $"Dependency Info: Key={Key}, Scope={Scope}, RequestType={RequestType}";
-        }
-
-        internal virtual void SetScope(DependyBuilderScope scope)
-        {
-            Scope = scope;
+            return $"Dependency Info: Key={Key}, Scope={Scope}, ResolveTypes={ResolvedTypes.ToArray()}";
         }
 
         #endregion Methods

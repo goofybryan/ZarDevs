@@ -20,12 +20,12 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new instance of of the dependency resolution.
         /// </summary>
-        /// <param name="info">
-        /// The the <see cref="IDependencyInstanceInfo"/> that describes this resolution.
-        /// </param>
-        public DependencySingletonInstance(IDependencyInstanceInfo info)
+        /// <param name="info">The the <see cref="IDependencyInstanceInfo"/> that describes this resolution.</param>
+        /// <param name="requestType">Specify the request type</param>
+        public DependencySingletonInstance(IDependencyInstanceInfo info, Type requestType)
         {
             _info = info ?? throw new ArgumentNullException(nameof(info));
+            RequestType = requestType ?? throw new ArgumentNullException(nameof(requestType));
         }
 
         #endregion Constructors
@@ -42,7 +42,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Get the request type that this resolution is for.
         /// </summary>
-        public Type RequestType => _info.RequestType;
+        public Type RequestType { get; }
 
         #endregion Properties
 

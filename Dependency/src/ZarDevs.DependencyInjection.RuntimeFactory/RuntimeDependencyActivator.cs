@@ -59,17 +59,17 @@ namespace ZarDevs.DependencyInjection
 
         public object Resolve(IDependencyTypeInfo info, params object[] args)
         {
-            return _creation.New(info.ResolvedType, args);
+            return _creation.New(info.ResolutionType, args);
         }
 
         public object Resolve(IDependencyTypeInfo info, params (string, object)[] args)
         {
-            return Resolve(info, _inspection.OrderParameters(info.ResolvedType, args));
+            return Resolve(info, _inspection.OrderParameters(info.ResolutionType, args));
         }
 
         public object Resolve(IDependencyTypeInfo info)
         {
-            var type = info.ResolvedType;
+            var type = info.ResolutionType;
             if (!_resolutionPlan.TryGetValue(type, out var resolution))
             {
                 var plan = _planCreator.FromInfo(info);

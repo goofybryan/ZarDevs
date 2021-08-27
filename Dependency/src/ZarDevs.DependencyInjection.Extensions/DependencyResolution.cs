@@ -38,7 +38,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Get the type that this resolution is for.
         /// </summary>
-        public Type RequestType => Info.RequestType;
+        public Type RequestType => Info.ResolveType;
 
         #endregion Properties
 
@@ -49,7 +49,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="concreteRequest">The concrete request type.</param>
         /// <exception cref="InvalidOperationException">
-        /// Throws when the current <see cref="IDependencyInfo.RequestType"/> is not compatible with
+        /// Throws when the current <see cref="IDependencyInfo.ResolveType"/> is not compatible with
         /// the <paramref name="concreteRequest"/>
         /// </exception>
         /// <exception cref="NotSupportedException">
@@ -58,13 +58,13 @@ namespace ZarDevs.DependencyInjection
         /// <returns>A resolution</returns>
         public IDependencyResolution MakeConcrete(Type concreteRequest)
         {
-            var requestType = Info.RequestType;
+            var requestType = Info.ResolveType;
 
             if (!requestType.IsGenericType)
-                throw new InvalidOperationException($"The resolution request type '{Info.RequestType}' is not a generic type.");
+                throw new InvalidOperationException($"The resolution request type '{Info.ResolveType}' is not a generic type.");
 
             if (!concreteRequest.IsConstructedGenericType)
-                throw new InvalidOperationException($"The concrete request type '{Info.RequestType}' does not contain generic parameters.");
+                throw new InvalidOperationException($"The concrete request type '{Info.ResolveType}' does not contain generic parameters.");
 
             return OnMakeConcrete(concreteRequest);
         }

@@ -10,9 +10,9 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <summary>
-        /// Get the resolved type that the IOC will resolved from the <see cref="IDependencyInfo.RequestType"/>.
+        /// Get the resolved type that the IOC will resolved from the <see cref="IDependencyInfo.ResolvedTypes"/>.
         /// </summary>
-        Type ResolvedType { get; }
+        Type ResolutionType { get; }
 
         #endregion Properties
     }

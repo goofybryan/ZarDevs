@@ -74,8 +74,8 @@ namespace ZarDevs.DependencyInjection
 
                 var builder = container.CreateDependencyBuilder();
 
-                builder.Bind<IIocContainer>()
-                    .To((ctx) =>
+                builder.Resolve<IIocContainer>()
+                    .With((ctx) =>
                     Container).InSingletonScope();
 
                 buildDependencies?.Invoke(builder);

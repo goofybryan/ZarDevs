@@ -3,7 +3,7 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/>
+    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.ResolveType"/>
     /// and will call the <see cref="IDependencyFactoryInfo.FactoryType"/><see cref="IDependencyFactoryInfo.MethodName"/>
     /// </summary>
     public class DependencyFactoryResolution : DependencyResolution<IDependencyFactoryInfo>

@@ -4,8 +4,8 @@ namespace ZarDevs.DependencyInjection.Tests
     {
         #region Fields
 
-        public const string MethodWithArgs = nameof(MethodWithArgs);
-        public const string MethodWithNoArgs = nameof(MethodWithNoArgs);
+        public const string MethodBindArgs = nameof(MethodBindArgs);
+        public const string MethodBindNoArgs = nameof(MethodBindNoArgs);
         public const string NotMethod = nameof(NotMethod);
         public const string NotResolvedName = nameof(NotResolvedName);
         public const string Named1 = nameof(Named1);
@@ -17,51 +17,51 @@ namespace ZarDevs.DependencyInjection.Tests
 
         public static void ConfigurePerformanceTest(this IDependencyBuilder builder)
         {
-            builder.Bind<IPerformanceMethodTest>().To<PerformanceMethodTest>();
-            builder.Bind<IPerformanceMethodResultTest>().To((ctx) => PerformanceMethodTest.Method());
-            builder.Bind<IPerformanceConstructParam1Test>().To<PerformanceConstructParamTest>();
-            builder.Bind<IPerformanceConstructParam2Test>().To<PerformanceConstructParamTest>();
-            builder.Bind<IPerformanceConstructParam3Test>().To<PerformanceConstructParamTest>();
-            builder.Bind<IPerformanceConstructTest>().To<PerformanceConstructTest>();
-            builder.Bind<IPerformanceSingletonTest>().To<PerformanceSingletonTest>().InSingletonScope();
-            builder.Bind<IPerformanceInstanceTest>().To(new PerformanceInstanceTest());
+            builder.Bind<PerformanceMethodTest>().Resolve<IPerformanceMethodTest>();
+            builder.BindFunction((ctx) => PerformanceMethodTest.Method()).Resolve<IPerformanceMethodResultTest>();
+            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam1Test>();
+            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam2Test>();
+            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam3Test>();
+            builder.Bind<PerformanceConstructTest>().Resolve<IPerformanceConstructTest>();
+            builder.Bind<PerformanceSingletonTest>().Resolve<IPerformanceSingletonTest>().InSingletonScope();
+            builder.BindInstance(new PerformanceInstanceTest()).Resolve<IPerformanceInstanceTest>();
         }
 
         public static void ConfigureTest(this IDependencyBuilder builder)
         {
-            builder.Bind<INormalClass>().To<NormalClass>().InTransientScope();
-            builder.Bind<ICallingClass>().To<CallingClass>();
-            builder.Bind<IChildClass>().To<ChildClass>();
-            builder.Bind<ISingletonClass>().To<SingletonClassTest>().InSingletonScope();
-            builder.Bind<ISingletonNamedClass>().To<SingletonClassTest>().InSingletonScope().WithKey(nameof(ISingletonNamedClass));
-            builder.Bind<ISingletonEnumClass>().To<SingletonClassTest>().InSingletonScope().WithKey(EnumAsKey.Key);
-            builder.Bind<ISingletonKeyClass>().To<SingletonClassTest>().InSingletonScope().WithKey(typeof(ISingletonKeyClass));
-            builder.Bind<IMultipleConstructorClass>().To<MultipleConstructorClass>();
-            builder.Bind<IFactoryClass>().To<FactoryClass>().InSingletonScope();
-            builder.Bind<IFactoryResolutionClass>().To((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass(ctx.GetArguments())).WithKey(MethodWithArgs);
-            builder.Bind<IFactoryResolutionClass>().To((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass()).WithKey(MethodWithNoArgs);
-            builder.Bind<IFactoryResolutionClass>().To<FactoryResolutionClass>().WithKey(NotMethod);
-            builder.Bind<INotBindedKeyed>().To<NotBindedClass>().WithKey(NotResolvedName);
-            builder.Bind<INotBindedKeyed>().To<NotBindedClass>().WithKey(EnumAsKey.Key);
-            builder.Bind<INotBindedKeyed>().To<NotBindedClass>().WithKey(typeof(INormalClass));
-            builder.Bind(typeof(IGenericTypeTests<>)).To(typeof(GenericTypeTest<>));
-            builder.Bind(typeof(IGenericSingletonTests<>)).To(typeof(GenericTypeTest<>)).InSingletonScope();
-            builder.Bind<IMultipleBindingClassTest>().To<MultipleBindingClassTest1>().WithKey(nameof(MultipleBindingClassTest1));
-            builder.Bind<IMultipleBindingClassTest>().To<MultipleBindingClassTest2>().WithKey(nameof(MultipleBindingClassTest2));
-            builder.Bind<IMultipleBindingClassTest>().To<MultipleBindingClassTest3>().WithKey(nameof(MultipleBindingClassTest3));
-            builder.Bind<IMultipleBindingConstructorClassTest>().To<MultipleBindingConstructorClassTest>();
-            builder.Bind(typeof(IMultipleBindingConstructorClassTest<>)).To(typeof(MultipleBindingConstructorClassTest<>));
-            builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest1<>)).WithKey(typeof(MultipleBindingClassTest1<>).Name);
-            builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest2<>)).WithKey(typeof(MultipleBindingClassTest2<>).Name);
-            builder.Bind(typeof(IMultipleBindingClassTest<>)).To(typeof(MultipleBindingClassTest3<>)).WithKey(typeof(MultipleBindingClassTest3<>).Name);
-            builder.Bind<IFactoryMethodClass>().To<FactoryMethodClass>().InSingletonScope();
-            builder.Bind<IFactoryMethodResolutionClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method));
-            builder.Bind<IFactoryMethodResolutionNamedClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method)).WithKey(Named1);
-            builder.Bind<IFactoryMethodResolutionNamedClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method)).WithKey(Named2);
-            builder.Bind<IFactoryMethodResolutionSingletonClass>().ToFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Singleton)).InSingletonScope();
-            builder.Bind(typeof(IFactoryMethodClass<>)).To(typeof(FactoryMethodClass<>)).InSingletonScope();
-            builder.Bind(typeof(IFactoryMethodResolutionClass<>)).ToFactory(typeof(IFactoryMethodClass<>), "Method");
-            builder.Bind(typeof(IFactoryMethodResolutionSingletonClass<>)).ToFactory(typeof(IFactoryMethodClass<>), "Singleton").InSingletonScope();
+            builder.Bind<NormalClass>().Resolve<INormalClass>().InTransientScope();
+            builder.Bind<CallingClass>().Resolve<ICallingClass>();
+            builder.Bind<ChildClass>().Resolve<IChildClass>();
+            builder.Bind<SingletonClassTest>().Resolve<ISingletonClass>().InSingletonScope();
+            builder.Bind<SingletonClassTest>().Resolve<ISingletonNamedClass>().InSingletonScope().WithKey(nameof(ISingletonNamedClass));
+            builder.Bind<SingletonClassTest>().Resolve<ISingletonEnumClass>().InSingletonScope().WithKey(EnumAsKey.Key);
+            builder.Bind<SingletonClassTest>().Resolve<ISingletonKeyClass>().InSingletonScope().WithKey(typeof(ISingletonKeyClass));
+            builder.Bind<MultipleConstructorClass>().Resolve<IMultipleConstructorClass>();
+            builder.Bind<FactoryClass>().Resolve<IFactoryClass>().InSingletonScope();
+            builder.BindFunction((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass(ctx.GetArguments())).Resolve<IFactoryResolutionClass>().WithKey(MethodBindArgs);
+            builder.BindFunction((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass()).Resolve<IFactoryResolutionClass>().WithKey(MethodBindNoArgs);
+            builder.Bind<FactoryResolutionClass>().Resolve<IFactoryResolutionClass>().WithKey(NotMethod);
+            builder.Bind<NotBindedClass>().Resolve<INotBindedKeyed>().WithKey(NotResolvedName);
+            builder.Bind<NotBindedClass>().Resolve<INotBindedKeyed>().WithKey(EnumAsKey.Key);
+            builder.Bind<NotBindedClass>().Resolve<INotBindedKeyed>().WithKey(typeof(INormalClass));
+            builder.Bind(typeof(GenericTypeTest<>)).Resolve(typeof(IGenericTypeTests<>));
+            builder.Bind(typeof(GenericTypeTest<>)).Resolve(typeof(IGenericSingletonTests<>)).InSingletonScope();
+            builder.Bind<MultipleBindingClassTest1>().Resolve<IMultipleBindingClassTest>().WithKey(nameof(MultipleBindingClassTest1));
+            builder.Bind<MultipleBindingClassTest2>().Resolve<IMultipleBindingClassTest>().WithKey(nameof(MultipleBindingClassTest2));
+            builder.Bind<MultipleBindingClassTest3>().Resolve<IMultipleBindingClassTest>().WithKey(nameof(MultipleBindingClassTest3));
+            builder.Bind<MultipleBindingConstructorClassTest>().Resolve<IMultipleBindingConstructorClassTest>();
+            builder.Bind(typeof(MultipleBindingConstructorClassTest<>)).Resolve(typeof(IMultipleBindingConstructorClassTest<>));
+            builder.Bind(typeof(MultipleBindingClassTest1<>)).Resolve(typeof(IMultipleBindingClassTest<>)).WithKey(typeof(MultipleBindingClassTest1<>).Name);
+            builder.Bind(typeof(MultipleBindingClassTest2<>)).Resolve(typeof(IMultipleBindingClassTest<>)).WithKey(typeof(MultipleBindingClassTest2<>).Name);
+            builder.Bind(typeof(MultipleBindingClassTest3<>)).Resolve(typeof(IMultipleBindingClassTest<>)).WithKey(typeof(MultipleBindingClassTest3<>).Name);
+            builder.Bind<FactoryMethodClass>().Resolve<IFactoryMethodClass>().InSingletonScope();
+            builder.BindFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method)).Resolve<IFactoryMethodResolutionClass>();
+            builder.BindFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method)).Resolve<IFactoryMethodResolutionNamedClass>().WithKey(Named1);
+            builder.BindFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Method)).Resolve<IFactoryMethodResolutionNamedClass>().WithKey(Named2);
+            builder.BindFactory<IFactoryMethodClass>(nameof(IFactoryMethodClass.Singleton)).Resolve<IFactoryMethodResolutionSingletonClass>().InSingletonScope();
+            builder.Bind(typeof(FactoryMethodClass<>)).Resolve(typeof(IFactoryMethodClass<>)).InSingletonScope();
+            builder.BindFactory(typeof(IFactoryMethodClass<>), "Method").Resolve(typeof(IFactoryMethodResolutionClass<>));
+            builder.BindFactory(typeof(IFactoryMethodClass<>), "Singleton").Resolve(typeof(IFactoryMethodResolutionSingletonClass<>)).InSingletonScope();
         }
 
         #endregion Methods
