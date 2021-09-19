@@ -143,6 +143,11 @@ namespace ZarDevs.DependencyInjection
             return _dependencyResolver.TryResolveNamed<T>(name, parameters);
         }
 
+        public object TryResolveNamed(Type requestType, string key, params object[] parameters)
+        {
+            return _dependencyResolver.TryResolveNamed(requestType, key, parameters);
+        }
+
         public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
@@ -171,6 +176,16 @@ namespace ZarDevs.DependencyInjection
         public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             return _dependencyResolver.TryResolveWithKey<T>(key, parameters);
+        }
+
+        public object TryResolveWithKey(Type requestType, Enum key, params object[] parameters)
+        {
+            return _dependencyResolver.TryResolveWithKey(requestType, key, parameters);
+        }
+
+        public object TryResolveWithKey(Type requestType, object key, params object[] parameters)
+        {
+            return _dependencyResolver.TryResolveWithKey(requestType, key, parameters);
         }
 
         private void Dispose(bool disposing)

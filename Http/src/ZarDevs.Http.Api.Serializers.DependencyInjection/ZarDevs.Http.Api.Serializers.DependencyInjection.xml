@@ -21,5 +21,25 @@
             Api serializers binded.
             </summary>
         </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Json">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerJson"/> serializer
+            </summary>
+        </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Xml">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerXml"/> serializer
+            </summary>
+        </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.FormUrlEncoded">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded"/> serializer
+            </summary>
+        </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.String">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerString"/> serializer
+            </summary>
+        </member>
     </members>
 </doc>

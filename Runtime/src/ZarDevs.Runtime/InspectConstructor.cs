@@ -172,12 +172,12 @@ namespace ZarDevs.Runtime
             return OrderParameters(target, unorderedValueMapping.ToDictionary(key => key.Item1, value => value.Item2));
         }
 
-        private IList<ConstructorInfo> GetConstructorInfos(Type target)
+        private static IList<ConstructorInfo> GetConstructorInfos(Type target)
         {
             return target.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
         }
 
-        private bool TryGetConstructorArgs(ConstructorInfo info, IList<object> argumentsTypesInOrder, out (string, object)[] arguments)
+        private static bool TryGetConstructorArgs(ConstructorInfo info, IList<object> argumentsTypesInOrder, out (string, object)[] arguments)
         {
             arguments = null;
             var parameters = info.GetParameters();

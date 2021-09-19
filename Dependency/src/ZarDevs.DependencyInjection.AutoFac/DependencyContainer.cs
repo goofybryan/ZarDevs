@@ -57,7 +57,7 @@ namespace ZarDevs.DependencyInjection
         protected override void OnBuild(IDependencyInfo info)
         {
             if (!TryRegisterTypeTo(Builder, info as IDependencyTypeInfo) && !TryRegisterMethod(Builder, info as IDependencyMethodInfo) && !TryRegisterInstance(Builder, info as IDependencyInstanceInfo) && !TryRegisterFactory(Builder, info))
-                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.RequestType));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info));
         }
 
         protected override void OnBuildEnd()
@@ -72,7 +72,7 @@ namespace ZarDevs.DependencyInjection
 
         private static void Build<TActivatorData, TRegistrationStyle>(IDependencyInfo info, IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> binding)
         {
-            binding.As(info.RequestType);
+            binding.As(info.ResolvedTypes.ToArray());
 
             switch (info.Scope)
             {
@@ -95,7 +95,7 @@ namespace ZarDevs.DependencyInjection
             throw new NotSupportedException("Only AutoFac NamedParameter or PositionalParameter is supported.");
         }
 
-        private object ExecuteMethod(IDependencyMethodInfo info, IList<Parameter> parameters)
+        private static object ExecuteMethod(IDependencyMethodInfo info, IList<Parameter> parameters)
         {
             if (parameters == null || parameters.Count == 0) return info.Execute(info.CreateContext(Ioc.Container));
             if (TryGetNamedParameters(parameters, out (string, object)[] namedParameters)) return info.Execute(info.CreateContext(Ioc.Container).SetArguments(namedParameters));
@@ -104,13 +104,18 @@ namespace ZarDevs.DependencyInjection
             throw new NotSupportedException("Only AutoFac NamedParameter or PositionalParameter is supported.");
         }
 
-        private void RegisterNamedDependency<TLimit, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> binding, IDependencyInfo info)
+        private static void RegisterNamedDependency<TLimit, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> binding, IDependencyInfo info)
         {
             if (!TryRegisterNamedTypeTo(binding, info) && info.Key is not string && info.Key != null)
-                binding.Keyed(info.Key, info.RequestType);
+            {
+                foreach (var type in info.ResolvedTypes)
+                {
+                    binding.Keyed(info.Key, type);
+                }
+            }
         }
 
-        private bool TryGetNamedParameters(IList<Parameter> parameters, out (string, object)[] namedParameters)
+        private static bool TryGetNamedParameters(IList<Parameter> parameters, out (string, object)[] namedParameters)
         {
             IList<(string, object)> args = new List<(string, object)>();
             foreach (var parameter in parameters.OfType<NamedParameter>())
@@ -123,7 +128,7 @@ namespace ZarDevs.DependencyInjection
             return namedParameters.Length > 0;
         }
 
-        private bool TryGetPositionalParameters(IList<Parameter> parameters, out object[] positionalParameters)
+        private static bool TryGetPositionalParameters(IList<Parameter> parameters, out object[] positionalParameters)
         {
             IList<object> args = new List<object>();
 
@@ -144,11 +149,10 @@ namespace ZarDevs.DependencyInjection
 
             if (factoryInfo.IsFactoryGeneric())
             {
-                var binding = builder.RegisterGeneric((ctx, types, p) =>
+                var binding = builder.RegisterGeneric((ctx, genericTypes, parameters) =>
                 {
-                    var concreteRequest = factoryInfo.RequestType.MakeGenericType(types);
-                    var concreteInfo = factoryInfo.As(concreteRequest);
-                    return ExecuteFactory(concreteInfo, p?.ToArray());
+                    var concreteInfo = factoryInfo.As(genericTypes);
+                    return ExecuteFactory(concreteInfo, parameters?.ToArray());
                 });
 
                 RegisterNamedDependency(binding, info);
@@ -170,7 +174,7 @@ namespace ZarDevs.DependencyInjection
             return true;
         }
 
-        private bool TryRegisterInstance(ContainerBuilder builder, IDependencyInstanceInfo info)
+        private static bool TryRegisterInstance(ContainerBuilder builder, IDependencyInstanceInfo info)
         {
             if (info == null)
                 return false;
@@ -184,7 +188,7 @@ namespace ZarDevs.DependencyInjection
             return true;
         }
 
-        private bool TryRegisterMethod(ContainerBuilder builder, IDependencyMethodInfo info)
+        private static bool TryRegisterMethod(ContainerBuilder builder, IDependencyMethodInfo info)
         {
             if (info == null)
                 return false;
@@ -198,21 +202,24 @@ namespace ZarDevs.DependencyInjection
             return true;
         }
 
-        private bool TryRegisterNamedTypeTo<TLimit, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> binding, IDependencyInfo info)
+        private static bool TryRegisterNamedTypeTo<TLimit, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> binding, IDependencyInfo info)
         {
             if (info.Key is not string name || string.IsNullOrWhiteSpace(name)) return false;
 
-            binding.Named(name, info.RequestType);
+            foreach (var type in info.ResolvedTypes)
+            {
+                binding.Named(name, type);
+            }
 
             return true;
         }
 
-        private bool TryRegisterTypeGeneric(ContainerBuilder builder, IDependencyTypeInfo info)
+        private static bool TryRegisterTypeGeneric(ContainerBuilder builder, IDependencyTypeInfo info)
         {
-            if (!info.ResolvedType.IsGenericType)
+            if (!info.ResolutionType.IsGenericType)
                 return false;
 
-            var binding = builder.RegisterGeneric(info.ResolvedType);
+            var binding = builder.RegisterGeneric(info.ResolutionType);
 
             RegisterNamedDependency(binding, info);
             Build(info, binding);
@@ -220,7 +227,7 @@ namespace ZarDevs.DependencyInjection
             return true;
         }
 
-        private bool TryRegisterTypeTo(ContainerBuilder builder, IDependencyTypeInfo info)
+        private static bool TryRegisterTypeTo(ContainerBuilder builder, IDependencyTypeInfo info)
         {
             if (info == null)
                 return false;
@@ -228,7 +235,7 @@ namespace ZarDevs.DependencyInjection
             if (TryRegisterTypeGeneric(builder, info))
                 return true;
 
-            var binding = builder.RegisterType(info.ResolvedType);
+            var binding = builder.RegisterType(info.ResolutionType);
 
             RegisterNamedDependency(binding, info);
             Build(info, binding);

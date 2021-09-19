@@ -16,15 +16,15 @@ namespace ZarDevs.Http.Api.Serializers
         /// <returns></returns>
         public static IDependencyBuilder ConfigureApi(this IDependencyBuilder builder)
         {
-            builder.Bind<IApiCommandContentSerializer>().To<ApiCommandContentSerializerFormUrlEncoded>().WithKey(ApiSerializer.FormUrlEncoded);
-            builder.Bind<IApiCommandContentSerializer>().To<ApiCommandContentSerializerJson>().WithKey(ApiSerializer.Json);
-            builder.Bind<IApiCommandContentSerializer>().To<ApiCommandContentSerializerString>().WithKey(ApiSerializer.String);
-            builder.Bind<IApiCommandContentSerializer>().To<ApiCommandContentSerializerXml>().WithKey(ApiSerializer.Xml);
+            builder.Bind<ApiCommandContentSerializerFormUrlEncoded>().Resolve<IApiCommandContentSerializer>().WithKey(ApiSerializer.FormUrlEncoded);
+            builder.Bind<ApiCommandContentSerializerJson>().Resolve<IApiCommandContentSerializer>().WithKey(ApiSerializer.Json);
+            builder.Bind<ApiCommandContentSerializerString>().Resolve<IApiCommandContentSerializer>().WithKey(ApiSerializer.String);
+            builder.Bind<ApiCommandContentSerializerXml>().Resolve<IApiCommandContentSerializer>().WithKey(ApiSerializer.Xml);
 
-            builder.Bind<IApiCommandContentDeserializer>().To<ApiCommandContentSerializerFormUrlEncoded>().WithKey(ApiSerializer.FormUrlEncoded);
-            builder.Bind<IApiCommandContentDeserializer>().To<ApiCommandContentSerializerJson>().WithKey(ApiSerializer.Json);
-            builder.Bind<IApiCommandContentDeserializer>().To<ApiCommandContentSerializerString>().WithKey(ApiSerializer.String);
-            builder.Bind<IApiCommandContentDeserializer>().To<ApiCommandContentSerializerXml>().WithKey(ApiSerializer.Xml);
+            builder.Bind<ApiCommandContentSerializerFormUrlEncoded>().Resolve<IApiCommandContentDeserializer>().WithKey(ApiSerializer.FormUrlEncoded);
+            builder.Bind<ApiCommandContentSerializerJson>().Resolve<IApiCommandContentDeserializer>().WithKey(ApiSerializer.Json);
+            builder.Bind<ApiCommandContentSerializerString>().Resolve<IApiCommandContentDeserializer>().WithKey(ApiSerializer.String);
+            builder.Bind<ApiCommandContentSerializerXml>().Resolve<IApiCommandContentDeserializer>().WithKey(ApiSerializer.Xml);
 
             return builder;
         }
@@ -38,12 +38,22 @@ namespace ZarDevs.Http.Api.Serializers
         /// </summary>
         public enum ApiSerializer
         {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerJson"/> serializer
+            /// </summary>
             Json,
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerXml"/> serializer
+            /// </summary>
             Xml,
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerFormUrlEncoded"/> serializer
+            /// </summary>
             FormUrlEncoded,
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerString"/> serializer
+            /// </summary>
             String
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         }
 
         #endregion Enums

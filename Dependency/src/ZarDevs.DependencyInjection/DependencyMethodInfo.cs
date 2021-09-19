@@ -6,7 +6,7 @@ namespace ZarDevs.DependencyInjection
     {
         #region Constructors
 
-        public DependencyMethodInfo(Func<IDependencyContext, object> methodTo, DependencyInfo info) : base(info)
+        public DependencyMethodInfo(Func<IDependencyContext, object> methodTo, IDependencyInfo info) : base(info)
         {
             Method = methodTo ?? throw new ArgumentNullException(nameof(methodTo));
         }

@@ -25,6 +25,33 @@ namespace ZarDevs.DependencyInjection.Tests
 
         #region Methods
 
+        [Theory]
+        [InlineData(typeof(IResolveAllTest))]
+        [InlineData(typeof(IResolveAllTest2))]
+        [InlineData(typeof(ResolveAllTest))]
+        public void Resolve_BindingWithResolveAll_BoundOnAll(Type requestType)
+        {
+            // Act
+            object value = Ioc.TryResolveNamed(requestType, nameof(ResolveAllTest));
+
+            // Assert
+            Assert.NotNull(value);
+            Assert.IsAssignableFrom(requestType, value);
+        }
+
+        [Fact]
+        public void Resolve_BindingWithResolveAllBaseClass_ReturnsAll()
+        {
+            // Act
+            var values = Ioc.ResolveAll<ResolveAllTestBase>()?.ToList();
+
+            // Assert
+            Assert.NotEmpty(values);
+            Assert.Equal(2, values.Count);
+            Assert.Contains(values, v => v.GetType() == typeof(ResolveAllTest));
+            Assert.Contains(values, v => v.GetType() == typeof(ResolveAllTest2));
+        }
+
         [Fact]
         public void Resolve_FactoryGenericMethodWithIocResolvedArgs_ReturnsMethodResult()
         {
@@ -87,6 +114,25 @@ namespace ZarDevs.DependencyInjection.Tests
         }
 
         [Fact]
+        public void Resolve_FactoryMethodNamedWithIocResolvedArgs_ReturnsMethodResult()
+        {
+            // Act
+            IFactoryMethodResolutionNamedClass methodClass1 = Ioc.ResolveNamed<IFactoryMethodResolutionNamedClass>(Bindings.Named1);
+            IFactoryMethodResolutionNamedClass methodClass2 = Ioc.ResolveNamed<IFactoryMethodResolutionNamedClass>(Bindings.Named2);
+
+            // Assert
+            AssertInstanceIsNotSame(methodClass1, methodClass2);
+
+            Assert.NotNull(methodClass1.NormalClass);
+            Assert.NotNull(methodClass1.MultipleBindings);
+            AssertMultipleBindings(methodClass1.MultipleBindings.ToList(), 3);
+
+            Assert.NotNull(methodClass2.NormalClass);
+            Assert.NotNull(methodClass2.MultipleBindings);
+            AssertMultipleBindings(methodClass2.MultipleBindings.ToList(), 3);
+        }
+
+        [Fact]
         public void Resolve_FactoryMethodSingleton_ReturnsSameMethodResult()
         {
             // Act
@@ -107,25 +153,6 @@ namespace ZarDevs.DependencyInjection.Tests
             // Act
             IFactoryMethodResolutionClass methodClass1 = Ioc.Resolve<IFactoryMethodResolutionClass>();
             IFactoryMethodResolutionClass methodClass2 = Ioc.Resolve<IFactoryMethodResolutionClass>();
-
-            // Assert
-            AssertInstanceIsNotSame(methodClass1, methodClass2);
-
-            Assert.NotNull(methodClass1.NormalClass);
-            Assert.NotNull(methodClass1.MultipleBindings);
-            AssertMultipleBindings(methodClass1.MultipleBindings.ToList(), 3);
-
-            Assert.NotNull(methodClass2.NormalClass);
-            Assert.NotNull(methodClass2.MultipleBindings);
-            AssertMultipleBindings(methodClass2.MultipleBindings.ToList(), 3);
-        }
-
-        [Fact]
-        public void Resolve_FactoryMethodNamedWithIocResolvedArgs_ReturnsMethodResult()
-        {
-            // Act
-            IFactoryMethodResolutionNamedClass methodClass1 = Ioc.ResolveNamed<IFactoryMethodResolutionNamedClass>(Bindings.Named1);
-            IFactoryMethodResolutionNamedClass methodClass2 = Ioc.ResolveNamed<IFactoryMethodResolutionNamedClass>(Bindings.Named2);
 
             // Assert
             AssertInstanceIsNotSame(methodClass1, methodClass2);
@@ -291,6 +318,22 @@ namespace ZarDevs.DependencyInjection.Tests
             AssertInstanceIsNotSame(instance1, instance3);
             AssertInstanceIsNotSame(instance1, instance5);
             AssertInstanceIsNotSame(instance3, instance5);
+        }
+
+        [Fact]
+        public void Resolve_SingletonWithMultipleResolves_ReturnsSameInstance()
+        {
+            // Act
+            ISingletonSameInstanceClassTest instance1 = Ioc.Resolve<ISingletonSameInstanceClassTest>();
+            ISingletonSameInstanceClassTest2 instance2 = Ioc.Resolve<ISingletonSameInstanceClassTest2>();
+            ISingletonSameInstanceClassTest3 instance3 = Ioc.Resolve<ISingletonSameInstanceClassTest3>();
+            ISingletonSameInstanceClassTest4 instance4 = Ioc.Resolve<ISingletonSameInstanceClassTest4>();
+
+            // Assert
+            AssertInstanceIsSame(instance1, instance2);
+            AssertInstanceIsSame(instance1, instance3);
+            AssertInstanceIsSame(instance1, instance4);
+            Assert.IsType<SingletonSameInstanceClassTest>(instance1);
         }
 
         [Theory]

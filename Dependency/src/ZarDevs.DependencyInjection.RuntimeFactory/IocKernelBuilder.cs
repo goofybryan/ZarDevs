@@ -41,11 +41,11 @@ namespace ZarDevs.DependencyInjection
         {
             var builder = new DependencyBuilder(Container);
 
-            builder.Bind<IDependencyTypeActivator>().To(Activator);
-            builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
-            builder.Bind<IInspectMethod>().To(InspectMethod.Instance);
-            builder.Bind<ICreate>().To(Create.Instance);
-            builder.Bind<IDependencyInstanceResolution>().To(InstanceResolution);
+            builder.BindInstance(Activator).Resolve<IDependencyTypeActivator>();
+            builder.BindInstance(InspectConstructor.Instance).Resolve<IInspectConstructor>();
+            builder.BindInstance(InspectMethod.Instance).Resolve<IInspectMethod>();
+            builder.BindInstance(Create.Instance).Resolve<ICreate>();
+            builder.BindInstance(InstanceResolution).Resolve<IDependencyInstanceResolution>();
 
             return builder;
         }

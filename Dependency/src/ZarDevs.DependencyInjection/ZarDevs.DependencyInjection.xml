@@ -16,18 +16,88 @@
             </summary>
             <param name="container"></param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind(System.Type)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Resolve(System.Type)">
             <summary>
             Create a new binding with the specified type.
             </summary>
             <param name="type">The specified type to bind.</param>
             <returns></returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Resolve(System.Type[])">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <param name="resolvedTypes">The a list of types to bind.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Resolve``1">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <typeparam name="TResolve">The specified type to bind.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind(System.Type)">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <param name="bindType">The specified type to bind.</param>
+            <returns></returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind``1">
             <summary>
             Create a new binding with the specified type.
             </summary>
-            <typeparam name="T">The specified type to bind.</typeparam>
+            <typeparam name="TBind">The specified type to Bind.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind(System.Type,System.Type)">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <param name="bindType">The specified type to bind.</param>
+            <param name="resolveType">The resolved type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind``2">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <typeparam name="TBind">The specified type to Bind.</typeparam>
+            <typeparam name="TResolve">The specified type to resolve.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.BindInstance``1(``0)">
+            <summary>
+            Bind the instance that will be resolved. This will be a singleton instance regardless of configuration.
+            </summary>
+            <typeparam name="TBind"></typeparam>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.BindFunction(System.Func{ZarDevs.DependencyInjection.IDependencyContext,System.Object})">
+            <summary>
+            Bind to a method that will be used to reolve the request type.
+            </summary>
+            <param name="method">
+            The function <see cref="T:System.Func`2"/> will be executed, if any parameters are
+            available, they will be passed in.
+            </param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.BindFactory``1(System.String)">
+            <summary>
+            Bind to a factory method that will be used to resolve the request.
+            </summary>
+            <typeparam name="TFactory">The factory type</typeparam>
+            <param name="methodName">The factory method</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.BindFactory(System.Type,System.String)">
+            <summary>
+            Bind to a factory method that will be used to resolve the request.
+            </summary>
+            <param name="factoryType">The factory type</param>
+            <param name="methodName">The factory method</param>
             <returns></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Build">
@@ -245,22 +315,16 @@
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyInfo">
             <summary>
-            Base dependency info class that describes the <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.RequestType"/>, <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.Scope"/>
+            Base dependency info class that describes the <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.ResolvedTypes"/>, <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.Scope"/>
             and optionally <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.Key"/> for any binding.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(System.Type,System.Object,ZarDevs.DependencyInjection.DependyBuilderScope)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(System.Object,ZarDevs.DependencyInjection.DependyBuilderScope)">
             <summary>
             Create a new instance with the base variables set.
             </summary>
-            <param name="requestType">Specifiy the request type, must not be null.</param>
             <param name="key">Specify the key, optional.</param>
             <param name="scope">Specify the scope, optional, default is <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScope.Transient"/></param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor">
-            <summary>
-            Create a new empty instance
-            </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
@@ -273,9 +337,9 @@
             An optional key that will be used to define the binding.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.DependencyInfo.RequestType">
+        <member name="P:ZarDevs.DependencyInjection.DependencyInfo.ResolvedTypes">
             <summary>
-            The request type that will be used to define what needs to be resolved.
+            Specify the resolved types for this binding.
             </summary>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyInfo.Scope">
@@ -308,12 +372,28 @@
             <param name="concreteRequestType">The concrete type that has been requested.</param>
             <returns>A new instance of the dependency info with the concrete information set.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyInfo,System.Type[])">
+            <summary>
+            Convert a generic type info into a concrete type info
+            </summary>
+            <param name="info">The current dependency info</param>
+            <param name="genericTypeArguments">The generic type arguments.</param>
+            <returns>A new instance of the dependency info with the concrete information set.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyTypeInfo,System.Type)">
             <summary>
             Convert a generic type info into a concrete type info
             </summary>
             <param name="typeInfo">The current dependency info</param>
             <param name="concreteRequestType">The concrete type that has been requested.</param>
+            <returns>A new instance of the dependency info with the concrete information set.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyTypeInfo,System.Type[])">
+            <summary>
+            Convert a generic type info into a concrete type info
+            </summary>
+            <param name="typeInfo">The current dependency info</param>
+            <param name="genericTypeArguments">The generic type arguments.</param>
             <returns>A new instance of the dependency info with the concrete information set.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyFactoryInfo,System.Type)">
@@ -323,6 +403,25 @@
             <param name="typeInfo">The current dependency info</param>
             <param name="concreteRequestType">The concrete type that has been requested.</param>
             <returns>A new instance of the dependency info with the concrete information set.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As(ZarDevs.DependencyInjection.IDependencyFactoryInfo,System.Type[])">
+            <summary>
+            Convert a generic factory info into a concrete type info.
+            </summary>
+            <param name="typeInfo">The current dependency info</param>
+            <param name="genericTypeArguments">The generic type arguments.</param>
+            <returns>A new instance of the dependency info with the concrete information set.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.As``1(``0,System.Type[],System.Type,System.Func{System.Type,``0})">
+            <summary>
+            Convert a dependency info to a concreate type.
+            </summary>
+            <typeparam name="TInfo">The <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> type</typeparam>
+            <param name="info">The current dependency info</param>
+            <param name="genericTypeArguments">The generic arguments type that has been requested.</param>
+            <param name="resolutionType">The generic resolution type</param>
+            <param name="concreateCreation">Function to create a new instance of the <typeparamref name="TInfo"/>. The type passed in will b the concrete type of <paramref name="resolutionType"/>/></param>
+            <returns></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfoExtentions.IsFactoryGeneric(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
             <summary>
@@ -344,7 +443,7 @@
             <param name="requestType">Specify the request type.</param>
             <param name="instance">The instance that is always returned.</param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceInfo.#ctor(System.Object,ZarDevs.DependencyInjection.DependencyInfo)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceInfo.#ctor(System.Object,ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
             Create a new instance
             </summary>
@@ -380,14 +479,63 @@
             <summary>
             Create a new binding with the specified type.
             </summary>
-            <param name="type">The specified type to bind.</param>
+            <param name="bindType">The specified type to bind.</param>
             <returns></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.Bind``1">
             <summary>
             Create a new binding with the specified type.
             </summary>
-            <typeparam name="T">The specified type to bind.</typeparam>
+            <typeparam name="TBind">The specified type to Bind.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.Bind(System.Type,System.Type)">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <param name="bindType">The specified type to bind.</param>
+            <param name="resolveType">The resolved type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.Bind``2">
+            <summary>
+            Create a new binding with the specified type.
+            </summary>
+            <typeparam name="TBind">The specified type to Bind.</typeparam>
+            <typeparam name="TResolve">The specified type to resolve.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.BindInstance``1(``0)">
+            <summary>
+            Bind the instance that will be resolved. This will be a singleton instance regardless of configuration.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.BindFunction(System.Func{ZarDevs.DependencyInjection.IDependencyContext,System.Object})">
+            <summary>
+            Bind to a method that will be used to reolve the request type.
+            </summary>
+            <param name="method">
+            The function <see cref="T:System.Func`2"/> will be executed, if any parameters are
+            available, they will be passed in.
+            </param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.BindFactory``1(System.String)">
+            <summary>
+            Bind to a factory method that will be used to resolve the request.
+            </summary>
+            <typeparam name="T">The factory type</typeparam>
+            <param name="methodName">The factory method</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.BindFactory(System.Type,System.String)">
+            <summary>
+            Bind to a factory method that will be used to resolve the request.
+            </summary>
+            <param name="factoryType">The factory type</param>
+            <param name="methodName">The factory method</param>
             <returns></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyBuilder.Build">
@@ -400,52 +548,19 @@
             Bind in which scope and key is used to when resolving the request type.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.InSingletonScope">
-            <summary>
-            Create the binding in Singleton Scope resolution.
-            </summary>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.InTransientScope">
-            <summary>
-            Create the binding in Transient Scope resolution. This is the default scope.
-            </summary>
-        </member>
-        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest">
-            <summary>
-            Dependency builder binding request to start the binding.
-            </summary>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind(System.Type)">
-            <summary>
-            Bind the specified type.
-            </summary>
-            <param name="type">Specified type to bind as the request type.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest.Bind``1">
-            <summary>
-            Bind the specified type.
-            </summary>
-            <typeparam name="T">Specified type to bind as the request type</typeparam>
-        </member>
-        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve">
-            <summary>
-            One the request type has been bound in <see cref="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingRequest"/> the
-            binding must be configured to a s resolution type, instance or method.
-            </summary>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To(System.Type)">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.With(System.Type)">
             <summary>
             Bind the specified type to
             </summary>
             <param name="type">Specified type to that will be resolved.</param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To``1">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.With``1">
             <summary>
             Bind the specified type to that will be resolved.
             </summary>
             <typeparam name="T">Specified type to that will be resolved.</typeparam>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To``1(``0)">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.With``1(``0)">
             <summary>
             Bind the instance that will be resolved. This will be a singleton instance regardless of configuration.
             </summary>
@@ -453,7 +568,7 @@
             <param name="instance"></param>
             <returns></returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.To(System.Func{ZarDevs.DependencyInjection.IDependencyContext,System.Object})">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.With(System.Func{ZarDevs.DependencyInjection.IDependencyContext,System.Object})">
             <summary>
             Bind to a method that will be used to reolve the request type.
             </summary>
@@ -462,7 +577,7 @@
             available, they will be passed in.
             </param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.ToFactory``1(System.String)">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.WithFactory``1(System.String)">
             <summary>
             Bind to a factory method that will be used to resolve the request.
             </summary>
@@ -470,13 +585,53 @@
             <param name="methodName">The factory method</param>
             <returns></returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.ToFactory(System.Type,System.String)">
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData.WithFactory(System.Type,System.String)">
             <summary>
             Bind to a factory method that will be used to resolve the request.
             </summary>
             <param name="factoryType">The factory type</param>
             <param name="methodName">The factory method</param>
             <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve">
+            <summary>
+            One the request type has been bound in <see cref="T:ZarDevs.DependencyInjection.IDependencyBuilderBindingMetaData"/> the
+            binding must be configured to a s resolution type, instance or method.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.InSingletonScope">
+            <summary>
+            Create the binding in Singleton Scope resolution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.InTransientScope">
+            <summary>
+            Create the binding in Transient Scope resolution. This is the default scope.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.Resolve(System.Type)">
+            <summary>
+            Bind the specified type.
+            </summary>
+            <param name="type">Specified type to bind as the request type.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.Resolve(System.Type[])">
+            <summary>
+            Bind the specified type.
+            </summary>
+            <param name="types">Specified a list of types to bind as the request type.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.Resolve``1">
+            <summary>
+            Bind the specified type.
+            </summary>
+            <typeparam name="T">Specified type to bind as the request type</typeparam>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.ResolveAll(System.Type[])">
+            <summary>
+            Add all <code>interface</code>s and base <code>class</code>es to be resolved by this binding. This will not resolve for type <see cref="T:System.IDisposable"/>
+            </summary>
+            <param name="ignoredTypes">Specify a list of ignored types to also not bind to.</param>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyBuilderInfo">
             <summary>
@@ -539,9 +694,9 @@
             Specify the key of the dependency, can be null.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType">
+        <member name="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes">
             <summary>
-            Specify the request type that needs to be resolved.
+            Specify the resolved types for this binding.
             </summary>
         </member>
         <member name="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope">
@@ -563,7 +718,7 @@
         </member>
         <member name="P:ZarDevs.DependencyInjection.IDependencyInstanceInfo.Instance">
             <summary>
-            Get the instance that the IOC will resolve from the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>.
+            Get the instance that the IOC will resolve from the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/>.
             </summary>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyMethodInfo">
@@ -583,9 +738,9 @@
             Dependency type information. When resolved the specified type will be instantiated and returned.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolvedType">
+        <member name="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolutionType">
             <summary>
-            Get the resolved type that the IOC will resolved from the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>.
+            Get the resolved type that the IOC will resolved from the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/>.
             </summary>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IIocContainer">
@@ -758,6 +913,17 @@
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveNamed(System.Type,System.String,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The name of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveNamed``1(System.String,System.Object[])">
             <summary>
             Try resolved the requested type with the list of paramaters specified.
@@ -786,6 +952,28 @@
             </summary>
             <typeparam name="T">The request type</typeparam>
             <param name="key">The name of the resolution request.</param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey(System.Type,System.Enum,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey(System.Type,System.Object,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
             <returns>The resolved type.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Enum,System.Object[])">

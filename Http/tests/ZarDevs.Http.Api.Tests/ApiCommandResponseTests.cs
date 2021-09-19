@@ -95,7 +95,7 @@ namespace ZarDevs.Http.Api.Tests
             Assert.Equal(reason, apiResponse.Reason);
         }
 
-        private HttpResponseMessage CreateResponse(HttpStatusCode statusCode, string reason, string response)
+        private static HttpResponseMessage CreateResponse(HttpStatusCode statusCode, string reason, string response)
         {
             HttpResponseMessage message = new(statusCode) { ReasonPhrase = reason };
 

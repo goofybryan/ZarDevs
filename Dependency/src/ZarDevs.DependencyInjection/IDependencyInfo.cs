@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -12,17 +13,17 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Specify the key of the dependency, can be null.
         /// </summary>
-        object Key { get; }
+        object Key { get; set; }
 
         /// <summary>
-        /// Specify the request type that needs to be resolved.
+        /// Specify the resolved types for this binding.
         /// </summary>
-        Type RequestType { get; }
+        ISet<Type> ResolvedTypes { get; }
 
         /// <summary>
         /// Specify the scope that this dependency is active in.
         /// </summary>
-        DependyBuilderScope Scope { get; }
+        DependyBuilderScope Scope { get; set; }
 
         #endregion Properties
 

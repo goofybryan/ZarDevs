@@ -9,17 +9,18 @@
             Dependency factory that is used to resolve a factory call.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.IDependencyFactory.FactoryInfos">
-            <summary>
-            Get a list of factory dependency info that this factory can resolve. This list gets
-            updated when <see cref="M:ZarDevs.DependencyInjection.IDependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)"/> or <see
-            cref="M:ZarDevs.DependencyInjection.IDependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)"/> is called.
-            </summary>
-        </member>
         <member name="P:ZarDevs.DependencyInjection.IDependencyFactory.InspectMethod">
             <summary>
             Get an instance of the runtime method inspector.
             </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyFactory.FindFactory(System.Type,System.Object)">
+            <summary>
+            Get the factory for the resolve type and key
+            </summary>
+            <param name="forResolveType">Specify the resolve type to find.</param>
+            <param name="key">Specify the key, null is an empty key, so will be returned.</param>
+            <returns></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
             <summary>
@@ -50,31 +51,32 @@
             execute the factory. Default is true/&gt;
             </param>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.DependencyFactory.FactoryInfos">
-            <summary>
-            Get a list of factory dependency info that this factory can resolve. This list gets
-            updated when <see cref="M:ZarDevs.DependencyInjection.DependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)"/> or <see
-            cref="M:ZarDevs.DependencyInjection.DependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)"/> is called.
-            </summary>
-        </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyFactory.InspectMethod">
             <summary>
             Get an instance of the runtime method inspector.
             </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactory.FindFactory(System.Type,System.Object)">
+            <summary>
+            Get the factory for the resolve type and key
+            </summary>
+            <param name="forResolveType">Specify the resolve type to find.</param>
+            <param name="key">Specify the key, null is an empty key, so will be returned.</param>
+            <returns>The factory or null if not found.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyFactory.MakeConcrete(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
             <summary>
             Generate a concrete factory from the info supplied.
             </summary>
             <param name="concreteInfo">The concrete type.</param>
-            <returns></returns>
+            <returns>The current instance</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyFactory.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
             <summary>
             Resolve the instance of the requested type from the factory.
             </summary>
-            <param name="context"></param>
-            <returns></returns>
+            <param name="context">The dependency context.</param>
+            <returns>The resolved object for the context.</returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyFactoryDefinitions">
             <summary>

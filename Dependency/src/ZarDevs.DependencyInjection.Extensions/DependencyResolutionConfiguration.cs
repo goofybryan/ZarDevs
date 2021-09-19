@@ -29,6 +29,13 @@ namespace ZarDevs.DependencyInjection
         void Add(Type type, IDependencyResolution resolution);
 
         /// <summary>
+        /// Configure the request type <paramref name="types"/> to the resolution <paramref name="resolution"/>
+        /// </summary>
+        /// <param name="types">The request type that will need to be resolved.</param>
+        /// <param name="resolution">The resolution that will be implemented.</param>
+        void Add(ICollection<Type> types, IDependencyResolution resolution);
+
+        /// <summary>
         /// Add an instance to the configuration for the Type <typeparamref name="T"/>
         /// </summary>
         /// <typeparam name="T">The type of the instance.</typeparam>
@@ -102,6 +109,19 @@ namespace ZarDevs.DependencyInjection
 
             AddToTypeMap(type, resolution);
         }
+        
+        /// <summary>
+        /// Configure the request type <paramref name="types"/> to the resolution <paramref name="resolution"/>
+        /// </summary>
+        /// <param name="types">The request type that will need to be resolved.</param>
+        /// <param name="resolution">The resolution that will be implemented.</param>
+        public void Add(ICollection<Type> types, IDependencyResolution resolution)
+        {
+            foreach (var type in types)
+            {
+                Add(type, resolution);
+            }
+        }
 
         /// <summary>
         /// Add an instance to the configuration for the Type <typeparamref name="T"/>
@@ -110,7 +130,8 @@ namespace ZarDevs.DependencyInjection
         /// <param name="instance">The instance that will always be resolved.</param>
         public void AddInstance<T>(T instance)
         {
-            Add(typeof(T), new DependencySingletonInstance(new DependencyInstanceInfo(typeof(T), instance)));
+            var instanceType = typeof(T);
+            Add(instanceType, new DependencySingletonInstance(new DependencyInstanceInfo(typeof(T), instance)));
         }
 
         /// <summary>

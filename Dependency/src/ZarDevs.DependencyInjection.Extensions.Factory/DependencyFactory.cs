@@ -13,13 +13,6 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <summary>
-        /// Get a list of factory dependency info that this factory can resolve. This list gets
-        /// updated when <see cref="MakeConcrete(IDependencyFactoryInfo)"/> or <see
-        /// cref="Resolve(IDependencyContext)"/> is called.
-        /// </summary>
-        IReadOnlyList<IDependencyFactoryInfo> FactoryInfos { get; }
-
-        /// <summary>
         /// Get an instance of the runtime method inspector.
         /// </summary>
         IInspectMethod InspectMethod { get; }
@@ -27,6 +20,14 @@ namespace ZarDevs.DependencyInjection
         #endregion Properties
 
         #region Methods
+
+        /// <summary>
+        /// Get the factory for the resolve type and key
+        /// </summary>
+        /// <param name="forResolveType">Specify the resolve type to find.</param>
+        /// <param name="key">Specify the key, null is an empty key, so will be returned.</param>
+        /// <returns></returns>
+        IDependencyFactoryInfo FindFactory(Type forResolveType, object key);
 
         /// <summary>
         /// Generate a concrete factory from the info supplied.
@@ -53,9 +54,9 @@ namespace ZarDevs.DependencyInjection
         #region Fields
 
         private readonly bool _enableExpressions;
-        private readonly List<IDependencyFactoryInfo> _factoryInfos;
+        private readonly IDictionary<(Type, object), IDependencyFactoryInfo> _map;
         private readonly IInspectMethod _inspectMethod;
-        private readonly ConcurrentDictionary<Type, IDependencyFactoryResolutionPlan> _resolutionPlans;
+        private readonly ConcurrentDictionary<IDependencyFactoryInfo, IDependencyFactoryResolutionPlan> _resolutionPlans;
 
         #endregion Fields
 
@@ -71,22 +72,15 @@ namespace ZarDevs.DependencyInjection
         /// </param>
         public DependencyFactory(IInspectMethod inspectMethod, bool enableExpressions = true)
         {
-            _resolutionPlans = new ConcurrentDictionary<Type, IDependencyFactoryResolutionPlan>();
+            _resolutionPlans = new();
             _inspectMethod = inspectMethod ?? throw new ArgumentNullException(nameof(inspectMethod));
             _enableExpressions = enableExpressions;
-            _factoryInfos = new List<IDependencyFactoryInfo>();
+            _map = new Dictionary<(Type, object), IDependencyFactoryInfo>();
         }
 
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Get a list of factory dependency info that this factory can resolve. This list gets
-        /// updated when <see cref="MakeConcrete(IDependencyFactoryInfo)"/> or <see
-        /// cref="Resolve(IDependencyContext)"/> is called.
-        /// </summary>
-        public IReadOnlyList<IDependencyFactoryInfo> FactoryInfos => _factoryInfos;
 
         /// <summary>
         /// Get an instance of the runtime method inspector.
@@ -98,13 +92,26 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
+        /// Get the factory for the resolve type and key
+        /// </summary>
+        /// <param name="forResolveType">Specify the resolve type to find.</param>
+        /// <param name="key">Specify the key, null is an empty key, so will be returned.</param>
+        /// <returns>The factory or null if not found.</returns>
+        public IDependencyFactoryInfo FindFactory(Type forResolveType, object key)
+        {
+            (Type, object) mapKey = new(forResolveType, key);
+
+            return _map.TryGetValue(mapKey, out var factoryInfo) ? factoryInfo : null;
+        }
+
+        /// <summary>
         /// Generate a concrete factory from the info supplied.
         /// </summary>
         /// <param name="concreteInfo">The concrete type.</param>
-        /// <returns></returns>
+        /// <returns>The current instance</returns>
         public IDependencyFactory MakeConcrete(IDependencyFactoryInfo concreteInfo)
-        {
-            _resolutionPlans.GetOrAdd(concreteInfo.RequestType, type => CreatePlanForType(concreteInfo));
+        {            
+            _resolutionPlans.GetOrAdd(concreteInfo, type => CreatePlanForType(concreteInfo));
 
             return this;
         }
@@ -112,8 +119,8 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Resolve the instance of the requested type from the factory.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">The dependency context.</param>
+        /// <returns>The resolved object for the context.</returns>
         public object Resolve(IDependencyContext context)
         {
             var info = (IDependencyFactoryInfo)context.Info;
@@ -122,7 +129,7 @@ namespace ZarDevs.DependencyInjection
             if (factory == null) return null;
 
             IDependencyFactoryResolutionPlan plan = context.ArgumentCount == 0 ?
-                  _resolutionPlans.GetOrAdd(info.RequestType, type => CreatePlanForType(info)) :
+                  _resolutionPlans.GetOrAdd(info, type => CreatePlanForType(info)) :
                   new DependencyFactoryArgumentsResolutionPlan(info.FactoryType, info.MethodName, InspectMethod);
 
             return plan.Resolve(factory, context);
@@ -130,7 +137,10 @@ namespace ZarDevs.DependencyInjection
 
         private IDependencyFactoryResolutionPlan CreatePlanForType(IDependencyFactoryInfo info)
         {
-            _factoryInfos.Add(info);
+            foreach(var type in info.ResolvedTypes)
+            {
+                _map[new(type, info.Key)] = info;
+            }
             var (method, parameters) = InspectMethod.GetMethodParameterMap(info.FactoryType, info.MethodName);
             var plan = new DependencyFactoryResolveResolutionPlan(method, parameters);
 
