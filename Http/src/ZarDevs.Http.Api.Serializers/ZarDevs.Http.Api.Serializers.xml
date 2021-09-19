@@ -6,10 +6,15 @@
     <members>
         <member name="T:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded">
             <summary>
-            Form url encoded serializer that can handle content that are of type '<see cref="T:System.Collections.Generic.IEnumerable`1"/>' 
-            where T is <see cref="T:System.Collections.Generic.KeyValuePair`2"/>, <see cref="T:System.ValueTuple`2"/> and <see cref="T:System.Tuple`2"/>.
-            T1 and T2 is (<see cref="T:System.String"/>
+            Form url encoded serializer that can handle content that are of type ' <see cref="T:System.Collections.Generic.IEnumerable`1"/>' where T is <see cref="T:System.Collections.Generic.KeyValuePair`2"/>, <see cref="T:System.ValueTuple`2"/> and
+            <see cref="T:System.Tuple`2"/>. T1 and T2 is ( <see cref="T:System.String"/>
             </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded.#ctor(System.Collections.Generic.IList{ZarDevs.Http.Api.Serializers.IDefaultFormUrlEncodedContentParser})">
+            <summary>
+            Create new instance of the serializer
+            </summary>
+            <param name="parsers"></param>
         </member>
         <member name="P:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded.MediaTypes">
             <summary>
@@ -29,6 +34,32 @@
             </summary>
             <param name="request">The request to serialize.</param>
             <returns>The <see cref="T:System.Net.Http.HttpContent"/> abstract object.</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Api.Serializers.IDefaultFormUrlEncodedContentParser">
+            <summary>
+            A parser interface that will try and take a <see cref="T:System.Object"/> and cast it to various enumerables of <see cref="T:System.Tuple`2"/> or <see cref="T:System.Collections.Generic.KeyValuePair`2"/> where key and value is a string.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.Serializers.IDefaultFormUrlEncodedContentParser.TryParse(System.Object,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}}@)">
+            <summary>
+            Parse the <paramref name="value"/> to the appropriate value.
+            </summary>
+            <param name="value">The value to parse</param>
+            <param name="parsed">The parsed value</param>
+            <returns>Returns a true of the value was parsed.</returns>
+        </member>
+        <member name="T:ZarDevs.Http.Api.Serializers.DefaultFormUrlEncodedContentParser">
+            <summary>
+            A parser that will try and take a <see cref="T:System.Object"/> and cast it to various enumerables of <see cref="T:System.Tuple`2"/> or <see cref="T:System.Collections.Generic.KeyValuePair`2"/> where key and value is a string.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Http.Api.Serializers.DefaultFormUrlEncodedContentParser.TryParse(System.Object,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}}@)">
+            <summary>
+            Parse the <paramref name="value"/> to the appropriate value.
+            </summary>
+            <param name="value">The value to parse</param>
+            <param name="parsed">The parsed value</param>
+            <returns>Returns a true of the value was parsed.</returns>
         </member>
         <member name="T:ZarDevs.Http.Api.ApiCommandContentSerializerJson">
             <summary>

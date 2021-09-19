@@ -41,6 +41,7 @@ This isn't really something I dreamed of doing, this is just a generic project t
 1. Deploy packages to NuGet server.
 1. Split projects into smaller projects once NuGet deployement is completed.
 1. Examples that makes use of all the things I am building.
+1. Add logging to all projects
 
 ## Links
 
