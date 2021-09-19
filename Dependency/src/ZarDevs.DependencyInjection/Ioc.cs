@@ -31,7 +31,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Get the current IOC container.
         /// </summary>
-        public static IIocContainer Container => _kernel ?? throw new InvalidOperationException("Ioc for the solution has not been initialized.");
+         public static IIocContainer Container => _kernel ?? throw new InvalidOperationException("Ioc for the solution has not been initialized.");
 
         /// <summary>
         /// IOC instance
@@ -74,9 +74,7 @@ namespace ZarDevs.DependencyInjection
 
                 var builder = container.CreateDependencyBuilder();
 
-                builder.Resolve<IIocContainer>()
-                    .With((ctx) =>
-                    Container).InSingletonScope();
+                builder.BindFunction(ctx => Container).Resolve<IIocContainer>().InSingletonScope();
 
                 buildDependencies?.Invoke(builder);
 

@@ -85,14 +85,17 @@ namespace ZarDevs.DependencyInjection
 
         public void Add(IDependencyInfo dependency)
         {
-            var key = dependency.ResolveType;
+            var keys = dependency.ResolvedTypes;
 
-            if (!Definitions.TryGetValue(key, out IList<IDependencyInfo> definitions))
+            foreach (var key in keys)
             {
-                Definitions[key] = definitions = new List<IDependencyInfo>();
-            }
+                if (!Definitions.TryGetValue(key, out IList<IDependencyInfo> definitions))
+                {
+                    Definitions[key] = definitions = new List<IDependencyInfo>();
+                }
 
-            definitions.Add(dependency);
+                definitions.Add(dependency);
+            }
         }
 
         public IDependencyInfo Get<T>(object key)

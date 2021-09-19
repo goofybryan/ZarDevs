@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -49,7 +50,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Get the request type that this resolution is for.
         /// </summary>
-        public Type RequestType => _resolution.RequestType;
+        public ISet<Type> ResolvedTypes => _resolution.ResolvedTypes;
 
         private object Resolved { get; set; }
 

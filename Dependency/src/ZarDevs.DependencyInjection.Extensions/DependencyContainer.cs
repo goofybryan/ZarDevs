@@ -77,7 +77,7 @@ namespace ZarDevs.DependencyInjection
         {
             foreach (var resolvedType in info.ResolvedTypes)
             {
-                _configuration.Add(resolvedType, new DependencySingletonInstance(info, resolvedType));
+                _configuration.Add(resolvedType, new DependencySingletonInstance(info));
             }
         }
 

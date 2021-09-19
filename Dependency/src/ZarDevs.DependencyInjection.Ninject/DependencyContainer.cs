@@ -37,12 +37,12 @@ namespace ZarDevs.DependencyInjection
 
         public override IDependencyInfo TryGetBinding(Type requestType, object key)
         {
-            return base.TryGetBinding(requestType, key) ?? _dependencyFactory.FactoryInfos.FirstOrDefault(i => i.ResolveType == requestType && i.Key == key);
+            return base.TryGetBinding(requestType, key) ?? _dependencyFactory.FindFactory(requestType, key);
         }
 
         protected override void OnBuild(IDependencyInfo info)
         {
-            IBindingToSyntax<object> initial = Kernel.Bind(info.ResolveType);
+            IBindingToSyntax<object> initial = Kernel.Bind(info.ResolvedTypes.ToArray());
 
             IBindingWhenInNamedWithOrOnSyntax<object> binding = BuildTo(info, initial);
             BindScope(info, binding);
@@ -114,7 +114,7 @@ namespace ZarDevs.DependencyInjection
                 return initial.ToMethod(ctx => ExecuteFactory(factoryInfo, ctx));
             }
 
-            throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", info.ResolveType));
+            throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the types '{0}' is invalid. The binding has not been configured correctly", info));
         }
 
         private object ExecuteFactory(IDependencyFactoryInfo info, IContext ctx)
@@ -123,8 +123,7 @@ namespace ZarDevs.DependencyInjection
 
             if (info.IsFactoryGeneric())
             {
-                var concreteRequest = info.ResolveType.MakeGenericType(ctx.GenericArguments);
-                executionInfo = info.As(concreteRequest);
+                executionInfo = info.As(ctx.GenericArguments);
             }
 
             var args = ctx.Parameters.Count == 0 ? null : ctx.Parameters.Select(s => ValueTuple.Create(s.Name, s.GetValue(ctx, ctx.Request.Target))).ToArray();

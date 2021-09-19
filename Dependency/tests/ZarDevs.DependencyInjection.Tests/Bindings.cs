@@ -4,8 +4,8 @@ namespace ZarDevs.DependencyInjection.Tests
     {
         #region Fields
 
-        public const string MethodBindArgs = nameof(MethodBindArgs);
-        public const string MethodBindNoArgs = nameof(MethodBindNoArgs);
+        public const string MethodWithArgs = nameof(MethodWithArgs);
+        public const string MethodWithNoArgs = nameof(MethodWithNoArgs);
         public const string NotMethod = nameof(NotMethod);
         public const string NotResolvedName = nameof(NotResolvedName);
         public const string Named1 = nameof(Named1);
@@ -38,8 +38,8 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<SingletonClassTest>().Resolve<ISingletonKeyClass>().InSingletonScope().WithKey(typeof(ISingletonKeyClass));
             builder.Bind<MultipleConstructorClass>().Resolve<IMultipleConstructorClass>();
             builder.Bind<FactoryClass>().Resolve<IFactoryClass>().InSingletonScope();
-            builder.BindFunction((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass(ctx.GetArguments())).Resolve<IFactoryResolutionClass>().WithKey(MethodBindArgs);
-            builder.BindFunction((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass()).Resolve<IFactoryResolutionClass>().WithKey(MethodBindNoArgs);
+            builder.BindFunction((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass(ctx.GetArguments())).Resolve<IFactoryResolutionClass>().WithKey(MethodWithArgs);
+            builder.BindFunction((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass()).Resolve<IFactoryResolutionClass>().WithKey(MethodWithNoArgs);
             builder.Bind<FactoryResolutionClass>().Resolve<IFactoryResolutionClass>().WithKey(NotMethod);
             builder.Bind<NotBindedClass>().Resolve<INotBindedKeyed>().WithKey(NotResolvedName);
             builder.Bind<NotBindedClass>().Resolve<INotBindedKeyed>().WithKey(EnumAsKey.Key);

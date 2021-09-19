@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -21,11 +22,9 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance of of the dependency resolution.
         /// </summary>
         /// <param name="info">The the <see cref="IDependencyInstanceInfo"/> that describes this resolution.</param>
-        /// <param name="requestType">Specify the request type</param>
-        public DependencySingletonInstance(IDependencyInstanceInfo info, Type requestType)
+        public DependencySingletonInstance(IDependencyInstanceInfo info)
         {
             _info = info ?? throw new ArgumentNullException(nameof(info));
-            RequestType = requestType ?? throw new ArgumentNullException(nameof(requestType));
         }
 
         #endregion Constructors
@@ -42,7 +41,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Get the request type that this resolution is for.
         /// </summary>
-        public Type RequestType { get; }
+        public ISet<Type> ResolvedTypes => _info.ResolvedTypes;
 
         #endregion Properties
 

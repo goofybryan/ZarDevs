@@ -32,7 +32,7 @@ namespace ZarDevs.DependencyInjection
         {
             var builder = new DependencyBuilder(_container);
 
-            builder.Resolve<IDependencyContainer>().With(_container);
+            builder.BindInstance(_container).Resolve<IDependencyContainer>();
 
             return builder;
         }

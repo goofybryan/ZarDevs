@@ -8,7 +8,7 @@ namespace ZarDevs.DependencyInjection
     /// Base dependency info class that describes the <see cref="ResolvedTypes"/>, <see cref="Scope"/>
     /// and optionally <see cref="Key"/> for any binding.
     /// </summary>
-    public class DependencyInfo : IDependencyInfo
+    public abstract class DependencyInfo : IDependencyInfo
     {
         #region Constructors
 
@@ -17,7 +17,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="key">Specify the key, optional.</param>
         /// <param name="scope">Specify the scope, optional, default is <see cref="DependyBuilderScope.Transient"/></param>
-        public DependencyInfo(object key = null, DependyBuilderScope scope = DependyBuilderScope.Transient)
+        protected DependencyInfo(object key = null, DependyBuilderScope scope = DependyBuilderScope.Transient)
         {
             ResolvedTypes = new HashSet<Type>();
             Key = key;
@@ -25,18 +25,16 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Create a new empty instance
-        /// </summary>
-        internal DependencyInfo()
-        {
-        }
-
-        /// <summary>
         /// Create a new instance with copied values.
         /// </summary>
         /// <param name="copy">The base instance to copy from.</param>
-        protected DependencyInfo(IDependencyInfo copy) : this(copy.Key, copy.Scope)
+        protected DependencyInfo(IDependencyInfo copy) : this()
         {
+            if (copy == null) return;
+
+            Key = copy.Key;
+            Scope = copy.Scope;
+
             foreach (var resolvedType in copy.ResolvedTypes)
             {
                 ResolvedTypes.Add(resolvedType);

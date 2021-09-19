@@ -15,6 +15,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The current dependency info</param>
         /// <param name="concreteRequestType">The concrete type that has been requested.</param>
         /// <returns>A new instance of the dependency info with the concrete information set.</returns>
+        [Obsolete("This method should not be used because the generic arguments should be rather passed in")]
         public static IDependencyInfo As(this IDependencyInfo info, Type concreteRequestType)
         {
             if (info is IDependencyTypeInfo typeInfo)
@@ -29,18 +30,51 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Convert a generic type info into a concrete type info
         /// </summary>
+        /// <param name="info">The current dependency info</param>
+        /// <param name="genericTypeArguments">The generic type arguments.</param>
+        /// <returns>A new instance of the dependency info with the concrete information set.</returns>
+        public static IDependencyInfo As(this IDependencyInfo info, params Type[] genericTypeArguments)
+        {
+            if (info is IDependencyTypeInfo typeInfo)
+                return As(typeInfo, genericTypeArguments);
+
+            if (info is IDependencyFactoryInfo factoryInfo)
+                return As(factoryInfo, genericTypeArguments);
+
+            throw new NotSupportedException($"The dependency info {info} is not currently supported.");
+        }
+
+        /// <summary>
+        /// Convert a generic type info into a concrete type info
+        /// </summary>
         /// <param name="typeInfo">The current dependency info</param>
         /// <param name="concreteRequestType">The concrete type that has been requested.</param>
         /// <returns>A new instance of the dependency info with the concrete information set.</returns>
+        [Obsolete("This method should not be used because the generic arguments should be rather passed in")]
         public static IDependencyTypeInfo As(this IDependencyTypeInfo typeInfo, Type concreteRequestType)
         {
             if (!typeInfo.ResolutionType.IsGenericType)
                 throw new InvalidOperationException($"The info resolved type for '{typeInfo}' is not a generic type.");
 
             var resovleType = typeInfo.ResolutionType;
-            var concreteResolveType = resovleType.MakeGenericType(concreteRequestType.GenericTypeArguments);
 
-            return new DependencyTypeInfo(concreteResolveType, typeInfo) { ResolveType = concreteRequestType };
+            return As(typeInfo, concreteRequestType.GenericTypeArguments, resovleType, rt => new DependencyTypeInfo(rt, typeInfo));
+        }
+
+        /// <summary>
+        /// Convert a generic type info into a concrete type info
+        /// </summary>
+        /// <param name="typeInfo">The current dependency info</param>
+        /// <param name="genericTypeArguments">The generic type arguments.</param>
+        /// <returns>A new instance of the dependency info with the concrete information set.</returns>
+        public static IDependencyTypeInfo As(this IDependencyTypeInfo typeInfo, params Type[] genericTypeArguments)
+        {
+            if (!typeInfo.ResolutionType.IsGenericType)
+                throw new InvalidOperationException($"The info resolved type for '{typeInfo}' is not a generic type.");
+
+            var resovleType = typeInfo.ResolutionType;
+
+            return As(typeInfo, genericTypeArguments, resovleType, rt => new DependencyTypeInfo(rt, typeInfo));
         }
 
         /// <summary>
@@ -49,15 +83,54 @@ namespace ZarDevs.DependencyInjection
         /// <param name="typeInfo">The current dependency info</param>
         /// <param name="concreteRequestType">The concrete type that has been requested.</param>
         /// <returns>A new instance of the dependency info with the concrete information set.</returns>
+        [Obsolete("This method should not be used because the generic arguments should be rather passed in")]
         public static IDependencyFactoryInfo As(this IDependencyFactoryInfo typeInfo, Type concreteRequestType)
         {
             if (!IsFactoryGeneric(typeInfo))
                 return new DependencyFactoryInfo(concreteRequestType, typeInfo.MethodName, typeInfo);
 
             var resovleType = typeInfo.FactoryType;
-            var concreteResolveType = resovleType.MakeGenericType(concreteRequestType.GenericTypeArguments);
 
-            return new DependencyFactoryInfo(concreteResolveType, typeInfo.MethodName, typeInfo) { ResolveType = concreteRequestType };
+            return As(typeInfo, concreteRequestType.GenericTypeArguments, resovleType, rt => new DependencyFactoryInfo(rt, typeInfo.MethodName, typeInfo));
+        }
+
+        /// <summary>
+        /// Convert a generic factory info into a concrete type info.
+        /// </summary>
+        /// <param name="typeInfo">The current dependency info</param>
+        /// <param name="genericTypeArguments">The generic type arguments.</param>
+        /// <returns>A new instance of the dependency info with the concrete information set.</returns>
+        public static IDependencyFactoryInfo As(this IDependencyFactoryInfo typeInfo, params Type[] genericTypeArguments)
+        {
+            if (!IsFactoryGeneric(typeInfo))
+                return typeInfo;
+
+            var resovleType = typeInfo.FactoryType;
+
+            return As(typeInfo, genericTypeArguments, resovleType, rt => new DependencyFactoryInfo(rt, typeInfo.MethodName, typeInfo));
+        }
+
+        /// <summary>
+        /// Convert a dependency info to a concreate type.
+        /// </summary>
+        /// <typeparam name="TInfo">The <see cref="IDependencyInfo"/> type</typeparam>
+        /// <param name="info">The current dependency info</param>
+        /// <param name="genericTypeArguments">The generic arguments type that has been requested.</param>
+        /// <param name="resolutionType">The generic resolution type</param>
+        /// <param name="concreateCreation">Function to create a new instance of the <typeparamref name="TInfo"/>. The type passed in will b the concrete type of <paramref name="resolutionType"/>/></param>
+        /// <returns></returns>
+        public static TInfo As<TInfo>(this TInfo info, Type[] genericTypeArguments, Type resolutionType, Func<Type, TInfo> concreateCreation) where TInfo : IDependencyInfo
+        {
+            var concreateResolutionType = resolutionType.MakeGenericType(genericTypeArguments);
+            var concreateInfo = concreateCreation(concreateResolutionType);
+                        
+            foreach(var resolveType in info.ResolvedTypes)
+            {
+                var concreateResolveType = resolveType.MakeGenericType(concreateResolutionType.GenericTypeArguments);
+                concreateInfo.ResolvedTypes.Add(concreateResolveType);
+            }
+
+            return concreateInfo;
         }
 
         /// <summary>

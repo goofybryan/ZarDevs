@@ -32,7 +32,7 @@ namespace ZarDevs.DependencyInjection
         public DependencyInstanceInfo(object instance, IDependencyInfo copy) : base(copy)
         {
             Instance = instance ?? throw new ArgumentNullException(nameof(instance));
-            Validate(copy.ResolvedTypes, instance);
+            Validate(ResolvedTypes, instance);
             Scope = DependyBuilderScope.Singleton;
         }
 
