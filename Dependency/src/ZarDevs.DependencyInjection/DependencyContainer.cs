@@ -52,6 +52,7 @@ namespace ZarDevs.DependencyInjection
 
             foreach (IDependencyInfo definition in definitions)
             {
+                Validate(definition);
                 Definitions.Add(definition);
                 OnBuild(definition);
             }
@@ -105,6 +106,13 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         protected virtual void OnBuildStart()
         { }
+
+        private static void Validate(IDependencyInfo definition)
+        {
+            if (definition.ResolvedTypes?.Count > 0) return;
+
+            throw new InvalidOperationException($"The definition '{definition}', does not contain any resolve types.");
+        }
 
         #endregion Methods
     }

@@ -393,6 +393,20 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Try resolved the requested type with the list of paramaters specified.
         /// </summary>
+        /// <param name="requestType">The request type</param>
+        /// <param name="key">The name of the resolution request.</param>
+        /// <param name="parameters">
+        /// A list of named parameters, these must match a constructor order.
+        /// </param>
+        /// <returns>The resolved type.</returns>
+        public object TryResolveNamed(Type requestType, string key, params object[] parameters)
+        {
+            return Kernel.TryGetResolution(key, requestType).Resolve(parameters);
+        }
+
+        /// <summary>
+        /// Try resolved the requested type with the list of paramaters specified.
+        /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <param name="key">The key of the resolution request.</param>
         /// <param name="parameters">
@@ -466,6 +480,34 @@ namespace ZarDevs.DependencyInjection
         public T TryResolveWithKey<T>(object key) where T : class
         {
             return (T)Kernel.TryGetResolution(key, typeof(T)).Resolve();
+        }
+
+        /// <summary>
+        /// Try resolved the requested type with the list of paramaters specified.
+        /// </summary>
+        /// <param name="requestType">The request type</param>
+        /// <param name="key">The name of the resolution request.</param>
+        /// <param name="parameters">
+        /// A list of named parameters, these must match a constructor order.
+        /// </param>
+        /// <returns>The resolved type.</returns>
+        public object TryResolveWithKey(Type requestType, Enum key, params object[] parameters)
+        {
+            return Kernel.TryGetResolution(key, requestType).Resolve();
+        }
+
+        /// <summary>
+        /// Try resolved the requested type with the list of paramaters specified.
+        /// </summary>
+        /// <param name="requestType">The request type</param>
+        /// <param name="key">The name of the resolution request.</param>
+        /// <param name="parameters">
+        /// A list of named parameters, these must match a constructor order.
+        /// </param>
+        /// <returns>The resolved type.</returns>
+        public object TryResolveWithKey(Type requestType, object key, params object[] parameters)
+        {
+            return Kernel.TryGetResolution(key, requestType).Resolve();
         }
 
         /// <summary>

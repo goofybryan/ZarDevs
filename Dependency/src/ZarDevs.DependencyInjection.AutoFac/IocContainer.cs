@@ -95,12 +95,12 @@ namespace ZarDevs.DependencyInjection
 
         public T ResolveWithKey<T>(Enum key) where T : class
         {
-            return ResolveWithKey<T>(key, new (string, object)[0]);
+            return ResolveWithKey<T>(key, Array.Empty<(string, object)>());
         }
 
         public T ResolveWithKey<T>(object key) where T : class
         {
-            return ResolveWithKey<T>(key, new (string, object)[0]);
+            return ResolveWithKey<T>(key, Array.Empty<(string, object)>());
         }
 
         public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
@@ -140,12 +140,17 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveNamed<T>(string name) where T : class
         {
-            return TryResolveNamed<T>(name, new (string, object)[0]);
+            return TryResolveNamed<T>(name, Array.Empty<(string, object)>());
         }
 
         public T TryResolveNamed<T>(string name, params object[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithName<T>(name) ? ResolveNamed<T>(name, parameters) : default;
+        }
+
+        public object TryResolveNamed(Type requestType, string name, params object[] parameters)
+        {
+            return Kernel.IsRegisteredWithName(name, requestType) ? Kernel.ResolveNamed(name, requestType, CreateParameters(parameters)) : default;
         }
 
         public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
@@ -160,12 +165,12 @@ namespace ZarDevs.DependencyInjection
 
         public T TryResolveWithKey<T>(Enum key) where T : class
         {
-            return TryResolveWithKey<T>(key, new (string, object)[0]);
+            return TryResolveWithKey<T>(key, Array.Empty<(string, object)>());
         }
 
         public T TryResolveWithKey<T>(object key) where T : class
         {
-            return TryResolveWithKey<T>(key, new (string, object)[0]);
+            return TryResolveWithKey<T>(key, Array.Empty<(string, object)>());
         }
 
         public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
@@ -176,6 +181,16 @@ namespace ZarDevs.DependencyInjection
         public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             return Kernel.IsRegisteredWithKey<T>(key) ? ResolveWithKey<T>(key, parameters) : default;
+        }
+
+        public object TryResolveWithKey(Type requestType, Enum key, params object[] parameters)
+        {
+            return Kernel.IsRegisteredWithKey(key, requestType) ? Kernel.ResolveKeyed(key, requestType, CreateParameters(parameters)) : default;
+        }
+
+        public object TryResolveWithKey(Type requestType, object key, params object[] parameters)
+        {
+            return Kernel.IsRegisteredWithKey(key, requestType) ? Kernel.ResolveKeyed(key, requestType, CreateParameters(parameters)) : default;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -192,7 +207,7 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        private Parameter[] CreateParameters(object[] parameters)
+        private static Parameter[] CreateParameters(object[] parameters)
         {
             if (parameters == null)
                 return null;
@@ -206,10 +221,10 @@ namespace ZarDevs.DependencyInjection
             return list;
         }
 
-        private Parameter[] CreateParameters((string, object)[] parameters)
+        private static Parameter[] CreateParameters((string, object)[] parameters)
         {
             if (parameters == null || parameters.Length == 0)
-                return new Parameter[0];
+                return Array.Empty<Parameter>();
 
             var list = new List<Parameter>();
 

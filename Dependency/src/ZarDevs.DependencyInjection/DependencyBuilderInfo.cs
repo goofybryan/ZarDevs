@@ -101,12 +101,10 @@ namespace ZarDevs.DependencyInjection
             if (_info is not IDependencyTypeInfo typeInfo) return this;
 
             var resolutionType = typeInfo.ResolutionType;
-            var iDisposableType = typeof(IDisposable);
-            var typesToIgnore = new List<Type>();
+            var typesToIgnore = new List<Type>() { typeof(IDisposable), typeof(object) };
 
             if(ignoredTypes?.Length > 0) 
                 typesToIgnore.AddRange(ignoredTypes);
-            typesToIgnore.Add(iDisposableType);
 
             var implementingTypes = InspectObject.Instance.FindImplementingTypes(resolutionType, typesToIgnore);
 

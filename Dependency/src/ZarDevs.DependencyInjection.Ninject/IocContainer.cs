@@ -172,6 +172,12 @@ namespace ZarDevs.DependencyInjection
             return TryResolveNamed<T>(name, CreateNamedParameters(name, typeof(T), parameters));
         }
 
+        public object TryResolveNamed(Type requestType, string name, params object[] parameters)
+        {
+            var namedParameter = CreateNamedParameters(name, requestType, parameters);
+            return Kernel.TryGet(requestType, name, CreateParameters(namedParameter));
+        }
+
         public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return TryResolveNamed<T>(key.GetBindingName(), parameters);
@@ -211,6 +217,23 @@ namespace ZarDevs.DependencyInjection
             return TryResolveNamed<T>(key.ToString(), parameters);
         }
 
+        public object TryResolveWithKey(Type requestType, Enum key, params object[] parameters)
+        {
+            var name = key.GetBindingName();
+            var namedParameter = CreateNamedParameters(name, requestType, parameters);
+            return Kernel.TryGet(requestType, name, CreateParameters(namedParameter));
+        }
+
+        public object TryResolveWithKey(Type requestType, object key, params object[] parameters)
+        {
+            if (key is Enum enumKey)
+                return TryResolveWithKey(requestType, enumKey, parameters);
+
+            var name = key.ToString();
+            var namedParameter = CreateNamedParameters(name, requestType, parameters);
+            return Kernel.TryGet(requestType, name, CreateParameters(namedParameter));
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -222,6 +245,22 @@ namespace ZarDevs.DependencyInjection
 
                 _disposed = true;
             }
+        }
+
+        private static IParameter[] CreateParameters(IList<(string, object)> parameters)
+        {
+            if (parameters == null)
+                return null;
+
+            var list = new List<IParameter>();
+
+            foreach (var (name, value) in parameters)
+            {
+                var constructorArg = new ConstructorArgument(name, value);
+                list.Add(constructorArg);
+            }
+
+            return list.ToArray();
         }
 
         private (string, object)[] CreateNamedParameters(object key, Type requestType, object[] values)
@@ -243,22 +282,6 @@ namespace ZarDevs.DependencyInjection
             }
 
             return orderedParams;
-        }
-
-        private static IParameter[] CreateParameters(IList<(string, object)> parameters)
-        {
-            if (parameters == null)
-                return null;
-
-            var list = new List<IParameter>();
-
-            foreach (var (name, value) in parameters)
-            {
-                var constructorArg = new ConstructorArgument(name, value);
-                list.Add(constructorArg);
-            }
-
-            return list.ToArray();
         }
 
         #endregion Methods

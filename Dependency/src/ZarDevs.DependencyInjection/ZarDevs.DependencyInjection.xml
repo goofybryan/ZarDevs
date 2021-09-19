@@ -913,6 +913,17 @@
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveNamed(System.Type,System.String,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The name of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveNamed``1(System.String,System.Object[])">
             <summary>
             Try resolved the requested type with the list of paramaters specified.
@@ -941,6 +952,28 @@
             </summary>
             <typeparam name="T">The request type</typeparam>
             <param name="key">The name of the resolution request.</param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey(System.Type,System.Enum,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey(System.Type,System.Object,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The key of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
             <returns>The resolved type.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocContainer.TryResolveWithKey``1(System.Enum,System.Object[])">

@@ -36,6 +36,7 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<SingletonClassTest>().Resolve<ISingletonNamedClass>().InSingletonScope().WithKey(nameof(ISingletonNamedClass));
             builder.Bind<SingletonClassTest>().Resolve<ISingletonEnumClass>().InSingletonScope().WithKey(EnumAsKey.Key);
             builder.Bind<SingletonClassTest>().Resolve<ISingletonKeyClass>().InSingletonScope().WithKey(typeof(ISingletonKeyClass));
+            builder.Bind<SingletonSameInstanceClassTest>().Resolve(typeof(ISingletonSameInstanceClassTest), typeof(ISingletonSameInstanceClassTest2), typeof(ISingletonSameInstanceClassTest3), typeof(ISingletonSameInstanceClassTest4)).InSingletonScope();
             builder.Bind<MultipleConstructorClass>().Resolve<IMultipleConstructorClass>();
             builder.Bind<FactoryClass>().Resolve<IFactoryClass>().InSingletonScope();
             builder.BindFunction((ctx) => ctx.Ioc.Resolve<IFactoryClass>().ResolveFactoryResolutionClass(ctx.GetArguments())).Resolve<IFactoryResolutionClass>().WithKey(MethodWithArgs);
@@ -62,6 +63,8 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind(typeof(FactoryMethodClass<>)).Resolve(typeof(IFactoryMethodClass<>)).InSingletonScope();
             builder.BindFactory(typeof(IFactoryMethodClass<>), "Method").Resolve(typeof(IFactoryMethodResolutionClass<>));
             builder.BindFactory(typeof(IFactoryMethodClass<>), "Singleton").Resolve(typeof(IFactoryMethodResolutionSingletonClass<>)).InSingletonScope();
+            builder.Bind<ResolveAllTest>().ResolveAll().WithKey(nameof(ResolveAllTest));
+            builder.Bind<ResolveAllTest2>().ResolveAll().WithKey(nameof(ResolveAllTest2));
         }
 
         #endregion Methods

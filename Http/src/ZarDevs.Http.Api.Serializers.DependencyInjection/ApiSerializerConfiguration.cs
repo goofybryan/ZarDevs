@@ -38,12 +38,22 @@ namespace ZarDevs.Http.Api.Serializers
         /// </summary>
         public enum ApiSerializer
         {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerJson"/> serializer
+            /// </summary>
             Json,
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerXml"/> serializer
+            /// </summary>
             Xml,
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerFormUrlEncoded"/> serializer
+            /// </summary>
             FormUrlEncoded,
+            /// <summary>
+            /// Key for <see cref="ApiCommandContentSerializerString"/> serializer
+            /// </summary>
             String
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         }
 
         #endregion Enums
