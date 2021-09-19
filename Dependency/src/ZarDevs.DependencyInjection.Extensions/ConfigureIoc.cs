@@ -14,7 +14,7 @@
         /// <returns></returns>
         public static IDependencyBuilder ConfigureExtentions(this IDependencyBuilder builder)
         {
-            builder.Bind<IDependencyResolver>().To<DependencyResolver>().InSingletonScope();
+            builder.Bind<DependencyResolver>().Resolve<IDependencyResolver>().InSingletonScope();
 
             return builder;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
@@ -57,17 +58,17 @@ namespace ZarDevs.DependencyInjection
         public IRuntimeResolutionPlan FromInfo(IDependencyInfo info)
         {
             if (info is IDependencyTypeInfo typeInfo)
-                return CreateTypedPlan(typeInfo.ResolvedType);
+                return CreateTypedPlan(typeInfo.ResolutionType);
 
             var resolver = Ioc.Container.Resolver();
 
-            return new RuntimeResolutionPlanResolution(resolver.TryGetResolution(info.RequestType));
+            return new RuntimeResolutionPlanResolution(resolver.TryGetResolution(info.ResolvedTypes.First(), info.Key));
         }
 
         public IRuntimeResolutionPlan FromResolution(IDependencyResolution resolution)
         {
             if (resolution is IDependencyResolution<IDependencyTypeInfo> typedResolution)
-                return CreateTypedPlan(typedResolution.Info.ResolvedType);
+                return CreateTypedPlan(typedResolution.Info.ResolutionType);
 
             return new RuntimeResolutionPlanResolution(resolution);
         }

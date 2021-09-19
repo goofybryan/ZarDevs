@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -44,7 +45,7 @@ namespace ZarDevs.DependencyInjection
         protected override void OnBuild(IDependencyInfo definition)
         {
             if (!TryRegisterTypeTo(definition as IDependencyTypeInfo) && !TryRegisterMethod(definition as IDependencyMethodInfo) && !TryRegisterInstance(definition as IDependencyInstanceInfo) && !TryRegisterFactory(definition as IDependencyFactoryInfo))
-                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", definition.RequestType));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", definition.ResolvedTypes.ToArray()));
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="factory"></param>
         protected virtual void OnRegisterFactory(IDependencyFactoryInfo info, IDependencyFactory factory)
         {
-            _configuration.Add(info.RequestType, new DependencyFactoryResolution(info, factory));
+            _configuration.Add(info.ResolvedTypes, new DependencyFactoryResolution(info, factory));
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="factory">The dependency factory that will resolve the factory.</param>
         protected virtual void OnRegisterFactorySingleton(IDependencyFactoryInfo info, IDependencyFactory factory)
         {
-            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyFactoryInfo, DependencyFactoryResolution>(new DependencyFactoryResolution(info, factory)));
+            _configuration.Add(info.ResolvedTypes, new DependencySingletionResolution<IDependencyFactoryInfo, DependencyFactoryResolution>(new DependencyFactoryResolution(info, factory)));
         }
 
         /// <summary>
@@ -74,7 +75,10 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterInstance(IDependencyInstanceInfo info)
         {
-            _configuration.Add(info.RequestType, new DependencySingletonInstance(info));
+            foreach (var resolvedType in info.ResolvedTypes)
+            {
+                _configuration.Add(resolvedType, new DependencySingletonInstance(info));
+            }
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterSingleton(IDependencyTypeInfo info)
         {
-            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyTypeInfo, DependencyTypeResolution>(new DependencyTypeResolution(info, _activator)));
+            _configuration.Add(info.ResolvedTypes, new DependencySingletionResolution<IDependencyTypeInfo, DependencyTypeResolution>(new DependencyTypeResolution(info, _activator)));
         }
 
         /// <summary>
@@ -94,7 +98,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterSingletonMethod(IDependencyMethodInfo info)
         {
-            _configuration.Add(info.RequestType, new DependencySingletionResolution<IDependencyMethodInfo, DependencyMethodResolution>(new DependencyMethodResolution(info)));
+            _configuration.Add(info.ResolvedTypes, new DependencySingletionResolution<IDependencyMethodInfo, DependencyMethodResolution>(new DependencyMethodResolution(info)));
         }
 
         /// <summary>
@@ -104,7 +108,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterTransient(IDependencyTypeInfo info)
         {
-            _configuration.Add(info.RequestType, new DependencyTypeResolution(info, _activator));
+            _configuration.Add(info.ResolvedTypes, new DependencyTypeResolution(info, _activator));
         }
 
         /// <summary>
@@ -114,7 +118,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="info">The dependency information describing the resolving requirements.</param>
         protected virtual void OnRegisterTransientMethod(IDependencyMethodInfo info)
         {
-            _configuration.Add(info.RequestType, new DependencyMethodResolution(info));
+            _configuration.Add(info.ResolvedTypes, new DependencyMethodResolution(info));
         }
 
         private bool TryRegisterFactory(IDependencyFactoryInfo info)

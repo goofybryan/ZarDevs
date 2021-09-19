@@ -73,6 +73,27 @@ namespace ZarDevs.DependencyInjection
         /// </returns>
         IDependencyResolution TryGetResolution(object key, Type requestType);
 
+        /// <summary>
+        /// Try and get the resolution for the request info.
+        /// </summary>
+        /// <param name="info">The request info that will need to be resolved.</param>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will return null when resolved.
+        /// </returns>
+        IDependencyResolution TryGetResolution(IDependencyInfo info);
+
+        /// <summary>
+        /// Get the resolution for the request info.
+        /// </summary>
+        /// <param name="info">The request info that will need to be resolved.</param>
+        /// <param name="key">The key for this resolution.</param>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will return null when resolved.
+        /// </returns>
+        IDependencyResolution TryGetResolution(object key, IDependencyInfo info);
+
         #endregion Methods
     }
 
@@ -190,6 +211,33 @@ namespace ZarDevs.DependencyInjection
         public IDependencyResolution TryGetResolution(Type requestType)
         {
             return TryGetResolution(requestType, false);
+        }
+
+        /// <summary>
+        /// Get the resolution for the request info.
+        /// </summary>
+        /// <param name="info">The request info that will need to be resolved.</param>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will return null when resolved.
+        /// </returns>
+        public IDependencyResolution TryGetResolution(IDependencyInfo info)
+        {
+            return TryGetResolution(info.ResolvedTypes.First(), false);
+        }
+
+        /// <summary>
+        /// Get the resolution for the request info.
+        /// </summary>
+        /// <param name="info">The request info that will need to be resolved.</param>
+        /// <param name="key">The key for this resolution.</param>
+        /// <returns>
+        /// The resolved instance, if not found a <see cref="NotFoundDependencyResolution"/> that
+        /// will return null when resolved.
+        /// </returns>
+        public IDependencyResolution TryGetResolution(object key, IDependencyInfo info)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

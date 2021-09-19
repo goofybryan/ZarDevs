@@ -30,7 +30,10 @@ namespace ZarDevs.DependencyInjection
             }
             else
             {
-                _services.AddTransient(info.RequestType, p => factory.Resolve(info.CreateContext(Ioc.Container)));
+                foreach (var resolveType in info.ResolvedTypes)
+                {
+                    _services.AddTransient(resolveType, p => factory.Resolve(info.CreateContext(Ioc.Container)));
+                }
             }
 
             base.OnRegisterFactory(info, factory);
@@ -43,7 +46,10 @@ namespace ZarDevs.DependencyInjection
             }
             else
             {
-                _services.AddSingleton(info.RequestType, p => factory.Resolve(info.CreateContext(Ioc.Container)));
+                foreach (var resolveType in info.ResolvedTypes)
+                {
+                    _services.AddSingleton(resolveType, p => factory.Resolve(info.CreateContext(Ioc.Container)));
+                }
             }
 
             base.OnRegisterFactorySingleton(info, factory);
@@ -51,37 +57,51 @@ namespace ZarDevs.DependencyInjection
 
         protected override void OnRegisterInstance(IDependencyInstanceInfo info)
         {
-            _services.AddSingleton(info.RequestType, info.Instance);
+            foreach (var resolveType in info.ResolvedTypes)
+            {
+                _services.AddSingleton(resolveType, info.Instance);
+            }
 
             base.OnRegisterInstance(info);
         }
 
         protected override void OnRegisterSingleton(IDependencyTypeInfo info)
         {
-            _services.AddSingleton(info.ResolvedType);
-            _services.AddSingleton(info.RequestType, info.ResolvedType);
+            foreach (var resolveType in info.ResolvedTypes)
+            {
+                _services.AddSingleton(resolveType, info.ResolutionType);
+            }
 
             base.OnRegisterSingleton(info);
         }
 
         protected override void OnRegisterSingletonMethod(IDependencyMethodInfo info)
         {
-            _services.AddSingleton(info.RequestType, p => info.Execute(info.CreateContext(Ioc.Container)));
+            foreach (var resolveType in info.ResolvedTypes)
+            {
+                _services.AddSingleton(resolveType, p => info.Execute(info.CreateContext(Ioc.Container)));
+            }
 
             base.OnRegisterSingletonMethod(info);
         }
 
         protected override void OnRegisterTransient(IDependencyTypeInfo info)
         {
-            _services.AddTransient(info.ResolvedType);
-            _services.AddTransient(info.RequestType, info.ResolvedType);
+
+            foreach (var resolveType in info.ResolvedTypes)
+            {
+                _services.AddTransient(resolveType, info.ResolutionType);
+            }
 
             base.OnRegisterTransient(info);
         }
 
         protected override void OnRegisterTransientMethod(IDependencyMethodInfo info)
         {
-            _services.AddTransient(info.RequestType, p => info.Execute(info.CreateContext(Ioc.Container)));
+            foreach (var resolveType in info.ResolvedTypes)
+            {
+                _services.AddTransient(resolveType, p => info.Execute(info.CreateContext(Ioc.Container)));
+            }
 
             base.OnRegisterTransientMethod(info);
         }

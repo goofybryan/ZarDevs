@@ -3,7 +3,7 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/>
+    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.ResolvedTypes"/>
     /// and will call the <see cref="IDependencyFactoryInfo.FactoryType"/><see cref="IDependencyFactoryInfo.MethodName"/>
     /// </summary>
     public class DependencyTypeResolution : DependencyResolution<IDependencyTypeInfo>
@@ -21,7 +21,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="info">The type information describing this resolution.</param>
         /// <param name="activator">
-        /// The activator that will be used to return an instance of the <see cref="IDependencyTypeInfo.ResolvedType"/>
+        /// The activator that will be used to return an instance of the <see cref="IDependencyTypeInfo.ResolutionType"/>
         /// </param>
         public DependencyTypeResolution(IDependencyTypeInfo info, IDependencyTypeActivator activator) : base(info)
         {
@@ -74,11 +74,11 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Override to make a resolution, otherwise a <see cref="NotSupportedException"/> will be thrown.
         /// </summary>
-        /// <param name="concreteRequest">The concrete request type.</param>
+        /// <param name="genericTypeArguments">The generic type arguments.</param>
         /// <returns></returns>
-        protected override IDependencyResolution OnMakeConcrete(Type concreteRequest)
+        protected override IDependencyResolution OnMakeConcrete(params Type[] genericTypeArguments)
         {
-            var concreteInfo = Info.As(concreteRequest);
+            var concreteInfo = Info.As(genericTypeArguments);
 
             return new DependencyTypeResolution(concreteInfo, _activator);
         }

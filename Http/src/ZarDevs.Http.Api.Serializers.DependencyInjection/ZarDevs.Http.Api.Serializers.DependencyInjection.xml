@@ -23,22 +23,22 @@
         </member>
         <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Json">
             <summary>
-            <see cref="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Json"/>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerJson"/> serializer
             </summary>
         </member>
         <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Xml">
             <summary>
-            <see cref="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Xml"/>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerXml"/> serializer
             </summary>
         </member>
         <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.FormUrlEncoded">
             <summary>
-            <see cref="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.FormUrlEncoded"/>
+            Key for <see cref="T:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded"/> serializer
             </summary>
         </member>
         <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.String">
             <summary>
-            <see cref="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.String"/>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerString"/> serializer
             </summary>
         </member>
     </members>

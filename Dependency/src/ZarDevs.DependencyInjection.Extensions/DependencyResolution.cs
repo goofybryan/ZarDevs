@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -38,7 +40,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Get the type that this resolution is for.
         /// </summary>
-        public Type RequestType => Info.RequestType;
+        public ISet<Type> ResolvedTypes => Info.ResolvedTypes;
 
         #endregion Properties
 
@@ -49,8 +51,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="concreteRequest">The concrete request type.</param>
         /// <exception cref="InvalidOperationException">
-        /// Throws when the current <see cref="IDependencyInfo.RequestType"/> is not compatible with
-        /// the <paramref name="concreteRequest"/>
+        /// Throws when the current <see cref="IDependencyInfo.ResolvedTypes"/> is not compatible with the <paramref name="concreteRequest"/>
         /// </exception>
         /// <exception cref="NotSupportedException">
         /// Throws this when the resolution does not support making a
@@ -58,15 +59,13 @@ namespace ZarDevs.DependencyInjection
         /// <returns>A resolution</returns>
         public IDependencyResolution MakeConcrete(Type concreteRequest)
         {
-            var requestType = Info.RequestType;
-
-            if (!requestType.IsGenericType)
-                throw new InvalidOperationException($"The resolution request type '{Info.RequestType}' is not a generic type.");
+            if (Info.ResolvedTypes.All(t => !t.IsGenericType))
+                throw new InvalidOperationException($"The resolution request type '{Info}' is not a generic type.");
 
             if (!concreteRequest.IsConstructedGenericType)
-                throw new InvalidOperationException($"The concrete request type '{Info.RequestType}' does not contain generic parameters.");
+                throw new InvalidOperationException($"The concrete request type '{Info}' does not contain generic parameters.");
 
-            return OnMakeConcrete(concreteRequest);
+            return OnMakeConcrete(concreteRequest.GenericTypeArguments);
         }
 
         /// <summary>
@@ -99,9 +98,9 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Override to make a resolution, otherwise a <see cref="NotSupportedException"/> will be thrown.
         /// </summary>
-        /// <param name="concreteRequest">The concrete request type.</param>
+        /// <param name="genericTypeArguments">The generic type arguments.</param>
         /// <returns></returns>
-        protected virtual IDependencyResolution OnMakeConcrete(Type concreteRequest)
+        protected virtual IDependencyResolution OnMakeConcrete(params Type[] genericTypeArguments)
         {
             throw new NotSupportedException($"This resolution '{this}' does not support making concrete versions.");
         }

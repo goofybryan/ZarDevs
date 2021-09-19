@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
 {
-    internal class DependencyBuilderInfo : IDependencyBuilderInfo, IDependencyBuilderBindingRequest, IDependencyBuilderBindingResolve, IDependencyBuilderBindingMetaData
+    internal class DependencyBuilderInfo : IDependencyBuilderInfo, IDependencyBuilderBindingMetaData
     {
         #region Fields
 
-        private DependencyInfo _info = new();
+        private IDependencyInfo _info;
 
         #endregion Fields
 
@@ -18,59 +21,70 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        public IDependencyBuilderBindingResolve Bind(Type type)
+        public IDependencyBuilderBindingResolve Resolve(Type resolvedType)
         {
-            _info.RequestType = type ?? throw new ArgumentNullException(nameof(type));
+            _info.ResolvedTypes.Add(resolvedType);
+
             return this;
         }
 
-        public IDependencyBuilderBindingResolve Bind<T>() where T : class
+        public IDependencyBuilderBindingResolve Resolve(params Type[] resolvedTypes)
         {
-            return Bind(typeof(T));
+            foreach (var resolvedType in resolvedTypes)
+            {
+                Resolve(resolvedType);
+            }
+
+            return this;
+        }
+
+        public IDependencyBuilderBindingResolve Resolve<T>() where T : class
+        {
+            return Resolve(typeof(T));
         }
 
         public IDependencyBuilderInfo InSingletonScope()
         {
-            _info.SetScope(DependyBuilderScope.Singleton);
+            _info.Scope = DependyBuilderScope.Singleton;
             return this;
         }
 
         public IDependencyBuilderInfo InTransientScope()
         {
-            _info.SetScope(DependyBuilderScope.Transient);
+            _info.Scope = DependyBuilderScope.Transient;
             return this;
         }
 
-        public IDependencyBuilderBindingMetaData To(Type type)
+        public IDependencyBuilderBindingMetaData With(Type type)
         {
             _info = new DependencyTypeInfo(type, _info);
             return this;
         }
 
-        public IDependencyBuilderBindingMetaData To<T>() where T : class
+        public IDependencyBuilderBindingMetaData With<T>() where T : class
         {
-            return To(typeof(T));
+            return With(typeof(T));
         }
 
-        public IDependencyBuilderBindingMetaData To(Func<IDependencyContext, object> method)
+        public IDependencyBuilderBindingMetaData With(Func<IDependencyContext, object> method)
         {
             _info = new DependencyMethodInfo(method, _info);
             return this;
         }
 
-        public IDependencyBuilderBindingMetaData To<T>(T instance)
+        public IDependencyBuilderBindingMetaData With<T>(T instance)
         {
             _info = new DependencyInstanceInfo(instance, _info);
             return this;
         }
 
-        public IDependencyBuilderBindingMetaData ToFactory<T>(string methodName)
+        public IDependencyBuilderBindingMetaData WithFactory<T>(string methodName)
         {
             _info = new DependencyFactoryInfo(typeof(T), methodName, _info);
             return this;
         }
 
-        public IDependencyBuilderBindingMetaData ToFactory(Type factoryType, string methodName)
+        public IDependencyBuilderBindingMetaData WithFactory(Type factoryType, string methodName)
         {
             _info = new DependencyFactoryInfo(factoryType, methodName, _info);
             return this;
@@ -79,6 +93,28 @@ namespace ZarDevs.DependencyInjection
         public IDependencyBuilderInfo WithKey(object key)
         {
             _info.Key = key;
+            return this;
+        }
+
+        public IDependencyBuilderBindingResolve ResolveAll(params Type[] ignoredTypes)
+        {
+            if (_info is not IDependencyTypeInfo typeInfo) return this;
+
+            var resolutionType = typeInfo.ResolutionType;
+            var typesToIgnore = new List<Type>() { typeof(IDisposable), typeof(object) };
+
+            if(ignoredTypes?.Length > 0) 
+                typesToIgnore.AddRange(ignoredTypes);
+
+            var implementingTypes = InspectObject.Instance.FindImplementingTypes(resolutionType, typesToIgnore);
+
+            foreach(var implementingType in implementingTypes)
+            {
+                Resolve(implementingType);
+            }
+
+            Resolve(resolutionType);
+
             return this;
         }
 

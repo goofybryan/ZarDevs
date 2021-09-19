@@ -54,8 +54,8 @@ namespace ZarDevs.Http.Client
 
             ApiHttpFactory.Instance = new ApiHttpFactory(new System.Net.Http.HttpClient(), handlerFactory, new ApiHttpRequestHandlerBindingMap());
 
-            builder.Bind<IApiHttpFactory>().To(ApiHttpFactory.Instance);
-            builder.Bind<IApiHttpClient>().To((ctx) => ApiHttpFactory.Instance.NewClient(ctx.Info.Key)).InTransientScope();
+            builder.BindInstance(ApiHttpFactory.Instance).Resolve<IApiHttpFactory>();
+            builder.BindFunction((ctx) => ApiHttpFactory.Instance.NewClient(ctx.Info.Key)).Resolve<IApiHttpClient>().InTransientScope();
 
             return builder;
         }
