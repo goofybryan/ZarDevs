@@ -27,7 +27,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/ZarDevs.DependencyInjection.sln'
+  solution: '**/ZarDevs.Runtime.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
