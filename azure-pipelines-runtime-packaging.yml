@@ -7,7 +7,7 @@
 
 resources:
   pipelines:
-    - pipeline: ZarDevs_DependencyInjection_Build
+    - pipeline: ZarDevs_Runtime_Build
 
 pool:
   vmImage: 'windows-latest'
@@ -18,7 +18,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: '**/ZarDevs.DependencyInjection.Runtime.csproj'
+    packagesToPack: '**/ZarDevs.Runtime/*.csproj'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'PackageVersion'
     includeSymbols: true
