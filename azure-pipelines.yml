@@ -27,7 +27,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/ZarDevs.DependencyInjection.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -49,7 +49,3 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    
-- task: gitsync@1
-  inputs:
-    GitRepoUrl: 'https://$(VSMirror)@github.com/goofybryan/ZarDevs.git'
