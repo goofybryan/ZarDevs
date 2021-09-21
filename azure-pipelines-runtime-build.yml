@@ -32,7 +32,12 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/ZarDevs.Runtime.csproj'
+    feedsToUse: 'select'
 
 - task: NuGetCommand@2
   inputs:
