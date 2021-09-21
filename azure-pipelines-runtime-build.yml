@@ -40,13 +40,13 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '**/ZarDevs.Runtime*'
+    projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: '''**/ZarDevs.Runtime*'''
+    projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
