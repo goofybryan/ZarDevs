@@ -40,6 +40,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
+    projects: '$(solution)'
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
@@ -60,9 +61,3 @@ steps:
     publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'RuntimeBuild_$(buildConfiguration)'
-    publishLocation: 'Container'
