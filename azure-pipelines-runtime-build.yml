@@ -39,10 +39,6 @@ steps:
     projects: '**/ZarDevs.Runtime.csproj'
     feedsToUse: 'select'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
