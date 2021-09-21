@@ -49,8 +49,13 @@ steps:
     projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
+- task: CopyFiles@2
   inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: '$(solution)'
+    SourceFolder: 'Runtime/src'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    CleanTargetFolder: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
