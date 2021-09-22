@@ -26,7 +26,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
+    <PackageReference Include="ZarDevs.Runtime" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
   </ItemGroup>
 

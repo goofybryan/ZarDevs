@@ -26,10 +26,10 @@
 
   <ItemGroup>
     <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="ZarDevs.Runtime" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
     <ProjectReference Include="..\ZarDevs.DependencyInjection.Extensions.Factory\ZarDevs.DependencyInjection.Extensions.Factory.csproj" />
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
   </ItemGroup>
