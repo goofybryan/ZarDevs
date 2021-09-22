@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
-    // TODO BM: Add methods for getting all services e.g. IEnumerable<T> ResolveAll<T>()where T :
-    // class; TODO BM: Add methods for partial parameters and resolve rest (constructor matching to
-    // nearest parameter size)
     /// <summary>
     /// IOC containter used to resolved a single instance
     /// </summary>
@@ -182,6 +179,17 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Try resolved the requested type with the list of paramaters specified.
         /// </summary>
+        /// <param name="requestType">The request type</param>
+        /// <param name="key">The name of the resolution request.</param>
+        /// <param name="parameters">
+        /// A list of named parameters, these must match a constructor order.
+        /// </param>
+        /// <returns>The resolved type.</returns>
+        object TryResolveNamed(Type requestType, string key, params object[] parameters);
+
+        /// <summary>
+        /// Try resolved the requested type with the list of paramaters specified.
+        /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <param name="key">The name of the resolution request.</param>
         /// <param name="parameters">
@@ -208,6 +216,28 @@ namespace ZarDevs.DependencyInjection
         /// <param name="key">The name of the resolution request.</param>
         /// <returns>The resolved type.</returns>
         T TryResolveNamed<T>(string key) where T : class;
+
+        /// <summary>
+        /// Try resolved the requested type with the list of paramaters specified.
+        /// </summary>
+        /// <param name="requestType">The request type</param>
+        /// <param name="key">The key of the resolution request.</param>
+        /// <param name="parameters">
+        /// A list of named parameters, these must match a constructor order.
+        /// </param>
+        /// <returns>The resolved type.</returns>
+        object TryResolveWithKey(Type requestType, Enum key, params object[] parameters);
+
+        /// <summary>
+        /// Try resolved the requested type with the list of paramaters specified.
+        /// </summary>
+        /// <param name="requestType">The request type</param>
+        /// <param name="key">The key of the resolution request.</param>
+        /// <param name="parameters">
+        /// A list of named parameters, these must match a constructor order.
+        /// </param>
+        /// <returns>The resolved type.</returns>
+        object TryResolveWithKey(Type requestType, object key, params object[] parameters);
 
         /// <summary>
         /// Try resolved the requested type with the list of paramaters specified.

@@ -156,10 +156,11 @@ What I like about it is the fact that you allow the infrastructure to give you t
 
 ## What still needs to be done
 
+1. Nuget Packages
 1. Validation of bindings
+1. Expand on documentation and document all, including build process.
 1. Validation tests construct
 1. Optimizations (look at code and see where I can improve)
-1. Investigate better `Build<T>().To<T>()` Pattern
 1. Perhaps support `IServiceProvider` explicitly?
 1. Memory load testing (ensure that I am not too much of an overhead)
 1. More tests
@@ -175,9 +176,9 @@ What I like about it is the fact that you allow the infrastructure to give you t
 
 ## Links
 
-1. [Home](../../README.md)
+1. [Home](../README.md)
 1. [Dependency Injection](./README.md)
-    1. [Dependency Injection](./src/Zar.Devs.DependencyInjection/README.md)
+    1. [Dependency Injection](./src/ZarDevs.DependencyInjection/README.md)
     1. [AutoFac Dependency Injection](./src/ZarDevs.DependencyInjection.AutoFac/README.md)
     1. [Microsoft Dependency Injection](./src/ZarDevs.DependencyInjection.Microsoft/README.md)
     1. [Ninject Dependency Injection](./src/ZarDevs.DependencyInjection.Ninject/README.md)

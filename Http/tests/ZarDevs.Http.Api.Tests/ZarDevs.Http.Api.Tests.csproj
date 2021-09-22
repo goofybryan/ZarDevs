@@ -25,7 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\ZarDevs.Http.Api.Serializers\ZarDevs.Http.Api.Serializers.csproj" />
     <ProjectReference Include="..\..\src\ZarDevs.Http.Api\ZarDevs.Http.Api.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.Http\ZarDevs.Http.Client.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,7 @@ namespace ZarDevs.Http.Api
         /// <summary>
         /// Get the content type that can be added to the headers or compared to.
         /// </summary>
-        IList<string> MediaTypes { get; }
+        IReadOnlyList<string> MediaTypes { get; }
 
         #endregion Properties
 

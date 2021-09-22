@@ -88,7 +88,7 @@
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyFactoryResolution">
             <summary>
-            Dependency type resolution that will resolve the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>
+            Dependency type resolution that will resolve the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/>
             and will call the <see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.FactoryType"/><see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.MethodName"/>
             </summary>
         </member>
@@ -126,11 +126,11 @@
             <param name="context">The dependency context.</param>
             <returns>An instance for this resolution.</returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.OnMakeConcrete(System.Type)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyFactoryResolution.OnMakeConcrete(System.Type[])">
             <summary>
             Override to make a resolution, otherwise a <see cref="T:System.NotSupportedException"/> will be thrown.
             </summary>
-            <param name="concreteRequest">The concrete request type.</param>
+            <param name="genericTypeArguments">The generic type arguments.</param>
             <returns></returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyInstanceResolution">
@@ -195,6 +195,27 @@
             Get the resolution for the request type.
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
+            <param name="key">The key for this resolution.</param>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will return null when resolved.
+            </returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.TryGetResolution(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Try and get the resolution for the request info.
+            </summary>
+            <param name="info">The request info that will need to be resolved.</param>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will return null when resolved.
+            </returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.TryGetResolution(System.Object,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Get the resolution for the request info.
+            </summary>
+            <param name="info">The request info that will need to be resolved.</param>
             <param name="key">The key for this resolution.</param>
             <returns>
             The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
@@ -278,6 +299,27 @@
             <param name="requestType">The request type that will need to be resolved.</param>
             <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/>.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.TryGetResolution(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Get the resolution for the request info.
+            </summary>
+            <param name="info">The request info that will need to be resolved.</param>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will return null when resolved.
+            </returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.TryGetResolution(System.Object,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Get the resolution for the request info.
+            </summary>
+            <param name="info">The request info that will need to be resolved.</param>
+            <param name="key">The key for this resolution.</param>
+            <returns>
+            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
+            will return null when resolved.
+            </returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.Dispose(System.Boolean)">
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
@@ -346,7 +388,7 @@
             The key that is associated to this resolution.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.DependencyResolution`1.RequestType">
+        <member name="P:ZarDevs.DependencyInjection.DependencyResolution`1.ResolvedTypes">
             <summary>
             Get the type that this resolution is for.
             </summary>
@@ -357,8 +399,7 @@
             </summary>
             <param name="concreteRequest">The concrete request type.</param>
             <exception cref="T:System.InvalidOperationException">
-            Throws when the current <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/> is not compatible with
-            the <paramref name="concreteRequest"/>
+            Throws when the current <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/> is not compatible with the <paramref name="concreteRequest"/>
             </exception>
             <exception cref="T:System.NotSupportedException">
             Throws this when the resolution does not support making a
@@ -392,11 +433,11 @@
             <param name="context">The dependency context.</param>
             <returns>An instance for this resolution.</returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.OnMakeConcrete(System.Type)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.OnMakeConcrete(System.Type[])">
             <summary>
             Override to make a resolution, otherwise a <see cref="T:System.NotSupportedException"/> will be thrown.
             </summary>
-            <param name="concreteRequest">The concrete request type.</param>
+            <param name="genericTypeArguments">The generic type arguments.</param>
             <returns></returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration">
@@ -414,6 +455,13 @@
             Configure the request type <paramref name="type"/> to the resolution <paramref name="resolution"/>
             </summary>
             <param name="type">The request type that will need to be resolved.</param>
+            <param name="resolution">The resolution that will be implemented.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.Add(System.Collections.Generic.ICollection{System.Type},ZarDevs.DependencyInjection.IDependencyResolution)">
+            <summary>
+            Configure the request type <paramref name="types"/> to the resolution <paramref name="resolution"/>
+            </summary>
+            <param name="types">The request type that will need to be resolved.</param>
             <param name="resolution">The resolution that will be implemented.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionConfiguration.AddInstance``1(``0)">
@@ -460,6 +508,13 @@
             Configure the request type <paramref name="type"/> to the resolution <paramref name="resolution"/>
             </summary>
             <param name="type">The request type that will need to be resolved.</param>
+            <param name="resolution">The resolution that will be implemented.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.Add(System.Collections.Generic.ICollection{System.Type},ZarDevs.DependencyInjection.IDependencyResolution)">
+            <summary>
+            Configure the request type <paramref name="types"/> to the resolution <paramref name="resolution"/>
+            </summary>
+            <param name="types">The request type that will need to be resolved.</param>
             <param name="resolution">The resolution that will be implemented.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolutionConfiguration.AddInstance``1(``0)">
@@ -831,6 +886,17 @@
             <param name="key">The name of the resolution request.</param>
             <returns>The resolved type.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryResolveNamed(System.Type,System.String,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The name of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryResolveWithKey``1(System.Enum,System.Object[])">
             <summary>
             Try resolved the requested type with the list of paramaters specified.
@@ -891,6 +957,28 @@
             <param name="key">The key of the resolution request.</param>
             <returns>The resolved type.</returns>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryResolveWithKey(System.Type,System.Enum,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The name of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolver.TryResolveWithKey(System.Type,System.Object,System.Object[])">
+            <summary>
+            Try resolved the requested type with the list of paramaters specified.
+            </summary>
+            <param name="requestType">The request type</param>
+            <param name="key">The name of the resolution request.</param>
+            <param name="parameters">
+            A list of named parameters, these must match a constructor order.
+            </param>
+            <returns>The resolved type.</returns>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.Dispose(System.Boolean)">
             <summary>
             Dispose of any resources
@@ -925,7 +1013,7 @@
             The key that is associated to this resolution.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.DependencySingletionResolution`2.RequestType">
+        <member name="P:ZarDevs.DependencyInjection.DependencySingletionResolution`2.ResolvedTypes">
             <summary>
             Get the request type that this resolution is for.
             </summary>
@@ -991,16 +1079,14 @@
             <summary>
             Create a new instance of of the dependency resolution.
             </summary>
-            <param name="info">
-            The the <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/> that describes this resolution.
-            </param>
+            <param name="info">The the <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/> that describes this resolution.</param>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencySingletonInstance.Key">
             <summary>
             The key that is associated to this resolution.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.DependencySingletonInstance.RequestType">
+        <member name="P:ZarDevs.DependencyInjection.DependencySingletonInstance.ResolvedTypes">
             <summary>
             Get the request type that this resolution is for.
             </summary>
@@ -1051,7 +1137,7 @@
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyTypeResolution">
             <summary>
-            Dependency type resolution that will resolve the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>
+            Dependency type resolution that will resolve the <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/>
             and will call the <see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.FactoryType"/><see cref="P:ZarDevs.DependencyInjection.IDependencyFactoryInfo.MethodName"/>
             </summary>
         </member>
@@ -1061,7 +1147,7 @@
             </summary>
             <param name="info">The type information describing this resolution.</param>
             <param name="activator">
-            The activator that will be used to return an instance of the <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolvedType"/>
+            The activator that will be used to return an instance of the <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolutionType"/>
             </param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyTypeResolution.Resolve">
@@ -1091,11 +1177,11 @@
             <param name="context">The dependency context.</param>
             <returns>An instance for this resolution.</returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyTypeResolution.OnMakeConcrete(System.Type)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyTypeResolution.OnMakeConcrete(System.Type[])">
             <summary>
             Override to make a resolution, otherwise a <see cref="T:System.NotSupportedException"/> will be thrown.
             </summary>
-            <param name="concreteRequest">The concrete request type.</param>
+            <param name="genericTypeArguments">The generic type arguments.</param>
             <returns></returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolution">
@@ -1108,7 +1194,7 @@
             The key that is associated to this resolution.
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.IDependencyResolution.RequestType">
+        <member name="P:ZarDevs.DependencyInjection.IDependencyResolution.ResolvedTypes">
             <summary>
             Get the request type that this resolution is for.
             </summary>
@@ -1170,9 +1256,9 @@
             </summary>
             <param name="info">
             The dependency type information describing the <see
-            cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>, <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope"/> and <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Key"/>.
+            cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/>, <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope"/> and <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Key"/>.
             </param>
-            <returns>An resolved object of the type <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolvedType"/>.</returns>
+            <returns>An resolved object of the type <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolutionType"/>.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyTypeActivator.Resolve(ZarDevs.DependencyInjection.IDependencyTypeInfo,System.Object[])">
             <summary>
@@ -1180,10 +1266,10 @@
             </summary>
             <param name="info">
             The dependency type information describing the <see
-            cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>, <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope"/> and <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Key"/>.
+            cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/>, <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope"/> and <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Key"/>.
             </param>
             <param name="args">An list of args in order of the constructor.</param>
-            <returns>An resolved object of the type <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolvedType"/>.</returns>
+            <returns>An resolved object of the type <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolutionType"/>.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyTypeActivator.Resolve(ZarDevs.DependencyInjection.IDependencyTypeInfo,System.ValueTuple{System.String,System.Object}[])">
             <summary>
@@ -1191,10 +1277,10 @@
             </summary>
             <param name="info">
             The dependency type information describing the <see
-            cref="P:ZarDevs.DependencyInjection.IDependencyInfo.RequestType"/>, <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope"/> and <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Key"/>.
+            cref="P:ZarDevs.DependencyInjection.IDependencyInfo.ResolvedTypes"/>, <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Scope"/> and <see cref="P:ZarDevs.DependencyInjection.IDependencyInfo.Key"/>.
             </param>
             <param name="args">An list of named args of the constructor.</param>
-            <returns>An resolved object of the type <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolvedType"/>.</returns>
+            <returns>An resolved object of the type <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolutionType"/>.</returns>
         </member>
     </members>
 </doc>

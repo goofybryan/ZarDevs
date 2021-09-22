@@ -55,13 +55,13 @@ namespace ZarDevs.DependencyInjection
             var dependencyContainer = new MicrosoftDependencyContainer(_serviceCollection, _resolutionConfiguration, activator, new DependencyFactory(InspectMethod.Instance));
             var builder = new DependencyBuilder(dependencyContainer);
 
-            builder.Bind<IInspectConstructor>().To(InspectConstructor.Instance);
-            builder.Bind<IInspectMethod>().To(InspectMethod.Instance);
-            builder.Bind<ICreate>().To(Create.Instance);
-            builder.Bind<IDependencyResolutionConfiguration>().To(_resolutionConfiguration);
-            builder.Bind<IDependencyInstanceResolution>().To(_instanceResolution);
-            builder.Bind<IDependencyTypeActivator>().To(activator);
-            builder.Bind<IDependencyResolver>().To<DependencyResolver>();
+            builder.BindInstance(InspectConstructor.Instance).Resolve<IInspectConstructor>();
+            builder.BindInstance(InspectMethod.Instance).Resolve<IInspectMethod>();
+            builder.BindInstance(Create.Instance).Resolve<ICreate>();
+            builder.BindInstance(_resolutionConfiguration).Resolve<IDependencyResolutionConfiguration>();
+            builder.BindInstance(_instanceResolution).Resolve<IDependencyInstanceResolution>();
+            builder.BindInstance(activator).Resolve<IDependencyTypeActivator>();
+            builder.Bind<DependencyResolver>().Resolve<IDependencyResolver>();
 
             return builder;
         }

@@ -89,7 +89,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.Serializer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.Tests", "Http\tests\ZarDevs.Http.Api.Tests\ZarDevs.Http.Api.Tests.csproj", "{6FC96C3F-9824-4FFF-8523-2BE7A30A31FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZarDevs.Http.Api.Serializers.DependencyInjection", "Http\src\ZarDevs.Http.Api.Serializers.DependencyInjection\ZarDevs.Http.Api.Serializers.DependencyInjection.csproj", "{00D2BA32-AA78-40E2-8DA4-AC90BE877472}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.Http.Api.Serializers.DependencyInjection", "Http\src\ZarDevs.Http.Api.Serializers.DependencyInjection\ZarDevs.Http.Api.Serializers.DependencyInjection.csproj", "{00D2BA32-AA78-40E2-8DA4-AC90BE877472}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5F8FC7C6-BB9B-4AF5-9E01-292760AC02AE}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

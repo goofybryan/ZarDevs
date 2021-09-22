@@ -172,6 +172,12 @@ namespace ZarDevs.DependencyInjection
             return TryResolveNamed<T>(name, CreateNamedParameters(name, typeof(T), parameters));
         }
 
+        public object TryResolveNamed(Type requestType, string name, params object[] parameters)
+        {
+            var namedParameter = CreateNamedParameters(name, requestType, parameters);
+            return Kernel.TryGet(requestType, name, CreateParameters(namedParameter));
+        }
+
         public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             return TryResolveNamed<T>(key.GetBindingName(), parameters);
@@ -211,6 +217,23 @@ namespace ZarDevs.DependencyInjection
             return TryResolveNamed<T>(key.ToString(), parameters);
         }
 
+        public object TryResolveWithKey(Type requestType, Enum key, params object[] parameters)
+        {
+            var name = key.GetBindingName();
+            var namedParameter = CreateNamedParameters(name, requestType, parameters);
+            return Kernel.TryGet(requestType, name, CreateParameters(namedParameter));
+        }
+
+        public object TryResolveWithKey(Type requestType, object key, params object[] parameters)
+        {
+            if (key is Enum enumKey)
+                return TryResolveWithKey(requestType, enumKey, parameters);
+
+            var name = key.ToString();
+            var namedParameter = CreateNamedParameters(name, requestType, parameters);
+            return Kernel.TryGet(requestType, name, CreateParameters(namedParameter));
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -224,28 +247,7 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        private (string, object)[] CreateNamedParameters(object key, Type requestType, object[] values)
-        {
-            if (values == null) return null;
-            if (values.Length == 0) return new (string, object)[0];
-
-            var binding = _dependencyContainer.TryGetBinding(requestType, key);
-
-            if (binding is null) return new (string, object)[0];
-
-            if (binding is IDependencyTypeInfo typeInfo)
-                return InspectConstructor.Instance.FindParameterNames(typeInfo.ResolvedType, values).ToArray();
-
-            var orderedParams = new (string, object)[values.Length];
-            for (int i = 0; i < values.Length; i++)
-            {
-                orderedParams[i] = ValueTuple.Create(i.ToString(), values[i]);
-            }
-
-            return orderedParams;
-        }
-
-        private IParameter[] CreateParameters(IList<(string, object)> parameters)
+        private static IParameter[] CreateParameters(IList<(string, object)> parameters)
         {
             if (parameters == null)
                 return null;
@@ -259,6 +261,27 @@ namespace ZarDevs.DependencyInjection
             }
 
             return list.ToArray();
+        }
+
+        private (string, object)[] CreateNamedParameters(object key, Type requestType, object[] values)
+        {
+            if (values == null) return null;
+            if (values.Length == 0) return Array.Empty<(string, object)>();
+
+            var binding = _dependencyContainer.TryGetBinding(requestType, key);
+
+            if (binding is null) return Array.Empty<(string, object)>();
+
+            if (binding is IDependencyTypeInfo typeInfo)
+                return InspectConstructor.Instance.FindParameterNames(typeInfo.ResolutionType, values).ToArray();
+
+            var orderedParams = new (string, object)[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                orderedParams[i] = ValueTuple.Create(i.ToString(), values[i]);
+            }
+
+            return orderedParams;
         }
 
         #endregion Methods

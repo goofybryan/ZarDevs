@@ -221,5 +221,68 @@
             <param name="methodName">The method name.</param>
             <returns>A list of methods.</returns>
         </member>
+        <member name="T:ZarDevs.Runtime.IInspectObject">
+            <summary>
+            Runtime object type inspection.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectObject.FindBaseTypes(System.Type,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Find all the inheriting base types for the specified <paramref name="type"/>. If the base type is listed in the <paramref name="ignoredTypes"/> list it will stop and return.
+            </summary>
+            <param name="type">The type to inspect.</param>
+            <param name="ignoredTypes">The ignored types that if inheritted by the <paramref name="type"/> or any base classes, it will stop and return the list of found base types</param>
+            <returns>All interface types or an empty list.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectObject.FindInterfaceTypes(System.Type,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Find all the interfaces types for the specified <paramref name="type"/>. If the inteface type is listed in the <paramref name="ignoredTypes"/> it will not be added.
+            </summary>
+            <param name="type">The type to inspect.</param>
+            <param name="ignoredTypes">The ignored types that if implemented or inherited by the <paramref name="type"/> it will not be added.</param>
+            <returns>All interface types or an empty list.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectObject.FindImplementingTypes(System.Type,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Find all the interfaces or base types for the specified <paramref name="type"/>. If the inteface or base type is listed in the <paramref name="ignoredTypes"/> it will not be added.
+            </summary>
+            <param name="type">The type to inspect.</param>
+            <param name="ignoredTypes">The ignored types that if implemented or inherited by the <paramref name="type"/> it will not be added.</param>
+            <returns>All interface types or an empty list.</returns>
+        </member>
+        <member name="T:ZarDevs.Runtime.InspectObject">
+            <summary>
+            Runtime object type inspection.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.Runtime.InspectObject.Instance">
+            <summary>
+            Get and instance of the Inpect class.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectObject.FindBaseTypes(System.Type,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Find all the inheriting base types for the specified <paramref name="type"/>. If the base type is listed in the <paramref name="ignoredTypes"/> list it will stop and return.
+            </summary>
+            <param name="type">The type to inspect.</param>
+            <param name="ignoredTypes">The ignored types that if inherited by the <paramref name="type"/> or any base classes, it will stop and return the list of found base types</param>
+            <returns>All interface types or an empty list.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectObject.FindInterfaceTypes(System.Type,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Find all the interfaces types for the specified <paramref name="type"/>. If the inteface type is listed in the <paramref name="ignoredTypes"/> it will not be added.
+            </summary>
+            <param name="type">The type to inspect.</param>
+            <param name="ignoredTypes">The ignored types that if implemented or inherited by the <paramref name="type"/> it will not be added.</param>
+            <returns>All interface types or an empty list.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectObject.FindImplementingTypes(System.Type,System.Collections.Generic.IList{System.Type})">
+            <summary>
+            Find all the interfaces or base types for the specified <paramref name="type"/>. If the inteface or base type is listed in the <paramref name="ignoredTypes"/> it will not be added.
+            </summary>
+            <param name="type">The type to inspect.</param>
+            <param name="ignoredTypes">The ignored types that if implemented or inherited by the <paramref name="type"/> it will not be added.</param>
+            <returns>All interface types or an empty list.</returns>
+        </member>
     </members>
 </doc>

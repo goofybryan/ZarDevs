@@ -36,7 +36,7 @@ namespace ZarDevs.DependencyInjection
             if (args == null || args.Length == 0)
                 return Resolve(info);
 
-            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolvedType, args);
+            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolutionType, args);
         }
 
         public object Resolve(IDependencyTypeInfo info, params (string, object)[] args)
@@ -44,14 +44,14 @@ namespace ZarDevs.DependencyInjection
             if (args == null || args.Length == 0)
                 return Resolve(info);
 
-            var orderedParameters = _inspectConstructor.OrderParameters(info.ResolvedType, args);
+            var orderedParameters = _inspectConstructor.OrderParameters(info.ResolutionType, args);
 
-            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolvedType, orderedParameters);
+            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolutionType, orderedParameters);
         }
 
         public object Resolve(IDependencyTypeInfo info)
         {
-            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolvedType);
+            return ActivatorUtilities.CreateInstance(ServiceProvider, info.ResolutionType);
         }
 
         #endregion Methods

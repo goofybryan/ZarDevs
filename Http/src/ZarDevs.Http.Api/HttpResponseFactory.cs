@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 
 namespace ZarDevs.Http.Api
@@ -13,7 +11,7 @@ namespace ZarDevs.Http.Api
         #region Methods
 
         /// <summary>
-        /// Create the a <see cref="IApiCommandResponse"/> response from the <see cref="HttpResponseMessage"/> <paramref name="response"/>.
+        /// Create the a <see cref="IApiCommandResponse"/> response from the <see cref="HttpResponseMessage"/><paramref name="response"/>.
         /// </summary>
         /// <param name="response">The <see cref="HttpResponseMessage"/> from the client.</param>
         IApiCommandResponse CreateResponse(HttpResponseMessage response);
@@ -29,12 +27,20 @@ namespace ZarDevs.Http.Api
 
     internal class HttpResponseFactory : IHttpResponseFactory
     {
-        private readonly IList<IApiCommandContentDeserializer> _deserializers;
+        #region Fields
 
-        public HttpResponseFactory(IList<IApiCommandContentDeserializer> deserializers)
+        private readonly IApiCommandContentTypeMap<IApiCommandContentDeserializer> _deserializers;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public HttpResponseFactory(IApiCommandContentTypeMap<IApiCommandContentDeserializer> deserializers)
         {
             _deserializers = deserializers ?? throw new ArgumentNullException(nameof(deserializers));
         }
+
+        #endregion Constructors
 
         #region Methods
 
@@ -45,7 +51,7 @@ namespace ZarDevs.Http.Api
 
         public IApiCommandContentDeserializer GetDeserializer(string mediaType)
         {
-            return _deserializers.FirstOrDefault(d => d.IsValidFor(mediaType));
+            return _deserializers[mediaType];
         }
 
         #endregion Methods

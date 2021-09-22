@@ -14,7 +14,7 @@ Normal binding consists of twp parts that, always the request type and then the 
 
     ```c#
     // Setup
-    public class NormalClass
+    public class NormalClass : INormalClass
     {
         public NormalClass(ITaskHandler handler, IEnumerable<ITasks> tasks)
         {
@@ -27,11 +27,11 @@ Normal binding consists of twp parts that, always the request type and then the 
     }
 
     // Build
-    builder.Bind<INormalClass>().To<NormalClass>();
-    builder.Bind<ITaskHandler>().To<TaskHandler>();
-    builder.Bind<ITask>().To<Task1>();
-    builder.Bind<ITask>().To<Task2>();
-    builder.Bind<ITask>().To<Task3>();
+    builder.Bind<NormalClass>().Resolve<INormalClass>();
+    builder.Bind<TaskHandler>().Resolve<ITaskHandler>();
+    builder.Bind<Task1>().Resolve<ITask>();
+    builder.Bind<Task2>().Resolve<ITask>();
+    builder.Bind<Task3>().Resolve<ITask>();
 
     ...
 
@@ -45,12 +45,12 @@ Normal binding consists of twp parts that, always the request type and then the 
 
 ### Scoped Binding
 
-This project currently supports only two of the three scopes that normally exist. Transient, Singleton and Scoped variables. Scoped variables are normally variables that exist alongside a specified scope like the [HttpRequest](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httprequest?view=aspnetcore-5.0) or thread scope. I purposely decided not to cater for these at the moment.
+This project currently supports only two of the three scopes that normally exist. Transient and Singleton variables. Scoped variables are normally variables that exist alongside a specified scope like the [HttpRequest](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httprequest?view=aspnetcore-5.0) or thread scope. I purposely decided not to cater for these at the moment.
 
     ```c#
     // Build
-    builder.Bind<INormalClass>().To<NormalClass>();
-    builder.Bind<ISingletonClass>().To<SingletonClass>().InSingletonScope();
+    builder.Bind<NormalClass>().Resolve<INormalClass>();
+    builder.Bind<SingletonClass>().Resolve<ISingletonClass>().InSingletonScope();
 
     ...
 
@@ -74,27 +74,27 @@ _Just be warned that this requires knowledge of the constructor arguments and ch
 
     ```c#
     // Build
-    builder.Bind<INormalClass>().To<NormalClass>();
+    builder.Bind<NormalClassWithConstructorArgs>().Resolve<INormalClassWithConstructorArgs>();
 
     ...
 
     // Use
-    var resolved = Ioc.Resolve<INormalClass>(paramVar1, paramVar2);
+    var resolved = Ioc.Resolve<INormalClassWithConstructorArgs>(paramVar1, paramVar2);
     // or
-    var resolved = Ioc.Resolve<INormalClass>(("argumentName1", paramVar1), ("argumentName2", paramVar2));
+    var resolved = Ioc.Resolve<INormalClassWithConstructorArgs>(("argumentName1", paramVar1), ("argumentName2", paramVar2));
     ```
 
-### To Method Binding
+### BindFunction Binding
 
-You can also bind to a specified method of a class. This useful if you have factories and you want to use them as part of the IOC. With the method you are passed a [Context](./DependencyBuilderContext.cs) object. This context has a list of arguments that was passed in and a reference to the [IIocContainer](./IIocContainer.cs).
+You can also bind to a specified method of a class. This useful if you have factories and you want to use them as part of the IOC. With the method you are passed a [Context](./DependencyContext.cs) object. This context has a list of arguments that was passed in and a reference to the [IIocContainer](./IIocContainer.cs).
 
     ```c#
     // Build
-    builder.Bind<IFactoryResolved>().To((ctx) => FactoryClass.CreateFactoryResolved());
+    builder.BindFunction((ctx) => StaticMethodClass.CreateFactoryResolved()).Resolve<IMethodReturnResolved>();
     // or
-    builder.Bind<IFactoryResolved>().To((ctx) => FactoryClass.CreateFactoryResolved(ctx.GetArguments()));
+    builder.BindFunction((ctx) => StaticMethodClass.CreateFactoryResolved(ctx.GetArguments())).Resolve<IMethodReturnResolved>();
     // or
-    builder.Bind<IFactoryResolved>().To((ctx) => ctx.Ioc.Resolve<IFactoryClass>().CreateFactoryResolved());
+    builder.BindFunction((ctx) => ctx.Ioc.Resolve<IResolvedMethodClass>().CreateMethodReturnResolved()).Resolve<IMethodReturnResolved>();
 
     ...
 
@@ -102,14 +102,14 @@ You can also bind to a specified method of a class. This useful if you have fact
     var factoryResolved = Ioc.Resolve<IFactoryResolved>();
     ```
 
-### To Factory Binding
+### Factory Binding
 
 What I introduced was something that does method injection implicitly. The context was to declare a type to be resolved by a method of another type, the factory. The infrastucture would resolve the parameters and invoke the method. Naturally same rules apply as regular binding.
 
     ```C#
     // Build
-    Builder.Bind<IFactory>().To<Factory>().InSingletonScoped(); // Optional scope but makes sense
-    Builder.Bind<IResolvedFactoryClass>().ToFactory(nameof(IFactory.CreateFactoryClass));
+    Builder.Bind<Factory>().Resolve<IFactory>().InSingletonScoped(); // Optional scope but makes sense
+    Builder.BindFactory(nameof(IFactory.CreateFactoryClass)).Resolve<IResolvedFactoryClass>();
 
     ...
 
@@ -123,17 +123,17 @@ You can add bindings based on a key. This is useful if you want add multiple bin
 
     ```c#
     // Build
-    builder.Bind<ITask>().To<Task1>().Named("Task1");
-    builder.Bind<ITask>().To<Task2>().Named("Task2");
-    builder.Bind<ITask>().To<Task3>().Named("Task3");
+    builder.Bind<Task1>().Resolve<ITask>().Named("Task1");
+    builder.Bind<Task2>().Resolve<ITask>().Named("Task2");
+    builder.Bind<Task3>().Resolve<ITask>().Named("Task3");
     // or Enum
-    builder.Bind<ITask>().To<Task1>().Named(Task.Task1);
-    builder.Bind<ITask>().To<Task2>().Named(Task.Task2);
-    builder.Bind<ITask>().To<Task3>().Named(Task.Task3);
+    builder.Bind<Task1>().Resolve<ITask>().Named(Task.Task1);
+    builder.Bind<Task2>().Resolve<ITask>().Named(Task.Task2);
+    builder.Bind<Task3>().Resolve<ITask>().Named(Task.Task3);
     // or object
-    builder.Bind<ITask>().To<Task1>().Named(typeof(ITask1));
-    builder.Bind<ITask>().To<Task1>().Named(typeof(ITask2));
-    builder.Bind<ITask>().To<Task1>().Named(typeof(ITask3));
+    builder.Bind<Task1>().Resolve<ITask>().Named(typeof(ITask1));
+    builder.Bind<Task1>().Resolve<ITask>().Named(typeof(ITask2));
+    builder.Bind<Task1>().Resolve<ITask>().Named(typeof(ITask3));
 
     ...
 
@@ -147,7 +147,7 @@ You can add bindings based on a key. This is useful if you want add multiple bin
     ITask task1 = Ioc.Resolve<ITask>(Task.Task3);
     ```
 
-You can look at the [tests](../../tests/) to see a complete list of tests and how the [bindings](../../tests/ZarDevs.DependencyInjection.Tests/bindings.cs) was setup.
+You can look at the [tests](../../tests/ZarDevs.DependencyInjection.Tests/IocTestsConstruct.cs) to see a complete list of tests and how the [bindings](../../tests/ZarDevs.DependencyInjection.Tests/bindings.cs) was setup. More does need to be added in the future.
 
 ## Links
 

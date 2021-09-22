@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -15,10 +17,11 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="requestType">Specify the request type.</param>
         /// <param name="instance">The instance that is always returned.</param>
-        public DependencyInstanceInfo(Type requestType, object instance) : base(requestType, scope: DependyBuilderScope.Singleton)
+        public DependencyInstanceInfo(Type requestType, object instance) : base(scope: DependyBuilderScope.Singleton)
         {
             Instance = instance ?? throw new ArgumentNullException(nameof(instance));
             Validate(requestType, instance);
+            ResolvedTypes.Add(requestType);
         }
 
         /// <summary>
@@ -26,10 +29,10 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="instance">The instance that is always returned.</param>
         /// <param name="copy">The initail descriptor that's values will be copied.</param>
-        public DependencyInstanceInfo(object instance, DependencyInfo copy) : base(copy)
+        public DependencyInstanceInfo(object instance, IDependencyInfo copy) : base(copy)
         {
             Instance = instance ?? throw new ArgumentNullException(nameof(instance));
-            Validate(copy.RequestType, instance);
+            Validate(ResolvedTypes, instance);
             Scope = DependyBuilderScope.Singleton;
         }
 
@@ -46,9 +49,12 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
-        internal override void SetScope(DependyBuilderScope scope)
+        private static void Validate(ICollection<Type> requestTypes, object instance)
         {
-            _ = scope;
+            foreach (var requestType in requestTypes)
+            {
+                Validate(requestType, instance);
+            }
         }
 
         private static void Validate(Type requestType, object instance)

@@ -98,7 +98,7 @@ namespace ZarDevs.Http.Api.Tests
             }
         }
 
-        private IDictionary<string, IApiCommandContent> CreateContentMocks(params string[] mediaTypes)
+        private static IDictionary<string, IApiCommandContent> CreateContentMocks(params string[] mediaTypes)
         {
             var mediaTypeContent = new Dictionary<string, IApiCommandContent>();
 
@@ -129,7 +129,7 @@ namespace ZarDevs.Http.Api.Tests
         #region Properties
 
         public int IsValidForCallCount { get; set; }
-        public IList<string> MediaTypes { get; }
+        public IReadOnlyList<string> MediaTypes { get; }
 
         #endregion Properties
 

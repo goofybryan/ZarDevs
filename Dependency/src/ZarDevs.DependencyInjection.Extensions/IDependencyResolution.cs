@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -17,7 +18,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Get the request type that this resolution is for.
         /// </summary>
-        Type RequestType { get; }
+        ISet<Type> ResolvedTypes { get; }
 
         #endregion Properties
 

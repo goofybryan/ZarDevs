@@ -4,6 +4,11 @@
         <name>ZarDevs.Http.Api.Serializers.DependencyInjection</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration">
+            <summary>
+            Api serialization configuration.
+            </summary>
+        </member>
         <member name="M:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ConfigureApi(ZarDevs.DependencyInjection.IDependencyBuilder)">
             <summary>
             Configure the <see cref="T:ZarDevs.Http.Api.IApiCommandContentSerializer"/> serializers and <see cref="T:ZarDevs.Http.Api.IApiCommandContentDeserializer"/> deserializers.
@@ -14,6 +19,26 @@
         <member name="T:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer">
             <summary>
             Api serializers binded.
+            </summary>
+        </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Json">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerJson"/> serializer
+            </summary>
+        </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.Xml">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerXml"/> serializer
+            </summary>
+        </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.FormUrlEncoded">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.Serializers.ApiCommandContentSerializerFormUrlEncoded"/> serializer
+            </summary>
+        </member>
+        <member name="F:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ApiSerializer.String">
+            <summary>
+            Key for <see cref="T:ZarDevs.Http.Api.ApiCommandContentSerializerString"/> serializer
             </summary>
         </member>
     </members>

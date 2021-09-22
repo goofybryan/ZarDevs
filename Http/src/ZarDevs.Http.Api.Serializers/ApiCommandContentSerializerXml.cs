@@ -38,7 +38,7 @@ namespace ZarDevs.Http.Api
         /// <summary>
         /// Get the content type that can be added to the headers or compared to.
         /// </summary>
-        public IList<string> MediaTypes => HttpContentType.Xml;
+        public IReadOnlyList<string> MediaTypes => HttpContentType.Xml;
 
         #endregion Properties
 

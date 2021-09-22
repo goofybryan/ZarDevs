@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
     <RootNamespace>ZarDevs.DependencyInjection</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
     <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
@@ -27,7 +27,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Runtime\src\ZarDevs.Runtime\ZarDevs.Runtime.csproj" />
+    <PackageReference Include="ZarDevs.Runtime" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ZarDevs.DependencyInjection.Extensions\ZarDevs.DependencyInjection.Extensions.csproj" />
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
   </ItemGroup>

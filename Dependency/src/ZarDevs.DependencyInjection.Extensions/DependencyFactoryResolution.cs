@@ -3,7 +3,7 @@
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.RequestType"/>
+    /// Dependency type resolution that will resolve the <see cref="IDependencyInfo.ResolvedTypes"/>
     /// and will call the <see cref="IDependencyFactoryInfo.FactoryType"/><see cref="IDependencyFactoryInfo.MethodName"/>
     /// </summary>
     public class DependencyFactoryResolution : DependencyResolution<IDependencyFactoryInfo>
@@ -72,11 +72,11 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Override to make a resolution, otherwise a <see cref="NotSupportedException"/> will be thrown.
         /// </summary>
-        /// <param name="concreteRequest">The concrete request type.</param>
+        /// <param name="genericTypeArguments">The generic type arguments.</param>
         /// <returns></returns>
-        protected override IDependencyResolution OnMakeConcrete(Type concreteRequest)
+        protected override IDependencyResolution OnMakeConcrete(params Type[] genericTypeArguments)
         {
-            var concreteInfo = Info.As(concreteRequest);
+            var concreteInfo = Info.As(genericTypeArguments);
 
             var factory = _factory.MakeConcrete(concreteInfo);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -17,6 +18,7 @@ namespace ZarDevs.DependencyInjection
         public NotFoundDependencyResolution(Type requestType, object key, bool throwError)
         {
             _requestType = requestType;
+            ResolvedTypes = new HashSet<Type> { requestType };
             _key = key;
             _throwError = throwError;
         }
@@ -31,7 +33,7 @@ namespace ZarDevs.DependencyInjection
 
         public object Key => null;
 
-        public Type RequestType => _requestType;
+        public ISet<Type> ResolvedTypes { get; }
 
         #endregion Properties
 
