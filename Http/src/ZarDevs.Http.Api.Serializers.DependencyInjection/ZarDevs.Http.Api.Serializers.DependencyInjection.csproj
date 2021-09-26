@@ -27,7 +27,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <PackageReference Include="ZarDevs.DependencyInjection" Version="0.1.0" />
+    <PackageReference Include="ZarDevs.Runtime" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ZarDevs.Http.Api.Serializers\ZarDevs.Http.Api.Serializers.csproj" />
   </ItemGroup>
 
