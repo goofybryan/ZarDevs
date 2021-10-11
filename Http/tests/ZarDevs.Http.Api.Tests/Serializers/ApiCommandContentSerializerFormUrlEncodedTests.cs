@@ -59,8 +59,8 @@ namespace ZarDevs.Http.Api.Tests.Serializers
             Assert.Throws<NotSupportedException>(() => serializer.Serialize(request));
 
             // Assert
-            parser.Received(1).TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>());
-            parser2.Received(1).TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>());
+            _ = parser.Received(1).TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>());
+            _ = parser2.Received(1).TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>());
 
             _ = request.Received(1).HasContent;
             _ = request.Received(3).Content;
@@ -93,7 +93,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
 
             Assert.Equal("Key1=Value1&Key2=Value2", content);
 
-            parser.Received(1).TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>());
+            _ = parser.Received(1).TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>());
 
             _ = request.Received(1).HasContent;
             _ = request.Received(1).Content;
