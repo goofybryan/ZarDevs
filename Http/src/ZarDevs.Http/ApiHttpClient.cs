@@ -59,11 +59,7 @@ namespace ZarDevs.Http.Client
 
         public Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
         {
-#if NET5_0_OR_GREATER
             HttpMethod method = HttpMethod.Patch;
-#else
-            HttpMethod method = new("PATCH");
-#endif
             var request = CreateRequest(method, apiUri, httpContent);
             return SendAsync(request);
         }

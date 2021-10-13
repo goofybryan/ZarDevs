@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -50,9 +51,9 @@ namespace ZarDevs.Http.Api
         /// <param name="content">The Http content to deserialize.</param>
         /// <typeparam name="TContent">The expected content type</typeparam>
         /// <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
-        public async Task<TContent> DeserializeAsync<TContent>(HttpContent content)
+        public async Task<TContent> DeserializeAsync<TContent>(HttpContent content, CancellationToken cancellationToken = default)
         {
-            using var stream = await content.ReadAsStreamAsync();
+            using var stream = await content.ReadAsStreamAsync(cancellationToken);
 
             TContent value = (TContent)new XmlSerializer(typeof(TContent)).Deserialize(stream);
 

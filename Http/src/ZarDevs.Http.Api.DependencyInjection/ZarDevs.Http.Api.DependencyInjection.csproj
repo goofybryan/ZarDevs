@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>net5.0</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
@@ -26,7 +26,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Dependency\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <PackageReference Include="ZarDevs.DependencyInjection" Version="0.1.0" />
+    <PackageReference Include="ZarDevs.Runtime" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ZarDevs.Http.Api\ZarDevs.Http.Api.csproj" />
   </ItemGroup>
 
