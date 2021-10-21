@@ -1083,7 +1083,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.Ioc.Initialize(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder},System.Action)">
             <summary>
-            Initialize the IOC solution. This must be called for the IOC to work.
+            Initialize the IOC solution. This must be called for the IOC to work. This wraps methods <see cref="M:ZarDevs.DependencyInjection.Ioc.StartInitialization(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder})"/> and <see cref="!:Ioc.FinializeInitialization(IIocKernelBuilder, Action&lt;IDependencyBuilder&gt;, Action)"/>
             </summary>
             <param name="container">
             Specifiy the kernel container that housed the underlying IOC methodology.
@@ -1092,6 +1092,25 @@
             Specify the build dependency action to invoke, this is where you can add additional
             dependencies to the builder.
             </param>
+            <param name="afterBuild">Specify an after build action.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.Ioc.StartInitialization(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder})">
+            <summary>
+            Start initializing the container. This will create the IOC container and add all the bindings mapped.
+            </summary>
+            <param name="container">
+            Specifiy the kernel container that housed the underlying IOC methodology.
+            </param>
+            <param name="buildDependencies">
+            Specify the build dependency action to invoke, this is where you can add additional
+            dependencies to the builder.
+            </param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.Ioc.FinializeInitialization(System.Action)">
+            <summary>
+            Finialize the Ioc container initialization.
+            </summary>
             <param name="afterBuild">Specify an after build action.</param>
             <returns></returns>
         </member>

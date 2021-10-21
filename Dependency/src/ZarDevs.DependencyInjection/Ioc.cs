@@ -43,7 +43,7 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
-        /// Initialize the IOC solution. This must be called for the IOC to work.
+        /// Initialize the IOC solution. This must be called for the IOC to work. This wraps methods <see cref="Ioc.StartInitialization(IIocKernelBuilder, Action{IDependencyBuilder})"/> and <see cref="Ioc.FinializeInitialization(IIocKernelBuilder, Action{IDependencyBuilder}, Action)"/>
         /// </summary>
         /// <param name="container">
         /// Specifiy the kernel container that housed the underlying IOC methodology.
@@ -57,6 +57,25 @@ namespace ZarDevs.DependencyInjection
         public static IIocContainer Initialize(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action afterBuild = null) => Instance.InitializeInternal(container, buildDependencies, afterBuild);
 
         /// <summary>
+        /// Start initializing the container. This will create the IOC container and add all the bindings mapped.
+        /// </summary>
+        /// <param name="container">
+        /// Specifiy the kernel container that housed the underlying IOC methodology.
+        /// </param>
+        /// <param name="buildDependencies">
+        /// Specify the build dependency action to invoke, this is where you can add additional
+        /// dependencies to the builder.
+        /// </param>
+        public static void StartInitialization(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies) => Instance.BuildContainer(container, buildDependencies);
+
+        /// <summary>
+        /// Finialize the Ioc container initialization.
+        /// </summary>
+        /// <param name="afterBuild">Specify an after build action.</param>
+        /// <returns></returns>
+        public static IIocContainer FinializeInitialization(Action afterBuild = null) => Instance.CreateContainer(afterBuild);
+
+        /// <summary>
         /// Dispose of the IOC implementations.
         /// </summary>
         public void Dispose()
@@ -68,9 +87,18 @@ namespace ZarDevs.DependencyInjection
 
         private IIocContainer InitializeInternal(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action afterBuild)
         {
+            if (_kernel != null) return _kernel;
+
+            BuildContainer(container, buildDependencies);
+
+            return CreateContainer(afterBuild);
+        }
+
+        private void BuildContainer(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies)
+        {
             lock (this)
             {
-                if (_kernel != null) return _kernel;
+                if (_kernel is not null) return;
 
                 var builder = container.CreateDependencyBuilder();
 
@@ -79,6 +107,19 @@ namespace ZarDevs.DependencyInjection
                 buildDependencies?.Invoke(builder);
 
                 builder.Build();
+
+                _kernel = new PartialIocContainer(container);
+            }
+        }
+
+        private IIocContainer CreateContainer(Action afterBuild)
+        {
+            lock (this)
+            {
+                if (_kernel is null) throw new InvalidOperationException("The kernel has not been initialized correctly. Please ensure that the kernel has initialization has started.");
+                if (_kernel is not PartialIocContainer partialIoc) return _kernel;
+
+                IIocKernelBuilder container = partialIoc.Builder;
 
                 afterBuild?.Invoke();
 
