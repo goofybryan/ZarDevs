@@ -1081,9 +1081,9 @@
             IOC instance
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.Ioc.Initialize(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder},System.Action)">
+        <member name="M:ZarDevs.DependencyInjection.Ioc.Initialize(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder},System.Action{ZarDevs.DependencyInjection.IIocKernelBuilder})">
             <summary>
-            Initialize the IOC solution. This must be called for the IOC to work. This wraps methods <see cref="M:ZarDevs.DependencyInjection.Ioc.StartInitialization(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder})"/> and <see cref="!:Ioc.FinializeInitialization(IIocKernelBuilder, Action&lt;IDependencyBuilder&gt;, Action)"/>
+            Initialize the IOC solution. This must be called for the IOC to work. This wraps methods <see cref="M:ZarDevs.DependencyInjection.Ioc.StartInitialization(ZarDevs.DependencyInjection.IIocKernelBuilder,System.Action{ZarDevs.DependencyInjection.IDependencyBuilder})"/> and <see cref="M:ZarDevs.DependencyInjection.Ioc.FinializeInitialization(System.Action{ZarDevs.DependencyInjection.IIocKernelBuilder})"/>
             </summary>
             <param name="container">
             Specifiy the kernel container that housed the underlying IOC methodology.
@@ -1107,7 +1107,7 @@
             dependencies to the builder.
             </param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.Ioc.FinializeInitialization(System.Action)">
+        <member name="M:ZarDevs.DependencyInjection.Ioc.FinializeInitialization(System.Action{ZarDevs.DependencyInjection.IIocKernelBuilder})">
             <summary>
             Finialize the Ioc container initialization.
             </summary>

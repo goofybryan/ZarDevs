@@ -43,7 +43,7 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
-        /// Initialize the IOC solution. This must be called for the IOC to work. This wraps methods <see cref="Ioc.StartInitialization(IIocKernelBuilder, Action{IDependencyBuilder})"/> and <see cref="Ioc.FinializeInitialization(IIocKernelBuilder, Action{IDependencyBuilder}, Action)"/>
+        /// Initialize the IOC solution. This must be called for the IOC to work. This wraps methods <see cref="Ioc.StartInitialization(IIocKernelBuilder, Action{IDependencyBuilder})"/> and <see cref="Ioc.FinializeInitialization(Action{IIocKernelBuilder})"/>
         /// </summary>
         /// <param name="container">
         /// Specifiy the kernel container that housed the underlying IOC methodology.
@@ -54,7 +54,7 @@ namespace ZarDevs.DependencyInjection
         /// </param>
         /// <param name="afterBuild">Specify an after build action.</param>
         /// <returns></returns>
-        public static IIocContainer Initialize(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action afterBuild = null) => Instance.InitializeInternal(container, buildDependencies, afterBuild);
+        public static IIocContainer Initialize(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action<IIocKernelBuilder> afterBuild = null) => Instance.InitializeInternal(container, buildDependencies, afterBuild);
 
         /// <summary>
         /// Start initializing the container. This will create the IOC container and add all the bindings mapped.
@@ -73,7 +73,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="afterBuild">Specify an after build action.</param>
         /// <returns></returns>
-        public static IIocContainer FinializeInitialization(Action afterBuild = null) => Instance.CreateContainer(afterBuild);
+        public static IIocContainer FinializeInitialization(Action<IIocKernelBuilder> afterBuild = null) => Instance.CreateContainer(afterBuild);
 
         /// <summary>
         /// Dispose of the IOC implementations.
@@ -85,7 +85,7 @@ namespace ZarDevs.DependencyInjection
             _kernel = null;
         }
 
-        private IIocContainer InitializeInternal(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action afterBuild)
+        private IIocContainer InitializeInternal(IIocKernelBuilder container, Action<IDependencyBuilder> buildDependencies, Action<IIocKernelBuilder> afterBuild)
         {
             if (_kernel != null) return _kernel;
 
@@ -112,18 +112,18 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        private IIocContainer CreateContainer(Action afterBuild)
+        private IIocContainer CreateContainer(Action<IIocKernelBuilder> afterBuild)
         {
             lock (this)
             {
                 if (_kernel is null) throw new InvalidOperationException("The kernel has not been initialized correctly. Please ensure that the kernel has initialization has started.");
                 if (_kernel is not PartialIocContainer partialIoc) return _kernel;
 
-                IIocKernelBuilder container = partialIoc.Builder;
+                IIocKernelBuilder builder = partialIoc.Builder;
 
-                afterBuild?.Invoke();
+                afterBuild?.Invoke(builder);
 
-                _kernel = container.CreateIocContainer();
+                _kernel = builder.CreateIocContainer();
 
                 return _kernel;
             }

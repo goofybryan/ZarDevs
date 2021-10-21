@@ -15,7 +15,7 @@ namespace ZarDevs.DependencyInjection.Microsoft.Tests
             Ioc.StartInitialization(kernel, builder => builder.ConfigureTest());
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
-            Container = Ioc.FinializeInitialization(() => kernel.ConfigureServiceProvider(serviceProvider));
+            Container = Ioc.FinializeInitialization(builder => ((IIocKernelServiceProviderBuilder)builder).ConfigureServiceProvider(serviceProvider));
         }
 
         #endregion Constructors

@@ -16,7 +16,7 @@ namespace ZarDevs.DependencyInjection.Microsoft.Tests
 
             Container = Ioc.Initialize(kernel,
                 builder => builder.ConfigurePerformanceTest(),
-                () => kernel.ConfigureServiceProvider(services.BuildServiceProvider())
+                builder => ((IIocKernelServiceProviderBuilder)builder).ConfigureServiceProvider(services.BuildServiceProvider())
             );
 
             ContainerDirect = ((IIocContainer<IServiceProvider>)Container).Kernel;
