@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ZarDevs.DependencyInjection
 {
     /// <summary>
-    /// Dependency container base implementation.
+    /// Dependency bindings base implementation.
     /// </summary>
-    public abstract class DependencyContainerBase : IDependencyContainer
+    public abstract class DependencyContainerBase<TBindingCollection> : IDependencyContainer where TBindingCollection : class
     {
         #region Fields
 
         private bool _isDisposed;
+        private readonly IDependencyScopeCompiler<TBindingCollection> _scopeCompiler;
 
         #endregion Fields
 
@@ -19,9 +21,11 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Base constructor
         /// </summary>
-        protected DependencyContainerBase()
+        protected DependencyContainerBase(TBindingCollection bindings, IDependencyScopeCompiler<TBindingCollection> scopeCompiler)
         {
             Definitions = new DependencyDefinitions();
+            Bindings = bindings ?? throw new ArgumentNullException(nameof(bindings));
+            _scopeCompiler = scopeCompiler ?? throw new ArgumentNullException(nameof(scopeCompiler));
         }
 
         #endregion Constructors
@@ -32,6 +36,11 @@ namespace ZarDevs.DependencyInjection
         /// A list of definitions that have been added.
         /// </summary>
         protected IDependencyDefinitions Definitions { get; }
+
+        /// <summary>
+        /// The dependecy bindings.
+        /// </summary>
+        protected TBindingCollection Bindings { get; }
 
         #endregion Properties
 
@@ -54,7 +63,11 @@ namespace ZarDevs.DependencyInjection
             {
                 Validate(definition);
                 Definitions.Add(definition);
-                OnBuild(definition);
+
+                var binder = _scopeCompiler.FindBinder(definition) ??
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The binding for the type '{0}' is invalid. The binding has not been configured correctly", string.Join(", ", definition.ResolvedTypes)));
+
+                OnBuild(binder, definition);
             }
 
             OnBuildEnd();
@@ -84,7 +97,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
-            if (_isDisposed) return;
+            if (_isDisposed) return; 
 
             _isDisposed = true;
         }
@@ -92,8 +105,12 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Implement the on build method that will be called for each definition added.
         /// </summary>
+        /// <param name="binder">Dependency scope compiler used to define what</param>
         /// <param name="definition">The dependency info that describes what is required.</param>
-        protected abstract void OnBuild(IDependencyInfo definition);
+        protected virtual void OnBuild(IDependencyScopeBinder<TBindingCollection> binder, IDependencyInfo definition)
+        {
+            binder.Bind(Bindings, definition);
+        }
 
         /// <summary>
         /// Virtual method that occurs when the build ends. Does not need to be called when overridden.

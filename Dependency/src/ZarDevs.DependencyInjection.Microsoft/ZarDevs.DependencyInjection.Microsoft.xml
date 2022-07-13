@@ -26,5 +26,88 @@
             </summary>
             <param name="services">The service collection that will be used for the bindings.</param>
         </member>
+        <member name="T:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler">
+            <summary>
+            Dependency scope provider that is used to register <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> dependencies for <see cref="T:ZarDevs.DependencyInjection.IDependencyFactoryInfo"/>.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection,ZarDevs.DependencyInjection.IDependencyResolutionFactory,ZarDevs.DependencyInjection.IDependencyFactory)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler"/>
+            </summary>
+            <param name="services">The service collection</param>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <param name="dependencyFactory">An instance of the dependency factory.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler.OnRegisterRequest(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.MicrosoftInstanceDependencyScopeCompiler">
+            <summary>
+            Dependency scope provider that is used to register <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> dependencies for <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/>.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftInstanceDependencyScopeCompiler.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection,ZarDevs.DependencyInjection.IDependencyResolutionFactory)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler"/>
+            </summary>
+            <param name="services">The service collection</param>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftInstanceDependencyScopeCompiler.OnBind(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyInstanceInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.MicrosoftMethodDependencyScopeCompiler">
+            <summary>
+            Dependency scope provider that is used to register <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> dependencies for <see cref="T:ZarDevs.DependencyInjection.IDependencyMethodInfo"/>.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftMethodDependencyScopeCompiler.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection,ZarDevs.DependencyInjection.IDependencyResolutionFactory)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler"/>
+            </summary>
+            <param name="services">The service collection</param>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftMethodDependencyScopeCompiler.OnRegisterRequest(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftMethodDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftMethodDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler">
+            <summary>
+            Dependency scope provider that is used to register <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> dependencies for <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/>.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler.#ctor(Microsoft.Extensions.DependencyInjection.IServiceCollection,ZarDevs.DependencyInjection.IDependencyResolutionFactory)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler"/>
+            </summary>
+            <param name="services">The service collection</param>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler.OnRegisterRequest(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <inheritdoc/>
+        </member>
     </members>
 </doc>

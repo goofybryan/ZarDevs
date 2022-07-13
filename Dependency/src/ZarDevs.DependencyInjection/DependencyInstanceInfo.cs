@@ -17,7 +17,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <param name="requestType">Specify the request type.</param>
         /// <param name="instance">The instance that is always returned.</param>
-        public DependencyInstanceInfo(Type requestType, object instance) : base(scope: DependyBuilderScope.Singleton)
+        public DependencyInstanceInfo(Type requestType, object instance) : base(scope: DependyBuilderScopes.Singleton)
         {
             Instance = instance ?? throw new ArgumentNullException(nameof(instance));
             Validate(requestType, instance);
@@ -33,7 +33,7 @@ namespace ZarDevs.DependencyInjection
         {
             Instance = instance ?? throw new ArgumentNullException(nameof(instance));
             Validate(ResolvedTypes, instance);
-            Scope = DependyBuilderScope.Singleton;
+            Scope = DependyBuilderScopes.Singleton;
         }
 
         #endregion Constructors
