@@ -9,14 +9,13 @@ namespace ZarDevs.DependencyInjection.Microsoft.Tests
 
         public IocTestFixture()
         {
-            var services = new ServiceCollection();
+            var serviceCollection = new ServiceCollection();
+            var kernel = IocServiceProvider.CreateBuilder(serviceCollection);
 
-            var kernel = IocServiceProvider.CreateBuilder(services);
+            Ioc.StartInitialization(kernel, builder => builder.ConfigureTest());
 
-            Container = Ioc.Initialize(kernel,
-                builder => builder.ConfigureTest(),
-                () => kernel.ConfigureServiceProvider(services.BuildServiceProvider())
-            );
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            Container = Ioc.FinializeInitialization(builder => ((IIocKernelServiceProviderBuilder)builder).ConfigureServiceProvider(serviceProvider));
         }
 
         #endregion Constructors

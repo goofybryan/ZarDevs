@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
@@ -49,9 +50,9 @@ namespace ZarDevs.Http.Api
         /// <param name="content">The Http content to deserialize.</param>
         /// <typeparam name="TContent">The expected content type</typeparam>
         /// <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
-        public async Task<TContent> DeserializeAsync<TContent>(HttpContent content)
+        public async Task<TContent> DeserializeAsync<TContent>(HttpContent content, CancellationToken cancellationToken = default)
         {
-            object value = await content.ReadAsStringAsync();
+            object value = await content.ReadAsStringAsync(cancellationToken);
             Type contentType = typeof(TContent);
 
             if (contentType == typeof(string))

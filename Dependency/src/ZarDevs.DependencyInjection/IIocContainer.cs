@@ -317,4 +317,168 @@ namespace ZarDevs.DependencyInjection
 
         #endregion Properties
     }
+
+    internal class PartialIocContainer : IIocContainer
+    {
+        public PartialIocContainer(IIocKernelBuilder builder)
+        {
+            Builder = builder ?? throw new ArgumentNullException(nameof(builder));
+        }
+
+        public IIocKernelBuilder Builder { get; }
+
+        public void Dispose()
+        {
+        }
+
+        public T Resolve<T>(params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T Resolve<T>(params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T Resolve<T>() where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public IEnumerable ResolveAll(Type requestType)
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public IEnumerable<T> ResolveAll<T>() where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveNamed<T>(string key, params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveNamed<T>(string key) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveWithKey<T>(object key, params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveWithKey<T>(Enum key) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T ResolveWithKey<T>(object key) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public object TryResolve(Type requestType)
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolve<T>(params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolve<T>(params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolve<T>() where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public object TryResolveNamed(Type requestType, string key, params object[] parameters)
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveNamed<T>(string key, params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveNamed<T>(string key, params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveNamed<T>(string key) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public object TryResolveWithKey(Type requestType, Enum key, params object[] parameters)
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public object TryResolveWithKey(Type requestType, object key, params object[] parameters)
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveWithKey<T>(Enum key) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+
+        public T TryResolveWithKey<T>(object key) where T : class
+        {
+            throw new NotSupportedException("Ioc has only been partially initialized.");
+        }
+    }
 }

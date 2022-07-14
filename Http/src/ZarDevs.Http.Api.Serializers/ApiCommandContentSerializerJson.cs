@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
@@ -15,8 +17,7 @@ namespace ZarDevs.Http.Api
     {
         #region Fields
 
-        private readonly Encoding _encoding;
-        private readonly Formatting _formatting;
+        private readonly JsonSerializerOptions _serializerOptions;
 
         #endregion Fields
 
@@ -25,12 +26,10 @@ namespace ZarDevs.Http.Api
         /// <summary>
         /// Create a new instance of this class
         /// </summary>
-        /// <param name="encoding">Optionally specify the content encoding, otherwise defaults <see cref="Encoding.Default"/></param>
-        /// <param name="formatting">Optionally specift the formatting, otherwise defaults to <see cref="Formatting.None"/></param>
-        public ApiCommandContentSerializerJson(Encoding encoding = null, Formatting formatting = Formatting.None)
+        /// <param name="serializerOptions">Optionally specify the json serializer options, otherwise set to null for defaults.</param>
+        public ApiCommandContentSerializerJson(JsonSerializerOptions serializerOptions = null)
         {
-            _encoding = encoding ?? Encoding.Default;
-            _formatting = formatting;
+            _serializerOptions = serializerOptions;
         }
 
         #endregion Constructors
@@ -50,13 +49,12 @@ namespace ZarDevs.Http.Api
         /// Deserialize the content to the expected type <typeparamref name="TContent"/>
         /// </summary>
         /// <param name="content">The Http content to deserialize.</param>
+        /// <param name="cancellationToken">Optionally add a cancellation token to the deserializer.</param>
         /// <typeparam name="TContent">The expected content type</typeparam>
         /// <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
-        public async Task<TContent> DeserializeAsync<TContent>(HttpContent content)
+        public Task<TContent> DeserializeAsync<TContent>(HttpContent content, CancellationToken cancellationToken = default)
         {
-            string json = await content.ReadAsStringAsync();
-            TContent value = JsonConvert.DeserializeObject<TContent>(json);
-            return value;
+            return content.ReadFromJsonAsync<TContent>(_serializerOptions, cancellationToken);
         }
 
         /// <summary>
@@ -76,9 +74,8 @@ namespace ZarDevs.Http.Api
             if (!request.HasContent)
                 return null;
 
-            var value = request.Content;
-            var jsonString = JsonConvert.SerializeObject(value, _formatting);
-            var content = new StringContent(jsonString, _encoding, MediaTypes[0]);
+            var value = request.Content;            ;
+            var content = JsonContent.Create(value, new MediaTypeHeaderValue(MediaTypes[0]), _serializerOptions);
 
             return content;
         }

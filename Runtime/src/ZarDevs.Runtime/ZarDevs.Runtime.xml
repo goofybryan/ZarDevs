@@ -79,7 +79,7 @@
             <param name="target">The target object type.</param>
             <returns></returns>
         </member>
-        <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IList{System.ValueTuple{System.String,System.Object}})">
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Object}})">
             <summary>
             Finds a constructor with the same parameters and returns the ordered list of parameter
             objects that have been matched by name and type.
@@ -101,6 +101,28 @@
             </param>
             <returns>The ordered list of objects from the mapping.</returns>
         </member>
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParametersMap(System.Type,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Object}})">
+            <summary>
+            Finds a constructor with the same parameters and returns the ordered list of parameter
+            objects that have been matched by name and type.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="unorderedValueMapping">
+            The unordered list of constructor paramaters and the associated name.
+            </param>
+            <returns>The ordered list of objects from the mapping.</returns>
+        </member>
+        <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParametersMap(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Finds a constructor with the same parameters and returns the ordered list of parameter
+            objects that have been matched by name and type.
+            </summary>
+            <param name="target">The target object type.</param>
+            <param name="unorderedValueMapping">
+            The unordered list of constructor paramaters and the associated name.
+            </param>
+            <returns>The ordered list of objects from the mapping.</returns>
+        </member>
         <member name="T:ZarDevs.Runtime.InspectConstructor">
             <summary>
             Runtime constructor inpsection.
@@ -112,49 +134,25 @@
             </summary>
         </member>
         <member name="M:ZarDevs.Runtime.InspectConstructor.FindParameterNames(System.Type,System.Object[])">
-            <summary>
-            Find the constructor arguments for a list of ordered parameters.
-            </summary>
-            <param name="target">The target object type.</param>
-            <param name="argumentValuesInOrder"></param>
-            <returns>Returns a list of constructor parameter names and associated values.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.Runtime.InspectConstructor.GetConstructorParameterMap(System.Type)">
-            <summary>
-            Get a map of all the public constructors and a list of the associated parameter types.
-            </summary>
-            <param name="target">The target object type.</param>
-            <returns></returns>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.Runtime.InspectConstructor.GetConstructorParameters(System.Type)">
-            <summary>
-            Get the constructor parameters. This will return the constructor with the least amount
-            of constructor parameters.
-            </summary>
-            <param name="target">The target object type.</param>
-            <returns></returns>
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Object}})">
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.Runtime.InspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Finds a constructor with the same parameters and returns the ordered list of parameter
-            objects that have been matched by name and type.
-            </summary>
-            <param name="target">The target object type.</param>
-            <param name="unorderedValueMapping">
-            The unordered list of constructor paramaters and the associated name.
-            </param>
-            <returns>The ordered list of objects from the mapping.</returns>
+            <inheritdoc/>
         </member>
-        <member name="M:ZarDevs.Runtime.InspectConstructor.OrderParameters(System.Type,System.Collections.Generic.IList{System.ValueTuple{System.String,System.Object}})">
-            <summary>
-            Finds a constructor with the same parameters and returns the ordered list of parameter
-            objects that have been matched by name and type.
-            </summary>
-            <param name="target">The target object type.</param>
-            <param name="unorderedValueMapping">
-            The unordered list of constructor paramaters and the associated name.
-            </param>
-            <returns>The ordered list of objects from the mapping.</returns>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.OrderParametersMap(System.Type,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Object}})">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.Runtime.InspectConstructor.OrderParametersMap(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.Runtime.IInspectMethod">
             <summary>
