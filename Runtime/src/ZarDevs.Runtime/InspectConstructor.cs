@@ -44,7 +44,7 @@ namespace ZarDevs.Runtime
         /// The unordered list of constructor paramaters and the associated name.
         /// </param>
         /// <returns>The ordered list of objects from the mapping.</returns>
-        object[] OrderParameters(Type target, IList<(string, object)> unorderedValueMapping);
+        object[] OrderParameters(Type target, IEnumerable<(string, object)> unorderedValueMapping);
 
         /// <summary>
         /// Finds a constructor with the same parameters and returns the ordered list of parameter
@@ -56,6 +56,28 @@ namespace ZarDevs.Runtime
         /// </param>
         /// <returns>The ordered list of objects from the mapping.</returns>
         object[] OrderParameters(Type target, IDictionary<string, object> unorderedValueMapping);
+
+        /// <summary>
+        /// Finds a constructor with the same parameters and returns the ordered list of type/parameter
+        /// objects that have been matched by name and type.
+        /// </summary>
+        /// <param name="target">The target object type.</param>
+        /// <param name="unorderedValueMapping">
+        /// The unordered list of constructor paramaters and the associated name.
+        /// </param>
+        /// <returns>The ordered list of objects from the mapping.</returns>
+        (Type, object)[] OrderParametersMap(Type target, IEnumerable<(string, object)> unorderedValueMapping);
+
+        /// <summary>
+        /// Finds a constructor with the same parameters and returns the ordered list of type/parameter
+        /// objects that have been matched by name and type.
+        /// </summary>
+        /// <param name="target">The target object type.</param>
+        /// <param name="unorderedValueMapping">
+        /// The unordered list of constructor paramaters and the associated name.
+        /// </param>
+        /// <returns>The ordered list of objects from the mapping.</returns>
+        (Type, object)[] OrderParametersMap(Type target, IDictionary<string, object> unorderedValueMapping);
 
         #endregion Methods
     }
@@ -76,12 +98,7 @@ namespace ZarDevs.Runtime
 
         #region Methods
 
-        /// <summary>
-        /// Find the constructor arguments for a list of ordered parameters.
-        /// </summary>
-        /// <param name="target">The target object type.</param>
-        /// <param name="argumentValuesInOrder"></param>
-        /// <returns>Returns a list of constructor parameter names and associated values.</returns>
+        /// <inheritdoc/>
         public (string, object)[] FindParameterNames(Type target, params object[] argumentValuesInOrder)
         {
             // TODO BM: Better constur
@@ -97,23 +114,14 @@ namespace ZarDevs.Runtime
             throw new InvalidOperationException($"The is no constructors with constructor argument count as the requested count or matches the object types in order.");
         }
 
-        /// <summary>
-        /// Get a map of all the public constructors and a list of the associated parameter types.
-        /// </summary>
-        /// <param name="target">The target object type.</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public (ConstructorInfo, IList<Type>) GetConstructorParameterMap(Type target)
         {
             var constructors = GetConstructorInfos(target).Select(info => ValueTuple.Create(info, info.GetParameters().Select(i => i.ParameterType).ToArray())).OrderBy(args => args.Item2.Length);
             return constructors.First();
         }
 
-        /// <summary>
-        /// Get the constructor parameters. This will return the constructor with the least amount
-        /// of constructor parameters.
-        /// </summary>
-        /// <param name="target">The target object type.</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public IList<Type> GetConstructorParameters(Type target)
         {
             var constructors = GetConstructorInfos(target).Select(info => info.GetParameters()).OrderBy(args => args.Length);
@@ -121,16 +129,26 @@ namespace ZarDevs.Runtime
             return constructors.First().Select(args => args.ParameterType).ToArray();
         }
 
-        /// <summary>
-        /// Finds a constructor with the same parameters and returns the ordered list of parameter
-        /// objects that have been matched by name and type.
-        /// </summary>
-        /// <param name="target">The target object type.</param>
-        /// <param name="unorderedValueMapping">
-        /// The unordered list of constructor paramaters and the associated name.
-        /// </param>
-        /// <returns>The ordered list of objects from the mapping.</returns>
+        /// <inheritdoc/>
+        public object[] OrderParameters(Type target, IEnumerable<(string, object)> unorderedValueMapping)
+        {
+            return OrderParameters(target, unorderedValueMapping.ToDictionary(key => key.Item1, value => value.Item2));
+        }
+
+        /// <inheritdoc/>
         public object[] OrderParameters(Type target, IDictionary<string, object> unorderedValueMapping)
+        {
+            return OrderParametersMap(target, unorderedValueMapping).Select(args => args.Item2).ToArray();
+        }
+
+        /// <inheritdoc/>
+        public (Type, object)[] OrderParametersMap(Type target, IEnumerable<(string, object)> unorderedValueMapping)
+        {
+            return OrderParametersMap(target, unorderedValueMapping.ToDictionary(key => key.Item1, value => value.Item2)).ToArray();
+        }
+
+        /// <inheritdoc/>
+        public (Type, object)[] OrderParametersMap(Type target, IDictionary<string, object> unorderedValueMapping)
         {
             var constructors = target.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 
@@ -140,7 +158,7 @@ namespace ZarDevs.Runtime
 
                 if (parameters.Length != unorderedValueMapping.Count) continue;
 
-                IList<object> orderedList = new List<object>();
+                IList<(Type, object)> orderedList = new List<(Type, object)>();
                 foreach (var parameter in parameters)
                 {
                     if (!unorderedValueMapping.TryGetValue(parameter.Name, out object value))
@@ -149,27 +167,13 @@ namespace ZarDevs.Runtime
                         break;
                     }
 
-                    orderedList.Add(value);
+                    orderedList.Add(ValueTuple.Create(parameter.ParameterType, value));
                 }
 
-                if (orderedList != null && orderedList.Count == unorderedValueMapping.Count) return orderedList.ToArray();
+                if (orderedList.Count == unorderedValueMapping.Count) return orderedList.ToArray();
             }
 
             throw new InvalidOperationException($"The is no constructors with constructor argument count as the requested count or matches the object types.");
-        }
-
-        /// <summary>
-        /// Finds a constructor with the same parameters and returns the ordered list of parameter
-        /// objects that have been matched by name and type.
-        /// </summary>
-        /// <param name="target">The target object type.</param>
-        /// <param name="unorderedValueMapping">
-        /// The unordered list of constructor paramaters and the associated name.
-        /// </param>
-        /// <returns>The ordered list of objects from the mapping.</returns>
-        public object[] OrderParameters(Type target, IList<(string, object)> unorderedValueMapping)
-        {
-            return OrderParameters(target, unorderedValueMapping.ToDictionary(key => key.Item1, value => value.Item2));
         }
 
         private static IList<ConstructorInfo> GetConstructorInfos(Type target)
