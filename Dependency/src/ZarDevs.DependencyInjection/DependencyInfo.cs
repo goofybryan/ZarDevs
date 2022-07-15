@@ -16,8 +16,8 @@ namespace ZarDevs.DependencyInjection
         /// Create a new instance with the base variables set.
         /// </summary>
         /// <param name="key">Specify the key, optional.</param>
-        /// <param name="scope">Specify the scope, optional, default is <see cref="DependyBuilderScope.Transient"/></param>
-        protected DependencyInfo(object key = null, DependyBuilderScope scope = DependyBuilderScope.Transient)
+        /// <param name="scope">Specify the scope, optional, default is <see cref="DependyBuilderScopes.Transient"/></param>
+        protected DependencyInfo(object key = null, DependyBuilderScopes scope = DependyBuilderScopes.Transient)
         {
             ResolvedTypes = new HashSet<Type>();
             Key = key;
@@ -56,9 +56,9 @@ namespace ZarDevs.DependencyInjection
         public ISet<Type> ResolvedTypes { get; }
 
         /// <summary>
-        /// The scope that the binding will be defined to, default is <see cref="DependyBuilderScope.Transient"/>
+        /// The scope that the binding will be defined to, default is <see cref="DependyBuilderScopes.Transient"/>
         /// </summary>
-        public DependyBuilderScope Scope { get; set; }
+        public DependyBuilderScopes Scope { get; set; }
 
         #endregion Properties
 

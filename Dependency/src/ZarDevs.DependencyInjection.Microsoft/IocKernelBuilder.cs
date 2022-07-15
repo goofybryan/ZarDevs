@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
@@ -28,14 +30,16 @@ namespace ZarDevs.DependencyInjection
         private readonly IDependencyInstanceResolution _instanceResolution;
         private readonly IDependencyResolutionConfiguration _resolutionConfiguration;
         private readonly IServiceCollection _serviceCollection;
+        private readonly IDependencyScopeBinder<IDependencyResolutionConfiguration>[] _additionalBinders;
 
         #endregion Fields
 
         #region Constructors
 
-        public IocKernelBuilder(IServiceCollection serviceCollection)
+        public IocKernelBuilder(IServiceCollection serviceCollection, params IDependencyScopeBinder<IDependencyResolutionConfiguration>[] additionalBinders)
         {
             _serviceCollection = serviceCollection ?? throw new ArgumentNullException(nameof(serviceCollection));
+            _additionalBinders = additionalBinders ?? throw new ArgumentNullException(nameof(additionalBinders));
             _resolutionConfiguration = new DependencyResolutionConfiguration();
             _instanceResolution = new DependencyInstanceResolution(_resolutionConfiguration);
         }
@@ -51,9 +55,12 @@ namespace ZarDevs.DependencyInjection
 
         public IDependencyBuilder CreateDependencyBuilder()
         {
-            var activator = new MicrosoftUtilitiesActivator(InspectConstructor.Instance);
-            var dependencyContainer = new MicrosoftDependencyContainer(_serviceCollection, _resolutionConfiguration, activator, new DependencyFactory(InspectMethod.Instance));
-            var builder = new DependencyBuilder(dependencyContainer);
+            MicrosoftUtilitiesActivator activator = new(InspectConstructor.Instance);
+            DependencyFactory dependencyFactory = new(InspectMethod.Instance);
+            DependencyResolutionFactory resolutionFactory = new(activator, new DependencyFactory(InspectMethod.Instance));
+            DependencyScopeCompiler<IDependencyResolutionConfiguration> compiler = new(CreateBinders(_serviceCollection, resolutionFactory, dependencyFactory).Union(_additionalBinders));
+            MicrosoftDependencyContainer dependencyContainer = new(_resolutionConfiguration, compiler);
+            DependencyBuilder builder = new(dependencyContainer);
 
             builder.BindInstance(InspectConstructor.Instance).Resolve<IInspectConstructor>();
             builder.BindInstance(InspectMethod.Instance).Resolve<IInspectMethod>();
@@ -75,5 +82,13 @@ namespace ZarDevs.DependencyInjection
         }
 
         #endregion Methods
+
+        private static IEnumerable<IDependencyScopeBinder<IDependencyResolutionConfiguration>> CreateBinders(IServiceCollection services, DependencyResolutionFactory resolutionFactory, DependencyFactory dependencyFactory)
+        {
+            yield return new MicrosoftTypedDependencyScopeCompiler(services, resolutionFactory);
+            yield return new MicrosoftInstanceDependencyScopeCompiler(services, resolutionFactory);
+            yield return new MicrosoftFactoryDependencyScopeCompiler(services, resolutionFactory, dependencyFactory);
+            yield return new MicrosoftMethodDependencyScopeCompiler(services, resolutionFactory);
+        }
     }
 }

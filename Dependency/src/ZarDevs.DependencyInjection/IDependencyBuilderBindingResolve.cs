@@ -11,12 +11,12 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
-        /// Create the binding in Singleton Scope resolution.
+        /// Create the binding in Singleton Scopes resolution.
         /// </summary>
         IDependencyBuilderInfo InSingletonScope();
 
         /// <summary>
-        /// Create the binding in Transient Scope resolution. This is the default scope.
+        /// Create the binding in Transient Scopes resolution. This is the default scope.
         /// </summary>
         IDependencyBuilderInfo InTransientScope();
 

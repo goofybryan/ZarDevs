@@ -4,6 +4,21 @@
         <name>ZarDevs.DependencyInjection.AutoFac</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.DependencyInjection.AutoFacDependencyScopeBinder">
+            <summary>
+            AutoFac dependency scope binder. This will convert bind the <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> and map to the <see cref="T:Autofac.ContainerBuilder"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.AutoFacDependencyScopeBinder.#ctor(ZarDevs.DependencyInjection.IDependencyFactory)">
+            <summary>
+            Create new instance of the <see cref="T:ZarDevs.DependencyInjection.AutoFacDependencyScopeBinder"/>
+            </summary>
+            <param name="dependencyFactory">An instance of the dependency factory.</param>
+            <exception cref="T:System.ArgumentNullException">Throws when <paramref name="dependencyFactory"/> is null.</exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.AutoFacDependencyScopeBinder.OnBind(Autofac.ContainerBuilder,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.IAutoFacDependencyContainer">
             <summary>
             AutoFac dependency container
@@ -11,7 +26,7 @@
         </member>
         <member name="P:ZarDevs.DependencyInjection.IAutoFacDependencyContainer.Container">
             <summary>
-            AutoFac
+            AutoFac Container
             </summary>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IocAutoFac">
@@ -36,12 +51,13 @@
             Ioc Kernerl Builder that will create instances of the underlying IOC technology
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.#ctor(Autofac.Builder.ContainerBuildOptions,ZarDevs.DependencyInjection.IDependencyFactory)">
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.#ctor(Autofac.Builder.ContainerBuildOptions,ZarDevs.DependencyInjection.IDependencyFactory,ZarDevs.DependencyInjection.IDependencyScopeBinder{Autofac.ContainerBuilder}[])">
             <summary>
             Instanciate a new instance with build options
             </summary>
             <param name="buildOptions">AutoFac build options.</param>
             <param name="dependencyFactory">The dependency factory.</param>
+            <param name="additionalBinders">Optional additional binders.</param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.CreateDependencyBuilder">
             <summary>

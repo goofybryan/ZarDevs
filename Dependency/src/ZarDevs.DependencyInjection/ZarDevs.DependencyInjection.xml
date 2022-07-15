@@ -105,56 +105,62 @@
             Build the dependencies.
             </summary>
         </member>
-        <member name="T:ZarDevs.DependencyInjection.DependencyContainerBase">
+        <member name="T:ZarDevs.DependencyInjection.DependencyContainerBase`1">
             <summary>
-            Dependency container base implementation.
+            Dependency bindings base implementation.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.#ctor">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.#ctor(`0,ZarDevs.DependencyInjection.IDependencyScopeCompiler{`0})">
             <summary>
             Base constructor
             </summary>
         </member>
-        <member name="P:ZarDevs.DependencyInjection.DependencyContainerBase.Definitions">
+        <member name="P:ZarDevs.DependencyInjection.DependencyContainerBase`1.Definitions">
             <summary>
             A list of definitions that have been added.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.Build(System.Collections.Generic.IList{ZarDevs.DependencyInjection.IDependencyInfo})">
+        <member name="P:ZarDevs.DependencyInjection.DependencyContainerBase`1.Bindings">
+            <summary>
+            The dependecy bindings.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.Build(System.Collections.Generic.IList{ZarDevs.DependencyInjection.IDependencyInfo})">
             <summary>
             Build the dependencies.
             </summary>
             <param name="definitions">The list of definitions to transform.</param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.Dispose">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.Dispose">
             <summary>
             Dispose of any resources.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.TryGetBinding(System.Type,System.Object)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.TryGetBinding(System.Type,System.Object)">
             <summary>
             Retrieve a dependency binding information when required.
             </summary>
             <param name="requestType">The request type to retrieve.</param>
             <param name="key">A key that the binding is associated with, can be null.</param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.Dispose(System.Boolean)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.Dispose(System.Boolean)">
             <summary>
             Dispose of any resources.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.OnBuild(ZarDevs.DependencyInjection.IDependencyInfo)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.OnBuild(ZarDevs.DependencyInjection.IDependencyScopeBinder{`0},ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
             Implement the on build method that will be called for each definition added.
             </summary>
+            <param name="binder">Dependency scope compiler used to define what</param>
             <param name="definition">The dependency info that describes what is required.</param>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.OnBuildEnd">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.OnBuildEnd">
             <summary>
             Virtual method that occurs when the build ends. Does not need to be called when overridden.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase.OnBuildStart">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainerBase`1.OnBuildStart">
             <summary>
             Virtual method that occurs when the build starts. Does not need to be called when overridden.
             </summary>
@@ -319,12 +325,12 @@
             and optionally <see cref="P:ZarDevs.DependencyInjection.DependencyInfo.Key"/> for any binding.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(System.Object,ZarDevs.DependencyInjection.DependyBuilderScope)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(System.Object,ZarDevs.DependencyInjection.DependyBuilderScopes)">
             <summary>
             Create a new instance with the base variables set.
             </summary>
             <param name="key">Specify the key, optional.</param>
-            <param name="scope">Specify the scope, optional, default is <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScope.Transient"/></param>
+            <param name="scope">Specify the scope, optional, default is <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Transient"/></param>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfo.#ctor(ZarDevs.DependencyInjection.IDependencyInfo)">
             <summary>
@@ -344,7 +350,7 @@
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyInfo.Scope">
             <summary>
-            The scope that the binding will be defined to, default is <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScope.Transient"/>
+            The scope that the binding will be defined to, default is <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Transient"/>
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInfo.CreateContext(ZarDevs.DependencyInjection.IIocContainer)">
@@ -455,19 +461,156 @@
             The instance that is always returned.
             </summary>
         </member>
-        <member name="T:ZarDevs.DependencyInjection.DependyBuilderScope">
+        <member name="T:ZarDevs.DependencyInjection.DependencyScopeBinder`1">
+            <summary>
+            Dependency scope binder that is used to define what to do with a <see
+            cref="T:ZarDevs.DependencyInjection.IDependencyBuilderInfo"/> and the scope binding
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinder`1.#ctor(ZarDevs.DependencyInjection.DependyBuilderScopes,System.Action{`0,ZarDevs.DependencyInjection.IDependencyInfo})">
+            <summary>
+            Create a new instance of the binder and specify the scope and binding action
+            </summary>
+            <param name="scope">The scope that this is valid for.</param>
+            <param name="bindingAction">
+            The binding action that will be used when the <paramref name="scope"/> is valid.
+            </param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinder`1.OnBind(`0,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyScopeBinderBase`1">
+            <summary>
+            Dependency scope binder that is used to define what to do with a <see
+            cref="T:ZarDevs.DependencyInjection.IDependencyBuilderInfo"/> and the scope binding
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`1.#ctor(ZarDevs.DependencyInjection.DependyBuilderScopes)">
+            <summary>
+            Create a new instance of the binder and specify the scopes and binding action
+            </summary>
+            <param name="scopes">The scopes that this is valid for.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyScopeBinderBase`1.Scopes">
+            <summary>
+            The scope that the binder is valid for.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`1.Bind(`0,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`1.CanBind(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`1.OnBind(`0,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Bind the definition to the container.
+            </summary>
+            <param name="container">The dependency container</param>
+            <param name="definition">The dependency info</param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2">
+            <summary>
+            Dependency scope binder that is used to define what to do with a <see
+            cref="T:ZarDevs.DependencyInjection.IDependencyBuilderInfo"/> and the scope binding
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.#ctor(ZarDevs.DependencyInjection.DependyBuilderScopes)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.CanBind(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.OnBind(`0,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.RegisterTypeTo(`0,`1)">
+            <summary>
+            Resgiter the type to. This method can be overriden
+            </summary>
+            <param name="container">The dependency container</param>
+            <param name="info">The dependency definition</param>
+            <exception cref="T:System.NotSupportedException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.OnRegisterTransient(`0,`1)">
+            <summary>
+            Register a transient <typeparamref name="TInfo"/> instance with the configuration.
+            Can be overridden.
+            </summary>
+            <param name="container">The dependency container</param>
+            <param name="info">The dependency information describing the resolving requirements.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.OnRegisterSingleton(`0,`1)">
+            <summary>
+            Register a singleton <typeparamref name="TInfo"/> instance with the configuration.
+            Can be overridden.
+            </summary>
+            <param name="container">The dependency container</param>
+            <param name="info">The dependency information describing the resolving requirements.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.OnRegisterRequest(`0,`1)">
+            <summary>
+            Register a transient <typeparamref name="TInfo"/> instance with the configuration.
+            Can be overridden.
+            </summary>
+            <param name="container">The dependency container</param>
+            <param name="info">The dependency information describing the resolving requirements.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeBinderBase`2.OnRegisterThread(`0,`1)">
+            <summary>
+            Register a singleton <typeparamref name="TInfo"/> instance with the configuration.
+            Can be overridden.
+            </summary>
+            <param name="container">The dependency container</param>
+            <param name="info">The dependency information describing the resolving requirements.</param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyScopeCompiler`1">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeCompiler`1.#ctor(ZarDevs.DependencyInjection.IDependencyScopeBinder{`0}[])">
+            <summary>
+            Create a new instance of the DependencyScopeCompiler
+            </summary>
+            <param name="scopeBinders">A list of scope binders.</param>
+            <exception cref="T:System.ArgumentNullException">When <paramref name="scopeBinders"/> is null</exception>
+            <exception cref="T:System.ArgumentException">When <paramref name="scopeBinders"/> is empty</exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeCompiler`1.#ctor(System.Collections.Generic.IEnumerable{ZarDevs.DependencyInjection.IDependencyScopeBinder{`0}})">
+            <summary>
+            Create a new instance of the DependencyScopeCompiler
+            </summary>
+            <param name="scopeBinders">A list of scope binders.</param>
+            <exception cref="T:System.ArgumentNullException">When <paramref name="scopeBinders"/> is null</exception>
+            <exception cref="T:System.ArgumentException">When <paramref name="scopeBinders"/> is empty</exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyScopeCompiler`1.FindBinder(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependyBuilderScopes">
             <summary>
             Dependency builder scope.
             </summary>
         </member>
-        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScope.Transient">
+        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Transient">
             <summary>
             Indicate that the request must be resolve a new instance with each call.
             </summary>
         </member>
-        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScope.Singleton">
+        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Singleton">
             <summary>
             Indicate that the request must be resolve once and then returned with each call.
+            </summary>
+        </member>
+        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Request">
+            <summary>
+            Indicate that the request must be resolve a new instance in the web request scope. Default fall back should be <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Thread"/> when no web context is available.
+            </summary>
+        </member>
+        <member name="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Thread">
+            <summary>
+            Indicate that the request must be resolve a new instance on each thread.
             </summary>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyBuilder">
@@ -601,12 +744,12 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.InSingletonScope">
             <summary>
-            Create the binding in Singleton Scope resolution.
+            Create the binding in Singleton Scopes resolution.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.InTransientScope">
             <summary>
-            Create the binding in Transient Scope resolution. This is the default scope.
+            Create the binding in Transient Scopes resolution. This is the default scope.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.Resolve(System.Type)">
@@ -732,6 +875,42 @@
             </summary>
             <param name="context">The dependency context</param>
             <returns></returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyScopeBinder`1">
+            <summary>
+            Dependency scope binder that will bind the <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> to the <typeparamref name="TContainer"/>.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyScopeBinder`1.Scopes">
+            <summary>
+             The scope that the binder is valid for.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyScopeBinder`1.CanBind(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Check that the definition is valid for the <paramref name="definition"/>.
+            </summary>
+            <param name="definition">The dependency definition.</param>
+            <returns>A true if it can bind, false if it cannot.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyScopeBinder`1.Bind(`0,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Bind the <paramref name="definition"/> to the <paramref name="container"/>.
+            </summary>
+            <param name="container">The dependency container to add the definition to.</param>
+            <param name="definition">The definition the contains the bindings.</param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyScopeCompiler`1">
+            <summary>
+            Dependency scope compiler interface that is used to define what to do with a <see cref="T:ZarDevs.DependencyInjection.IDependencyBuilderInfo"/> and the scope bindings
+            </summary>
+            <typeparam name="TContainer">The dependency container this compiler is used on.</typeparam>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyScopeCompiler`1.FindBinder(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <summary>
+            Find the binder for the <paramref name="definition"/> to specified scope.
+            </summary>
+            <param name="definition">The dependency info that describes what is required.</param>
         </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyTypeInfo">
             <summary>
@@ -1061,7 +1240,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.IIocKernelBuilder.CreateIocContainer">
             <summary>
-            Create the Ioc Container, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC
+            Create the Ioc Bindings, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC
             implementation to resolve the request using the underlying IOC methodology.
             </summary>
             <returns></returns>

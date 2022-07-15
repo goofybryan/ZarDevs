@@ -45,13 +45,13 @@ namespace ZarDevs.DependencyInjection
 
         public IDependencyBuilderInfo InSingletonScope()
         {
-            _info.Scope = DependyBuilderScope.Singleton;
+            _info.Scope = DependyBuilderScopes.Singleton;
             return this;
         }
 
         public IDependencyBuilderInfo InTransientScope()
         {
-            _info.Scope = DependyBuilderScope.Transient;
+            _info.Scope = DependyBuilderScopes.Transient;
             return this;
         }
 
