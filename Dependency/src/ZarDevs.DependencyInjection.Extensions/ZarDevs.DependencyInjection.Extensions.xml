@@ -21,70 +21,14 @@
             Dependency container that is used to build bindings and apply them to the configuration.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeActivator,ZarDevs.DependencyInjection.IDependencyFactory)">
+        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyScopeCompiler{ZarDevs.DependencyInjection.IDependencyResolutionConfiguration})">
             <summary>
             Create a new instance of the dependency container.
             </summary>
             <param name="configuration">
             The instance configuration that will contain the binding configuration.
             </param>
-            <param name="activator">The type activator that is used to resolve types.</param>
-            <param name="dependencyFactory">The dependency factory.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnBuild(ZarDevs.DependencyInjection.IDependencyInfo)">
-            <summary>
-            Implement the on build method that will be called for each definition added.
-            </summary>
-            <param name="definition">The dependency info that describes what is required.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterFactory(ZarDevs.DependencyInjection.IDependencyFactoryInfo,ZarDevs.DependencyInjection.IDependencyFactory)">
-            <summary>
-            Register a <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
-            </summary>
-            <param name="info">The dependency information describing the resolving requirements.</param>
-            <param name="factory"></param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterFactorySingleton(ZarDevs.DependencyInjection.IDependencyFactoryInfo,ZarDevs.DependencyInjection.IDependencyFactory)">
-            <summary>
-            Register a singleton <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/> instance with the configuration.
-            Can be overridden.
-            </summary>
-            <param name="info">The dependency information describing the resolving requirements.</param>
-            <param name="factory">The dependency factory that will resolve the factory.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterInstance(ZarDevs.DependencyInjection.IDependencyInstanceInfo)">
-            <summary>
-            Register a <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/> instance with the configuration. Can be overridden.
-            </summary>
-            <param name="info">The dependency information describing the resolving requirements.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyTypeInfo)">
-            <summary>
-            Register a singleton <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/> instance with the configuration.
-            Can be overridden.
-            </summary>
-            <param name="info">The dependency information describing the resolving requirements.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterSingletonMethod(ZarDevs.DependencyInjection.IDependencyMethodInfo)">
-            <summary>
-            Register a singleton <see cref="T:ZarDevs.DependencyInjection.IDependencyMethodInfo"/> instance with the
-            configuration. Can be overridden.
-            </summary>
-            <param name="info">The dependency information describing the resolving requirements.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyTypeInfo)">
-            <summary>
-            Register a transient <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/> instance with the configuration.
-            Can be overridden.
-            </summary>
-            <param name="info">The dependency information describing the resolving requirements.</param>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyContainer.OnRegisterTransientMethod(ZarDevs.DependencyInjection.IDependencyMethodInfo)">
-            <summary>
-            Register a transient <see cref="T:ZarDevs.DependencyInjection.IDependencyMethodInfo"/> instance with the
-            configuration. Can be overridden.
-            </summary>
-            <param name="info">The dependency information describing the resolving requirements.</param>
+            <param name="scopeCompiler">Scope compiler</param>
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyFactoryResolution">
             <summary>
@@ -555,6 +499,29 @@
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
             implement <see cref="T:System.IDisposable"/>, they will also be called.
             </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyResolutionFactory">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionFactory.#ctor(ZarDevs.DependencyInjection.IDependencyTypeActivator,ZarDevs.DependencyInjection.IDependencyFactory)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.DependencyResolutionFactory"/>
+            </summary>
+            <param name="activator">The dependency type activator</param>
+            <param name="dependencyFactory">The defpendecy factory</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyInstanceInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyResolutionNotConfiguredException">
             <summary>
@@ -1184,6 +1151,25 @@
             <param name="genericTypeArguments">The generic type arguments.</param>
             <returns></returns>
         </member>
+        <member name="T:ZarDevs.DependencyInjection.FactoryDependencyScopeCompiler">
+            <summary>
+            Compiler for <see cref="T:ZarDevs.DependencyInjection.IDependencyFactoryInfo"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.FactoryDependencyScopeCompiler.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionFactory,ZarDevs.DependencyInjection.DependyBuilderScopes)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.FactoryDependencyScopeCompiler"/>
+            </summary>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <param name="scopes">Specify the scopes that this is valid for.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="resolutionFactory"/> is null.</exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.FactoryDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.FactoryDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolution">
             <summary>
             Define the dependency resolution and how to resolve it.
@@ -1244,6 +1230,39 @@
             The <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> impementation describing this resolution.
             </summary>
         </member>
+        <member name="T:ZarDevs.DependencyInjection.IDependencyResolutionFactory">
+            <summary>
+            Dependency resolution factory is used to create instances of <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/> base of the type of <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <summary>
+            Create a resolution for <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/>
+            </summary>
+            <param name="info">The dependency info</param>
+            <returns>A resolution</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <summary>
+            Create a resolution for <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/>
+            </summary>
+            <param name="info">The dependency info</param>
+            <returns>A resolution</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyInstanceInfo)">
+            <summary>
+            Create a resolution for <see cref="T:ZarDevs.DependencyInjection.IDependencyMethodInfo"/>
+            </summary>
+            <param name="info">The dependency info</param>
+            <returns>A resolution</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyResolutionFactory.ResolutionFor(ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <summary>
+            Create a resolution for <see cref="T:ZarDevs.DependencyInjection.IDependencyFactoryInfo"/>
+            </summary>
+            <param name="info">The dependency info</param>
+            <returns>A resolution</returns>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyTypeActivator">
             <summary>
             Dpendency type activator used to resolve the type and return the object for the defined
@@ -1281,6 +1300,69 @@
             </param>
             <param name="args">An list of named args of the constructor.</param>
             <returns>An resolved object of the type <see cref="P:ZarDevs.DependencyInjection.IDependencyTypeInfo.ResolutionType"/>.</returns>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.InstanceDependencyScopeCompiler">
+            <summary>
+            Compiler for <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.InstanceDependencyScopeCompiler.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionFactory)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.InstanceDependencyScopeCompiler"/>
+            </summary>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="resolutionFactory"/> is null.</exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.InstanceDependencyScopeCompiler.CanBind(ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.InstanceDependencyScopeCompiler.OnBind(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.InstanceDependencyScopeCompiler.OnBind(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyInstanceInfo)">
+            <summary>
+            Bind the definition to the container.
+            </summary>
+            <param name="container">The dependency container</param>
+            <param name="definition">The dependency info</param>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.MethodDependencyScopeCompiler">
+            <summary>
+            Compiler for <see cref="T:ZarDevs.DependencyInjection.IDependencyMethodInfo"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MethodDependencyScopeCompiler.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionFactory,ZarDevs.DependencyInjection.DependyBuilderScopes)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler"/>
+            </summary>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <param name="scopes">Specify the scopes that this is valid for.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="resolutionFactory"/> is null.</exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MethodDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MethodDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler">
+            <summary>
+            Compiler for <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler.#ctor(ZarDevs.DependencyInjection.IDependencyResolutionFactory,ZarDevs.DependencyInjection.DependyBuilderScopes)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler"/>
+            </summary>
+            <param name="resolutionFactory">An instance of the resolution factory.</param>
+            <param name="scopes">Specify the scopes that this is valid for.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="resolutionFactory"/> is null.</exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <inheritdoc/>
         </member>
     </members>
 </doc>

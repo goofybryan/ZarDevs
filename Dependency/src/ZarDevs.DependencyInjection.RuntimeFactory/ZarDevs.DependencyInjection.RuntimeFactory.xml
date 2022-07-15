@@ -9,14 +9,19 @@
             Ioc Kernel Builder that will create instances of the underlying IOC technology
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.#ctor">
+        <member name="F:ZarDevs.DependencyInjection.IocKernelBuilder.SupportedScopes">
+            <summary>
+            Supported scopes
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.#ctor(ZarDevs.DependencyInjection.IDependencyScopeBinder{ZarDevs.DependencyInjection.IDependencyResolutionConfiguration}[])">
             <summary>
             Create a new instance of the IOC kernel builder.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.CreateDependencyBuilder">
             <summary>
-            Create the Ioc Container, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC
+            Create the Ioc Bindings, <see cref="T:ZarDevs.DependencyInjection.IIocContainer"/> that will be used by this IOC
             implementation to resolve the request using the underlying IOC methodology.
             </summary>
             <returns></returns>

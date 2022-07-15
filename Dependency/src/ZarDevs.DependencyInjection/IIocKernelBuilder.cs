@@ -15,7 +15,7 @@
         IDependencyBuilder CreateDependencyBuilder();
 
         /// <summary>
-        /// Create the Ioc Container, <see cref="IIocContainer"/> that will be used by this IOC
+        /// Create the Ioc Bindings, <see cref="IIocContainer"/> that will be used by this IOC
         /// implementation to resolve the request using the underlying IOC methodology.
         /// </summary>
         /// <returns></returns>

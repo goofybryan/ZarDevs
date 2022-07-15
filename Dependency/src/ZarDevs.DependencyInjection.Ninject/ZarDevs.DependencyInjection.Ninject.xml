@@ -17,5 +17,23 @@
             <param name="settings"></param>
             <returns></returns>
         </member>
+        <member name="T:ZarDevs.DependencyInjection.NinjectDependencyScopeBinder">
+            <summary>
+            Ninject's scope binder. It is valid for <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Singleton"/>, <see
+            cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Transient"/> and <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Thread"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.NinjectDependencyScopeBinder.#ctor(ZarDevs.DependencyInjection.IDependencyFactory)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.NinjectDependencyScopeBinder"/>
+            </summary>
+            <param name="dependencyFactory">The dependency factory</param>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown when <paramref name="dependencyFactory"/> is null
+            </exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.NinjectDependencyScopeBinder.OnBind(Ninject.IKernel,ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
     </members>
 </doc>

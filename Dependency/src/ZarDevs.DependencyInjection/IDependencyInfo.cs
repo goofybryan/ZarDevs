@@ -23,7 +23,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Specify the scope that this dependency is active in.
         /// </summary>
-        DependyBuilderScope Scope { get; set; }
+        DependyBuilderScopes Scope { get; set; }
 
         #endregion Properties
 

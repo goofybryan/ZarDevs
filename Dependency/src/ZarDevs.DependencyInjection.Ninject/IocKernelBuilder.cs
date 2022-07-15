@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -12,10 +13,12 @@ namespace ZarDevs.DependencyInjection
 
         #region Constructors
 
-        public IocKernelBuilder(IKernel kernel, IDependencyFactory dependencyFactory)
+        public IocKernelBuilder(IKernel kernel, IDependencyFactory dependencyFactory, params IDependencyScopeBinder<IKernel>[] additionalBinders)
         {
             Kernel = kernel ?? throw new System.ArgumentNullException(nameof(kernel));
-            _container = DependencyContainer.Create(kernel, dependencyFactory);
+            List<IDependencyScopeBinder<IKernel>> binders = new List<IDependencyScopeBinder<IKernel>> { new NinjectDependencyScopeBinder(dependencyFactory) };
+            binders.AddRange(additionalBinders);
+            _container = new DependencyContainer(kernel, dependencyFactory, new DependencyScopeCompiler<IKernel>(binders));
         }
 
         #endregion Constructors
