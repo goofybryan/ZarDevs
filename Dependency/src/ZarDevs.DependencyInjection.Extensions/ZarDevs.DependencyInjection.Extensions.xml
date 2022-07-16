@@ -281,19 +281,16 @@
             <param name="info">The dependency info describing the resolution.</param>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyResolution`1.Info">
-            <summary>
-            The <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> impementation describing this resolution.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyResolution`1.Key">
-            <summary>
-            The key that is associated to this resolution.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyResolution`1.ResolvedTypes">
-            <summary>
-            Get the type that this resolution is for.
-            </summary>
+            <inheritdoc/>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyResolution`1.IsGenericType">
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolution`1.MakeConcrete(System.Type)">
             <summary>
@@ -943,6 +940,9 @@
             Get the request type that this resolution is for.
             </summary>
         </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencySingletionResolution`2.IsGenericType">
+            <inheritdoc/>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletionResolution`2.Dispose">
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
@@ -1016,6 +1016,9 @@
             Get the request type that this resolution is for.
             </summary>
         </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencySingletonInstance.IsGenericType">
+            <inheritdoc/>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletonInstance.Dispose">
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
@@ -1079,71 +1082,64 @@
             </param>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Info">
-            <summary>
-            The <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> impementation describing this resolution.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Key">
-            <summary>
-            The key that is associated to this resolution.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="P:ZarDevs.DependencyInjection.DependencyThreadResolution`2.ResolvedTypes">
-            <summary>
-            Get the request type that this resolution is for.
-            </summary>
+            <inheritdoc/>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyThreadResolution`2.IsGenericType">
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Dispose">
-            <summary>
-            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
-            implements <see cref="T:System.IDisposable"/> that will be called.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.MakeConcrete(System.Type)">
-            <summary>
-            Make a concrete singleton resolution
-            </summary>
-            <param name="concreteRequest">The concrete request type.</param>
-            <returns></returns>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve(System.Object[])">
-            <summary>
-            Initially resolve the instance and from then always return the instance.
-            </summary>
-            <param name="args">
-            A list of ordered constructor arguments. They will be used if the instance has not been
-            resolved, if it has, they will be ignored
-            </param>
-            <returns>An instance for this resolution.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve(System.ValueTuple{System.String,System.Object}[])">
-            <summary>
-            Initially resolve the instance and from then always return the instance.
-            </summary>
-            <param name="args">
-            A list of named constructor arguments. They will be used if the instance has not been
-            resolved, if it has, they will be ignored
-            </param>
-            <returns>An instance for this resolution.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve">
-            <summary>
-            Initially resolve the instance and from then always return the instance.
-            </summary>
-            <returns>An instance for this resolution.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
-            <summary>
-            Resolve and return the instance
-            </summary>
-            <param name="context">The dependency context.</param>
-            <returns>An instance for this resolution.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Dispose(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyThreadResolutionTracker">
             <summary>
-            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
-            implements <see cref="T:System.IDisposable"/> that will be called.
+            Dependency thread resolution tracker that will track a value at thread level
             </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolutionTracker.#ctor(ZarDevs.DependencyInjection.IDependencyResolution)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.DependencyThreadResolutionTracker"/>
+            </summary>
+            <param name="resolution">The resolution to track.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolutionTracker.Finalize">
+            <summary>
+            Destructor for the resolution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolutionTracker.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolutionTracker.Resolve(System.Func{ZarDevs.DependencyInjection.IDependencyResolution,System.Object})">
+            <summary>
+            Resolve the value. If the value is not created, the <paramref name="resolve"/> will be invoked, otherwise will return the internal value.
+            </summary>
+            <param name="resolve">The resolve function.</param>
+            <returns>The value for the current thread.</returns>
         </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyTypeResolution">
             <summary>
@@ -1213,9 +1209,17 @@
         <member name="M:ZarDevs.DependencyInjection.FactoryDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
             <inheritdoc/>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.FactoryDependencyScopeCompiler.OnRegisterThread(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.IDependencyResolution">
             <summary>
             Define the dependency resolution and how to resolve it.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.IDependencyResolution.IsGenericType">
+            <summary>
+            Get a value indicating of the current resolution is a generic type. If true, then <see cref="M:ZarDevs.DependencyInjection.IDependencyResolution.MakeConcrete(System.Type)"/> should be called.
             </summary>
         </member>
         <member name="P:ZarDevs.DependencyInjection.IDependencyResolution.Key">
@@ -1388,6 +1392,9 @@
         <member name="M:ZarDevs.DependencyInjection.MethodDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
             <inheritdoc/>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.MethodDependencyScopeCompiler.OnRegisterThread(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler">
             <summary>
             Compiler for <see cref="T:ZarDevs.DependencyInjection.IDependencyTypeInfo"/>
@@ -1405,6 +1412,9 @@
             <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler.OnRegisterSingleton(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.TypedDependencyScopeCompiler.OnRegisterThread(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyTypeInfo)">
             <inheritdoc/>
         </member>
     </members>
