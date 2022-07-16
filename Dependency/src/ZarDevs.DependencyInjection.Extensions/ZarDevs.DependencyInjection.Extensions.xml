@@ -145,27 +145,6 @@
             will return null when resolved.
             </returns>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.TryGetResolution(ZarDevs.DependencyInjection.IDependencyInfo)">
-            <summary>
-            Try and get the resolution for the request info.
-            </summary>
-            <param name="info">The request info that will need to be resolved.</param>
-            <returns>
-            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
-            will return null when resolved.
-            </returns>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyInstanceResolution.TryGetResolution(System.Object,ZarDevs.DependencyInjection.IDependencyInfo)">
-            <summary>
-            Get the resolution for the request info.
-            </summary>
-            <param name="info">The request info that will need to be resolved.</param>
-            <param name="key">The key for this resolution.</param>
-            <returns>
-            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
-            will return null when resolved.
-            </returns>
-        </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyInstanceResolution">
             <summary>
             Dependency resolution configuration is used to configure any dependency resolutions and get
@@ -242,27 +221,6 @@
             </summary>
             <param name="requestType">The request type that will need to be resolved.</param>
             <returns>The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/>.</returns>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.TryGetResolution(ZarDevs.DependencyInjection.IDependencyInfo)">
-            <summary>
-            Get the resolution for the request info.
-            </summary>
-            <param name="info">The request info that will need to be resolved.</param>
-            <returns>
-            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
-            will return null when resolved.
-            </returns>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.TryGetResolution(System.Object,ZarDevs.DependencyInjection.IDependencyInfo)">
-            <summary>
-            Get the resolution for the request info.
-            </summary>
-            <param name="info">The request info that will need to be resolved.</param>
-            <param name="key">The key for this resolution.</param>
-            <returns>
-            The resolved instance, if not found a <see cref="T:ZarDevs.DependencyInjection.NotFoundDependencyResolution"/> that
-            will return null when resolved.
-            </returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyInstanceResolution.Dispose(System.Boolean)">
             <summary>
@@ -630,7 +588,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.Resolve``1(System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <typeparam name="T">The request type</typeparam>
             <param name="parameters">
@@ -640,7 +598,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.Resolve``1(System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <typeparam name="T">The request type</typeparam>
             <param name="parameters">
@@ -650,7 +608,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.Resolve``1">
             <summary>
-            Resolved the requested type.
+            ThreadTracker the requested type.
             </summary>
             <typeparam name="T">The request type</typeparam>
             <returns>The resolved type.</returns>
@@ -671,7 +629,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveNamed``1(System.String,System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -682,7 +640,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveNamed``1(System.String,System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -693,7 +651,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveNamed``1(System.String)">
             <summary>
-            Resolved the requested type.
+            ThreadTracker the requested type.
             </summary>
             <param name="key">The name of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -701,7 +659,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveWithKey``1(System.Enum,System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -712,7 +670,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveWithKey``1(System.Object,System.Object[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -723,7 +681,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveWithKey``1(System.Enum,System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -734,7 +692,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveWithKey``1(System.Object,System.ValueTuple{System.String,System.Object}[])">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -745,7 +703,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveWithKey``1(System.Enum)">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -753,7 +711,7 @@
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyResolver.ResolveWithKey``1(System.Object)">
             <summary>
-            Resolved the requested type with the list of paramaters specified.
+            ThreadTracker the requested type with the list of paramaters specified.
             </summary>
             <param name="key">The key of the resolution request.</param>
             <typeparam name="T">The request type</typeparam>
@@ -1097,6 +1055,91 @@
             <returns>An instance for this resolution.</returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.DependencySingletonInstance.Dispose(System.Boolean)">
+            <summary>
+            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
+            implements <see cref="T:System.IDisposable"/> that will be called.
+            </summary>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyThreadResolution`2">
+            <summary>
+            Dependency singleton resolution is used when you want to define a resolution that needs to
+            be resolved once and then always return the same instance.
+            </summary>
+            <typeparam name="TInfo">The <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> describing this resolution.</typeparam>
+            <typeparam name="TResolution">
+            The underlying <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/> that will be used to resolve the initial instance.
+            </typeparam>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.#ctor(`1)">
+            <summary>
+            Create a new instance of the singleton resolution.
+            </summary>
+            <param name="resolution">
+            The underlying resolution that will be used to initialy resolve with.
+            </param>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Info">
+            <summary>
+            The <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> impementation describing this resolution.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Key">
+            <summary>
+            The key that is associated to this resolution.
+            </summary>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyThreadResolution`2.ResolvedTypes">
+            <summary>
+            Get the request type that this resolution is for.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Dispose">
+            <summary>
+            Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
+            implements <see cref="T:System.IDisposable"/> that will be called.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.MakeConcrete(System.Type)">
+            <summary>
+            Make a concrete singleton resolution
+            </summary>
+            <param name="concreteRequest">The concrete request type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve(System.Object[])">
+            <summary>
+            Initially resolve the instance and from then always return the instance.
+            </summary>
+            <param name="args">
+            A list of ordered constructor arguments. They will be used if the instance has not been
+            resolved, if it has, they will be ignored
+            </param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve(System.ValueTuple{System.String,System.Object}[])">
+            <summary>
+            Initially resolve the instance and from then always return the instance.
+            </summary>
+            <param name="args">
+            A list of named constructor arguments. They will be used if the instance has not been
+            resolved, if it has, they will be ignored
+            </param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve">
+            <summary>
+            Initially resolve the instance and from then always return the instance.
+            </summary>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Resolve(ZarDevs.DependencyInjection.IDependencyContext)">
+            <summary>
+            Resolve and return the instance
+            </summary>
+            <param name="context">The dependency context.</param>
+            <returns>An instance for this resolution.</returns>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyThreadResolution`2.Dispose(System.Boolean)">
             <summary>
             Dispose of the underlying resources. If any <see cref="T:ZarDevs.DependencyInjection.IDependencyResolution"/>
             implements <see cref="T:System.IDisposable"/> that will be called.

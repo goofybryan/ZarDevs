@@ -4,6 +4,18 @@
         <name>ZarDevs.DependencyInjection.Ninject</name>
     </assembly>
     <members>
+        <member name="T:ZarDevs.DependencyInjection.EnumExtensions">
+            <summary>
+            Enum extensions
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.EnumExtensions.GetBindingName(System.Enum)">
+            <summary>
+            Create a unique binding name from the enum value. This means the two diffent type <see cref="T:System.Enum"/> values that are the same as strings will still be unique.
+            </summary>
+            <param name="enumValue">The enum value.</param>
+            <returns>A unique string comprised of the the Type.Name_EnumValue</returns>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.IocNinject">
             <summary>
             IOC NInject initializing class.
@@ -32,7 +44,33 @@
             Thrown when <paramref name="dependencyFactory"/> is null
             </exception>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.NinjectDependencyScopeBinder.OnBind(Ninject.IKernel,ZarDevs.DependencyInjection.IDependencyInfo)">
+        <member name="M:ZarDevs.DependencyInjection.NinjectDependencyScopeBinder.BindScope(ZarDevs.DependencyInjection.IDependencyInfo,Ninject.Syntax.IBindingWhenInNamedWithOrOnSyntax{System.Object})">
+            <inheritdoc/>
+        </member>
+        <member name="T:ZarDevs.DependencyInjection.NinjectDependencyScopeBinderBase">
+            <summary>
+            Ninject's scope binder base. It is valid for <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Singleton"/>,
+            <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Transient"/> and <see cref="F:ZarDevs.DependencyInjection.DependyBuilderScopes.Thread"/>
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.NinjectDependencyScopeBinderBase.#ctor(ZarDevs.DependencyInjection.IDependencyFactory,ZarDevs.DependencyInjection.DependyBuilderScopes)">
+            <summary>
+            Create a new instance of the <see cref="T:ZarDevs.DependencyInjection.NinjectDependencyScopeBinder"/>
+            </summary>
+            <param name="dependencyFactory">The dependency factory</param>
+            <param name="scopes">The scopes that this is valid for.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Thrown when <paramref name="dependencyFactory"/> is null
+            </exception>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.NinjectDependencyScopeBinderBase.BindScope(ZarDevs.DependencyInjection.IDependencyInfo,Ninject.Syntax.IBindingWhenInNamedWithOrOnSyntax{System.Object})">
+            <summary>
+            Bind the <paramref name="info"/> to a scope
+            </summary>
+            <param name="info">The <see cref="T:ZarDevs.DependencyInjection.IDependencyInfo"/> describing what is being bound.</param>
+            <param name="binding">The current binding.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.NinjectDependencyScopeBinderBase.OnBind(Ninject.IKernel,ZarDevs.DependencyInjection.IDependencyInfo)">
             <inheritdoc/>
         </member>
     </members>

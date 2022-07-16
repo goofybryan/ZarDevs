@@ -6,6 +6,8 @@ This project contains the AutoFac implementation of the [Dependency Injection](.
 
 Keep in mind that to make the generic functionality work, there are additional objects created to translate this accordingly.
 
+This project supports all scopes because AutoFac supports it out of the box.
+
 ## How To
 
 The implementation can be seen in the [AutoFac test implementation](..\..\tests\ZarDevs.DependencyInjection.AutoFac.Tests) and [General Test Construct](..\..\tests\ZarDevs.DependencyInjection.Tests) projects. In the example below, I have bindings made in other assemblies and only in the starting assembly do I initialize the AutoFac assembly.

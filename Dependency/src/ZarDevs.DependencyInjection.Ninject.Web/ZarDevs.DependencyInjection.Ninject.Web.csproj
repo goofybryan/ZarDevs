@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <RootNamespace>ZarDevs.DependencyInjection</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
@@ -17,14 +16,25 @@
     <Copyright>Copyright (c) ZarDevs 2021</Copyright>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>..\DependencyInjection.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\DependencyInjection.snk</AssemblyOriginatorKeyFile>	  <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+	  <RootNamespace>ZarDevs.DependencyInjection</RootNamespace>
+	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	  <Authors>Bryan Musso</Authors>
+	  <Company>ZarsDevs</Company>
+	  <PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/goofybryan/ZarDevs/tree/master/Dependency</RepositoryUrl>
+	  <RepositoryType>Git</RepositoryType>
+	  <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <Version>0.0.1</Version>
+	  <LangVersion>9</LangVersion>
+	  <Description>This package contains my implemention of my Dependency Injection Bindings that will be translated to Ninject bindings. Please see project url for more information.</Description>
+	  <Copyright>Copyright (c) ZarDevs 2021</Copyright>
+	  <SignAssembly>true</SignAssembly>
+	  <DelaySign>false</DelaySign>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>ZarDevs.DependencyInjection.Ninject.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
@@ -36,17 +46,17 @@
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ninject" Version="3.3.6" />
-    <PackageReference Include="ZarDevs.Runtime" Version="0.2.0" />
+    <PackageReference Include="Ninject.Extensions.NamedScope" Version="3.3.0" />
+    <PackageReference Include="Ninject.Web.Common" Version="3.3.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZarDevs.DependencyInjection.Extensions.Factory\ZarDevs.DependencyInjection.Extensions.Factory.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.Ninject\ZarDevs.DependencyInjection.Ninject.csproj" />
     <ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
   </ItemGroup>
 

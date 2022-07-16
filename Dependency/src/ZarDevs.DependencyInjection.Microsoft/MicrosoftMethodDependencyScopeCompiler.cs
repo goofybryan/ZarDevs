@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -9,6 +10,7 @@ namespace ZarDevs.DependencyInjection
     public class MicrosoftMethodDependencyScopeCompiler : MethodDependencyScopeCompiler
     {
         private readonly IServiceCollection _services;
+        private readonly IDependencyResolutionFactory _resolutionFactory;
 
         /// <summary>
         /// Create a new instance of the <see cref="MicrosoftTypedDependencyScopeCompiler"/>
@@ -17,9 +19,10 @@ namespace ZarDevs.DependencyInjection
         /// <param name="resolutionFactory">An instance of the resolution factory.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public MicrosoftMethodDependencyScopeCompiler(IServiceCollection services, IDependencyResolutionFactory resolutionFactory)
-            : base(resolutionFactory, DependyBuilderScopes.Transient | DependyBuilderScopes.Singleton | DependyBuilderScopes.Request)
+            : base(resolutionFactory, DependyBuilderScopes.Transient | DependyBuilderScopes.Singleton)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
+            _resolutionFactory = resolutionFactory ?? throw new ArgumentNullException(nameof(resolutionFactory));
         }
 
         /// <inheritdoc/>
@@ -55,6 +58,19 @@ namespace ZarDevs.DependencyInjection
             }
 
             base.OnRegisterTransient(container, info);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnRegisterThread(IDependencyResolutionConfiguration container, IDependencyMethodInfo info)
+        {
+            var tracked = new DependencyThreadResolution<IDependencyMethodInfo, IDependencyResolution<IDependencyMethodInfo>>(_resolutionFactory.ResolutionFor(info));
+            
+            foreach (var resolveType in info.ResolvedTypes)
+            {
+                _services.AddTransient(resolveType, p => tracked.Resolve());
+            }
+
+            base.OnRegisterThread(container, info);
         }
     }
 }

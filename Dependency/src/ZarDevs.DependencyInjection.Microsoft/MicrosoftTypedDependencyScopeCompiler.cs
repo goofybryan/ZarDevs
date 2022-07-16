@@ -17,7 +17,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="resolutionFactory">An instance of the resolution factory.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public MicrosoftTypedDependencyScopeCompiler(IServiceCollection services, IDependencyResolutionFactory resolutionFactory) 
-            : base(resolutionFactory, DependyBuilderScopes.Transient | DependyBuilderScopes.Singleton | DependyBuilderScopes.Request)
+            : base(resolutionFactory, DependyBuilderScopes.Transient | DependyBuilderScopes.Singleton)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
         }

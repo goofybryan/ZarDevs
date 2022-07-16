@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>
@@ -26,8 +26,24 @@
     <DocumentationFile>ZarDevs.DependencyInjection.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <LangVersion>10.0</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="ZarDevs.Runtime" Version="0.1.0" />
+    <PackageReference Include="ZarDevs.Runtime" Version="0.2.0" />
   </ItemGroup>
 
 </Project>

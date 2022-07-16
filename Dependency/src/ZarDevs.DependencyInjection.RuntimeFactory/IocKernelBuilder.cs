@@ -12,7 +12,7 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Supported scopes
         /// </summary>
-        public const DependyBuilderScopes SupportedScopes = DependyBuilderScopes.Singleton | DependyBuilderScopes.Transient;
+        public const DependyBuilderScopes SupportedScopes = DependyBuilderScopes.Singleton | DependyBuilderScopes.Transient | DependyBuilderScopes.Thread;
 
         #region Constructors
 

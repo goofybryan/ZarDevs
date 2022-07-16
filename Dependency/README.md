@@ -6,13 +6,13 @@ I have been working in the .Net environment for years, and I as everyone know, y
 
 The concept behind these libraries is to create a unified/standardized way to do [IOC (Inversion of Control)](https://en.wikipedia.org/wiki/Inversion_of_control). Currently everyone has their own way of how to implement it and there isn't a standard way of doing this. Either you have to choose a specific technology, like [Ninject](http://www.ninject.org/), [AutoFac](https://autofac.org/), [Microsoft](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0), etc. and use it or choose a completely different pattern. This prevents one from creating re-useable shareable code using a IOC pattern without deciding upfront which technology you are going to use.
 
+Keep in mind that this project plugs where is can holes that are not supported by the underlying IOC container. My philosophy is keep is simple, if you need the advanced features of the underlying IOC technology, then you need to just use that in you solution. If you are interested in where the holes are, look at the IocContainer classes.
+
 ## What is ZarDevs Dependency Injection?
 
 My goal was to write a standardized way to create bindings and then have them "translated" to the native technology. This way I can write my shared code using IOC without fear of the underlying technology is or having to decide what I would like to use.
 
 I enjoy writing code that takes away the need to continually write complex code to do simple tasks. For example just to communicate to an authenticated server there is several steps that need to checked before and after each call to the server. And these steps are sometime very hard to cater for because you do not know where your solution will be used.
-
-What I did not cater by choice was `Scoped` variables. I plan on implementation this for websites as an extension.
 
 To see how to use please read the following [document](./src/ZarDevs.DependencyInjection/README.md)
 
@@ -162,7 +162,7 @@ What I like about it is the fact that you allow the infrastructure to give you t
 1. Validation tests construct
 1. Optimizations (look at code and see where I can improve)
 1. Perhaps support `IServiceProvider` explicitly?
-1. Memory load testing (ensure that I am not too much of an overhead)
+1. Memory load testing (ensure that this is not too much of an overhead)
 1. More tests
 1. Implement a scoped implementation as extension
 1. Optimize the Factory dependency expression builder to allow for passed in parameters plans

@@ -27,20 +27,17 @@ namespace ZarDevs.DependencyInjection
 
         #region Properties
 
-        /// <summary>
-        /// The <see cref="IDependencyInfo"/> impementation describing this resolution.
-        /// </summary>
+        /// <inheritdoc/>
         public TInfo Info { get; }
 
-        /// <summary>
-        /// The key that is associated to this resolution.
-        /// </summary>
+        /// <inheritdoc/>
         public object Key => Info.Key;
 
-        /// <summary>
-        /// Get the type that this resolution is for.
-        /// </summary>
+        /// <inheritdoc/>
         public ISet<Type> ResolvedTypes => Info.ResolvedTypes;
+
+        /// <inheritdoc/>
+        public bool IsGenericType => Info.ResolvedTypes.Any(x => x.IsGenericType);
 
         #endregion Properties
 

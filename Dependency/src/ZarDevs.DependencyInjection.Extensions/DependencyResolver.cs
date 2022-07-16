@@ -90,7 +90,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <param name="parameters">
@@ -103,7 +103,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <param name="parameters">
@@ -116,7 +116,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type.
+        /// ThreadTracker the requested type.
         /// </summary>
         /// <typeparam name="T">The request type</typeparam>
         /// <returns>The resolved type.</returns>
@@ -146,7 +146,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The name of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -160,7 +160,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The name of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -174,7 +174,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type.
+        /// ThreadTracker the requested type.
         /// </summary>
         /// <param name="key">The name of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -185,7 +185,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -199,7 +199,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -213,7 +213,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -227,7 +227,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -241,7 +241,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
@@ -252,7 +252,7 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Resolved the requested type with the list of paramaters specified.
+        /// ThreadTracker the requested type with the list of paramaters specified.
         /// </summary>
         /// <param name="key">The key of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
