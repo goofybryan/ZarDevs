@@ -60,6 +60,9 @@
             <param name="dependencyFactory">The dependency factory.</param>
             <param name="additionalBinders">Optional additional binders.</param>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.Build(System.Collections.Generic.IList{ZarDevs.DependencyInjection.IDependencyInfo})">
+            <inheritdoc/>
+        </member>
         <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.CreateDependencyBuilder">
             <summary>
             Create a new instance of the dependency builder

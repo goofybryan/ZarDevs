@@ -1,0 +1,291 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ZarDevs.DependencyInjection
+{
+    /// <summary>
+    /// Ioc container for type factory resolution.
+    /// </summary>
+    public class IocContainer : IIocContainer
+    {
+        private readonly ITypeFactoryContainter _typeFactoryContainer;
+        #region Fields
+
+        private bool _disposedValue;
+
+        #endregion Fields
+
+        /// <summary>
+        /// Create a new instance of the <see cref="IocContainer"/>
+        /// </summary>
+        /// <param name="typeFactoryContainer">The type factory that contains all the <see cref="ITypeResolution"/></param>
+        public IocContainer(ITypeFactoryContainter typeFactoryContainer)
+        {
+            _typeFactoryContainer = typeFactoryContainer;
+        }
+
+        #region Methods
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <inheritdoc/>
+        public T Resolve<T>(params object[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T)).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T Resolve<T>(params (string, object)[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T)).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T Resolve<T>() where T : class
+        {
+            var resolution = GetResolution(typeof(T)).FirstOrDefault();
+            return (T)resolution?.Resolve();
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable ResolveAll(Type requestType)
+        {
+            var resolved = TryGetResolution(requestType).Resolve().ToList();
+
+            Array resolvedArray = Array.CreateInstance(requestType, resolved.Count);
+            for(int i = 0; i < resolved.Count; i++)
+            {
+                var value = resolved[i];
+                resolvedArray.SetValue(value, i);
+            }
+
+            return resolvedArray;
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> ResolveAll<T>() where T : class
+        {
+            var resolutions = TryGetResolution(typeof(T));
+            return resolutions.Resolve().Cast<T>();
+        }
+
+        /// <inheritdoc/>
+        public T ResolveNamed<T>(string key, params object[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key, parameters);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveNamed<T>(string key, params (string, object)[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveNamed<T>(string key) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key, parameters);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key, parameters);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveWithKey<T>(object key, params object[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key, parameters);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key, parameters);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveWithKey<T>(Enum key) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(key);
+        }
+
+        /// <inheritdoc/>
+        public T ResolveWithKey<T>(object key) where T : class
+        {
+            var resolution = GetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve();
+        }
+
+        /// <inheritdoc/>
+        public object TryResolve(Type requestType)
+        {
+            var resolution = TryGetResolution(requestType, null).FirstOrDefault();
+            return resolution?.Resolve();
+        }
+
+        /// <inheritdoc/>
+        public T TryResolve<T>(params object[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), null).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolve<T>(params (string, object)[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), null).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolve<T>() where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), null).FirstOrDefault();
+            return (T)resolution?.Resolve();
+        }
+
+        /// <inheritdoc/>
+        public object TryResolveNamed(Type requestType, string key, params object[] parameters)
+        {
+            var resolution = TryGetResolution(requestType, key).FirstOrDefault();
+            return resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveNamed<T>(string key, params object[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveNamed<T>(string key, params (string, object)[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveNamed<T>(string key) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve();
+        }
+
+        /// <inheritdoc/>
+        public object TryResolveWithKey(Type requestType, Enum key, params object[] parameters)
+        {
+            var resolution = TryGetResolution(requestType, key).FirstOrDefault();
+            return resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public object TryResolveWithKey(Type requestType, object key, params object[] parameters)
+        {
+            var resolution = TryGetResolution(requestType, key).FirstOrDefault();
+            return resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveWithKey<T>(Enum key, params object[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveWithKey<T>(object key, params object[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve(parameters);
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveWithKey<T>(Enum key) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve();
+        }
+
+        /// <inheritdoc/>
+        public T TryResolveWithKey<T>(object key) where T : class
+        {
+            var resolution = TryGetResolution(typeof(T), key).FirstOrDefault();
+            return (T)resolution?.Resolve();
+        }
+
+        private ITypeResolutions GetResolution(Type type)
+        {
+            return _typeFactoryContainer.Get(type);
+        }
+
+        private ITypeResolutions GetResolution(Type type, object key)
+        {
+            return _typeFactoryContainer.Get(type, key);
+        }
+
+        private ITypeResolutions TryGetResolution(Type type)
+        {
+            return _typeFactoryContainer.TryGet(type, out var resolutions) ? resolutions : new TypeResolutions();
+        }
+
+        private ITypeResolutions TryGetResolution(Type type, object key)
+        {
+            return _typeFactoryContainer.TryGet(type, key, out var resolutions) ? resolutions : new TypeResolutions();
+        }
+
+        /// <inheritdoc/>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        #endregion Methods
+    }
+}

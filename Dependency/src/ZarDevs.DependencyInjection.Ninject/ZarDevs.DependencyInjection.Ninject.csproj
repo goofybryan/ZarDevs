@@ -12,7 +12,7 @@
     <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.0.1</Version>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Description>This package contains my implemention of my Dependency Injection Bindings that will be translated to Ninject bindings. Please see project url for more information.</Description>
     <Copyright>Copyright (c) ZarDevs 2021</Copyright>
     <SignAssembly>true</SignAssembly>

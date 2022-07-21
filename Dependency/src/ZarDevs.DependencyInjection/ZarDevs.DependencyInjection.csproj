@@ -11,7 +11,7 @@
     <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.1.0</Version>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Description>This is a unification/standardization of IOC and is intended to be used by projects that do not what to be bound to a specific IOC technology. Please read more on the project page.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <SignAssembly>true</SignAssembly>

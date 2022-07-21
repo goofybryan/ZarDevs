@@ -12,7 +12,7 @@
     <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.1.0</Version>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Description>This package contains some extensions to the Dependency Injection Bindings. It contains the runtime management framework for your own IOC implementations or extensions to existing implementations that do not support all features.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (c) ZarDevs 2021</Copyright>

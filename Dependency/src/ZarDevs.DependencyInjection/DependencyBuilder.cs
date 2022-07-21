@@ -10,22 +10,7 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public class DependencyBuilder : IDependencyBuilder
     {
-        #region Constructors
-
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        /// <param name="container"></param>
-        public DependencyBuilder(IDependencyContainer container)
-        {
-            Container = container ?? throw new ArgumentNullException(nameof(container));
-        }
-
-        #endregion Constructors
-
         #region Properties
-
-        private IDependencyContainer Container { get; }
         private IList<IDependencyBuilderInfo> Definitions { get; } = new List<IDependencyBuilderInfo>();
 
         #endregion Properties
@@ -158,9 +143,10 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Build the dependencies.
+        /// Get the definitions that are contained in this builder.
         /// </summary>
-        public void Build() => Container.Build(Definitions.Select(definition => definition.DependencyInfo).ToList());
+        /// <returns>A list of the current definitions</returns>
+        public IList<IDependencyInfo> GetDefinitions() => Definitions.Select(definition => definition.DependencyInfo).ToArray();
 
         private DependencyBuilderInfo CreateBuilderInfo()
         {

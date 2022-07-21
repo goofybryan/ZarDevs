@@ -12,7 +12,7 @@
     <PackageTags>ZarDevs,Dependency,Injection,Generic</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.1.0</Version>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Description>This package contains my implemention of my Dependency Injection Bindings that will be translated to for Microsofts IServiceCollection bindings. This however is a hybrid solution as Microsoft does not support features like parameters that well. Please see project url for more information.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Copyright>Copyright (c) ZarDevs 2021</Copyright>

@@ -1,20 +1,43 @@
+using static ZarDevs.DependencyInjection.Tests.Bindings;
+
 namespace ZarDevs.DependencyInjection.Tests
 {
-    public static class Bindings
+    [DependencyRegistration]
+    public class Bindings : IDependencyRegistration
     {
         #region Fields
 
         public const string MethodWithArgs = nameof(MethodWithArgs);
         public const string MethodWithNoArgs = nameof(MethodWithNoArgs);
-        public const string NotMethod = nameof(NotMethod);
-        public const string NotResolvedName = nameof(NotResolvedName);
         public const string Named1 = nameof(Named1);
         public const string Named2 = nameof(Named2);
+        public const string NotMethod = nameof(NotMethod);
+        public const string NotResolvedName = nameof(NotResolvedName);
 
         #endregion Fields
 
         #region Methods
 
+        public void Register(IDependencyBuilder builder)
+        {
+            builder.ConfigureTest();
+        }
+
+        #endregion Methods
+
+        #region Enums
+
+        public enum EnumAsKey
+        { 
+            Key, 
+            DifferentKey 
+        }
+
+        #endregion Enums
+    }
+
+    public static class BindingExtensions
+    {
         public static void ConfigurePerformanceTest(this IDependencyBuilder builder)
         {
             builder.Bind<PerformanceMethodTest>().Resolve<IPerformanceMethodTest>();
@@ -67,12 +90,5 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<ResolveAllTest2>().ResolveAll().WithKey(nameof(ResolveAllTest2));
         }
 
-        #endregion Methods
-
-        #region Enums
-
-        public enum EnumAsKey { Key, DifferentKey }
-
-        #endregion Enums
     }
 }
