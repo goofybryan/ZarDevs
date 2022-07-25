@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Bindings>
-	<Binding Assembly="ZarDevs.DependencyInjections.Tests" Class="Bindings" />
-	<Binding Assembly="ZarDevs.DependencyInjections.Tests" Class="BindingExtensions" Method="ConfigurePerformanceTest" />
+	<Binding Assembly="ZarDevs.DependencyInjection.Tests" Class="Bindings" />
+	<Binding Assembly="ZarDevs.DependencyInjection.Tests" Class="BindingExtensions" Method="ConfigurePerformanceTest" />
+	<Binding Assembly="ZarDevs.DependencyInjection.Tests" />
 </Bindings>
