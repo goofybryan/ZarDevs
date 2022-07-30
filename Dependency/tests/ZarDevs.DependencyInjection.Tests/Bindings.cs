@@ -2,7 +2,7 @@ using static ZarDevs.DependencyInjection.Tests.Bindings;
 
 namespace ZarDevs.DependencyInjection.Tests
 {
-    [DependencyRegistration]
+    [ZarDevs.DependencyInjection.DependencyRegistration]
     public class Bindings : IDependencyRegistration
     {
         #region Fields
@@ -36,6 +36,7 @@ namespace ZarDevs.DependencyInjection.Tests
         #endregion Enums
     }
 
+    [DependencyRegistration(nameof(ConfigurePerformanceTest))]
     public static class BindingExtensions
     {
         public static void ConfigurePerformanceTest(this IDependencyBuilder builder)

@@ -13,8 +13,8 @@ public class Bindings : BindingInfo
     /// <summary>
     /// List of binding information.
     /// </summary>
-    [XmlElement("Binding", typeof(AssemblyBindingInfo))]
-    public List<AssemblyBindingInfo> BindingInfoList { get; set; }
+    [XmlElement("Binding", typeof(BindingInfo))]
+    public List<BindingInfo> BindingInfoList { get; set; }
 
     /// <summary>
     /// Specify that the current assembly should also be enabled

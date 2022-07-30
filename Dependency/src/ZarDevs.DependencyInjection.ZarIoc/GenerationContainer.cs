@@ -1,24 +1,15 @@
-﻿using Microsoft.CodeAnalysis;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
-/// <summary>
-/// Generation container that contains a list of bindings in external assemblies. Will be used for
-/// external resource building.
-/// </summary>
-public class GenerationContainer : IEnumerable<AssemblyBindingInfo>
+/// <inheritdoc/>
+public class GenerationContainer : IEnumerable<GenerationNamespace>
 {
     #region Fields
 
-    private readonly IDictionary<string, IList<AssemblyBindingInfo>> _bindings;
-    private readonly CancellationToken _cancellation;
-    private readonly GenerationReferences _references;
-    private IDiagnosticLogger _logger;
+    private readonly IDictionary<string, GenerationNamespace> _bindings;
 
     #endregion Fields
 
@@ -27,134 +18,65 @@ public class GenerationContainer : IEnumerable<AssemblyBindingInfo>
     /// <summary>
     /// Create a new instance of the <see cref="GenerationContainer"/>
     /// </summary>
-    /// <param name="references">Specify the list of assembly references the current project has</param>
-    /// <param name="logger">Spaicify the diagnostic logger</param>
-    /// <param name="cancellation">Specify the <see cref="CancellationToken"/></param>
     /// <exception cref="ArgumentNullException"></exception>
-    public GenerationContainer(GenerationReferences references, IDiagnosticLogger logger, CancellationToken cancellation)
+    public GenerationContainer(IEnumerable<BindingInfo> bindingInfos)
     {
-        _references = references ?? throw new ArgumentNullException(nameof(references));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _cancellation = cancellation;
-        _bindings = new Dictionary<string, IList<AssemblyBindingInfo>>();
+        _bindings = new Dictionary<string, GenerationNamespace>();
+
+        AddBindings(bindingInfos);
     }
 
     #endregion Constructors
 
-    #region Properties
+    #region Indexers
 
     /// <summary>
-    /// Get a list of assemblies this container has.
+    /// Get the <see cref="GenerationNamespace"/> for the <paramref name="namespace"/>
     /// </summary>
-    public IReadOnlyCollection<string> Assemblies => _bindings.Keys.ToArray();
+    public GenerationNamespace this[string @namespace] => _bindings[@namespace];
 
-    #endregion Properties
+    #endregion Indexers
 
     #region Methods
 
-    /// <inheritdoc/>
-    public IEnumerator<AssemblyBindingInfo> GetEnumerator()
+    private void AddBindings(IEnumerable<BindingInfo> bindingInfos)
     {
-        return _bindings.Values.SelectMany(v => v).GetEnumerator();
+        foreach (var bindingInfo in bindingInfos)
+        {
+            AddBinding(bindingInfo);
+        }
     }
 
     /// <inheritdoc/>
+    public IEnumerator<GenerationNamespace> GetEnumerator()
+    {
+        return _bindings.Values.GetEnumerator();
+    }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
 
-    /// <summary>
-    /// Merge the current bindings with the container. Filter out already specified bindings.
-    /// </summary>
-    /// <param name="bindings">The bindings to merged.</param>
-    public void Merge(Bindings bindings)
+    private void AddBinding(BindingInfo bindingInfo)
     {
-        for (int i = 0; i < bindings.BindingInfoList.Count; i++)
+        if (bindingInfo is null)
         {
-            AssemblyBindingInfo binding = bindings.BindingInfoList[i];
-
-            if (!ValidateBindingInfo(i, binding))
-            {
-                continue;
-            }
-
-            _logger.LoadingBinding(binding);
-
-            if (!_bindings.TryGetValue(binding.Assembly, out var infoList))
-            {
-                _bindings[binding.Assembly] = infoList = new List<AssemblyBindingInfo>();
-            }
-
-            if (binding.IsAssemblyScan())
-            {
-                AddAssemblyScan(infoList, binding);
-            }
-            else if (binding.IsMethodBinding())
-            {
-                AddMethod(infoList, binding);
-            }
-            else
-            {
-                AddNormal(infoList, binding);
-            }
-
-            _cancellation.ThrowIfCancellationRequested();
+            throw new ArgumentNullException(nameof(bindingInfo));
         }
+
+        if (!_bindings.TryGetValue(bindingInfo.Namespace, out var generationNameSpance))
+        {
+            generationNameSpance = new(bindingInfo.Namespace);
+            _bindings.Add(bindingInfo.Namespace, generationNameSpance);
+        }
+
+        generationNameSpance.Add(bindingInfo);
     }
 
-    private void AddAssemblyScan(IList<AssemblyBindingInfo> infoList, AssemblyBindingInfo binding)
+    private bool ContainsNamespace(string name)
     {
-        var normalBindings = infoList.Where(i => !i.IsMethodBinding()).ToList();
-
-        foreach (var bindingInfo in normalBindings)
-        {
-            _logger.RemovedScannedAssembly(bindingInfo.Assembly, binding.Class);
-
-            infoList.Remove(bindingInfo);
-        }
-
-        infoList.Add(binding);
-        _logger.AddedAssembly(binding.Assembly);
-    }
-
-    private void AddMethod(IList<AssemblyBindingInfo> infoList, AssemblyBindingInfo binding)
-    {
-        if (infoList.Any(i => i.Method == binding.Method)) return;
-
-        _logger.AddedAssembly(binding.Assembly, binding.Class, binding.Method);
-        infoList.Add(binding);
-    }
-
-    private void AddNormal(IList<AssemblyBindingInfo> infoList, AssemblyBindingInfo binding)
-    {
-        if (infoList.Any(i => i.IsAssemblyScan() || i.Class == binding.Class)) return;
-
-        _logger.AddedAssembly(binding.Assembly, binding.Class);
-        infoList.Add(binding);
-    }
-
-    private bool ValidateBindingInfo(int index, AssemblyBindingInfo binding)
-    {
-        if (string.IsNullOrWhiteSpace(binding.Assembly))
-        {
-            _logger.AssemblyNotSpecified(index);
-            return false;
-        }
-
-        if (!_references.ContainsAssemblyName(binding.Assembly))
-        {
-            _logger.AssemblyNotReferenced(binding.Assembly);
-            return false;
-        }
-
-        if (!string.IsNullOrEmpty(binding.Method) && string.IsNullOrWhiteSpace(binding.Class))
-        {
-            _logger.AssemblyClassNotSpecified(binding.Assembly, binding.Method);
-            return false;
-        }
-
-        return true;
+        return _bindings.ContainsKey(name);
     }
 
     #endregion Methods

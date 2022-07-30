@@ -30,10 +30,16 @@ public class DiagnosticLogger : IDiagnosticLogger
     /// <inheritdoc/>
     public void Log(string id, string title, string message, DiagnosticSeverity severity, string category)
     {
+        Log(id, title, message, severity, category, null);
+    }
+
+    /// <inheritdoc/>
+    public void Log(string id, string title, string message, DiagnosticSeverity severity, string category, Location location)
+    {
         Debug.WriteLine($"{nameof(DependencyGenerator)}:{severity}:{category}:{id}:{title}:{message}");
 
         var descriptor = new DiagnosticDescriptor(id, title, message, category, severity, true);
-        var diagnostic = Diagnostic.Create(descriptor, null, message);
+        var diagnostic = Diagnostic.Create(descriptor, location, message);
         _context.ReportDiagnostic(diagnostic);
     }
 
