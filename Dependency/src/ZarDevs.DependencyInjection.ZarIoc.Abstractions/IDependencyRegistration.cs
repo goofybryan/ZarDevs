@@ -15,18 +15,10 @@ namespace ZarDevs.DependencyInjection
     }
 
     /// <summary>
-    /// Attribute that will be used by the generator to find all dependency generations.
+    /// Attribute that will be used by the generator to find all dependency generations. The method if specified must conform to to <see cref="IDependencyRegistration.Register(IDependencyBuilder)"/>.
     /// </summary>
-    [System.AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
     public sealed class DependencyRegistrationAttribute : Attribute
     {
-        public DependencyRegistrationAttribute() : this(null) { }
-
-        public DependencyRegistrationAttribute(string method)
-        {
-            Method = method;
-        }
-
-        public string Method { get; }
     }
 }

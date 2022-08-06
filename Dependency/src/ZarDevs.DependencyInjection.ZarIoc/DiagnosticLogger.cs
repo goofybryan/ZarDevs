@@ -34,7 +34,7 @@ public class DiagnosticLogger : IDiagnosticLogger
     }
 
     /// <inheritdoc/>
-    public void Log(string id, string title, string message, DiagnosticSeverity severity, string category, Location location)
+    public void Log(string id, string title, string message, DiagnosticSeverity severity, string category, Location? location)
     {
         Debug.WriteLine($"{nameof(DependencyGenerator)}:{severity}:{category}:{id}:{title}:{message}");
 

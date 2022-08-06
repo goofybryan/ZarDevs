@@ -56,7 +56,7 @@ public class GenerationNamespace : IEnumerable<BindingInfo>
         }
         else
         {
-            _typeNames.Add(item.Class);
+            _typeNames.Add(item.Class!);
             _dependencyRegistrations.Add(item);
         }
     }

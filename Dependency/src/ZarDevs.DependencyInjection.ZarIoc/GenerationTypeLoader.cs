@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
+/// <summary>
+/// 
+/// </summary>
 public interface IGenerationTypeLoader
 {
     /// <summary>
@@ -69,7 +72,7 @@ public class GenerationTypeLoader : IGenerationTypeLoader
         {
             if (string.IsNullOrWhiteSpace(binding.Class))
             {
-                _logger.NamespaceClassNotSpecified(@namespace, binding.Class);
+                _logger.NamespaceClassNotSpecified(@namespace, binding.Class!);
                 continue;
             }
 
@@ -78,13 +81,13 @@ public class GenerationTypeLoader : IGenerationTypeLoader
 
             if (namedType == null)
             {
-                _logger.NamespaceClassNotFound(@namespace, binding.Class);
+                _logger.NamespaceClassNotFound(@namespace, binding.Class!);
                 continue;
             }
 
-            if (binding.IsMethodBinding() && MethodIsValid(namedType, binding.Method, out var method))
+            if (binding.IsMethodBinding() && MethodIsValid(namedType, binding.Method!, out var method))
             {
-                MethodRegistrations.Add(method);
+                MethodRegistrations.Add(method!);
                 continue;
             }
 
@@ -97,7 +100,7 @@ public class GenerationTypeLoader : IGenerationTypeLoader
         }
     }
 
-    private bool MethodIsValid(ITypeSymbol typeSymbol, string methodName, out IMethodSymbol method)
+    private bool MethodIsValid(ITypeSymbol typeSymbol, string methodName, out IMethodSymbol? method)
     {
         method = null;
         if (typeSymbol.TypeKind != TypeKind.Class) return false;

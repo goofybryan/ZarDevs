@@ -69,9 +69,9 @@ public class GeneratorTypes : IGeneratorTypes
     /// </summary>
     /// <param name="compilation">The compilation this covers.</param>
     /// <param name="comparer">Optional comparer, default is <see cref="SymbolEqualityComparer.Default"/></param>
-    public GeneratorTypes(Compilation compilation, IEqualityComparer<ISymbol> comparer = null)
+    public GeneratorTypes(Compilation compilation, IEqualityComparer<ISymbol> comparer)
     {
-        _compilation = compilation;
+        _compilation = compilation ?? throw new ArgumentNullException(nameof(compilation));
         _comparer = comparer ?? SymbolEqualityComparer.Default;
         DependecyBuilderType = _compilation.GetTypeByMetadataName(typeof(IDependencyBuilder).FullName) ?? throw new InvalidOperationException($"Cannot find '{typeof(IDependencyBuilder).FullName}' symbols.");
         DependencyRegistrationType = _compilation.GetTypeByMetadataName(typeof(IDependencyRegistration).FullName) ?? throw new InvalidOperationException($"Cannot find '{typeof(IDependencyRegistration).FullName}' symbols.");
@@ -92,7 +92,7 @@ public class GeneratorTypes : IGeneratorTypes
     #region Methods
 
     /// <inheritdoc/>
-    public INamedTypeSymbol FindTypeSymbol(string fullName) => _compilation.GetTypeByMetadataName(fullName);
+    public INamedTypeSymbol FindTypeSymbol(string fullName) => _compilation.GetTypeByMetadataName(fullName)!;
 
     /// <inheritdoc/>
     public bool IsValidBuilderType(ITypeSymbol typeSymbol) => _comparer.Equals(typeSymbol, DependecyBuilderType);

@@ -10,27 +10,6 @@
             appropriate IOC solution.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Resolve(System.Type)">
-            <summary>
-            Create a new binding with the specified type.
-            </summary>
-            <param name="type">The specified type to bind.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Resolve(System.Type[])">
-            <summary>
-            Create a new binding with the specified type.
-            </summary>
-            <param name="resolvedTypes">The a list of types to bind.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Resolve``1">
-            <summary>
-            Create a new binding with the specified type.
-            </summary>
-            <typeparam name="TResolve">The specified type to bind.</typeparam>
-            <returns></returns>
-        </member>
         <member name="M:ZarDevs.DependencyInjection.DependencyBuilder.Bind(System.Type)">
             <summary>
             Create a new binding with the specified type.
@@ -714,16 +693,6 @@
             binding must be configured to a s resolution type, instance or method.
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.InSingletonScope">
-            <summary>
-            Create the binding in Singleton Scopes resolution.
-            </summary>
-        </member>
-        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.InTransientScope">
-            <summary>
-            Create the binding in Transient Scopes resolution. This is the default scope.
-            </summary>
-        </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderBindingResolve.Resolve(System.Type)">
             <summary>
             Bind the specified type.
@@ -756,6 +725,26 @@
         <member name="P:ZarDevs.DependencyInjection.IDependencyBuilderInfo.DependencyInfo">
             <summary>
             Get the dependency info
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderInfo.InSingletonScope">
+            <summary>
+            Create the binding in Singleton Scopes resolution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderInfo.InThreadScope">
+            <summary>
+            Create the binding in Singleton Scopes resolution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderInfo.InRequestScope">
+            <summary>
+            Create the binding in Singleton Scopes resolution.
+            </summary>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderInfo.InTransientScope">
+            <summary>
+            Create the binding in Transient Scopes resolution. This is the default scope.
             </summary>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IDependencyBuilderInfo.WithKey(System.Object)">

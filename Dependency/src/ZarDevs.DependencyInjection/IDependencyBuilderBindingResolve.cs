@@ -11,16 +11,6 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
-        /// Create the binding in Singleton Scopes resolution.
-        /// </summary>
-        IDependencyBuilderInfo InSingletonScope();
-
-        /// <summary>
-        /// Create the binding in Transient Scopes resolution. This is the default scope.
-        /// </summary>
-        IDependencyBuilderInfo InTransientScope();
-
-        /// <summary>
         /// Bind the specified type.
         /// </summary>
         /// <param name="type">Specified type to bind as the request type.</param>
@@ -42,7 +32,7 @@ namespace ZarDevs.DependencyInjection
         /// Add all <code>interface</code>s and base <code>class</code>es to be resolved by this binding. This will not resolve for type <see cref="IDisposable"/>
         /// </summary>
         /// <param name="ignoredTypes">Specify a list of ignored types to also not bind to.</param>
-        IDependencyBuilderBindingResolve ResolveAll(params Type[] ignoredTypes);
+        IDependencyBuilderInfo ResolveAll(params Type[] ignoredTypes);
 
         #endregion Methods
     }

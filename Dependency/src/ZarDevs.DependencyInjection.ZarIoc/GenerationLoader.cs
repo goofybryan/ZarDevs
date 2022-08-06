@@ -67,20 +67,20 @@ public class GenerationLoader : IEnumerable<BindingInfo>
 
         foreach (var bindingInfo in normalBindings)
         {
-            _logger.RemovedScannedNamespace(bindingInfo.Namespace, binding.Class);
+            _logger.RemovedScannedNamespace(bindingInfo.Namespace!, binding.Class!);
 
             infoList.Remove(bindingInfo);
         }
 
         infoList.Add(binding);
-        _logger.AddedNamespace(binding.Namespace);
+        _logger.AddedNamespace(binding.Namespace!);
     }
 
     private void AddMethod(IList<BindingInfo> infoList, BindingInfo binding)
     {
         if (infoList.Any(i => i.Method == binding.Method)) return;
 
-        _logger.AddedNamespace(binding.Namespace, binding.Class, binding.Method);
+        _logger.AddedNamespace(binding.Namespace!, binding.Class!, binding.Method!);
         infoList.Add(binding);
     }
 
@@ -88,7 +88,7 @@ public class GenerationLoader : IEnumerable<BindingInfo>
     {
         if (infoList.Any(i => i.Class == binding.Class)) return;
 
-        _logger.AddedNamespace(binding.Namespace, binding.Class);
+        _logger.AddedNamespace(binding.Namespace!, binding.Class!);
         infoList.Add(binding);
     }
 
@@ -113,7 +113,7 @@ public class GenerationLoader : IEnumerable<BindingInfo>
         }
     }
 
-    private Bindings LoadFile(string path)
+    private Bindings? LoadFile(string path)
     {
         try
         {
@@ -130,7 +130,7 @@ public class GenerationLoader : IEnumerable<BindingInfo>
 
     private void Merge(Bindings bindings)
     {
-        for (int i = 0; i < bindings.BindingInfoList.Count; i++)
+        for (int i = 0; i < bindings.BindingInfoList!.Count; i++)
         {
             BindingInfo binding = bindings.BindingInfoList[i];
 
@@ -150,9 +150,9 @@ public class GenerationLoader : IEnumerable<BindingInfo>
 
         _logger.LoadingBinding(binding);
 
-        if (!Bindings.TryGetValue(binding.Namespace, out var infoList))
+        if (!Bindings.TryGetValue(binding.Namespace!, out var infoList))
         {
-            Bindings[binding.Namespace] = infoList = new List<BindingInfo>();
+            Bindings[binding.Namespace!] = infoList = new List<BindingInfo>();
         }
 
         if (binding.IsMethodBinding())
@@ -175,7 +175,7 @@ public class GenerationLoader : IEnumerable<BindingInfo>
 
         if (!string.IsNullOrEmpty(binding.Method) && string.IsNullOrWhiteSpace(binding.Class))
         {
-            _logger.NamespaceClassForMethodNotSpecified(binding.Namespace, binding.Method);
+            _logger.NamespaceClassForMethodNotSpecified(binding.Namespace!, binding.Method!);
             return false;
         }
 

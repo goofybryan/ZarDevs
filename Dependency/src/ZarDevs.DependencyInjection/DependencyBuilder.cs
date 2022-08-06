@@ -20,38 +20,6 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new binding with the specified type.
         /// </summary>
-        /// <param name="type">The specified type to bind.</param>
-        /// <returns></returns>
-        public IDependencyBuilderBindingResolve Resolve(Type type)
-        {
-            DependencyBuilderInfo info = CreateBuilderInfo();
-            return info.Resolve(type);
-        }
-        
-        /// <summary>
-        /// Create a new binding with the specified type.
-        /// </summary>
-        /// <param name="resolvedTypes">The a list of types to bind.</param>
-        /// <returns></returns>
-        public IDependencyBuilderBindingResolve Resolve(params Type[] resolvedTypes)
-        {
-            DependencyBuilderInfo info = CreateBuilderInfo();
-            return info.Resolve(resolvedTypes);
-        }
-
-        /// <summary>
-        /// Create a new binding with the specified type.
-        /// </summary>
-        /// <typeparam name="TResolve">The specified type to bind.</typeparam>
-        /// <returns></returns>
-        public IDependencyBuilderBindingResolve Resolve<TResolve>() where TResolve : class
-        {
-            return Resolve(typeof(TResolve));
-        }
-
-        /// <summary>
-        /// Create a new binding with the specified type.
-        /// </summary>
         /// <param name="bindType">The specified type to bind.</param>
         /// <returns></returns>
         public IDependencyBuilderBindingResolve Bind(Type bindType)
@@ -77,7 +45,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="bindType">The specified type to bind.</param>
         /// <param name="resolveType">The resolved type.</param>
         /// <returns></returns>
-        public IDependencyBuilderBindingResolve Bind(Type bindType, Type resolveType)
+        public IDependencyBuilderInfo Bind(Type bindType, Type resolveType)
         { 
             return Bind(bindType).Resolve(resolveType);
         }
@@ -88,7 +56,7 @@ namespace ZarDevs.DependencyInjection
         /// <typeparam name="TBind">The specified type to Bind.</typeparam>
         /// <typeparam name="TResolve">The specified type to resolve.</typeparam>
         /// <returns></returns>
-        public IDependencyBuilderBindingResolve Bind<TBind, TResolve>() where TBind : class where TResolve : class
+        public IDependencyBuilderInfo Bind<TBind, TResolve>() where TBind : class where TResolve : class
         {
             return Bind<TBind>().Resolve<TResolve>();
         }

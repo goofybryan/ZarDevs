@@ -1,8 +1,5 @@
-using static ZarDevs.DependencyInjection.Tests.Bindings;
-
 namespace ZarDevs.DependencyInjection.Tests
 {
-    [ZarDevs.DependencyInjection.DependencyRegistration]
     public class Bindings : IDependencyRegistration
     {
         #region Fields
@@ -18,40 +15,8 @@ namespace ZarDevs.DependencyInjection.Tests
 
         #region Methods
 
+        [ZarDevs.DependencyInjection.DependencyRegistration]
         public void Register(IDependencyBuilder builder)
-        {
-            builder.ConfigureTest();
-        }
-
-        #endregion Methods
-
-        #region Enums
-
-        public enum EnumAsKey
-        { 
-            Key, 
-            DifferentKey 
-        }
-
-        #endregion Enums
-    }
-
-    [DependencyRegistration(nameof(ConfigurePerformanceTest))]
-    public static class BindingExtensions
-    {
-        public static void ConfigurePerformanceTest(this IDependencyBuilder builder)
-        {
-            builder.Bind<PerformanceMethodTest>().Resolve<IPerformanceMethodTest>();
-            builder.BindFunction((ctx) => PerformanceMethodTest.Method()).Resolve<IPerformanceMethodResultTest>();
-            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam1Test>();
-            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam2Test>();
-            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam3Test>();
-            builder.Bind<PerformanceConstructTest>().Resolve<IPerformanceConstructTest>();
-            builder.Bind<PerformanceSingletonTest>().Resolve<IPerformanceSingletonTest>().InSingletonScope();
-            builder.BindInstance(new PerformanceInstanceTest()).Resolve<IPerformanceInstanceTest>();
-        }
-
-        public static void ConfigureTest(this IDependencyBuilder builder)
         {
             builder.Bind<NormalClass>().Resolve<INormalClass>().InTransientScope();
             builder.Bind<CallingClass>().Resolve<ICallingClass>();
@@ -59,6 +24,7 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<SingletonClassTest>().Resolve<ISingletonClass>().InSingletonScope();
             builder.Bind<SingletonClassTest>().Resolve<ISingletonNamedClass>().InSingletonScope().WithKey(nameof(ISingletonNamedClass));
             builder.Bind<SingletonClassTest>().Resolve<ISingletonEnumClass>().InSingletonScope().WithKey(EnumAsKey.Key);
+            builder.BindInstance(new SingletonClassTest()).Resolve<ISingletonEnumClass>().WithKey(EnumAsKey.Instance);
             builder.Bind<SingletonClassTest>().Resolve<ISingletonKeyClass>().InSingletonScope().WithKey(typeof(ISingletonKeyClass));
             builder.Bind<SingletonSameInstanceClassTest>().Resolve(typeof(ISingletonSameInstanceClassTest), typeof(ISingletonSameInstanceClassTest2), typeof(ISingletonSameInstanceClassTest3), typeof(ISingletonSameInstanceClassTest4)).InSingletonScope();
             builder.Bind<MultipleConstructorClass>().Resolve<IMultipleConstructorClass>();
@@ -89,7 +55,20 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.BindFactory(typeof(IFactoryMethodClass<>), "Singleton").Resolve(typeof(IFactoryMethodResolutionSingletonClass<>)).InSingletonScope();
             builder.Bind<ResolveAllTest>().ResolveAll().WithKey(nameof(ResolveAllTest));
             builder.Bind<ResolveAllTest2>().ResolveAll().WithKey(nameof(ResolveAllTest2));
+            builder.ConfigureTest();
         }
 
+        #endregion Methods
+
+        #region Enums
+
+        public enum EnumAsKey
+        { 
+            Key, 
+            DifferentKey,
+            Instance
+        }
+
+        #endregion Enums
     }
 }

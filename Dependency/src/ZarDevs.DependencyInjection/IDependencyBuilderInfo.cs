@@ -19,6 +19,26 @@ namespace ZarDevs.DependencyInjection
         #region Methods
 
         /// <summary>
+        /// Create the binding in Singleton Scopes resolution.
+        /// </summary>
+        IDependencyBuilderInfo InSingletonScope();
+
+        /// <summary>
+        /// Create the binding in Singleton Scopes resolution.
+        /// </summary>
+        IDependencyBuilderInfo InThreadScope();
+
+        /// <summary>
+        /// Create the binding in Singleton Scopes resolution.
+        /// </summary>
+        IDependencyBuilderInfo InRequestScope();
+
+        /// <summary>
+        /// Create the binding in Transient Scopes resolution. This is the default scope.
+        /// </summary>
+        IDependencyBuilderInfo InTransientScope();
+
+        /// <summary>
         /// Create the binding with the key value.
         /// </summary>
         IDependencyBuilderInfo WithKey(object key);

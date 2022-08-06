@@ -65,10 +65,12 @@ public class GenerationContainer : IEnumerable<GenerationNamespace>
             throw new ArgumentNullException(nameof(bindingInfo));
         }
 
-        if (!_bindings.TryGetValue(bindingInfo.Namespace, out var generationNameSpance))
+        var @namespace = bindingInfo.Namespace!;
+
+        if (!_bindings.TryGetValue(@namespace, out var generationNameSpance))
         {
-            generationNameSpance = new(bindingInfo.Namespace);
-            _bindings.Add(bindingInfo.Namespace, generationNameSpance);
+            generationNameSpance = new(@namespace);
+            _bindings.Add(@namespace, generationNameSpance);
         }
 
         generationNameSpance.Add(bindingInfo);

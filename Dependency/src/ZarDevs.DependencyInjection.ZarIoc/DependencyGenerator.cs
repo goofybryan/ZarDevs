@@ -1,15 +1,11 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
-using System.Text;
+using System.Threading;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
@@ -17,55 +13,86 @@ namespace ZarDevs.DependencyInjection.SourceGenerator;
 /// Main generator class
 /// </summary>
 [Generator]
-public class DependencyGenerator : ISourceGenerator
+public class DependencyGenerator : IIncrementalGenerator
 {
+    #region Fields
+
+    private static string AttributeName = typeof(DependencyRegistrationAttribute).FullName;
+
+    #endregion Fields
+
     #region Methods
 
     /// <inheritdoc/>
-    public void Execute(GeneratorExecutionContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var generatorTypes = new GeneratorTypes(context.Compilation);
+        var classDeclarationsProvider = context.SyntaxProvider
+            .CreateSyntaxProvider(
+                predicate: static (s, _) => IsDependencyRegistration(s),
+                transform: static (ctx, c) => GetSemanticTargetForGeneration(ctx, c)
+                );
 
-        DiagnosticLogger logger = new(context);
+        var compilationAndClasses = context.CompilationProvider.Combine(classDeclarationsProvider.Collect());
 
-        var bindingFiles = context.AdditionalFiles
-            .Where(at => at.Path.EndsWith(".zargen.xml", StringComparison.OrdinalIgnoreCase))
-            .Select(at => at.Path)
-            .ToArray();
+        context.RegisterSourceOutput(compilationAndClasses, static (spc, source) => Execute(source.Left, spc, source.Right));
+    }
 
-        GenerationLoader loader = new(logger, context.CancellationToken, bindingFiles);        
-        GenerationContainer container = new(loader);
-        GenerationTypeLoader typeLoader = new(logger, context.CancellationToken, container, generatorTypes);
+    private static void Execute(Compilation compilation, SourceProductionContext context, ImmutableArray<IEnumerable<MethodDeclarationSyntax>> classDeclarationsMap)
+    {
+        if (classDeclarationsMap.IsDefaultOrEmpty) return;
 
-        var syntaxReceiver = (DependencyRegistrationSyntaxReceiver)context.SyntaxReceiver;
-
-        foreach(var method in typeLoader.MethodRegistrations)
+        foreach (var mapping in classDeclarationsMap.SelectMany(cd => cd))
         {
+            var parser = new BindParser(compilation, compilation.GetSemanticModel(mapping.SyntaxTree), context.CancellationToken);
+            var containerParameter = mapping.ParameterList.Parameters.SingleOrDefault();
+            var containerToken = containerParameter.GetLastToken();
+
+            var bindings = parser.ParseSyntax(mapping, containerToken).ToArray();
         }
     }
 
-    /// <inheritdoc/>
-    public void Initialize(GeneratorInitializationContext context)
+    private static string FilterMethodParameterValue(AttributeArgumentListSyntax? argumentListSyntax)
     {
-        context.RegisterForSyntaxNotifications(() => new DependencyRegistrationSyntaxReceiver());
+        if (argumentListSyntax == null || argumentListSyntax.Arguments.Count == 0) return nameof(IDependencyRegistration.Register);
+
+        const string nameofText = "nameof";
+        string value = argumentListSyntax.Arguments[0].ToString();
+        if (value.StartsWith("\"")) return value.Trim('"');
+        if (value.StartsWith(nameofText)) return value.Replace(nameofText, "").TrimStart('(').TrimEnd(')');
+
+        throw new InvalidOperationException($"The method paramenter syntax '{value}' is not supported.");
+    }
+
+    private static IEnumerable<MethodDeclarationSyntax> GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellation)
+    {
+        var declarationSyntax = (MethodDeclarationSyntax)context.Node;
+
+        var attributes = declarationSyntax.AttributeLists.SelectMany(al => al.Attributes);
+
+        if (declarationSyntax.ParameterList != null && declarationSyntax.ParameterList.Parameters.Count > 1) yield break;
+
+        foreach (AttributeSyntax attributeSyntax in attributes)
+        {
+            var attributeSymbol = context.SemanticModel.GetSymbolInfo(attributeSyntax).Symbol!;
+
+            INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.ContainingType;
+            string fullName = attributeContainingTypeSymbol.ToDisplayString();
+
+            if (fullName == AttributeName && declarationSyntax.Parent is ClassDeclarationSyntax classDeclaration)
+            {
+                yield return declarationSyntax;
+            }
+
+            cancellation.ThrowIfCancellationRequested();
+        }
+    }
+
+    private static bool IsDependencyRegistration(SyntaxNode syntaxNode)
+    {
+        if (syntaxNode is not MethodDeclarationSyntax declarationSyntax || declarationSyntax.AttributeLists.Count == 0) return false;
+
+        return declarationSyntax.AttributeLists.ContainsAttributeName<DependencyRegistrationAttribute>();
     }
 
     #endregion Methods
-}
-
-public class DependencyRegistrationSyntaxReceiver : ISyntaxReceiver
-{
-    public List<ClassDeclarationSyntax> AllClassSyntax { get; } = new();
-
-    public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
-    {
-        if (syntaxNode is not ClassDeclarationSyntax declarationSyntax || declarationSyntax.AttributeLists.Count == 0) return;
-        
-        foreach(var a in declarationSyntax.AttributeLists)
-        {
-            Debug.WriteLine(a);
-        }
-
-        AllClassSyntax.Add(declarationSyntax);
-    }
 }

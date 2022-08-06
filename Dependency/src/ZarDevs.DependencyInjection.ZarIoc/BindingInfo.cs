@@ -16,20 +16,20 @@ public class BindingInfo : IEquatable<BindingInfo>
     /// will be scanned for all classes that contain <see cref="IDependencyRegistration"/>
     /// </summary>
     [XmlAttribute]
-    public string Class { get; set; }
+    public string? Class { get; set; }
 
     /// <summary>
     /// Specify the method for the <see cref="Class"/>. Not Required. If the class is not specified,
     /// no source will be generated.
     /// </summary>
     [XmlAttribute]
-    public string Method { get; set; }
+    public string? Method { get; set; }
 
     /// <summary>
     /// Specify the assembly that contains the binding. Required.
     /// </summary>
     [XmlAttribute]
-    public string Namespace { get; set; }
+    public string? Namespace { get; set; }
 
     #endregion Properties
 
@@ -63,7 +63,7 @@ public class BindingInfo : IEquatable<BindingInfo>
         unchecked
         {
             int hashcode = 965267;
-            hashcode = hashcode * 720697 ^ Namespace.GetHashCode();
+            hashcode = hashcode * 720697 ^ Namespace?.GetHashCode() ?? 0;
             hashcode = hashcode * 720697 ^ Class?.GetHashCode() ?? 0;
             hashcode = hashcode * 720697 ^ Method?.GetHashCode() ?? 0;
             return hashcode;

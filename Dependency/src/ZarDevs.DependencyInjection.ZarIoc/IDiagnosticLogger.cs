@@ -29,7 +29,7 @@ namespace ZarDevs.DependencyInjection.SourceGenerator
         /// <param name="severity">Specify the severity</param>
         /// <param name="category">Specify the category</param>
         /// <param name="location">Specify the location.</param>
-        void Log(string id, string title, string message, DiagnosticSeverity severity, string category, Location location);
+        void Log(string id, string title, string message, DiagnosticSeverity severity, string category, Location? location);
     }
 
     internal static class DiagnosticLoggerExtensions
