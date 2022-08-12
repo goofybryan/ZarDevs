@@ -9,8 +9,9 @@ namespace ZarDevs.DependencyInjection
     {
         #region Fields
 
-        private bool _disposedValue;
+        private readonly IDependencyInstanceInfo _instanceInfo;
         private readonly object _value;
+        private bool _disposedValue;
 
         #endregion Fields
 
@@ -19,16 +20,11 @@ namespace ZarDevs.DependencyInjection
         /// <summary>
         /// Create a new instance of <see cref="InstanceResolution"/>
         /// </summary>
-        /// <param name="value">
-        /// The instance value
-        /// </param>
-        /// <param name="key">
-        /// Optional key
-        /// </param>
-        public InstanceResolution(object value, object key)
+        /// <param name="instanceInfo">The instance value</param>
+        public InstanceResolution(IDependencyInstanceInfo instanceInfo)
         {
-            _value = value ?? throw new ArgumentNullException(nameof(value));
-            Key = key;
+            _instanceInfo = instanceInfo ?? throw new ArgumentNullException(nameof(instanceInfo));
+            _value = instanceInfo.Instance;
         }
 
         #endregion Constructors
@@ -36,7 +32,7 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <inheritdoc/>
-        public object Key { get; }
+        public IDependencyInfo Info => _instanceInfo;
 
         #endregion Properties
 

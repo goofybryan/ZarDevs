@@ -28,6 +28,6 @@ namespace ZarDevs.DependencyInjection
         /// Resolve it with parameters
         /// </summary>
         /// <returns>The resolution.</returns>
-        IEnumerable<object> Resolve(params (string, object)[] parameters);
+        IEnumerable<object> Resolve(params (string key, object value)[] parameters);
     }
 }

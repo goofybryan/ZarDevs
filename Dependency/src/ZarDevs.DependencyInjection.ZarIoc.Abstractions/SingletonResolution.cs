@@ -33,7 +33,7 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <inheritdoc/>
-        public object Key => _baseResolution.Key;
+        public IDependencyInfo Info => _baseResolution.Info;
 
         #endregion Properties
 

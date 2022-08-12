@@ -10,7 +10,7 @@ namespace ZarDevs.DependencyInjection.SourceGenerator.Tests
         [Fact]
         public void Test1()
         {
-
+            
         }
-    }
+	}
 }

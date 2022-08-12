@@ -30,7 +30,7 @@ namespace ZarDevs.DependencyInjection
 
         public ITypeResolutions Filter(object key)
         {
-            return new TypeResolutions(_resolutions.Where(r => Equals(r.Key, key)));
+            return new TypeResolutions(_resolutions.Where(r => Equals(r.Info.Key, key)));
         }
 
         public IEnumerator<ITypeResolution> GetEnumerator()
@@ -59,7 +59,7 @@ namespace ZarDevs.DependencyInjection
             }
         }
 
-        public IEnumerable<object> Resolve(params (string, object)[] parameters)
+        public IEnumerable<object> Resolve(params (string key, object value)[] parameters)
         {
             foreach (var resolution in _resolutions)
             {

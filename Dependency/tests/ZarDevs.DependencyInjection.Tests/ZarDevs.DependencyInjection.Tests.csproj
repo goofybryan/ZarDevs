@@ -27,9 +27,25 @@
     </PackageReference>
   </ItemGroup>
 
+  <PropertyGroup>
+    <!-- Persist the source generator (and other) files to disk -->
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <!-- 👇 The "base" path for the source generators -->
+    <GeneratedFolder>Generated</GeneratedFolder>
+    <!-- 👇 Write the output for each target framework to a different sub-folder -->
+    <CompilerGeneratedFilesOutputPath>$(GeneratedFolder)\$(TargetFramework)</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 👇 Exclude everything in the base folder -->
+    <Compile Remove="$(GeneratedFolder)/**/*.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc\ZarDevs.DependencyInjection.ZarIoc.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	  <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc\ZarDevs.DependencyInjection.ZarIoc.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+		  <PrivateAssets>all</PrivateAssets>
+	  </ProjectReference>
     <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
   </ItemGroup>
 

@@ -8,7 +8,7 @@ public class DiagnosticLogger : IDiagnosticLogger
 {
     #region Fields
 
-    private readonly GeneratorExecutionContext _context;
+    private readonly SourceProductionContext _context;
 
     #endregion Fields
 
@@ -18,7 +18,7 @@ public class DiagnosticLogger : IDiagnosticLogger
     /// Create a new instance of the <see cref="DiagnosticLogger"/>
     /// </summary>
     /// <param name="context">Specify the generation exception context.</param>
-    public DiagnosticLogger(GeneratorExecutionContext context)
+    public DiagnosticLogger(SourceProductionContext context)
     {
         _context = context;
     }

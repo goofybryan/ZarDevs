@@ -35,12 +35,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Abstractions.csproj" />
-		<ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Templates\" />
+		<ProjectReference Include="..\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Abstractions.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>

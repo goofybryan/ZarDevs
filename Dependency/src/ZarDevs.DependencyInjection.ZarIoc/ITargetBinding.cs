@@ -1,8 +1,10 @@
-﻿using Microsoft.CodeAnalysis;
+﻿namespace ZarDevs.DependencyInjection.SourceGenerator;
 
-namespace ZarDevs.DependencyInjection.SourceGenerator;
-
-public interface ITargetBinding
+internal interface ITargetBinding
 {
+    #region Properties
+
     Microsoft.CodeAnalysis.TypeInfo TargetType { get; }
+
+    #endregion Properties
 }

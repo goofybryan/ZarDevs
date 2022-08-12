@@ -16,11 +16,5 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<PerformanceSingletonTest>().Resolve<IPerformanceSingletonTest>().InSingletonScope();
             builder.BindInstance(new PerformanceInstanceTest()).Resolve<IPerformanceInstanceTest>();
         }
-
-        public static void ConfigureTest(this IDependencyBuilder builder)
-        {
-            new Bindings().Register(builder);
-        }
-
     }
 }

@@ -160,8 +160,17 @@ internal class BindParser
         }
 
         TypeInfo typeInfo = _model.GetTypeInfo(argumentList.Arguments[0]);
+
+        if(typeInfo.IsNone())
+        {
+            if (argumentList.Arguments[0].Expression is TypeOfExpressionSyntax typeOfExpression)
+            {
+                typeInfo = _model.GetTypeInfo(typeOfExpression.Type);
+            }
+        }
+
         ArgumentSyntax argument = argumentList.Arguments[1];
-        bindingBuilder = new BuildingFactoryBuilder(typeInfo, argument);
+        bindingBuilder = new BindingFactoryBuilder(typeInfo, argument);
 
         return true;
     }
@@ -180,7 +189,7 @@ internal class BindParser
         {
             return false;
         }
-
+        
         TypeInfo typeInfo = _model.GetTypeInfo(typeArguments.Arguments[0]);
 
         next = next.GetNextToken().GetNextToken().GetNextToken();
@@ -196,7 +205,7 @@ internal class BindParser
         }
 
         ArgumentSyntax argument = argumentList.Arguments[0];
-        bindingBuilder = new BuildingFactoryBuilder(typeInfo, argument);
+        bindingBuilder = new BindingFactoryBuilder(typeInfo, argument);
 
         return true;
     }
@@ -284,7 +293,7 @@ internal class BindParser
             return false;
         }
 
-        bindingBuilder = new BuildingFunctionBuilder(expressionSyntax);
+        bindingBuilder = new BindingFunctionBuilder(expressionSyntax);
 
         var nextMap = BuildNextTokenMap(token);
 

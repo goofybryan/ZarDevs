@@ -4,12 +4,24 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
-public static class RoslynExtensions
+internal static class GeneratorExtensions
 {
+    #region Fields
+
+    public static string Tab = "\t";
+
+    #endregion Fields
+
     #region Methods
+
+    public static StringBuilder AppendTab(this StringBuilder builder) => builder.Append(Tab);
+    public static StringBuilder AppendTab(this StringBuilder builder, int count) => builder.Append(CreateDuplicates(Tab, count));
+    public static StringBuilder AppendTab(this StringBuilder builder, string content) => builder.AppendTab().Append(content.Replace(Environment.NewLine, Environment.NewLine + Tab));
+    public static StringBuilder AppendTab(this StringBuilder builder, string content, int count) => builder.AppendTab(count).Append(content.Replace(Environment.NewLine, CreateDuplicates(Tab, count)));
 
     public static bool ContainsAttributeName<TAttribute>(this SyntaxList<AttributeListSyntax> attributeList) where TAttribute : Attribute
     {
@@ -30,10 +42,6 @@ public static class RoslynExtensions
 
         return false;
     }
-
-    public static bool Is(this SyntaxToken token, string value) => string.Equals(token.ValueText, value, StringComparison.Ordinal);
-
-    public static bool IsNot(this SyntaxToken token, string value) => !token.Is(value);
 
     public static Microsoft.CodeAnalysis.TypeInfo[] GetTypeInfos(this ArgumentListSyntax argumentList, SemanticModel model)
     {
@@ -59,6 +67,25 @@ public static class RoslynExtensions
         return types;
     }
 
+    public static bool Is(this SyntaxToken token, string value) => string.Equals(token.ValueText, value, StringComparison.Ordinal);
+
+    public static bool IsNot(this SyntaxToken token, string value) => !token.Is(value);
+
+    public static StringBuilder TabContent(this StringBuilder builder) => builder.AppendTab().Replace(Environment.NewLine, Environment.NewLine + Tab);
+
+    public static StringBuilder TabContent(this StringBuilder builder, int count) => builder.AppendTab(count).Replace(Environment.NewLine, Environment.NewLine + CreateDuplicates(Tab, count));
+
+    private static string CreateDuplicates(string of, int count)
+    {
+        string value = "";
+        for(int i = 0; i < count; i++)
+        {
+            value += of;
+        }
+
+        return value;
+    }
+
     public static bool TraverseParentForSyntaxType<TSyntax>(this SyntaxToken token, out TSyntax? syntax) where TSyntax : SyntaxNode
     {
         var current = token.Parent;
@@ -77,6 +104,8 @@ public static class RoslynExtensions
         syntax = null;
         return false;
     }
+
+    public static bool IsNone(this Microsoft.CodeAnalysis.TypeInfo typeInfo) => typeInfo.Type == null;
 
     #endregion Methods
 }

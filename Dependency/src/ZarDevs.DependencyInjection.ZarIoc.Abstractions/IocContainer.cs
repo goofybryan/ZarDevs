@@ -10,12 +10,15 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public class IocContainer : IIocContainer
     {
-        private readonly ITypeFactoryContainter _typeFactoryContainer;
         #region Fields
+
+        private readonly ITypeFactoryContainter _typeFactoryContainer;
 
         private bool _disposedValue;
 
         #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Create a new instance of the <see cref="IocContainer"/>
@@ -25,6 +28,8 @@ namespace ZarDevs.DependencyInjection
         {
             _typeFactoryContainer = typeFactoryContainer;
         }
+
+        #endregion Constructors
 
         #region Methods
 
@@ -62,7 +67,7 @@ namespace ZarDevs.DependencyInjection
             var resolved = TryGetResolution(requestType).Resolve().ToList();
 
             Array resolvedArray = Array.CreateInstance(requestType, resolved.Count);
-            for(int i = 0; i < resolved.Count; i++)
+            for (int i = 0; i < resolved.Count; i++)
             {
                 var value = resolved[i];
                 resolvedArray.SetValue(value, i);
@@ -253,6 +258,19 @@ namespace ZarDevs.DependencyInjection
             return (T)resolution?.Resolve();
         }
 
+        /// <inheritdoc/>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                }
+
+                _disposedValue = true;
+            }
+        }
+
         private ITypeResolutions GetResolution(Type type)
         {
             return _typeFactoryContainer.Get(type);
@@ -271,19 +289,6 @@ namespace ZarDevs.DependencyInjection
         private ITypeResolutions TryGetResolution(Type type, object key)
         {
             return _typeFactoryContainer.TryGet(type, key, out var resolutions) ? resolutions : new TypeResolutions();
-        }
-
-        /// <inheritdoc/>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                }
-
-                _disposedValue = true;
-            }
         }
 
         #endregion Methods

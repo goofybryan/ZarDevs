@@ -3,13 +3,21 @@ using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
-public interface IResolveBinding
+internal interface IResolveBinding
 {
-    IList<Microsoft.CodeAnalysis.TypeInfo> ResolveTypes { get; }
-    IList<Microsoft.CodeAnalysis.TypeInfo> IgnoreTypes { get; }
+    #region Properties
+
+    IList<TypeInfo> IgnoreTypes { get; }
     SyntaxToken KeyToken { get; set; }
+    bool ResolveAll { get; set; }
+    IList<TypeInfo> ResolveTypes { get; }
     DependyBuilderScopes Scope { get; set; }
 
+    #endregion Properties
+
+    #region Methods
+
     bool IsValid();
-    bool ResolveAll { get; set; }
+
+    #endregion Methods
 }

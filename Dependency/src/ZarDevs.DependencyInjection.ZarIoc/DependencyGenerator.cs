@@ -41,26 +41,21 @@ public class DependencyGenerator : IIncrementalGenerator
     {
         if (classDeclarationsMap.IsDefaultOrEmpty) return;
 
+        GeneratedContentPersistor contentPersistor = new(context, $"{compilation.AssemblyName}.Generated");
+
+        var typeCodeGenerators = new ITypeCodeGenerator[] { new TypeCodeGenerator(contentPersistor, context.CancellationToken), new InstanceCodeGenerator(), new FunctionCodeGenerator(), new FactoryCodeGenerator(contentPersistor, context.CancellationToken) };
+        ClassGenerator classGenerator = new(new DiagnosticLogger(context), typeCodeGenerators);
+
         foreach (var mapping in classDeclarationsMap.SelectMany(cd => cd))
         {
             var parser = new BindParser(compilation, compilation.GetSemanticModel(mapping.SyntaxTree), context.CancellationToken);
             var containerParameter = mapping.ParameterList.Parameters.SingleOrDefault();
             var containerToken = containerParameter.GetLastToken();
 
-            var bindings = parser.ParseSyntax(mapping, containerToken).ToArray();
+            var bindings = parser.ParseSyntax(mapping, containerToken);
+
+            var generatedClasses = classGenerator.Generate(bindings);
         }
-    }
-
-    private static string FilterMethodParameterValue(AttributeArgumentListSyntax? argumentListSyntax)
-    {
-        if (argumentListSyntax == null || argumentListSyntax.Arguments.Count == 0) return nameof(IDependencyRegistration.Register);
-
-        const string nameofText = "nameof";
-        string value = argumentListSyntax.Arguments[0].ToString();
-        if (value.StartsWith("\"")) return value.Trim('"');
-        if (value.StartsWith(nameofText)) return value.Replace(nameofText, "").TrimStart('(').TrimEnd(')');
-
-        throw new InvalidOperationException($"The method paramenter syntax '{value}' is not supported.");
     }
 
     private static IEnumerable<MethodDeclarationSyntax> GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellation)
