@@ -55,6 +55,10 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.BindFactory(typeof(IFactoryMethodClass<>), "Singleton").Resolve(typeof(IFactoryMethodResolutionSingletonClass<>)).InSingletonScope();
             builder.Bind<ResolveAllTest>().ResolveAll().WithKey(nameof(ResolveAllTest));
             builder.Bind<ResolveAllTest2>().ResolveAll().WithKey(nameof(ResolveAllTest2));
+            builder.Bind<GenericClass>().Resolve<IGeneric>();
+            builder.Bind<NonGenericClass>().Resolve<NonGenericClass>();
+            builder.Bind<MultipleGenericWithConstrantsClass>().Resolve<IMultipleGenericClass<IGeneric, NonGenericClass>>();
+            builder.Bind(typeof(MultipleGenericWithUnboundConstraintsClass<,>)).Resolve(typeof(IMultipleGenericClass<,>));
         }
 
         #endregion Methods

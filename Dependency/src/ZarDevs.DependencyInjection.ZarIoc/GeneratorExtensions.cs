@@ -19,9 +19,24 @@ internal static class GeneratorExtensions
     #region Methods
 
     public static StringBuilder AppendTab(this StringBuilder builder) => builder.Append(Tab);
+
     public static StringBuilder AppendTab(this StringBuilder builder, int count) => builder.Append(CreateDuplicates(Tab, count));
+
     public static StringBuilder AppendTab(this StringBuilder builder, string content) => builder.AppendTab().Append(content.Replace(Environment.NewLine, Environment.NewLine + Tab));
-    public static StringBuilder AppendTab(this StringBuilder builder, string content, int count) => builder.AppendTab(count).Append(content.Replace(Environment.NewLine, CreateDuplicates(Tab, count)));
+
+    public static StringBuilder AppendTab(this StringBuilder builder, string content, int count) => builder.AppendTab(count).Append(content.Replace(Environment.NewLine, Environment.NewLine + CreateDuplicates(Tab, count)));
+
+    public static StringBuilder AppendWhen(this StringBuilder builder, Func<bool> check, params string[] values)
+    {
+        if (!check()) return builder;
+
+        foreach (var value in values)
+        {
+            builder.Append(value);
+        }
+
+        return builder;
+    }
 
     public static bool ContainsAttributeName<TAttribute>(this SyntaxList<AttributeListSyntax> attributeList) where TAttribute : Attribute
     {
@@ -43,13 +58,38 @@ internal static class GeneratorExtensions
         return false;
     }
 
+    public static Microsoft.CodeAnalysis.TypeInfo GetTypeInfo(this ArgumentSyntax argument, SemanticModel model)
+    {
+        var typeInfo = model.GetTypeInfo(argument);
+
+        if (!typeInfo.IsNone())
+        {
+            return typeInfo;
+        }
+
+        if (argument.Expression is TypeOfExpressionSyntax typeOfExpression)
+        {
+            typeInfo = model.GetTypeInfo(typeOfExpression.Type);
+        }
+
+#if DEBUG
+        if (typeInfo.IsNone() && System.Diagnostics.Debugger.IsAttached)
+        {
+            System.Diagnostics.Debugger.Break();
+        }
+#endif
+        return typeInfo;
+    }
+
     public static Microsoft.CodeAnalysis.TypeInfo[] GetTypeInfos(this ArgumentListSyntax argumentList, SemanticModel model)
     {
         var types = new Microsoft.CodeAnalysis.TypeInfo[argumentList.Arguments.Count];
 
         for (int i = 0; i < argumentList.Arguments.Count; i++)
         {
-            types[i] = model.GetTypeInfo(argumentList.Arguments[i]);
+            var typeInfo = argumentList.Arguments[i].GetTypeInfo(model);
+
+            types[i] = typeInfo;
         }
 
         return types;
@@ -69,22 +109,13 @@ internal static class GeneratorExtensions
 
     public static bool Is(this SyntaxToken token, string value) => string.Equals(token.ValueText, value, StringComparison.Ordinal);
 
+    public static bool IsNone(this Microsoft.CodeAnalysis.TypeInfo typeInfo) => typeInfo.Type == null;
+
     public static bool IsNot(this SyntaxToken token, string value) => !token.Is(value);
 
     public static StringBuilder TabContent(this StringBuilder builder) => builder.AppendTab().Replace(Environment.NewLine, Environment.NewLine + Tab);
 
     public static StringBuilder TabContent(this StringBuilder builder, int count) => builder.AppendTab(count).Replace(Environment.NewLine, Environment.NewLine + CreateDuplicates(Tab, count));
-
-    private static string CreateDuplicates(string of, int count)
-    {
-        string value = "";
-        for(int i = 0; i < count; i++)
-        {
-            value += of;
-        }
-
-        return value;
-    }
 
     public static bool TraverseParentForSyntaxType<TSyntax>(this SyntaxToken token, out TSyntax? syntax) where TSyntax : SyntaxNode
     {
@@ -105,7 +136,16 @@ internal static class GeneratorExtensions
         return false;
     }
 
-    public static bool IsNone(this Microsoft.CodeAnalysis.TypeInfo typeInfo) => typeInfo.Type == null;
+    private static string CreateDuplicates(string of, int count)
+    {
+        string value = "";
+        for (int i = 0; i < count; i++)
+        {
+            value += of;
+        }
+
+        return value;
+    }
 
     #endregion Methods
 }

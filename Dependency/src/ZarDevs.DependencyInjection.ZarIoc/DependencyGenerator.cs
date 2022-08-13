@@ -52,7 +52,7 @@ public class DependencyGenerator : IIncrementalGenerator
             var containerParameter = mapping.ParameterList.Parameters.SingleOrDefault();
             var containerToken = containerParameter.GetLastToken();
 
-            var bindings = parser.ParseSyntax(mapping, containerToken);
+            var bindings = parser.ParseSyntax(mapping, containerToken).ToArray();
 
             var generatedClasses = classGenerator.Generate(bindings);
         }

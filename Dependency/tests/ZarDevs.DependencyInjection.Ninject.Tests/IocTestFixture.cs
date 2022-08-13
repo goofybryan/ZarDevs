@@ -13,7 +13,7 @@ namespace ZarDevs.DependencyInjection.Ninject.Tests
 
             Container = Ioc.Initialize(kernel, builder =>
             {
-                builder.ConfigureTest();
+                new Bindings().Register(builder);
             });
         }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
@@ -10,6 +10,7 @@ internal static class Code
     #region Fields
 
     public const string ClassDeclarationFormat = "internal class {0} : {1}";
+    public const string ConstraintDeclarationFormat = "where {0} : {1}";
     public const string CloseBrace = "}";
     public const string CloseParam = ")";
     public const string ConstructorFormat = "public {0}(ZarDevs.DependencyInjection.IDependencyInfo Info)";
@@ -47,14 +48,7 @@ internal static class Code
 
     #region Methods
 
-    public static string ClassDeclaration(INamedTypeSymbol type) => ClassDeclaration(TypeClassName(type));
-    public static string ClassDeclaration(string className) => string.Format(CultureInfo.InvariantCulture, ClassDeclarationFormat, className, typeof(ITypeResolution).FullName);
-
-    public static string Constructor(INamedTypeSymbol type) => Constructor(TypeClassName(type));
-
     public static string Constructor(string className) => string.Format(CultureInfo.InvariantCulture, ConstructorFormat, className);
-
-    public static string FactoryClassName(ITypeSymbol type) => string.Format(CultureInfo.InvariantCulture, FactoryClassNameFormat, type.Name);
 
     public static string NamedTypedParameterDeclaration(IParameterSymbol parameter) => string.Format(CultureInfo.InvariantCulture, parameter.Type.IsValueType ? NamedValueTypedParameterDeclarationFormat : NamedTypedParameterDeclarationFormat, parameter.Type.ToDisplayString(), parameter.Name);
 
@@ -68,17 +62,17 @@ internal static class Code
 
     public static string Resolve(string name, ITypeSymbol type) => string.Format(CultureInfo.InvariantCulture, ResolveFormat, name, type.ToDisplayString());
 
-    public static string ReturnNewType(ITypeSymbol type) => string.Format(CultureInfo.InvariantCulture, ReturnNewTypeFormat, type);
+    public static string ReturnNewType(ClassDefinition classDefinition) => string.Format(CultureInfo.InvariantCulture, ReturnNewTypeFormat, classDefinition.ResolveName);
 
-    public static string ReturnNewType(ITypeSymbol type, IEnumerable<string> parameterNames) => string.Format(CultureInfo.InvariantCulture, ReturnNewTypeWithParametersFormat, type, string.Join(", ", parameterNames));
+    public static string ReturnNewType(ClassDefinition classDefinition, IEnumerable<string> parameterNames) => string.Format(CultureInfo.InvariantCulture, ReturnNewTypeWithParametersFormat, classDefinition.ResolveName, string.Join(", ", parameterNames));
 
     public static string ReturnFactoryMethod(string methodName) => string.Format(CultureInfo.InvariantCulture, ReturnFactoryMethodFormat, methodName);
 
     public static string ReturnFactoryMethod(string methodName, IEnumerable<string> parameterNames) => string.Format(CultureInfo.InvariantCulture, ReturnFactoryMethodWithParametersFormat, methodName, string.Join(", ", parameterNames));
 
-    public static string TypeClassName(INamedTypeSymbol type) => string.Format(CultureInfo.InvariantCulture, TypeClassNameFormat, type.Name);
+    public static ClassDefinition TypeClassName(INamedTypeSymbol type) => new ClassDefinition(type);
 
-    public static string TypeClassName(INamedTypeSymbol type, string additional) => string.Format(CultureInfo.InvariantCulture, TypeClassNameFormat, $"{type.Name}{additional}");
+    public static ClassDefinition FactoryClassName(INamedTypeSymbol type, string method) => new ClassDefinition(type, method);
 
     public static string ValueTypeResolve(IParameterSymbol parameter) => string.Format(CultureInfo.InvariantCulture, ValueTypeResolveFormat, parameter.Name, parameter.Type.ToDisplayString());
 
@@ -86,9 +80,14 @@ internal static class Code
 
     internal static string ClassName(INamedTypeSymbol namedType)
     {
-        if (!namedType.IsUnboundGenericType) return namedType.Name;
+        string name = namedType.Name;
+        if (!namedType.IsGenericType || !namedType.IsUnboundGenericType) return name;
 
-        namedType.
+        var typesPart = namedType.IsUnboundGenericType ?
+            namedType.TypeParameters.SelectMany(p => p.ToDisplayString()) :
+            namedType.TypeArguments.SelectMany(p => "A" + p.ToDisplayString());
+
+        return name + string.Join("", typesPart);
     }
 
     #endregion Methods

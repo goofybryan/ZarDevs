@@ -13,24 +13,26 @@ internal class FactoryCodeGenerator : CodeGeneratorBase<BindingFactoryBuilder>
     {
     }
 
-    protected override string GenerateClassName(BindingFactoryBuilder binding, INamedTypeSymbol namedType)
+    protected override ClassDefinition GenerateClassName(BindingFactoryBuilder binding, INamedTypeSymbol namedType)
     {
         var methodName = GetMethodName(binding.MethodName);
-        return Code.TypeClassName(binding.Factory.Type!, methodName);
+        return Code.FactoryClassName((INamedTypeSymbol)binding.Factory.Type!, methodName);
     }
 
-    protected override string GenerateReturnWithNoParameters(BindingFactoryBuilder binding, INamedTypeSymbol namedType)
+    protected override string GenerateReturnWithNoParameters(BindingFactoryBuilder binding, ClassDefinition classDefinition)
     {
         var methodName = GetMethodName(binding.MethodName);
-        StringBuilder builder = new StringBuilder(Code.Resolve(Code.FactoryVariableName, namedType))
+        StringBuilder builder = new StringBuilder()
+            .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition.Type))
             .AppendLine(Code.ReturnFactoryMethod(methodName));
         return builder.ToString();
     }
 
-    protected override string GenerateReturnWithParameters(BindingFactoryBuilder binding, INamedTypeSymbol namedType, List<string> parameterNames)
+    protected override string GenerateReturnWithParameters(BindingFactoryBuilder binding, ClassDefinition classDefinition, List<string> parameterNames)
     {
         var methodName = GetMethodName(binding.MethodName);
-        StringBuilder builder = new StringBuilder(Code.Resolve(Code.FactoryVariableName, namedType))
+        StringBuilder builder = new StringBuilder()
+            .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition.Type))
             .AppendLine(Code.ReturnFactoryMethod(methodName, parameterNames));
         return builder.ToString();
     }
@@ -50,6 +52,6 @@ internal class FactoryCodeGenerator : CodeGeneratorBase<BindingFactoryBuilder>
 
         if (methodName.StartsWith(Code.Quote)) return methodName.Replace(Code.Quote, string.Empty);
 
-        return methodName.Replace(nameofKeyword, string.Empty).Replace(Code.CloseParam, string.Empty);
+        return methodName.Replace(nameofKeyword, string.Empty).Split('.').Last().Replace(Code.CloseParam, string.Empty);
     }
 }
