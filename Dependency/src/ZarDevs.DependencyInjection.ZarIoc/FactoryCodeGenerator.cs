@@ -13,34 +13,36 @@ internal class FactoryCodeGenerator : CodeGeneratorBase<BindingFactoryBuilder>
     {
     }
 
-    protected override ClassDefinition GenerateClassName(BindingFactoryBuilder binding, INamedTypeSymbol namedType)
+    protected override TypeDefinition GenerateClassName(BindingFactoryBuilder binding, INamedTypeSymbol namedType)
     {
         var methodName = GetMethodName(binding.MethodName);
         return Code.FactoryClassName((INamedTypeSymbol)binding.Factory.Type!, methodName);
     }
 
-    protected override string GenerateReturnWithNoParameters(BindingFactoryBuilder binding, ClassDefinition classDefinition)
+    protected override string GenerateReturnWithNoParameters(BindingFactoryBuilder binding, TypeDefinition classDefinition)
     {
         var methodName = GetMethodName(binding.MethodName);
         StringBuilder builder = new StringBuilder()
-            .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition.Type))
+            .AppendLine(Code.Ioc)
+            .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition))
             .AppendLine(Code.ReturnFactoryMethod(methodName));
         return builder.ToString();
     }
 
-    protected override string GenerateReturnWithParameters(BindingFactoryBuilder binding, ClassDefinition classDefinition, List<string> parameterNames)
+    protected override string GenerateReturnWithParameters(BindingFactoryBuilder binding, TypeDefinition classDefinition, List<string> parameterNames)
     {
         var methodName = GetMethodName(binding.MethodName);
         StringBuilder builder = new StringBuilder()
-            .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition.Type))
+            .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition))
             .AppendLine(Code.ReturnFactoryMethod(methodName, parameterNames));
         return builder.ToString();
     }
 
-    protected override IMethodSymbol GetTargetMethodOrConstructor(BindingFactoryBuilder binding, INamedTypeSymbol namedType)
+    protected override IMethodSymbol[] GetTargetMethodOrConstructor(BindingFactoryBuilder binding, INamedTypeSymbol namedType)
     {
         var methodName = GetMethodName(binding.MethodName);
-        return namedType.GetMembers(methodName).OfType<IMethodSymbol>().OrderByDescending(m => m.Parameters.Length).FirstOrDefault();
+        var typeToUse = namedType.OriginalDefinition ?? namedType;
+        return typeToUse.GetMembers(methodName).Where(m => m.DeclaredAccessibility != Accessibility.Private && m.DeclaredAccessibility != Accessibility.Protected).Cast<IMethodSymbol>().ToArray();
     }
 
     protected override TypeInfo GetTargetType(BindingFactoryBuilder binding) => binding.Factory;

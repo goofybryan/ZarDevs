@@ -1,3 +1,5 @@
+using ZarDevs.DependencyInjection.Tests;
+
 namespace ZarDevs.DependencyInjection.SourceGenerator.Tests
 {
     public class GneratedTests : IDependencyRegistration
@@ -12,5 +14,5 @@ namespace ZarDevs.DependencyInjection.SourceGenerator.Tests
         {
             
         }
-	}
+    }
 }

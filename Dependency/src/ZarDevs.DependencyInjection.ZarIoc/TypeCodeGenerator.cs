@@ -18,13 +18,17 @@ internal class TypeCodeGenerator : CodeGeneratorBase<BindingTypeBuilder>
 
     #region Methods
 
-    protected override ClassDefinition GenerateClassName(BindingTypeBuilder binding, INamedTypeSymbol namedType) => Code.TypeClassName(namedType);
+    protected override TypeDefinition GenerateClassName(BindingTypeBuilder binding, INamedTypeSymbol namedType) => Code.TypeClassName(namedType);
 
-    protected override string GenerateReturnWithNoParameters(BindingTypeBuilder binding, ClassDefinition classDefinition) => Code.ReturnNewType(classDefinition);
+    protected override string GenerateReturnWithNoParameters(BindingTypeBuilder binding, TypeDefinition classDefinition) => Code.ReturnNewType(classDefinition);
 
-    protected override string GenerateReturnWithParameters(BindingTypeBuilder binding, ClassDefinition classDefinition, List<string> parameterNames) => Code.ReturnNewType(classDefinition, parameterNames);
+    protected override string GenerateReturnWithParameters(BindingTypeBuilder binding, TypeDefinition classDefinition, List<string> parameterNames) => Code.ReturnNewType(classDefinition, parameterNames);
 
-    protected override IMethodSymbol GetTargetMethodOrConstructor(BindingTypeBuilder binding, INamedTypeSymbol namedType) => namedType.Constructors.Where(c => c.DeclaredAccessibility != Accessibility.Private && c.DeclaredAccessibility != Accessibility.Protected).OrderByDescending(c => c.Parameters.Length).FirstOrDefault();
+    protected override IMethodSymbol[] GetTargetMethodOrConstructor(BindingTypeBuilder binding, INamedTypeSymbol namedType)
+    {
+        var typeToUse = namedType.OriginalDefinition ?? namedType;
+        return typeToUse.Constructors.Where(c => c.DeclaredAccessibility != Accessibility.Private && c.DeclaredAccessibility != Accessibility.Protected).ToArray();
+    }
 
     protected override TypeInfo GetTargetType(BindingTypeBuilder binding) => binding.TargetType;
 

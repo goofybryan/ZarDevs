@@ -24,14 +24,13 @@ internal class ClassGenerator
 
     #region Methods
 
-    public IDictionary<IResolveBinding, string>? Generate(IEnumerable<IResolveBinding> bindings)
+    public IDictionary<IResolveBinding, string> Generate(IEnumerable<IResolveBinding> bindings)
     {
+        Dictionary<IResolveBinding, string> classDeclarations = new();
         if (bindings is null)
         {
-            return null;
+            return classDeclarations;
         }
-
-        Dictionary<IResolveBinding, string> classDeclarations = new();
 
         foreach (var binding in bindings)
         {

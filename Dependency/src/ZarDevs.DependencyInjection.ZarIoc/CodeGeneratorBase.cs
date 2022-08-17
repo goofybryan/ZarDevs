@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using TypeInfo = Microsoft.CodeAnalysis.TypeInfo;
@@ -41,6 +42,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         var targetType = GetTargetType(typeBuilder);
         var nameType = (INamedTypeSymbol)targetType.Type!;
         var classDefinition = GenerateClassName(typeBuilder, nameType);
+        var classBuilder = new ClassBuilder(classDefinition);
 
         if (_generated.Contains(classDefinition.ClassName))
         {
@@ -50,33 +52,169 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
         var methodOrConstructor = GetTargetMethodOrConstructor(typeBuilder, nameType);
 
-        var content = Generate(typeBuilder, nameType, methodOrConstructor, classDefinition);
+        Generate(typeBuilder, methodOrConstructor, classBuilder);
 
         className = classDefinition.ClassName;
+
+        string[] usings = classDefinition.HasNullability ? new[] { "#nullable enable" } : Array.Empty<string>();
         _cancellation.ThrowIfCancellationRequested();
-        _contentPersistence.Persist(className, content);
+        _contentPersistence.Persist(className, classBuilder.Build(), usings);
         _generated.Add(className);
 
         return true;
     }
 
-    protected abstract ClassDefinition GenerateClassName(T binding, INamedTypeSymbol namedType);
+    protected abstract TypeDefinition GenerateClassName(T binding, INamedTypeSymbol namedType);
 
-    protected abstract string GenerateReturnWithNoParameters(T binding, ClassDefinition classDefinition);
+    protected abstract string GenerateReturnWithNoParameters(T binding, TypeDefinition classDefinition);
 
-    protected abstract string GenerateReturnWithParameters(T binding, ClassDefinition classDefinition, List<string> parameterNames);
+    protected abstract string GenerateReturnWithParameters(T binding, TypeDefinition classDefinition, List<string> parameterNames);
 
-    protected abstract IMethodSymbol GetTargetMethodOrConstructor(T binding, INamedTypeSymbol namedType);
+    protected abstract IMethodSymbol[] GetTargetMethodOrConstructor(T binding, INamedTypeSymbol namedType);
 
     protected abstract TypeInfo GetTargetType(T binding);
 
-    private string ConstructResolve(T binding, ClassDefinition classDefinition, IMethodSymbol methodOrConstructor)
+    private bool CheckIfTypeHasParameters(IMethodSymbol[] methodOrConstructors)
     {
-        if (methodOrConstructor is null || methodOrConstructor.Parameters.Length == 0)
+        if (methodOrConstructors is null || methodOrConstructors.Length == 0)
         {
-            return GenerateReturnWithNoParameters(binding, classDefinition);
+            return false;
         }
 
+        if (methodOrConstructors.Length == 1 && methodOrConstructors[0].Parameters.Length == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void ConstructResolve(T binding, ClassBuilder classBuilder, IMethodSymbol[] methodOrConstructors)
+    {
+        var methodOrConstructor = methodOrConstructors.FirstOrDefault();
+
+        string content = methodOrConstructor is null || methodOrConstructor.Parameters.Length == 0 ?
+            GenerateResolveContent(binding, classBuilder.ClassDefinition) :
+            GenerateResolveContent(binding, classBuilder.ClassDefinition, methodOrConstructor);
+
+        StringBuilder builder = new StringBuilder()
+            .AppendLine(Code.ResolveMethod)
+            .AppendLine(Code.OpenBrace)
+            .AppendTab(content)
+            .AppendLine()
+            .Append(Code.CloseBrace);
+
+        classBuilder.AddMethod(builder.ToString());
+    }
+
+    private void ConstructResolveWithNamedParameters(T binding, ClassBuilder classBuilder, IMethodSymbol[] methodOrConstructors)
+    {
+        if (!CheckIfTypeHasParameters(methodOrConstructors))
+        {
+            GenerateReturnWithResolve(classBuilder, Code.ResolveWithNamedParametersMethod);
+            return;
+        }
+
+        var queue = new Queue<IMethodSymbol>(methodOrConstructors.OrderByDescending(m => m.Parameters.Length));
+
+        StringBuilder contentBuilder = new StringBuilder();
+
+        while (queue.Count > 0)
+        {
+            var methodOrConstructor = queue.Dequeue();
+
+            contentBuilder.AppendLine(Code.ParameterCheckCount(methodOrConstructor.Parameters.Length))
+                .AppendLine(Code.OpenBrace)
+                .AppendTab(GenerateResolveWithNamedParameters(binding, classBuilder, methodOrConstructor))
+                .AppendLine()
+                .Append(Code.CloseBrace);
+
+            if (queue.Count > 0)
+            {
+                contentBuilder.AppendLine().Append(Code.Else);
+            }
+        }
+
+        contentBuilder.AppendLine().Append(Code.InvalidParameterResolution);
+
+        StringBuilder builder = new StringBuilder()
+            .AppendLine(Code.ResolveWithNamedParametersMethod)
+            .AppendLine(Code.OpenBrace)
+            .AppendTab().AppendLine(Code.ParameterCheck)
+            .AppendLine()
+            .AppendTab(contentBuilder.ToString())
+            .AppendLine()
+            .Append(Code.CloseBrace);
+
+        classBuilder.AddMethod(builder.ToString());
+    }
+
+    private void ConstructResolveWithParameters(T binding, ClassBuilder classBuilder, IMethodSymbol[] methodOrConstructors)
+    {
+        if (!CheckIfTypeHasParameters(methodOrConstructors))
+        {
+            GenerateReturnWithResolve(classBuilder, Code.ResolveWithObjectParametersMethod);
+            return;
+        }
+
+        var queue = new Queue<IMethodSymbol>(methodOrConstructors.OrderByDescending(m => m.Parameters.Length));
+
+        StringBuilder contentBuilder = new StringBuilder();
+
+        while (queue.Count > 0)
+        {
+            var methodOrConstructor = queue.Dequeue();
+
+            if (methodOrConstructor.Parameters.Length == 0) continue;
+
+            contentBuilder.AppendLine(Code.ParameterCheckCount(methodOrConstructor.Parameters.Length))
+                .AppendLine(Code.OpenBrace)
+                .AppendTab(GenerateResolveParameters(binding, classBuilder, methodOrConstructor))
+                .AppendLine()
+                .AppendLine(Code.CloseBrace);
+
+            if (queue.Count > 1 || (queue.Count == 1 && queue.Peek().Parameters.Length != 0))
+            {
+                contentBuilder.Append(Code.Else);
+            }
+        }
+
+        contentBuilder.AppendLine().Append(Code.InvalidParameterResolution);
+
+        StringBuilder builder = new StringBuilder()
+            .AppendLine(Code.ResolveWithObjectParametersMethod)
+            .AppendLine(Code.OpenBrace)
+            .AppendTab().AppendLine(Code.ParameterCheck)
+            .AppendLine()
+            .AppendTab(contentBuilder.ToString())
+            .AppendLine()
+            .Append(Code.CloseBrace);
+
+        classBuilder.AddMethod(builder.ToString());
+    }
+
+    private void Generate(T binding, IMethodSymbol[] methodOrConstructors, ClassBuilder classBuilder)
+    {
+        string className = classBuilder.ClassDefinition.ClassName;
+
+        classBuilder.AddConstructor(new StringBuilder()
+            .AppendLine(Code.Constructor(className))
+            .AppendLine(Code.OpenBrace)
+            .AppendTab().AppendLine(Code.InfoPropertyAssign)
+            .Append(Code.CloseBrace)
+            .ToString());
+
+        classBuilder.AddProperty(Code.InfoProperty);
+        ConstructResolve(binding, classBuilder, methodOrConstructors);
+        ConstructResolveWithParameters(binding, classBuilder, methodOrConstructors);
+        ConstructResolveWithNamedParameters(binding, classBuilder, methodOrConstructors);
+        classBuilder.AddMethod(Code.ResolveParameter);
+    }
+
+    private string GenerateResolveContent(T binding, TypeDefinition classDefinition) => GenerateReturnWithNoParameters(binding, classDefinition);
+
+    private string GenerateResolveContent(T binding, TypeDefinition classDefinition, IMethodSymbol methodOrConstructor)
+    {
         StringBuilder builder = new();
 
         List<string> parameterNames = new();
@@ -86,7 +224,10 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
             foreach (var parameter in methodOrConstructor.Parameters)
             {
                 parameterNames.Add(parameter.Name);
-                builder.AppendLine(Code.Resolve(parameter));
+
+                string resolve = parameter.Type.IsValueType ? Code.ResolveDefault(parameter.Name, parameter.Type) : Code.Resolve(parameter);
+
+                builder.AppendLine(resolve);
             }
         }
 
@@ -95,15 +236,48 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         return builder.ToString();
     }
 
-    private string ConstructResolveWithNamedParameters(T binding, ClassDefinition classDefinition, IMethodSymbol methodOrConstructor)
+    private string GenerateResolveParameters(T binding, ClassBuilder classBuilder, IMethodSymbol methodOrConstructor)
     {
-        if (methodOrConstructor is null || methodOrConstructor.Parameters.Length == 0)
+        if (methodOrConstructor.Parameters.Length == 0)
         {
-            return GenerateReturnWithNoParameters(binding, classDefinition);
+            return Code.ReturnResolve;
+        }
+        StringBuilder resolveMethodBuilder = new StringBuilder()
+            .AppendLine(Code.ResolveWithNumberedObjectParametersMethod(methodOrConstructor.Parameters.Length))
+            .AppendLine(Code.OpenBrace)
+            .AppendTab(Code.Ioc)
+            .AppendLine();
+
+        List<string> parameterNames = new();
+        int index = 0;
+        foreach (var parameter in methodOrConstructor.Parameters)
+        {
+            parameterNames.Add(parameter.Name);
+            resolveMethodBuilder.AppendTab().AppendLine(Code.ParameterCast(parameter, index));
+            index++;
         }
 
-        StringBuilder builder = new();
-        builder.AppendLine(Code.ParameterCheck);
+        resolveMethodBuilder.AppendTab(GenerateReturnWithParameters(binding, classBuilder.ClassDefinition, parameterNames))
+            .AppendLine()
+            .Append(Code.CloseBrace);
+
+        classBuilder.AddMethod(resolveMethodBuilder.ToString());
+
+        return Code.ReturnResolveWithNumbered(methodOrConstructor.Parameters.Length);
+    }
+
+    private string GenerateResolveWithNamedParameters(T binding, ClassBuilder classBuilder, IMethodSymbol methodOrConstructor)
+    {
+        if (methodOrConstructor.Parameters.Length == 0)
+        {
+            return Code.ReturnResolve;
+        }
+
+        StringBuilder resolveMethodBuilder = new StringBuilder()
+            .AppendLine(Code.ResolveWithNumberedNamedParametersMethod(methodOrConstructor.Parameters.Length))
+            .AppendLine(Code.OpenBrace)
+            .AppendTab(Code.Ioc)
+            .AppendLine();
 
         StringBuilder foreachLoopBuilder = new();
         foreachLoopBuilder.AppendLine(Code.ForeachLoop)
@@ -114,7 +288,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         foreach (var parameter in methodOrConstructor.Parameters)
         {
             parameterNames.Add(parameter.Name);
-            builder.AppendLine(Code.NamedTypedParameterDeclaration(parameter));
+            resolveMethodBuilder.AppendTab().AppendLine(Code.NamedTypedParameterDeclaration(parameter));
 
             foreachLoopBuilder.AppendTab().AppendLine(Code.ParameterIfEquals(parameter))
                 .AppendTab().AppendLine(Code.OpenBrace)
@@ -126,191 +300,135 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
         foreachLoopBuilder.AppendLine(Code.CloseBrace);
 
-        builder.AppendLine(foreachLoopBuilder.ToString());
-
-        builder.Append(GenerateReturnWithParameters(binding, classDefinition, parameterNames));
-
-        return builder.ToString();
-    }
-
-    private string ConstructResolveWithParameters(T binding, ClassDefinition classDefinition, IMethodSymbol methodOrConstructor)
-    {
-        if (methodOrConstructor is null || methodOrConstructor.Parameters.Length == 0)
-        {
-            return GenerateReturnWithNoParameters(binding, classDefinition);
-        }
-
-        StringBuilder builder = new();
-        builder.AppendLine(Code.ParameterCheck);
-
-        List<string> parameterNames = new();
-        int index = 0;
-        foreach (var parameter in methodOrConstructor.Parameters)
-        {
-            parameterNames.Add(parameter.Name);
-            builder.AppendLine(Code.ParameterCast(parameter, index));
-            index++;
-        }
-
-        builder.Append(GenerateReturnWithParameters(binding, classDefinition, parameterNames));
-
-        return builder.ToString();
-    }
-
-    private string Generate(T binding, INamedTypeSymbol typeSymbol, IMethodSymbol constructor, ClassDefinition classDefinition)
-    {
-        string className = classDefinition.ClassName;
-        string resolve = ConstructResolve(binding, classDefinition, constructor);
-        string resolveObjectParameters = ConstructResolveWithParameters(binding, classDefinition, constructor);
-        string resolveNamedParameters = ConstructResolveWithNamedParameters(binding, classDefinition, constructor);
-
-        var classBuilder = new StringBuilder()
-            .AppendLine(classDefinition.Declaration)
-            .AppendLine(Code.OpenBrace)
-            .AppendTab().AppendLine(Code.Constructor(className))
-            .AppendTab().AppendLine(Code.OpenBrace)
-            .AppendTab(2).AppendLine(Code.InfoPropertyAssign)
-            .AppendTab().AppendLine(Code.CloseBrace)
+        resolveMethodBuilder.AppendLine()
+            .AppendTab(foreachLoopBuilder.ToString())
             .AppendLine()
-            .AppendTab().AppendLine(Code.InfoProperty)
+            .AppendTab(GenerateReturnWithParameters(binding, classBuilder.ClassDefinition, parameterNames))
             .AppendLine()
-            .AppendTab().AppendLine(Code.ResolveMethod)
-            .AppendTab().AppendLine(Code.OpenBrace)
-            .AppendTab(resolve, 2).AppendLine()
-            .AppendTab().AppendLine(Code.CloseBrace)
-            .AppendLine()
-            .AppendTab().AppendLine(Code.ResolveWithObjectParametersMethod)
-            .AppendTab().AppendLine(Code.OpenBrace)
-            .AppendTab(resolveObjectParameters, 2).AppendLine()
-            .AppendTab().AppendLine(Code.CloseBrace)
-            .AppendLine()
-            .AppendTab().AppendLine(Code.ResolveWithNamedParametersMethod)
-            .AppendTab().AppendLine(Code.OpenBrace)
-            .AppendTab(resolveNamedParameters, 2).AppendLine()
-            .AppendTab().AppendLine(Code.CloseBrace)
             .AppendLine(Code.CloseBrace);
 
-        string content = classBuilder.ToString();
+        classBuilder.AddMethod(resolveMethodBuilder.ToString());
 
-        return content;
+        return Code.ReturnResolveWithNumbered(methodOrConstructor.Parameters.Length);
+    }
+
+    private void GenerateReturnWithResolve(ClassBuilder classBuilder, string methodDeclaration)
+    {
+        StringBuilder builder = new StringBuilder()
+            .AppendLine(methodDeclaration)
+            .AppendLine(Code.OpenBrace)
+            .AppendTab(Code.ReturnResolve)
+            .AppendLine()
+            .AppendLine(Code.CloseBrace);
+
+        classBuilder.AddMethod(builder.ToString());
     }
 
     #endregion Methods
 }
 
-//internal class TypeCodeGenerator1 : ITypeCodeGenerator
-//{
-//    #region Fields
+internal class ClassBuilder
+{
+    #region Fields
 
-// private readonly CancellationToken _cancellation; private readonly IContentPersistence
-// _contentPersistence; private readonly Dictionary<ITypeSymbol, string> _generated;
+    private readonly IList<string> _constructors;
+    private readonly IList<string> _methods;
+    private readonly IList<string> _properties;
 
-// #endregion Fields
+    #endregion Fields
 
-// #region Constructors
+    #region Constructors
 
-// public TypeCodeGenerator1(IContentPersistence contentPersistence, CancellationToken cancellation)
-// { _contentPersistence = contentPersistence ?? throw new
-// System.ArgumentNullException(nameof(contentPersistence)); _cancellation = cancellation;
-// _generated = new(SymbolEqualityComparer.Default); }
+    public ClassBuilder(TypeDefinition classDefinition)
+    {
+        _constructors = new List<string>();
+        _methods = new List<string>();
+        _properties = new List<string>();
+        ClassDefinition = classDefinition ?? throw new ArgumentNullException(nameof(classDefinition));
+        Usings = new List<string>();
+    }
 
-// #endregion Constructors
+    #endregion Constructors
 
-// #region Methods
+    #region Properties
 
-// public bool TryGenerate(IResolveBinding binding, out string className) { if (binding is not
-// BindingTypeBuilder typeBuilder) { className = string.Empty; return false; }
+    public TypeDefinition ClassDefinition { get; }
+    public IList<string> Usings { get; }
 
-// if(_generated.TryGetValue(typeBuilder.TargetType.Type!, out className)) { return true; }
+    #endregion Properties
 
-// var nameType = (INamedTypeSymbol)typeBuilder.TargetType.Type!; var constructor =
-// nameType.Constructors.Where(c => c.DeclaredAccessibility != Accessibility.Private &&
-// c.DeclaredAccessibility != Accessibility.Protected).OrderByDescending(c => c.Parameters.Length).FirstOrDefault();
+    #region Methods
 
-// className = Code.TypeClassName(nameType);
+    public void AddConstructor(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
+        }
 
-// var content = Generate(nameType, constructor);
+        _constructors.Add(content.Trim());
+    }
 
-// _cancellation.ThrowIfCancellationRequested(); _contentPersistence.Persist(className, content);
-// _generated[typeBuilder.TargetType.Type!] = className;
+    public void AddMethod(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
+        }
 
-// return true; }
+        _methods.Add(content.Trim());
+    }
 
-// private string ConstructResolve(INamedTypeSymbol typeSymbol, IMethodSymbol constructor) { if
-// (constructor is null || constructor.Parameters.Length == 0) { return new
-// StringBuilder(Code.ReturnNewType(typeSymbol)).ToString(); }
+    public void AddProperty(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
+        }
 
-// StringBuilder builder = new();
+        _properties.Add(content.Trim());
+    }
 
-// List<string> parameterNames = new(); if (constructor is not null && constructor.Parameters.Length
-// > 0) { builder.AppendLine(Code.Ioc); foreach (var parameter in constructor.Parameters) {
-// parameterNames.Add(parameter.Name); builder.AppendLine(Code.Resolve(parameter)); } }
+    public void AddUsings(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
+        }
 
-// builder.Append(Code.ReturnNewType(typeSymbol, parameterNames));
+        Usings.Add(content.Trim());
+    }
 
-// return builder.ToString(); }
+    public string Build()
+    {
+        StringBuilder builder = new();
 
-// private string ConstructResolveWithNamedParameters(INamedTypeSymbol typeSymbol, IMethodSymbol
-// constructor) { if (constructor is null || constructor.Parameters.Length == 0) { return new
-// StringBuilder(Code.ReturnNewType(typeSymbol)).ToString(); }
+        builder.AppendLine(ClassDefinition.Declaration)
+            .AppendLine(Code.OpenBrace);
 
-// StringBuilder builder = new(); builder.AppendLine(Code.ParameterCheck);
+        AppendTabbedSection(_constructors, builder);
+        builder.AppendLine();
+        AppendTabbedSection(_properties, builder);
+        builder.AppendLine();
+        AppendTabbedSection(_methods, builder);
 
-// StringBuilder foreachLoopBuilder = new(); foreachLoopBuilder.AppendLine(Code.ForeachLoop) .AppendLine(Code.OpenBrace);
+        builder.Append(Code.CloseBrace);
 
-// List<string> parameterNames = new();
+        return builder.ToString();
+    }
 
-// foreach (var parameter in constructor.Parameters) { parameterNames.Add(parameter.Name); builder.AppendLine(Code.NamedTypedParameterDeclaration(parameter));
+    public override string ToString()
+    {
+        return Build();
+    }
 
-// foreachLoopBuilder.AppendTab().AppendLine(Code.ParameterIfEquals(parameter))
-// .AppendTab().AppendLine(Code.OpenBrace)
-// .AppendTab(2).AppendLine(Code.ParameterValueAssignment(parameter))
-// .AppendTab(2).AppendLine(Code.ContinueStatement) .AppendTab().AppendLine(Code.CloseBrace);
-// foreachLoopBuilder.AppendLine(); }
+    private void AppendTabbedSection(IList<string> toAppend, StringBuilder builder)
+    {
+        foreach (var section in toAppend)
+        {
+            builder.AppendLine().AppendTab(section).AppendLine();
+        }
+    }
 
-// foreachLoopBuilder.AppendLine(Code.CloseBrace);
-
-// builder.AppendLine(foreachLoopBuilder.ToString());
-
-// builder.Append(Code.ReturnNewType(typeSymbol, parameterNames));
-
-// return builder.ToString(); }
-
-// private string ConstructResolveWithParameters(INamedTypeSymbol typeSymbol, IMethodSymbol
-// constructor) { if (constructor is null || constructor.Parameters.Length == 0) { return new
-// StringBuilder(Code.ReturnNewType(typeSymbol)).ToString(); }
-
-// StringBuilder builder = new(); builder.AppendLine(Code.ParameterCheck);
-
-// List<string> parameterNames = new(); int index = 0; foreach (var parameter in
-// constructor.Parameters) { parameterNames.Add(parameter.Name);
-// builder.AppendLine(Code.ParameterCast(parameter, index)); index++; }
-
-// builder.Append(Code.ReturnNewType(typeSymbol, parameterNames));
-
-// return builder.ToString(); }
-
-// private string Generate(INamedTypeSymbol typeSymbol, IMethodSymbol constructor) { string resolve
-// = ConstructResolve(typeSymbol, constructor); string resolveObjectParameters =
-// ConstructResolveWithParameters(typeSymbol, constructor); string resolveNamedParameters =
-// ConstructResolveWithNamedParameters(typeSymbol, constructor);
-
-// var classBuilder = new StringBuilder() .AppendLine(Code.ClassDeclaration(typeSymbol))
-// .AppendLine(Code.OpenBrace) .AppendTab().AppendLine(Code.Constructor(typeSymbol))
-// .AppendTab().AppendLine(Code.OpenBrace) .AppendTab(2).AppendLine(Code.InfoPropertyAssign)
-// .AppendTab().AppendLine(Code.CloseBrace) .AppendLine() .AppendTab().AppendLine(Code.InfoProperty)
-// .AppendLine() .AppendTab().AppendLine(Code.ResolveMethod) .AppendTab().AppendLine(Code.OpenBrace)
-// .AppendTab(resolve, 2).AppendLine() .AppendTab().AppendLine(Code.CloseBrace) .AppendLine()
-// .AppendTab().AppendLine(Code.ResolveWithObjectParametersMethod)
-// .AppendTab().AppendLine(Code.OpenBrace) .AppendTab(resolveObjectParameters, 2).AppendLine()
-// .AppendTab().AppendLine(Code.CloseBrace) .AppendLine()
-// .AppendTab().AppendLine(Code.ResolveWithNamedParametersMethod)
-// .AppendTab().AppendLine(Code.OpenBrace) .AppendTab(resolveNamedParameters, 2).AppendLine()
-// .AppendTab().AppendLine(Code.CloseBrace) .AppendLine(Code.CloseBrace);
-
-// string content = classBuilder.ToString();
-
-// return content; }
-
-//    #endregion Methods
-//}
+    #endregion Methods
+}

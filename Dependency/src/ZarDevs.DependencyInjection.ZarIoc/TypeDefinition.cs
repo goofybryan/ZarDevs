@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
-internal class ClassDefinition
+internal class TypeDefinition
 {
     #region Fields
 
@@ -14,25 +14,26 @@ internal class ClassDefinition
     private readonly string _additional;
     private readonly List<string> _genericNames;
     private readonly INamedTypeSymbol _namedType;
-    private string _className;
-    private IList<(ITypeParameterSymbol parameter, string constraints)> _constraints;
-    private string _declaration;
-    private string _genericArguments;
-    private string _resolveName;
+    private string? _className;
+    private IList<(ITypeParameterSymbol parameter, string constraints)>? _constraints;
+    private string? _declaration;
+    private string? _genericArguments;
+    private string? _resolveName;
 
     #endregion Fields
 
     #region Constructors
 
-    public ClassDefinition(INamedTypeSymbol namedType) : this(namedType, string.Empty)
+    public TypeDefinition(INamedTypeSymbol namedType) : this(namedType, string.Empty)
     {
     }
 
-    public ClassDefinition(INamedTypeSymbol namedType, string additional)
+    public TypeDefinition(INamedTypeSymbol namedType, string additional)
     {
         _namedType = namedType ?? throw new ArgumentNullException(nameof(namedType));
         _additional = additional ?? throw new ArgumentNullException(nameof(additional));
         _genericNames = new();
+        HasNullability = _namedType.TypeArgumentNullableAnnotations.Any(t => t == NullableAnnotation.Annotated);
     }
 
     #endregion Constructors
@@ -43,6 +44,7 @@ internal class ClassDefinition
     public IList<(ITypeParameterSymbol parameter, string constraints)> Constraints => _constraints ??= GetClassConstraints().ToArray();
     public string Declaration => _declaration ??= GenerateDeclaration();
     public string GenericArguments => _genericArguments ??= ConstructGenericArguments();
+    public bool HasNullability { get; set; }
     public string ResolveName => _resolveName ??= GenerateResolveName();
     public INamedTypeSymbol Type => _namedType;
 
@@ -89,12 +91,29 @@ internal class ClassDefinition
 
     public string GenerateDeclaration()
     {
-        StringBuilder builder = new StringBuilder().AppendFormat(Code.ClassDeclarationFormat, ClassName, typeof(ITypeResolution).Name);
+        string classDeclaration = ClassName;
 
-        foreach (var constraint in Constraints.Where(c => !string.IsNullOrWhiteSpace(c.constraints)))
+        StringBuilder builder = new StringBuilder().Append("public class ").Append(ClassName);//.AppendFormat(Code.ClassDeclarationFormat, ClassName, typeof(ITypeResolution).Name);
+        StringBuilder constraints = new StringBuilder();
+
+        if (Constraints.Count > 0)
         {
-            builder.AppendLine().AppendTab().AppendFormat(Code.ConstraintDeclarationFormat, constraint.parameter.ToDisplayString(), constraint.constraints);
+            builder.Append('<');
+
+            foreach (var constraint in Constraints)
+            {
+                builder.Append(constraint.parameter.ToDisplayString()).Append(constraintSeparator);
+                if (!string.IsNullOrWhiteSpace(constraint.constraints))
+                {
+                    constraints.AppendLine().AppendTab().AppendFormat(Code.ConstraintDeclarationFormat, constraint.parameter.ToDisplayString(), constraint.constraints);
+                }
+            }
+
+            builder.Length -= constraintSeparator.Length;
+            builder.Append('>');
         }
+
+        builder.Append(" : ").Append(typeof(ITypeResolution).Name).Append(constraints);
 
         return builder.ToString();
     }
@@ -112,8 +131,11 @@ internal class ClassDefinition
 
         StringBuilder builder = new StringBuilder();
 
+        UpdateNullability(parameter.NullableAnnotation);
+
         foreach (var constraint in parameter.ConstraintTypes)
         {
+            UpdateNullability(constraint.NullableAnnotation);
             builder.Append(constraint.ToDisplayString());
 
             builder.Append(constraintSeparator);
@@ -129,6 +151,7 @@ internal class ClassDefinition
             builder.Append(@class).Append(constraintSeparator);
             if (parameter.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
             {
+                HasNullability = true;
                 builder.Append('?');
             }
         }
@@ -160,6 +183,14 @@ internal class ClassDefinition
             string constraints = typeParameter.ConstraintTypes.Length == 0 ? string.Empty : GenerateConstraint(typeParameter);
 
             yield return new(typeParameter, constraints);
+        }
+    }
+
+    private void UpdateNullability(NullableAnnotation annotation)
+    {
+        if (annotation == NullableAnnotation.Annotated)
+        {
+            HasNullability = true;
         }
     }
 

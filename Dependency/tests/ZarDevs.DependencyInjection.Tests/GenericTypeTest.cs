@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        T GetValue();
+        T? GetValue();
 
         #endregion Methods
     }
@@ -13,7 +13,7 @@
     {
         #region Properties
 
-        T Value { get; set; }
+        T? Value { get; set; }
 
         #endregion Properties
     }
@@ -22,13 +22,13 @@
     {
         #region Properties
 
-        public T Value { get; set; }
+        public T? Value { get; set; }
 
         #endregion Properties
 
         #region Methods
 
-        public T GetValue()
+        public T? GetValue()
         {
             return Value;
         }

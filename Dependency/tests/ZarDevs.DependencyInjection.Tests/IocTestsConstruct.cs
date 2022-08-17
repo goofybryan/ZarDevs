@@ -46,6 +46,7 @@ namespace ZarDevs.DependencyInjection.Tests
             var values = Ioc.ResolveAll<ResolveAllTestBase>()?.ToList();
 
             // Assert
+            Assert.NotNull(values);
             Assert.NotEmpty(values);
             Assert.Equal(2, values.Count);
             Assert.Contains(values, v => v.GetType() == typeof(ResolveAllTest));

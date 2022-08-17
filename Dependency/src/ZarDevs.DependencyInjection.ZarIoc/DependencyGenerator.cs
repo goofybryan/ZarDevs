@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
@@ -45,6 +46,7 @@ public class DependencyGenerator : IIncrementalGenerator
 
         var typeCodeGenerators = new ITypeCodeGenerator[] { new TypeCodeGenerator(contentPersistor, context.CancellationToken), new InstanceCodeGenerator(), new FunctionCodeGenerator(), new FactoryCodeGenerator(contentPersistor, context.CancellationToken) };
         ClassGenerator classGenerator = new(new DiagnosticLogger(context), typeCodeGenerators);
+        BindingContainerFactoryGenerator factoryGenerator = new();
 
         foreach (var mapping in classDeclarationsMap.SelectMany(cd => cd))
         {
@@ -55,6 +57,8 @@ public class DependencyGenerator : IIncrementalGenerator
             var bindings = parser.ParseSyntax(mapping, containerToken).ToArray();
 
             var generatedClasses = classGenerator.Generate(bindings);
+
+            factoryGenerator.Generate(generatedClasses);
         }
     }
 
@@ -90,4 +94,21 @@ public class DependencyGenerator : IIncrementalGenerator
     }
 
     #endregion Methods
+}
+
+internal class BindingContainerFactoryGenerator
+{ 
+    public void Generate(IDictionary<IResolveBinding, string> classMappings)
+    {
+        //const string ifStatement = "if (info.)";
+
+        StringBuilder factoryContent = new();
+        foreach (var classMapping in classMappings)
+        {
+            var className = classMapping.Key;
+            var binding = classMapping.Value;
+
+
+        }
+    }
 }
