@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
     /// Instance type resolution that will remember the value once created.

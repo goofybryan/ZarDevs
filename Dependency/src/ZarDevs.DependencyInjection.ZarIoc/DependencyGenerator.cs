@@ -1,12 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using System.Threading;
+using ZarDevs.DependencyInjection.ZarIoc;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
@@ -18,7 +18,7 @@ public class DependencyGenerator : IIncrementalGenerator
 {
     #region Fields
 
-    private static string AttributeName = typeof(DependencyRegistrationAttribute).FullName;
+    private static readonly string _attributeName = typeof(DependencyRegistrationAttribute).FullName;
 
     #endregion Fields
 
@@ -42,11 +42,16 @@ public class DependencyGenerator : IIncrementalGenerator
     {
         if (classDeclarationsMap.IsDefaultOrEmpty) return;
 
-        GeneratedContentPersistor contentPersistor = new(context, $"{compilation.AssemblyName}.Generated");
+        string @namespace = $"{compilation.AssemblyName}.Ioc";
+        GeneratedContentPersistor contentPersistor = new(context, @namespace);
+        
+        INamedTypeSymbol enumerable = compilation.GetTypeByMetadataName(typeof(IEnumerable).FullName)!;
 
-        var typeCodeGenerators = new ITypeCodeGenerator[] { new TypeCodeGenerator(contentPersistor, context.CancellationToken), new InstanceCodeGenerator(), new FunctionCodeGenerator(), new FactoryCodeGenerator(contentPersistor, context.CancellationToken) };
+        var typeCodeGenerators = new ITypeCodeGenerator[] { new TypeCodeGenerator(contentPersistor, enumerable, context.CancellationToken), new InstanceCodeGenerator(), new FunctionCodeGenerator(), new FactoryCodeGenerator(contentPersistor, enumerable, context.CancellationToken) };
         ClassGenerator classGenerator = new(new DiagnosticLogger(context), typeCodeGenerators);
-        BindingContainerFactoryGenerator factoryGenerator = new();
+        BindingContainerFactoryGenerator factoryGenerator = new(contentPersistor);
+
+        List<string> resolutionMappers = new();
 
         foreach (var mapping in classDeclarationsMap.SelectMany(cd => cd))
         {
@@ -58,8 +63,11 @@ public class DependencyGenerator : IIncrementalGenerator
 
             var generatedClasses = classGenerator.Generate(bindings);
 
-            factoryGenerator.Generate(generatedClasses);
+            var generatedMappers = factoryGenerator.Generate(generatedClasses, mapping);
+            resolutionMappers.AddRange(generatedMappers);
         }
+
+        new TypeFactoryExtensionBuilder(contentPersistor).Create(@namespace, resolutionMappers);
     }
 
     private static IEnumerable<MethodDeclarationSyntax> GetSemanticTargetForGeneration(GeneratorSyntaxContext context, CancellationToken cancellation)
@@ -77,7 +85,7 @@ public class DependencyGenerator : IIncrementalGenerator
             INamedTypeSymbol attributeContainingTypeSymbol = attributeSymbol.ContainingType;
             string fullName = attributeContainingTypeSymbol.ToDisplayString();
 
-            if (fullName == AttributeName && declarationSyntax.Parent is ClassDeclarationSyntax classDeclaration)
+            if (fullName == _attributeName && declarationSyntax.Parent is ClassDeclarationSyntax)
             {
                 yield return declarationSyntax;
             }
@@ -94,21 +102,4 @@ public class DependencyGenerator : IIncrementalGenerator
     }
 
     #endregion Methods
-}
-
-internal class BindingContainerFactoryGenerator
-{ 
-    public void Generate(IDictionary<IResolveBinding, string> classMappings)
-    {
-        //const string ifStatement = "if (info.)";
-
-        StringBuilder factoryContent = new();
-        foreach (var classMapping in classMappings)
-        {
-            var className = classMapping.Key;
-            var binding = classMapping.Value;
-
-
-        }
-    }
 }

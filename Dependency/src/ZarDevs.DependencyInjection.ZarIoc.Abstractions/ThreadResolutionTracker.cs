@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
     /// Dependency thread resolution tracker that will track a value at thread level

@@ -15,14 +15,16 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
     private readonly CancellationToken _cancellation;
     private readonly IContentPersistence _contentPersistence;
     private readonly HashSet<string> _generated;
+    private readonly INamedTypeSymbol _enumerableTypeInfo;
 
     #endregion Fields
 
     #region Constructors
 
-    protected CodeGeneratorBase(IContentPersistence contentPersistence, CancellationToken cancellation)
+    protected CodeGeneratorBase(IContentPersistence contentPersistence, INamedTypeSymbol enumerableTypeInfo, CancellationToken cancellation)
     {
         _contentPersistence = contentPersistence ?? throw new System.ArgumentNullException(nameof(contentPersistence));
+        _enumerableTypeInfo = enumerableTypeInfo ?? throw new ArgumentNullException(nameof(enumerableTypeInfo));
         _cancellation = cancellation;
         _generated = new(StringComparer.Ordinal);
     }
@@ -117,7 +119,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
         var queue = new Queue<IMethodSymbol>(methodOrConstructors.OrderByDescending(m => m.Parameters.Length));
 
-        StringBuilder contentBuilder = new StringBuilder();
+        StringBuilder contentBuilder = new();
 
         while (queue.Count > 0)
         {
@@ -159,7 +161,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
         var queue = new Queue<IMethodSymbol>(methodOrConstructors.OrderByDescending(m => m.Parameters.Length));
 
-        StringBuilder contentBuilder = new StringBuilder();
+        StringBuilder contentBuilder = new();
 
         while (queue.Count > 0)
         {
@@ -209,6 +211,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         ConstructResolveWithParameters(binding, classBuilder, methodOrConstructors);
         ConstructResolveWithNamedParameters(binding, classBuilder, methodOrConstructors);
         classBuilder.AddMethod(Code.ResolveParameter);
+        classBuilder.AddMethod(Code.ResolveAllParameter);
     }
 
     private string GenerateResolveContent(T binding, TypeDefinition classDefinition) => GenerateReturnWithNoParameters(binding, classDefinition);
@@ -225,7 +228,20 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
             {
                 parameterNames.Add(parameter.Name);
 
-                string resolve = parameter.Type.IsValueType ? Code.ResolveDefault(parameter.Name, parameter.Type) : Code.Resolve(parameter);
+                string resolve;
+
+                if (parameter.Type.TypeKind == TypeKind.Array)
+                {
+                    resolve = Code.ResolveAll(parameter.Name, ((IArrayTypeSymbol)parameter.Type).ElementType, parameter.Type);
+                }
+                else if (parameter.Type.AllInterfaces.Any(i => SymbolEqualityComparer.IncludeNullability.Equals(i, _enumerableTypeInfo)))
+                {
+                    resolve = Code.ResolveAll(parameter);
+                }
+                else
+                {
+                    resolve = parameter.Type.IsValueType ? Code.ResolveDefault(parameter.Name, parameter.Type) : Code.Resolve(parameter);
+                }
 
                 builder.AppendLine(resolve);
             }
@@ -322,112 +338,6 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
             .AppendLine(Code.CloseBrace);
 
         classBuilder.AddMethod(builder.ToString());
-    }
-
-    #endregion Methods
-}
-
-internal class ClassBuilder
-{
-    #region Fields
-
-    private readonly IList<string> _constructors;
-    private readonly IList<string> _methods;
-    private readonly IList<string> _properties;
-
-    #endregion Fields
-
-    #region Constructors
-
-    public ClassBuilder(TypeDefinition classDefinition)
-    {
-        _constructors = new List<string>();
-        _methods = new List<string>();
-        _properties = new List<string>();
-        ClassDefinition = classDefinition ?? throw new ArgumentNullException(nameof(classDefinition));
-        Usings = new List<string>();
-    }
-
-    #endregion Constructors
-
-    #region Properties
-
-    public TypeDefinition ClassDefinition { get; }
-    public IList<string> Usings { get; }
-
-    #endregion Properties
-
-    #region Methods
-
-    public void AddConstructor(string content)
-    {
-        if (string.IsNullOrWhiteSpace(content))
-        {
-            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
-        }
-
-        _constructors.Add(content.Trim());
-    }
-
-    public void AddMethod(string content)
-    {
-        if (string.IsNullOrWhiteSpace(content))
-        {
-            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
-        }
-
-        _methods.Add(content.Trim());
-    }
-
-    public void AddProperty(string content)
-    {
-        if (string.IsNullOrWhiteSpace(content))
-        {
-            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
-        }
-
-        _properties.Add(content.Trim());
-    }
-
-    public void AddUsings(string content)
-    {
-        if (string.IsNullOrWhiteSpace(content))
-        {
-            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
-        }
-
-        Usings.Add(content.Trim());
-    }
-
-    public string Build()
-    {
-        StringBuilder builder = new();
-
-        builder.AppendLine(ClassDefinition.Declaration)
-            .AppendLine(Code.OpenBrace);
-
-        AppendTabbedSection(_constructors, builder);
-        builder.AppendLine();
-        AppendTabbedSection(_properties, builder);
-        builder.AppendLine();
-        AppendTabbedSection(_methods, builder);
-
-        builder.Append(Code.CloseBrace);
-
-        return builder.ToString();
-    }
-
-    public override string ToString()
-    {
-        return Build();
-    }
-
-    private void AppendTabbedSection(IList<string> toAppend, StringBuilder builder)
-    {
-        foreach (var section in toAppend)
-        {
-            builder.AppendLine().AppendTab(section).AppendLine();
-        }
     }
 
     #endregion Methods

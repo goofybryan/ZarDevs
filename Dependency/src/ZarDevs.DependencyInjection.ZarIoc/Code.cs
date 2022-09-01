@@ -1,6 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
+using ZarDevs.DependencyInjection.ZarIoc;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
@@ -37,8 +40,10 @@ internal static class Code
     public const string Quote = "\"";
     public const string ResolveDefaultFormat = "{0} {1} = default";
     public const string ResolveFormat = "var {0} = ResolveParameter<{1}>();";
+    public const string ResolveAllFormat = "var {0} = ({2})ResolveAllParameter<{1}>();";
     public const string ResolveMethod = "public object Resolve()";
     public const string ResolveParameter = "private TZT ResolveParameter<TZT>() where TZT : class\r\n{\r\n\tvar __ioc = ZarDevs.DependencyInjection.Ioc.Container;\r\n\tif(Info.Key == null) return __ioc.Resolve<TZT>();\r\n\treturn __ioc.TryResolve<TZT>(Info.Key) ?? __ioc.Resolve<TZT>();\r\n}";
+    public const string ResolveAllParameter = "private System.Collections.Generic.IEnumerable<TZT> ResolveAllParameter<TZT>() where TZT : class\r\n{\r\n\tvar __ioc = ZarDevs.DependencyInjection.Ioc.Container;\r\n\treturn __ioc.ResolveAll<TZT>();\r\n}";
     public const string ResolveWithNamedParametersMethod = "public object Resolve(params (string key, object value)[] parameters)";
     public const string ResolveWithNumberedNamedParametersMethodFormat = "private object Resolve{0}((string key, object value)[] parameters)";
     public const string ResolveWithNumberedObjectParametersMethodFormat = "private object Resolve{0}(object[] parameters)";
@@ -70,6 +75,10 @@ internal static class Code
 
     public static string ParameterValueAssignment(IParameterSymbol parameter) => string.Format(CultureInfo.InvariantCulture, ParameterValueAssignmentFormat, parameter.Name, parameter.Type.ToDisplayString());
 
+    public static string ResolveAll(IParameterSymbol parameter) => ResolveAll(parameter.Name, ((INamedTypeSymbol)parameter.Type).TypeArguments[0], parameter.Type);
+
+    public static string ResolveAll(string name, ITypeSymbol type, ITypeSymbol collectionType) => string.Format(CultureInfo.InvariantCulture, ResolveAllFormat, name, type.ToDisplayString(), collectionType.ToDisplayString());
+
     public static string Resolve(IParameterSymbol parameter) => Resolve(parameter.Name, parameter.Type);
 
     public static string Resolve(string name, ITypeSymbol type) => string.Format(CultureInfo.InvariantCulture, ResolveFormat, name, type.ToDisplayString());
@@ -97,6 +106,129 @@ internal static class Code
     public static string ValueTypeResolve(IParameterSymbol parameter) => string.Format(CultureInfo.InvariantCulture, ValueTypeResolveFormat, parameter.Name, parameter.Type.ToDisplayString());
 
     internal static string Namespace(string @namespace) => string.Format(CultureInfo.InvariantCulture, NamespaceFormat, @namespace);
+
+    public static string FactoryMapper(string classNameHint, Func<string> factoryMapping)
+    {
+        var mapperBuilder = new StringBuilder()
+            .Append("public class FactoryMapper").Append(classNameHint).AppendLine(" : ZarDevs.DependencyInjection.ZarIoc.IResolutionMapper")
+            .AppendLine(Code.OpenBrace)
+            .AppendTab().AppendLine("public bool TryMap(ZarDevs.DependencyInjection.IDependencyInfo definition, out ZarDevs.DependencyInjection.ZarIoc.ITypeResolution resolution)")
+            .AppendTab().AppendLine(Code.OpenBrace)
+            .AppendTab(2).AppendLine("resolution = null;")
+            .AppendLine()
+            .AppendTab(2).AppendLine("if (definition is not ZarDevs.DependencyInjection.IDependencyFactoryInfo info)")
+            .AppendTab(2).AppendLine(Code.OpenBrace)
+            .AppendTab(3).AppendLine("return false;")
+            .AppendTab(2).AppendLine(Code.CloseBrace)
+            .AppendLine()
+            .AppendTab(factoryMapping(), 2).AppendLine()
+            .AppendLine()
+            .AppendTab().AppendLine("return false;")
+            .AppendTab().AppendLine(Code.CloseBrace)
+            .AppendLine(Code.CloseBrace);
+
+        return mapperBuilder.ToString();
+    }
+
+    public static string TypeMapper(string classNameHint, Func<string> typeMapping)
+    {
+        var mapperBuilder = new StringBuilder()
+            .Append("public class TypeMapper").Append(classNameHint).AppendLine(" : ZarDevs.DependencyInjection.ZarIoc.IResolutionMapper")
+            .AppendLine(Code.OpenBrace)
+            .AppendTab().AppendLine("public bool TryMap(ZarDevs.DependencyInjection.IDependencyInfo definition, out ZarDevs.DependencyInjection.ZarIoc.ITypeResolution resolution)")
+            .AppendTab().AppendLine(Code.OpenBrace)
+            .AppendTab(2).AppendLine("resolution = null;")
+            .AppendLine()
+            .AppendTab(2).AppendLine("if (definition is not ZarDevs.DependencyInjection.IDependencyTypeInfo info)")
+            .AppendTab(2).AppendLine(Code.OpenBrace)
+            .AppendTab(3).AppendLine("return false;")
+            .AppendTab(2).AppendLine(Code.CloseBrace)
+            .AppendLine()
+            .AppendTab(typeMapping(), 2)
+            .AppendLine()
+            .AppendTab(2).AppendLine("return false;")
+            .AppendTab().AppendLine(Code.CloseBrace)
+            .AppendLine(Code.CloseBrace);
+
+        return mapperBuilder.ToString();
+    }
+
+    public static string FactoryMapperIf(this BindingFactoryBuilder builder, string className)
+    {
+        var mapperBuilder = new StringBuilder()
+            .Append("if (info.FactoryType == typeof(").Append(builder.Factory.Type!.ToDisplayString()).Append(") && info.MethodName == ").Append(builder.MethodName).AppendLine(")")
+            .AppendMapperIfContent(className);
+
+        return mapperBuilder.ToString();
+    }
+
+    public static string? FactoryMapperGenericIf(this BindingFactoryBuilder builder, string className)
+    {
+        if (builder.Factory.Type is not INamedTypeSymbol namedType || !namedType.IsUnboundGenericType) return null;
+
+
+        var mapperBuilder = new StringBuilder()
+            .Append("if (info.FactoryType == typeof(").Append(builder.Factory.Type!.ToDisplayString()).Append(") && info.MethodName == ").Append(builder.MethodName).AppendLine(")")
+            .AppendMapperGenericIfContent(className, namedType.TypeArguments.Length);
+
+        return mapperBuilder.ToString();
+    }
+
+    public static string TypeMapperIf(this BindingTypeBuilder builder, string className)
+    {
+        var mapperBuilder = new StringBuilder()
+            .Append("if (info.ResolutionType == typeof(").Append(builder.TargetType.Type!.ToDisplayString()).AppendLine("))")
+            .AppendMapperIfContent(className);
+
+        return mapperBuilder.ToString();
+    }
+
+    public static string? TypeMapperGenericIf(this BindingTypeBuilder builder, string className)
+    {
+        if (builder.TargetType.Type is not INamedTypeSymbol namedType || !namedType.IsUnboundGenericType) return null;
+
+        var mapperBuilder = new StringBuilder()
+            .Append("if (info.ResolutionType == typeof(").Append(builder.TargetType.Type!.ToDisplayString()).AppendLine("))")
+            .AppendMapperGenericIfContent(className, namedType.TypeArguments.Length);
+
+        return mapperBuilder.ToString();
+    }
+
+    private static StringBuilder AppendMapperIfContent(this StringBuilder builder, string className)
+    {
+        return builder
+            .AppendLine(Code.OpenBrace)
+            .AppendTab().Append("resolution = new ").Append(className).AppendLine("(info);")
+            .AppendTab().AppendLine("return true;")
+            .AppendLine(Code.CloseBrace);
+    }
+
+    private static StringBuilder AppendMapperGenericIfContent(this StringBuilder builder, string className, int genericCount)
+    {        
+
+        return builder
+            .AppendLine(Code.OpenBrace)
+            .AppendTab().Append("resolution = new ZarDevs.DependencyInjection.ZarIoc.GenericTypeResolution(ZarDevs.Runtime.Create.Instance, info, typeof(").Append(className).AppendUnboundGeneric(genericCount - 1).AppendLine("));")
+            .AppendTab().AppendLine("return true;")
+            .AppendLine(Code.CloseBrace);
+    }
+
+    private static StringBuilder AppendUnboundGeneric(this StringBuilder builder, int amountToAdd)
+    {
+        const char separator = ',';
+
+        builder.Append('<');
+
+
+        for (int i = 0; i < amountToAdd; i++)
+        {
+            builder.Append(separator);
+        }
+
+        builder.Append('>');
+
+        return builder;
+    }
 
     #endregion Methods
 }

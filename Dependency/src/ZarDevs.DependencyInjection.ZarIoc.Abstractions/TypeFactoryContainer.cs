@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <inheritdoc/>
     public class TypeFactoryContainer : ITypeFactoryContainter
     {
         #region Fields
 
-        private readonly Dictionary<Type, IList<ITypeResolution>> _typeMap;
+        private readonly ConcurrentDictionary<Type, IList<ITypeResolution>> _typeMap;
 
         #endregion Fields
 
@@ -30,13 +32,9 @@ namespace ZarDevs.DependencyInjection
         /// <inheritdoc/>
         public void Add(Type type, ITypeResolution resolution)
         {
-            if (!_typeMap.TryGetValue(type, out var resoutionType))
-            {
-                resoutionType = new List<ITypeResolution>();
-                _typeMap[type] = resoutionType;
-            }
+            IList<ITypeResolution> resolutions = _typeMap.GetOrAdd(type, t => new List<ITypeResolution>());
 
-            resoutionType.Add(resolution);
+            resolutions.Add(resolution);
         }
 
         /// <inheritdoc/>
@@ -59,9 +57,23 @@ namespace ZarDevs.DependencyInjection
         {
             resolutions = null;
 
-            if (!_typeMap.TryGetValue(type, out var list)) return false;
+            if (_typeMap.TryGetValue(type, out var list))
+            {
+                resolutions = new TypeResolutions(list);
 
-            resolutions = new TypeResolutions(list);
+                return true;
+            }
+
+            if (!type.IsConstructedGenericType)
+                return false;
+
+            var genericType = type.GetGenericTypeDefinition();
+
+            if (!TryGet(genericType, out var genericResolutions))
+                return false;
+
+            var concreateResolutions = _typeMap.GetOrAdd(type, t => CreateConstructed(t, genericResolutions).ToArray());
+            resolutions = new TypeResolutions(concreateResolutions);
 
             return true;
         }
@@ -76,6 +88,30 @@ namespace ZarDevs.DependencyInjection
             resolutions = list.Filter(key);
 
             return true;
+        }
+
+        private IEnumerable<ITypeResolution> CreateConstructed(Type type, ITypeResolutions genericResolutions)
+        {
+            foreach (IGenericTypeResolution genericTypeResolution in genericResolutions.OfType<IGenericTypeResolution>())
+            {
+                var concreateResolution = genericTypeResolution.MakeConcrete(type);
+
+                switch (genericTypeResolution.Info.Scope)
+                {
+                    case DependyBuilderScopes.Singleton:
+                        yield return new SingletonResolution(concreateResolution);
+                        break;
+                    case DependyBuilderScopes.Request:
+                        yield return new RequestResolution(concreateResolution);
+                        break;
+                    case DependyBuilderScopes.Thread:
+                        yield return new ThreadResolution(concreateResolution);
+                        break;
+                    default:
+                        yield return concreateResolution;
+                        break;
+                }
+            }
         }
 
         #endregion Methods

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
     /// Singleton type resolution that will remember the value once created.

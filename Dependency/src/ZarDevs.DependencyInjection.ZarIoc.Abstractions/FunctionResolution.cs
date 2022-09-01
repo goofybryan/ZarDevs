@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
     /// Instance type resolution that will remember the value once created.
@@ -30,10 +30,10 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <inheritdoc/>
-        public object Key { get; }
+        public IDependencyInfo Info => _methodInfo;
 
         /// <inheritdoc/>
-        public IDependencyInfo Info => _methodInfo;
+        public object Key { get; }
 
         #endregion Properties
 

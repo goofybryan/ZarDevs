@@ -10,7 +10,7 @@ internal class TypeCodeGenerator : CodeGeneratorBase<BindingTypeBuilder>
 {
     #region Constructors
 
-    public TypeCodeGenerator(IContentPersistence contentPersistence, CancellationToken cancellation) : base(contentPersistence, cancellation)
+    public TypeCodeGenerator(IContentPersistence contentPersistence, INamedTypeSymbol enumerableTypeInfo, CancellationToken cancellation) : base(contentPersistence, enumerableTypeInfo, cancellation)
     {
     }
 

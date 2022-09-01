@@ -9,7 +9,7 @@ namespace ZarDevs.DependencyInjection.SourceGenerator;
 
 internal class FactoryCodeGenerator : CodeGeneratorBase<BindingFactoryBuilder>
 {
-    public FactoryCodeGenerator(IContentPersistence contentPersistence, CancellationToken cancellation) : base(contentPersistence, cancellation)
+    public FactoryCodeGenerator(IContentPersistence contentPersistence, INamedTypeSymbol enumerableTypeInfo, CancellationToken cancellation) : base(contentPersistence, enumerableTypeInfo,cancellation)
     {
     }
 

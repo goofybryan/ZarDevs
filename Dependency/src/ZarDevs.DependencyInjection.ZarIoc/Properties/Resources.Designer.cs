@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ZarDevs.DependencyInjection.Properties {
+namespace ZarDevs.DependencyInjection.ZarIoc.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ZarDevs.DependencyInjection.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ZarDevs.DependencyInjection.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ZarDevs.DependencyInjection.ZarIoc.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

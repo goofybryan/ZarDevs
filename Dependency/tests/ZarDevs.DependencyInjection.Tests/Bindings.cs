@@ -1,3 +1,5 @@
+using ZarDevs.DependencyInjection.ZarIoc;
+
 namespace ZarDevs.DependencyInjection.Tests
 {
     public class Bindings : IDependencyRegistration
@@ -15,7 +17,7 @@ namespace ZarDevs.DependencyInjection.Tests
 
         #region Methods
 
-        [ZarDevs.DependencyInjection.DependencyRegistration]
+        [ZarDevs.DependencyInjection.ZarIoc.DependencyRegistration]
         public void Register(IDependencyBuilder builder)
         {
             builder.Bind<NormalClass>().Resolve<INormalClass>().InTransientScope();

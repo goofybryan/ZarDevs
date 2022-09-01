@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
     /// Ioc container for type factory resolution.
@@ -26,7 +26,10 @@ namespace ZarDevs.DependencyInjection
         /// <param name="typeFactoryContainer">The type factory that contains all the <see cref="ITypeResolution"/></param>
         public IocContainer(ITypeFactoryContainter typeFactoryContainer)
         {
-            _typeFactoryContainer = typeFactoryContainer;
+            _typeFactoryContainer = typeFactoryContainer ?? throw new ArgumentNullException(nameof(typeFactoryContainer));
+
+            Type currentType = typeof(IIocContainer);
+            _typeFactoryContainer.Add(currentType, new InstanceResolution(new DependencyInstanceInfo(currentType, this)));
         }
 
         #endregion Constructors
@@ -80,63 +83,63 @@ namespace ZarDevs.DependencyInjection
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
             var resolutions = TryGetResolution(typeof(T));
-            return resolutions.Resolve().Cast<T>();
+            return resolutions.Resolve().Cast<T>().ToArray();
         }
 
         /// <inheritdoc/>
         public T ResolveNamed<T>(string key, params object[] parameters) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key, parameters);
+            return (T)resolution?.Resolve(parameters);
         }
 
         /// <inheritdoc/>
         public T ResolveNamed<T>(string key, params (string, object)[] parameters) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key);
+            return (T)resolution?.Resolve(parameters);
         }
 
         /// <inheritdoc/>
         public T ResolveNamed<T>(string key) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key);
+            return (T)resolution?.Resolve();
         }
 
         /// <inheritdoc/>
         public T ResolveWithKey<T>(Enum key, params object[] parameters) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key, parameters);
+            return (T)resolution?.Resolve(parameters);
         }
 
         /// <inheritdoc/>
         public T ResolveWithKey<T>(Enum key, params (string, object)[] parameters) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key, parameters);
+            return (T)resolution?.Resolve(parameters);
         }
 
         /// <inheritdoc/>
         public T ResolveWithKey<T>(object key, params object[] parameters) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key, parameters);
+            return (T)resolution?.Resolve(parameters);
         }
 
         /// <inheritdoc/>
         public T ResolveWithKey<T>(object key, params (string, object)[] parameters) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key, parameters);
+            return (T)resolution?.Resolve(parameters);
         }
 
         /// <inheritdoc/>
         public T ResolveWithKey<T>(Enum key) where T : class
         {
             var resolution = GetResolution(typeof(T), key).FirstOrDefault();
-            return (T)resolution?.Resolve(key);
+            return (T)resolution?.Resolve();
         }
 
         /// <inheritdoc/>

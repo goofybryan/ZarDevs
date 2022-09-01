@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
     /// Type resolution interface that will be used to wrap the generated implementations.
     /// </summary>
     public interface ITypeResolutions : IEnumerable<ITypeResolution>
     {
+        #region Methods
+
         /// <summary>
         /// Get the key for the resolution, null key is an empty key.
         /// </summary>
@@ -29,5 +31,7 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         /// <returns>The resolution.</returns>
         IEnumerable<object> Resolve(params (string key, object value)[] parameters);
+
+        #endregion Methods
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace ZarDevs.DependencyInjection
+namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
     /// Thread type resolution that will remember the value once created.
@@ -12,7 +12,7 @@ namespace ZarDevs.DependencyInjection
 
         private readonly ITypeResolution _baseResolution;
         private bool _disposedValue;
-        private ThreadLocal<ThreadResolutionTracker> _threadTracked;
+        private readonly ThreadLocal<ThreadResolutionTracker> _threadTracked;
 
         #endregion Fields
 

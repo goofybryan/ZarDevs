@@ -411,6 +411,18 @@
             The instance that is always returned.
             </summary>
         </member>
+        <member name="T:ZarDevs.DependencyInjection.DependencyMethodInfo">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyMethodInfo.#ctor(System.Func{ZarDevs.DependencyInjection.IDependencyContext,System.Object},ZarDevs.DependencyInjection.IDependencyInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="P:ZarDevs.DependencyInjection.DependencyMethodInfo.Method">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.DependencyMethodInfo.Execute(ZarDevs.DependencyInjection.IDependencyContext)">
+            <inheritdoc/>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.DependencyScopeBinder`1">
             <summary>
             Dependency scope binder that is used to define what to do with a <see

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ZarDevs.DependencyInjection.ZarIoc;
 
 namespace ZarDevs.DependencyInjection.SourceGenerator;
 
@@ -10,9 +11,8 @@ internal class TypeDefinition
 {
     #region Fields
 
-    private const string constraintSeparator = ", ";
+    private const string _constraintSeparator = ", ";
     private readonly string _additional;
-    private readonly List<string> _genericNames;
     private readonly INamedTypeSymbol _namedType;
     private string? _className;
     private IList<(ITypeParameterSymbol parameter, string constraints)>? _constraints;
@@ -32,7 +32,6 @@ internal class TypeDefinition
     {
         _namedType = namedType ?? throw new ArgumentNullException(nameof(namedType));
         _additional = additional ?? throw new ArgumentNullException(nameof(additional));
-        _genericNames = new();
         HasNullability = _namedType.TypeArgumentNullableAnnotations.Any(t => t == NullableAnnotation.Annotated);
     }
 
@@ -67,12 +66,12 @@ internal class TypeDefinition
         if (Constraints.Count == 0) return string.Empty;
 
         StringBuilder builder = new StringBuilder().Append('<');
-        foreach (var constraint in Constraints)
+        foreach (var (parameter, _) in Constraints)
         {
-            builder.Append(constraint.parameter.Name).Append(constraintSeparator);
+            builder.Append(parameter.Name).Append(_constraintSeparator);
         }
 
-        builder.Length -= constraintSeparator.Length;
+        builder.Length -= _constraintSeparator.Length;
 
         return builder.Append('>').ToString();
     }
@@ -80,21 +79,19 @@ internal class TypeDefinition
     public string GenerateClassName()
     {
         string name = _namedType.Name;
-        if (!_namedType.IsGenericType || !_namedType.IsUnboundGenericType) return name + _additional;
+        if (!_namedType.IsGenericType || !_namedType.IsUnboundGenericType) return name + _additional + "Factory";
 
         var typesPart = _namedType.IsUnboundGenericType ?
             _namedType.TypeParameters.SelectMany(p => p.ToDisplayString()) :
             _namedType.TypeArguments.SelectMany(p => "A" + p.ToDisplayString());
 
-        return name + string.Join("", typesPart) + _additional;
+        return name + string.Join("", typesPart) + _additional + "Factory";
     }
 
     public string GenerateDeclaration()
     {
-        string classDeclaration = ClassName;
-
         StringBuilder builder = new StringBuilder().Append("public class ").Append(ClassName);//.AppendFormat(Code.ClassDeclarationFormat, ClassName, typeof(ITypeResolution).Name);
-        StringBuilder constraints = new StringBuilder();
+        StringBuilder constraints = new();
 
         if (Constraints.Count > 0)
         {
@@ -102,18 +99,18 @@ internal class TypeDefinition
 
             foreach (var constraint in Constraints)
             {
-                builder.Append(constraint.parameter.ToDisplayString()).Append(constraintSeparator);
+                builder.Append(constraint.parameter.ToDisplayString()).Append(_constraintSeparator);
                 if (!string.IsNullOrWhiteSpace(constraint.constraints))
                 {
                     constraints.AppendLine().AppendTab().AppendFormat(Code.ConstraintDeclarationFormat, constraint.parameter.ToDisplayString(), constraint.constraints);
                 }
             }
 
-            builder.Length -= constraintSeparator.Length;
+            builder.Length -= _constraintSeparator.Length;
             builder.Append('>');
         }
 
-        builder.Append(" : ").Append(typeof(ITypeResolution).Name).Append(constraints);
+        builder.Append(" : ").Append(typeof(ITypeResolution).FullName).Append(constraints);
 
         return builder.ToString();
     }
@@ -129,7 +126,7 @@ internal class TypeDefinition
 
         if (parameter.ConstraintTypes.Length == 0) return string.Empty;
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new();
 
         UpdateNullability(parameter.NullableAnnotation);
 
@@ -138,17 +135,17 @@ internal class TypeDefinition
             UpdateNullability(constraint.NullableAnnotation);
             builder.Append(constraint.ToDisplayString());
 
-            builder.Append(constraintSeparator);
+            builder.Append(_constraintSeparator);
         }
 
-        builder.AppendWhen(() => parameter.HasNotNullConstraint, notnull, constraintSeparator);
-        builder.AppendWhen(() => parameter.HasUnmanagedTypeConstraint, unmanaged, constraintSeparator);
-        builder.AppendWhen(() => IsDefaultConstraint(parameter), @default, constraintSeparator);
-        builder.AppendWhen(() => IsStructConstraint(parameter), @struct, constraintSeparator);
+        builder.AppendWhen(() => parameter.HasNotNullConstraint, notnull, _constraintSeparator);
+        builder.AppendWhen(() => parameter.HasUnmanagedTypeConstraint, unmanaged, _constraintSeparator);
+        builder.AppendWhen(() => IsDefaultConstraint(parameter), @default, _constraintSeparator);
+        builder.AppendWhen(() => IsStructConstraint(parameter), @struct, _constraintSeparator);
 
         if (IsClassConstraint(parameter))
         {
-            builder.Append(@class).Append(constraintSeparator);
+            builder.Append(@class).Append(_constraintSeparator);
             if (parameter.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
             {
                 HasNullability = true;
@@ -156,9 +153,9 @@ internal class TypeDefinition
             }
         }
 
-        builder.AppendWhen(() => parameter.HasConstructorConstraint, @new, constraintSeparator);
+        builder.AppendWhen(() => parameter.HasConstructorConstraint, @new, _constraintSeparator);
 
-        builder.Length -= constraintSeparator.Length;
+        builder.Length -= _constraintSeparator.Length;
         return builder.ToString();
     }
 

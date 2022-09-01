@@ -1,4 +1,4 @@
-﻿using static ZarDevs.DependencyInjection.Tests.Bindings;
+﻿using ZarDevs.DependencyInjection.ZarIoc;
 
 namespace ZarDevs.DependencyInjection.Tests
 {

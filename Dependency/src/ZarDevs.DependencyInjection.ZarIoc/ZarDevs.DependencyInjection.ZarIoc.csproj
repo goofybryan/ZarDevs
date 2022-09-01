@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<RootNamespace>ZarDevs.DependencyInjection</RootNamespace>
+		<RootNamespace>$(MSBuildProjectName)</RootNamespace>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Authors>Bryan Musso</Authors>
 		<Company>ZarsDevs</Company>
