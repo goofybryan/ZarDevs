@@ -9,10 +9,14 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public sealed class IocKernelBuilder : IIocKernelBuilder
     {
+        #region Fields
+
         /// <summary>
         /// Supported scopes
         /// </summary>
-        public const DependyBuilderScopes SupportedScopes = DependyBuilderScopes.Singleton | DependyBuilderScopes.Transient;
+        public const DependyBuilderScopes SupportedScopes = DependyBuilderScopes.Singleton | DependyBuilderScopes.Transient | DependyBuilderScopes.Thread;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -41,6 +45,11 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
+        public void Build(IList<IDependencyInfo> dependencyInfos)
+        {
+            Container.Build(dependencyInfos);
+        }
+
         /// <summary>
         /// Create the Ioc Bindings, <see cref="IIocContainer"/> that will be used by this IOC
         /// implementation to resolve the request using the underlying IOC methodology.
@@ -48,7 +57,7 @@ namespace ZarDevs.DependencyInjection
         /// <returns></returns>
         public IDependencyBuilder CreateDependencyBuilder()
         {
-            var builder = new DependencyBuilder(Container);
+            var builder = new DependencyBuilder();
 
             builder.BindInstance(Activator).Resolve<IDependencyTypeActivator>();
             builder.BindInstance(InspectConstructor.Instance).Resolve<IInspectConstructor>();

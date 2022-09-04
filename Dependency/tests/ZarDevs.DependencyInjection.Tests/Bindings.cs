@@ -1,33 +1,24 @@
+using ZarDevs.DependencyInjection.ZarIoc;
+
 namespace ZarDevs.DependencyInjection.Tests
 {
-    public static class Bindings
+    public class Bindings : IDependencyRegistration
     {
         #region Fields
 
         public const string MethodWithArgs = nameof(MethodWithArgs);
         public const string MethodWithNoArgs = nameof(MethodWithNoArgs);
-        public const string NotMethod = nameof(NotMethod);
-        public const string NotResolvedName = nameof(NotResolvedName);
         public const string Named1 = nameof(Named1);
         public const string Named2 = nameof(Named2);
+        public const string NotMethod = nameof(NotMethod);
+        public const string NotResolvedName = nameof(NotResolvedName);
 
         #endregion Fields
 
         #region Methods
 
-        public static void ConfigurePerformanceTest(this IDependencyBuilder builder)
-        {
-            builder.Bind<PerformanceMethodTest>().Resolve<IPerformanceMethodTest>();
-            builder.BindFunction((ctx) => PerformanceMethodTest.Method()).Resolve<IPerformanceMethodResultTest>();
-            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam1Test>();
-            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam2Test>();
-            builder.Bind<PerformanceConstructParamTest>().Resolve<IPerformanceConstructParam3Test>();
-            builder.Bind<PerformanceConstructTest>().Resolve<IPerformanceConstructTest>();
-            builder.Bind<PerformanceSingletonTest>().Resolve<IPerformanceSingletonTest>().InSingletonScope();
-            builder.BindInstance(new PerformanceInstanceTest()).Resolve<IPerformanceInstanceTest>();
-        }
-
-        public static void ConfigureTest(this IDependencyBuilder builder)
+        [ZarDevs.DependencyInjection.ZarIoc.DependencyRegistration]
+        public void Register(IDependencyBuilder builder)
         {
             builder.Bind<NormalClass>().Resolve<INormalClass>().InTransientScope();
             builder.Bind<CallingClass>().Resolve<ICallingClass>();
@@ -35,6 +26,7 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.Bind<SingletonClassTest>().Resolve<ISingletonClass>().InSingletonScope();
             builder.Bind<SingletonClassTest>().Resolve<ISingletonNamedClass>().InSingletonScope().WithKey(nameof(ISingletonNamedClass));
             builder.Bind<SingletonClassTest>().Resolve<ISingletonEnumClass>().InSingletonScope().WithKey(EnumAsKey.Key);
+            builder.BindInstance(new SingletonClassTest()).Resolve<ISingletonEnumClass>().WithKey(EnumAsKey.Instance);
             builder.Bind<SingletonClassTest>().Resolve<ISingletonKeyClass>().InSingletonScope().WithKey(typeof(ISingletonKeyClass));
             builder.Bind<SingletonSameInstanceClassTest>().Resolve(typeof(ISingletonSameInstanceClassTest), typeof(ISingletonSameInstanceClassTest2), typeof(ISingletonSameInstanceClassTest3), typeof(ISingletonSameInstanceClassTest4)).InSingletonScope();
             builder.Bind<MultipleConstructorClass>().Resolve<IMultipleConstructorClass>();
@@ -65,13 +57,22 @@ namespace ZarDevs.DependencyInjection.Tests
             builder.BindFactory(typeof(IFactoryMethodClass<>), "Singleton").Resolve(typeof(IFactoryMethodResolutionSingletonClass<>)).InSingletonScope();
             builder.Bind<ResolveAllTest>().ResolveAll().WithKey(nameof(ResolveAllTest));
             builder.Bind<ResolveAllTest2>().ResolveAll().WithKey(nameof(ResolveAllTest2));
+            builder.Bind<GenericClass>().Resolve<IGeneric>();
+            builder.Bind<NonGenericClass>().Resolve<NonGenericClass>();
+            builder.Bind<MultipleGenericWithConstrantsClass>().Resolve<IMultipleGenericClass<IGeneric, NonGenericClass>>();
+            builder.Bind(typeof(MultipleGenericWithUnboundConstraintsClass<,>)).Resolve(typeof(IMultipleGenericClass<,>));
         }
 
         #endregion Methods
 
         #region Enums
 
-        public enum EnumAsKey { Key, DifferentKey }
+        public enum EnumAsKey
+        { 
+            Key, 
+            DifferentKey,
+            Instance
+        }
 
         #endregion Enums
     }

@@ -17,13 +17,14 @@ namespace ZarDevs.DependencyInjection.Tests
 
         public ChildClass()
         {
+            CallingClassType = typeof(ChildClass);
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public Type CallingClassType { get; }
+        public Type CallingClassType { get; set; }
 
         #endregion Properties
     }

@@ -4,9 +4,11 @@
 
 This project contains the Microsoft implementation of the [Dependency Injection](..\ZarDevs.DependencyInjection\README.md). The intended use it that you would only add this to your start project. This will then translate the bindings made in the other projects into Microsoft native bindings.
 
-Now Microsoft's implementation have left out a lot of the features that more mature IOC's allow. For good reasons, it forces you to code in a very specific way, however not always practical. Their solution is really quick but does not support parameters or even more advanced binding regarding generics.
+Now Microsoft's implementation have left out a lot of the features that more mature IOC's allow. For good reasons, it forces you to code in a very specific way, however not always practical. Their solution is really quick but does not support given parameters. So I have wrapped those with implementations that make use of the service provider and Microsofts ActivatorUtilities.
 
 Therefor I implemented quite a few wrappers and is the only implementation where you cannot use the the underlying technology for everything. Especially if you are relying on some the advanced features that more mature IOC implementations provide. For example, you cannot use the `IServiceProvider` for resolving items where you pass in arguments or my factory method implementation. You must use the `IIocContainer`.
+
+This project supports singleton and transient bindings.
 
 ## How To
 

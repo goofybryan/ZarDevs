@@ -52,6 +52,9 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         public ISet<Type> ResolvedTypes => _resolution.ResolvedTypes;
 
+        /// <inheritdoc/>
+        public bool IsGenericType => false;
+
         private object Resolved { get; set; }
 
         #endregion Properties

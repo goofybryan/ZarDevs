@@ -34,11 +34,12 @@
             AutoFac initialization
             </summary>
         </member>
-        <member name="M:ZarDevs.DependencyInjection.IocAutoFac.Initialize(Autofac.Builder.ContainerBuildOptions)">
+        <member name="M:ZarDevs.DependencyInjection.IocAutoFac.Initialize(Autofac.Builder.ContainerBuildOptions,ZarDevs.DependencyInjection.IDependencyScopeBinder{Autofac.ContainerBuilder}[])">
             <summary>
             Create a new IOC Kernel container that will start the binding process.
             </summary>
-            <param name="buildOptions"></param>
+            <param name="buildOptions">The container build options.</param>
+            <param name="additionalBinders">Any additional binders that can do additional resoultions. These are added first before <see cref="T:ZarDevs.DependencyInjection.AutoFacDependencyScopeBinder"/> is added.</param>
             <returns></returns>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IocContainer.Dispose">
@@ -58,6 +59,9 @@
             <param name="buildOptions">AutoFac build options.</param>
             <param name="dependencyFactory">The dependency factory.</param>
             <param name="additionalBinders">Optional additional binders.</param>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.Build(System.Collections.Generic.IList{ZarDevs.DependencyInjection.IDependencyInfo})">
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.IocKernelBuilder.CreateDependencyBuilder">
             <summary>

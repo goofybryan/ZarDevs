@@ -34,12 +34,18 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
+        /// <inheritdoc/>
+        public void Build(IList<IDependencyInfo> dependencyInfos)
+        {
+            _container.Build(dependencyInfos);
+        }
+
         /// <summary>
         /// Create a new instance of the dependency builder
         /// </summary>
         public IDependencyBuilder CreateDependencyBuilder()
         {
-            return new DependencyBuilder(_container);
+            return new DependencyBuilder();
         }
 
         /// <summary>

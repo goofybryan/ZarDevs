@@ -10,59 +10,12 @@ namespace ZarDevs.DependencyInjection
     /// </summary>
     public class DependencyBuilder : IDependencyBuilder
     {
-        #region Constructors
-
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        /// <param name="container"></param>
-        public DependencyBuilder(IDependencyContainer container)
-        {
-            Container = container ?? throw new ArgumentNullException(nameof(container));
-        }
-
-        #endregion Constructors
-
         #region Properties
-
-        private IDependencyContainer Container { get; }
         private IList<IDependencyBuilderInfo> Definitions { get; } = new List<IDependencyBuilderInfo>();
 
         #endregion Properties
 
         #region Methods
-
-        /// <summary>
-        /// Create a new binding with the specified type.
-        /// </summary>
-        /// <param name="type">The specified type to bind.</param>
-        /// <returns></returns>
-        public IDependencyBuilderBindingResolve Resolve(Type type)
-        {
-            DependencyBuilderInfo info = CreateBuilderInfo();
-            return info.Resolve(type);
-        }
-        
-        /// <summary>
-        /// Create a new binding with the specified type.
-        /// </summary>
-        /// <param name="resolvedTypes">The a list of types to bind.</param>
-        /// <returns></returns>
-        public IDependencyBuilderBindingResolve Resolve(params Type[] resolvedTypes)
-        {
-            DependencyBuilderInfo info = CreateBuilderInfo();
-            return info.Resolve(resolvedTypes);
-        }
-
-        /// <summary>
-        /// Create a new binding with the specified type.
-        /// </summary>
-        /// <typeparam name="TResolve">The specified type to bind.</typeparam>
-        /// <returns></returns>
-        public IDependencyBuilderBindingResolve Resolve<TResolve>() where TResolve : class
-        {
-            return Resolve(typeof(TResolve));
-        }
 
         /// <summary>
         /// Create a new binding with the specified type.
@@ -92,7 +45,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="bindType">The specified type to bind.</param>
         /// <param name="resolveType">The resolved type.</param>
         /// <returns></returns>
-        public IDependencyBuilderBindingResolve Bind(Type bindType, Type resolveType)
+        public IDependencyBuilderInfo Bind(Type bindType, Type resolveType)
         { 
             return Bind(bindType).Resolve(resolveType);
         }
@@ -103,7 +56,7 @@ namespace ZarDevs.DependencyInjection
         /// <typeparam name="TBind">The specified type to Bind.</typeparam>
         /// <typeparam name="TResolve">The specified type to resolve.</typeparam>
         /// <returns></returns>
-        public IDependencyBuilderBindingResolve Bind<TBind, TResolve>() where TBind : class where TResolve : class
+        public IDependencyBuilderInfo Bind<TBind, TResolve>() where TBind : class where TResolve : class
         {
             return Bind<TBind>().Resolve<TResolve>();
         }
@@ -158,9 +111,10 @@ namespace ZarDevs.DependencyInjection
         }
 
         /// <summary>
-        /// Build the dependencies.
+        /// Get the definitions that are contained in this builder.
         /// </summary>
-        public void Build() => Container.Build(Definitions.Select(definition => definition.DependencyInfo).ToList());
+        /// <returns>A list of the current definitions</returns>
+        public IList<IDependencyInfo> GetDefinitions() => Definitions.Select(definition => definition.DependencyInfo).ToArray();
 
         private DependencyBuilderInfo CreateBuilderInfo()
         {

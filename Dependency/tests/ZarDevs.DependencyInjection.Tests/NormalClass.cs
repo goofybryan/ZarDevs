@@ -2,7 +2,7 @@
 {
     public interface INormalClass { }
 
-    internal class NormalClass : INormalClass
+    public class NormalClass : INormalClass
     {
     }
 }

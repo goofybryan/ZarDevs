@@ -63,16 +63,16 @@ namespace ZarDevs.DependencyInjection
         /// <returns>The resolved type.</returns>
         T ResolveNamed<T>(string key, params object[] parameters) where T : class;
 
-        /// <summary>
+        /// <summary>y
         /// Resolve the requested type with the list of paramaters specified.
         /// </summary>
-        /// <param name="name">The name of the resolution request.</param>
+        /// <param name="key">The name of the resolution request.</param>
         /// <typeparam name="T">The request type</typeparam>
         /// <param name="parameters">
         /// A list of named parameters, these must match a constructor parameter name and associated types.
         /// </param>
         /// <returns>The resolved type.</returns>
-        T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class;
+        T ResolveNamed<T>(string key, params (string, object)[] parameters) where T : class;
 
         /// <summary>
         /// Resolve the requested type.
@@ -361,7 +361,7 @@ namespace ZarDevs.DependencyInjection
             throw new NotSupportedException("Ioc has only been partially initialized.");
         }
 
-        public T ResolveNamed<T>(string name, params (string, object)[] parameters) where T : class
+        public T ResolveNamed<T>(string key, params (string, object)[] parameters) where T : class
         {
             throw new NotSupportedException("Ioc has only been partially initialized.");
         }

@@ -11,6 +11,11 @@ namespace ZarDevs.DependencyInjection
         #region Properties
 
         /// <summary>
+        /// Get a value indicating of the current resolution is a generic type. If true, then <see cref="MakeConcrete(Type)"/> should be called.
+        /// </summary>
+        bool IsGenericType { get; }
+
+        /// <summary>
         /// The key that is associated to this resolution.
         /// </summary>
         object Key { get; }
