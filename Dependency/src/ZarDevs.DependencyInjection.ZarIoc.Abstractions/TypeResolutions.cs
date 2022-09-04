@@ -1,14 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ZarDevs.DependencyInjection.ZarIoc
 {
-    internal class TypeResolutions : ITypeResolutions
+
+    internal class TypeResolutions : IDependencyResolutions
     {
         #region Fields
 
-        private readonly IEnumerable<ITypeResolution> _resolutions;
+        private readonly IList<IDependencyResolution> _resolutions;
+
+        bool IDependencyResolutions.IsEmpty => _resolutions.Count == 0;
 
         #endregion Fields
 
@@ -16,24 +20,24 @@ namespace ZarDevs.DependencyInjection.ZarIoc
 
         public TypeResolutions()
         {
-            _resolutions = Enumerable.Empty<ITypeResolution>();
+            _resolutions = Array.Empty<IDependencyResolution>();
         }
 
-        public TypeResolutions(IEnumerable<ITypeResolution> resolutions)
+        public TypeResolutions(IEnumerable<IDependencyResolution> resolutions)
         {
-            _resolutions = resolutions ?? throw new System.ArgumentNullException(nameof(resolutions));
+            _resolutions = resolutions?.ToArray() ?? throw new System.ArgumentNullException(nameof(resolutions));
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public ITypeResolutions Filter(object key)
+        public IDependencyResolutions Filter(object key)
         {
             return new TypeResolutions(_resolutions.Where(r => Equals(r.Info.Key, key)));
         }
 
-        public IEnumerator<ITypeResolution> GetEnumerator()
+        public IEnumerator<IDependencyResolution> GetEnumerator()
         {
             return _resolutions.GetEnumerator();
         }
@@ -43,27 +47,42 @@ namespace ZarDevs.DependencyInjection.ZarIoc
             return GetEnumerator();
         }
 
-        public IEnumerable<object> Resolve()
+        public object Resolve()
+        {
+            return ResolveAll().FirstOrDefault();
+        }
+
+        public object Resolve(params object[] parameters)
+        {
+            return ResolveAll(parameters).FirstOrDefault();
+        }
+
+        public object Resolve(params (string key, object value)[] parameters)
+        {
+            return ResolveAll(parameters).FirstOrDefault();
+        }
+
+        public IEnumerable<object> ResolveAll(params object[] parameters)
+        {
+            foreach (var resolution in _resolutions)
+            {
+                yield return resolution.Resolve(parameters);
+            }
+        }
+
+        public IEnumerable<object> ResolveAll(params (string key, object value)[] parameters)
+        {
+            foreach (var resolution in _resolutions)
+            {
+                yield return resolution.Resolve(parameters);
+            }
+        }
+
+        public IEnumerable<object> ResolveAll()
         {
             foreach (var resolution in _resolutions)
             {
                 yield return resolution.Resolve();
-            }
-        }
-
-        public IEnumerable<object> Resolve(params object[] parameters)
-        {
-            foreach (var resolution in _resolutions)
-            {
-                yield return resolution.Resolve(parameters);
-            }
-        }
-
-        public IEnumerable<object> Resolve(params (string key, object value)[] parameters)
-        {
-            foreach (var resolution in _resolutions)
-            {
-                yield return resolution.Resolve(parameters);
             }
         }
 

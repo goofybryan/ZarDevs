@@ -5,11 +5,11 @@ namespace ZarDevs.DependencyInjection.ZarIoc
     /// <summary>
     /// Singleton type resolution that will remember the value once created.
     /// </summary>
-    public sealed class SingletonResolution : ITypeResolution, IDisposable
+    public sealed class SingletonResolution : IDependencyResolution, IDisposable
     {
         #region Fields
 
-        private readonly ITypeResolution _baseResolution;
+        private readonly IDependencyResolution _baseResolution;
         private bool _disposedValue;
         private object _value;
 
@@ -23,7 +23,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         /// <param name="baseResolution">
         /// The type resolution that will be used to initially resolve the value.
         /// </param>
-        public SingletonResolution(ITypeResolution baseResolution)
+        public SingletonResolution(IDependencyResolution baseResolution)
         {
             _baseResolution = baseResolution;
         }

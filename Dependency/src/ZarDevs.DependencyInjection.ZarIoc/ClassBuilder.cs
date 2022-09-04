@@ -8,9 +8,10 @@ internal class ClassBuilder
 {
     #region Fields
 
-    private readonly IList<string> _constructors;
-    private readonly IList<string> _methods;
-    private readonly IList<string> _properties;
+    private readonly ISet<string> _constructors;
+    private readonly ISet<string> _fields;
+    private readonly ISet<string> _methods;
+    private readonly ISet<string> _properties;
 
     #endregion Fields
 
@@ -18,11 +19,16 @@ internal class ClassBuilder
 
     public ClassBuilder(TypeDefinition classDefinition)
     {
-        _constructors = new List<string>();
-        _methods = new List<string>();
-        _properties = new List<string>();
+        _fields = new HashSet<string>();
+        _constructors = new HashSet<string>();
+        _methods = new HashSet<string>();
+        _properties = new HashSet<string>();
         ClassDefinition = classDefinition ?? throw new ArgumentNullException(nameof(classDefinition));
-        Usings = new List<string>();
+        Usings = new List<string>
+        {
+            "using System.Linq;",
+            "using ZarDevs.DependencyInjection.ZarIoc;"
+        };
     }
 
     #endregion Constructors
@@ -44,6 +50,16 @@ internal class ClassBuilder
         }
 
         _constructors.Add(content.Trim());
+    }
+
+    public void AddFields(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            throw new ArgumentException($"'{nameof(content)}' cannot be null or whitespace.", nameof(content));
+        }
+
+        _fields.Add(content.Trim());
     }
 
     public void AddMethod(string content)
@@ -83,6 +99,8 @@ internal class ClassBuilder
         builder.AppendLine(ClassDefinition.Declaration)
             .AppendLine(Code.OpenBrace);
 
+        AppendTabbedSection(_fields, builder);
+        builder.AppendLine();
         AppendTabbedSection(_constructors, builder);
         builder.AppendLine();
         AppendTabbedSection(_properties, builder);
@@ -99,7 +117,7 @@ internal class ClassBuilder
         return Build();
     }
 
-    private void AppendTabbedSection(IList<string> toAppend, StringBuilder builder)
+    private void AppendTabbedSection(ISet<string> toAppend, StringBuilder builder)
     {
         foreach (var section in toAppend)
         {

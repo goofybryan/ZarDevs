@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -9,7 +12,7 @@ namespace ZarDevs.DependencyInjection.Tests
     {
         #region Fields
 
-        private const int TotalRuns = 100000;
+        private const int _totalRuns = 100000;
         private readonly ITestOutputHelper _output;
 
         #endregion Fields
@@ -62,57 +65,71 @@ namespace ZarDevs.DependencyInjection.Tests
 
         protected abstract T PerformanceResolveDirect<T>() where T : class;
 
-        private void AssertPerformance(TimeSpan iocTests, TimeSpan iocTestsDirect, TimeSpan iocTestsComparison)
+        private void AssertPerformance(PerformenceMeasurement iocTests, PerformenceMeasurement iocTestsDirect, PerformenceMeasurement? iocTestsComparison)
         {
-            _output.WriteLine("Total objected created {0}", TotalRuns);
-            _output.WriteLine("Time taken for IOC {0} ms", iocTests.TotalMilliseconds);
-            _output.WriteLine("Time taken for IOC with generic infrastructure {0} ms", iocTestsDirect.TotalMilliseconds);
+            _output.WriteLine("Total objects created per run {0}", _totalRuns);
+            _output.WriteLine("Time taken for IOC {0} ms", iocTests.TotalTime.TotalMilliseconds);
+            _output.WriteLine("Time taken for IOC with generic infrastructure {0} ms", iocTestsDirect.TotalTime.TotalMilliseconds);
 
-            if (Fixture.RunComparisonTests)
+            if (iocTestsComparison != null)
             {
-                _output.WriteLine("Time taken for IOC with non-generic infrasturcture {0} ms", iocTestsComparison.TotalMilliseconds);
+                _output.WriteLine("Time taken for IOC with non-generic infrasturcture {0} ms", iocTestsComparison.TotalTime.TotalMilliseconds);
             }
 
-            double iocTicks = iocTests.TotalMilliseconds;
-            double iocDirectTicks = iocTestsDirect.TotalMilliseconds;
+            TimeSpan fastestIoc = iocTests.SubsequentCalls.OrderBy(c => c.Ticks).First();
+            double averageIoc = iocTests.SubsequentCalls.Average(c => c.Ticks);
+            TimeSpan slowestIoc = iocTests.SubsequentCalls.OrderByDescending(c => c.Ticks).First();
+            TimeSpan fastestDirectIoc = iocTestsDirect.SubsequentCalls.OrderBy(c => c.Ticks).First();
+            double averageDirectIoc = iocTests.SubsequentCalls.Average(c => c.Ticks);
+            TimeSpan slowestDirectIoc = iocTestsDirect.SubsequentCalls.OrderByDescending(c => c.Ticks).First();
+            TimeSpan? fastestComparisonIoc = iocTestsComparison?.SubsequentCalls.OrderBy(c => c.Ticks).First();
+            double? averageComparisonIoc = iocTests.SubsequentCalls.Average(c => c.Ticks);
+            TimeSpan? slowestComparisonIoc = iocTestsComparison?.SubsequentCalls.OrderByDescending(c => c.Ticks).First();
 
-            var differenceOfGet = (iocTicks - iocDirectTicks) / iocDirectTicks * 100;
-            _output.WriteLine("Difference of call IOC and generic binded IOC: {0}% (This generally will show the overhead that is added, in some case just a simple property get call adds a lot of cycles.).", differenceOfGet);
+            StringBuilder builder = new StringBuilder()
+                .AppendLine() 
+                .AppendLine("       \tIOC\tDirect\tComparison")
+                .Append("Fastest\t").Append(fastestIoc.Ticks).Append('\t').Append(fastestDirectIoc.Ticks).Append('\t').AppendLine(fastestComparisonIoc?.Ticks.ToString() ?? "N/A")
+                .Append("Slowest\t").Append(slowestIoc.Ticks).Append('\t').Append(slowestDirectIoc.Ticks).Append('\t').AppendLine(slowestComparisonIoc?.Ticks.ToString() ?? "N/A")
+                .Append("Average\t").Append((long)averageIoc).Append('\t').Append((long)averageDirectIoc).Append('\t').AppendLine(averageComparisonIoc != null ? ((long)averageComparisonIoc).ToString() : "N/A");
 
-            if (!Fixture.RunComparisonTests)
-            {
-                _output.WriteLine("No non generic comparison available due to no third party software being used.");
-                return;
-            }
-
-            double iocComparisonTicks = iocTestsComparison.TotalMilliseconds;
-
-            var differenceDirect = (iocDirectTicks - iocComparisonTicks) / iocComparisonTicks * 100;
-            _output.WriteLine("Difference in using the generic binded underlying IOC technolgy compared to the non-generic binding: {0}% (This will vary depending on how many only IOC resolves there are compared to some that require the generic infrastructure, especially methods).", differenceDirect);
-
-            var differenceComparison = (iocTicks - iocComparisonTicks) / iocComparisonTicks * 100;
-            _output.WriteLine("Difference in using the generic IOC calls compared to the non-generic calls: {0}% (This will normally be slower as there is infrastructure between the IOC resolution and the generic infrastructure, sometime just a property call adds a huge amount of overhead).", differenceComparison);
+            _output.WriteLine(builder.ToString());
         }
 
         private T PerformanceResolve<T>() where T : class => Ioc.Resolve<T>();
 
-        private TimeSpan RunIocTests<T>(Func<T> creation) where T : class
+        private static PerformenceMeasurement RunIocTests<T>(Func<T> creation) where T : class
         {
-            // Run once to ensure any lazy initialization is completed.
-            var result = creation();
-            Assert.NotNull(result);
-            Assert.IsAssignableFrom<T>(result);
-
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            for (int i = 0; i < TotalRuns; i++)
+            PerformenceMeasurement measurement = new()
             {
-                result = creation();
-                Assert.NotNull(result);
-                Assert.IsAssignableFrom<T>(result);
+                // Run once to ensure any lazy initialization is completed.
+                FirstCall = Measure(creation)
+            };
+
+
+            for (int i = 0; i < _totalRuns; i++)
+            {
+                TimeSpan timeTaken = Measure(creation);
+                measurement.SubsequentCalls.Add(timeTaken);
             }
 
             watch.Stop();
+
+            measurement.TotalTime = watch.Elapsed;
+
+            return measurement;
+        }
+
+        private static TimeSpan Measure<T>(Func<T> creation)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            T result = creation();
+            watch.Stop();
+
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<T>(result);
 
             return watch.Elapsed;
         }
@@ -120,22 +137,20 @@ namespace ZarDevs.DependencyInjection.Tests
         private void RunPerformanceTest<T>() where T : class
         {
             // Act
-            var iocTests = RunIocTests(PerformanceResolve<T>);
-            var iocTestsDirect = RunIocTests(PerformanceResolveDirect<T>);
+            var iocTests = IocPerformanceConstruct<TFixture>.RunIocTests(PerformanceResolve<T>);
+            var iocTestsDirect = IocPerformanceConstruct<TFixture>.RunIocTests(PerformanceResolveDirect<T>);
+            var iocTestsComparison = Fixture.RunComparisonTests ? IocPerformanceConstruct<TFixture>.RunIocTests(PerformanceResolveComparison<T>) : null;
 
-            if (Fixture.RunComparisonTests)
-            {
-                var iocTestsComparison = RunIocTests(PerformanceResolveComparison<T>);
-
-                // Assert
-                AssertPerformance(iocTests, iocTestsDirect, iocTestsComparison);
-            }
-            else
-            {
-                AssertPerformance(iocTests, iocTestsDirect, TimeSpan.MinValue);
-            }
+            AssertPerformance(iocTests, iocTestsDirect, iocTestsComparison);
         }
 
         #endregion Methods
+    }
+
+    internal class PerformenceMeasurement
+    {
+        public TimeSpan FirstCall { get; set; }
+        public List<TimeSpan> SubsequentCalls { get; } = new();
+        public TimeSpan TotalTime { get; set; }
     }
 }

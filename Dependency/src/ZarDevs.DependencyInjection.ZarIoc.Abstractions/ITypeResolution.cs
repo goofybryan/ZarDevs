@@ -1,19 +1,10 @@
 ﻿namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <summary>
-    /// Type resolution interface that will be used to wrap the generated implementations.
+    /// Resolution interface used to resolve and get the value.
     /// </summary>
-    public interface ITypeResolution
+    public interface IResolution
     {
-        #region Properties
-
-        /// <summary>
-        /// Get the dependency definition.
-        /// </summary>
-        IDependencyInfo Info { get; }
-
-        #endregion Properties
-
         #region Methods
 
         /// <summary>
@@ -35,5 +26,20 @@
         object Resolve(params (string key, object value)[] parameters);
 
         #endregion Methods
+    }
+
+    /// <summary>
+    /// Dependency resolution interface that will be used to wrap the generated implementations.
+    /// </summary>
+    public interface IDependencyResolution : IResolution
+    {
+        #region Properties
+
+        /// <summary>
+        /// Get the dependency definition.
+        /// </summary>
+        IDependencyInfo Info { get; }
+
+        #endregion Properties
     }
 }

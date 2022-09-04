@@ -52,9 +52,9 @@ namespace ZarDevs.DependencyInjection.ZarIoc
             }
         }
 
-        private void Map(ITypeFactoryContainter factoryContainer, ITypeResolution resolution)
+        private void Map(ITypeFactoryContainter factoryContainer, IDependencyResolution resolution)
         {
-            ITypeResolution mappedResolution;
+            IDependencyResolution mappedResolution;
             if (resolution is IGenericTypeResolution)
             {
                 mappedResolution = resolution;
@@ -78,7 +78,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         }
 
 
-        private bool TryGetFromMapper(IDependencyInfo definition, out ITypeResolution resolution)
+        private bool TryGetFromMapper(IDependencyInfo definition, out IDependencyResolution resolution)
         {
             foreach (var mapper in _mappers)
             {

@@ -14,7 +14,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         /// </summary>
         /// <param name="create">Pass in the <see cref="ICreate"/> instance.</param>
         /// <param name="info">Pass in the info.</param>
-        /// <param name="genericFactoryType">Pass in the <see cref="ITypeResolution"/> factory type</param>
+        /// <param name="genericFactoryType">Pass in the <see cref="IDependencyResolution"/> factory type</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public GenericTypeResolution(ICreate create, IDependencyInfo info, Type genericFactoryType)
@@ -22,9 +22,9 @@ namespace ZarDevs.DependencyInjection.ZarIoc
             _create = create ?? throw new ArgumentNullException(nameof(create));
             Info = info ?? throw new ArgumentNullException(nameof(info));
 
-            if(genericFactoryType.GetInterface(nameof(ITypeResolution)) == null)
+            if(genericFactoryType.GetInterface(nameof(IDependencyResolution)) == null)
             {
-                throw new ArgumentException($"The generic factory type is not an instance of typeof({typeof(ITypeResolution)})", nameof(genericFactoryType));
+                throw new ArgumentException($"The generic factory type is not an instance of typeof({typeof(IDependencyResolution)})", nameof(genericFactoryType));
             }
 
             if(genericFactoryType.IsConstructedGenericType)
@@ -39,12 +39,12 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         public IDependencyInfo Info { get; }
 
         /// <inheritdoc/>
-        public ITypeResolution MakeConcrete(Type type)
+        public IDependencyResolution MakeConcrete(Type type)
         {            
             var concreteInfo = Info.As(type.GenericTypeArguments);
             var concreteFactoryType = _genericFactoryType.MakeGenericType(type.GenericTypeArguments);
 
-            return (ITypeResolution)_create.New(concreteFactoryType, concreteInfo);
+            return (IDependencyResolution)_create.New(concreteFactoryType, concreteInfo);
         }
 
         /// <inheritdoc/>

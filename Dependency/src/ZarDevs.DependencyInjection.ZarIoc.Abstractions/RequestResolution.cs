@@ -3,16 +3,16 @@
 namespace ZarDevs.DependencyInjection.ZarIoc
 {
     /// <inheritdoc/>
-    public sealed class RequestResolution : ITypeResolution
+    public sealed class RequestResolution : IDependencyResolution
     {
-        private readonly ITypeResolution _typeResolution;
+        private readonly IDependencyResolution _typeResolution;
 
         /// <summary>
         /// Create a new instance of the <see cref="RequestResolution"/>
         /// </summary>
         /// <param name="typeResolution">Specify the type resolution</param>
         /// <exception cref="ArgumentNullException">Throws <see cref="ArgumentNullException"/> when <paramref name="typeResolution"/> is null.</exception>
-        public RequestResolution(ITypeResolution typeResolution)
+        public RequestResolution(IDependencyResolution typeResolution)
         {
             _typeResolution = new SingletonResolution(typeResolution ?? throw new ArgumentNullException(nameof(typeResolution)));
         }

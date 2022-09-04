@@ -19,22 +19,31 @@ internal class FactoryCodeGenerator : CodeGeneratorBase<BindingFactoryBuilder>
         return Code.FactoryClassName((INamedTypeSymbol)binding.Factory.Type!, methodName);
     }
 
-    protected override string GenerateReturnWithNoParameters(BindingFactoryBuilder binding, TypeDefinition classDefinition)
+    protected override string GenerateReturnWithNoParameters(BindingFactoryBuilder binding, ClassBuilder classBuilder)
     {
+        TypeDefinition classDefinition = classBuilder.ClassDefinition;
+
         var methodName = GetMethodName(binding.MethodName);
+
         StringBuilder builder = new StringBuilder()
-            .AppendLine(Code.Ioc)
             .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition))
             .AppendLine(Code.ReturnFactoryMethod(methodName));
+
         return builder.ToString();
     }
 
-    protected override string GenerateReturnWithParameters(BindingFactoryBuilder binding, TypeDefinition classDefinition, List<string> parameterNames)
+    protected override string GenerateReturnWithParameters(BindingFactoryBuilder binding, ClassBuilder classBuilder, List<string> parameterNames)
     {
+        TypeDefinition classDefinition = classBuilder.ClassDefinition;
+
+        classBuilder.AddFields(Code.FactoryFieldName);
+        classBuilder.AddProperty(Code.FactoryPropertyName(classDefinition));
+
         var methodName = GetMethodName(binding.MethodName);
         StringBuilder builder = new StringBuilder()
             .AppendLine(Code.Resolve(Code.FactoryVariableName, classDefinition))
             .AppendLine(Code.ReturnFactoryMethod(methodName, parameterNames));
+
         return builder.ToString();
     }
 
@@ -42,6 +51,7 @@ internal class FactoryCodeGenerator : CodeGeneratorBase<BindingFactoryBuilder>
     {
         var methodName = GetMethodName(binding.MethodName);
         var typeToUse = namedType.OriginalDefinition ?? namedType;
+
         return typeToUse.GetMembers(methodName).Where(m => m.DeclaredAccessibility != Accessibility.Private && m.DeclaredAccessibility != Accessibility.Protected).Cast<IMethodSymbol>().ToArray();
     }
 

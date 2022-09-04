@@ -110,7 +110,7 @@ internal class TypeDefinition
             builder.Append('>');
         }
 
-        builder.Append(" : ").Append(typeof(ITypeResolution).FullName).Append(constraints);
+        builder.Append(" : ").Append(typeof(IDependencyResolution).FullName).Append(constraints);
 
         return builder.ToString();
     }

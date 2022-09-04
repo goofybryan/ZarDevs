@@ -14,8 +14,8 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
     private readonly CancellationToken _cancellation;
     private readonly IContentPersistence _contentPersistence;
-    private readonly HashSet<string> _generated;
     private readonly INamedTypeSymbol _enumerableTypeInfo;
+    private readonly HashSet<string> _generated;
 
     #endregion Fields
 
@@ -58,9 +58,17 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
         className = classDefinition.ClassName;
 
-        string[] usings = classDefinition.HasNullability ? new[] { "#nullable enable" } : Array.Empty<string>();
+        List<string> usings = new();
+
+        if(classDefinition.HasNullability)
+        {
+            usings.Add("#nullable enable");
+        }
+
+        usings.AddRange(classBuilder.Usings);
+
         _cancellation.ThrowIfCancellationRequested();
-        _contentPersistence.Persist(className, classBuilder.Build(), usings);
+        _contentPersistence.Persist(className, classBuilder.Build(), usings.ToArray());
         _generated.Add(className);
 
         return true;
@@ -68,9 +76,9 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
     protected abstract TypeDefinition GenerateClassName(T binding, INamedTypeSymbol namedType);
 
-    protected abstract string GenerateReturnWithNoParameters(T binding, TypeDefinition classDefinition);
+    protected abstract string GenerateReturnWithNoParameters(T binding, ClassBuilder classBuilder);
 
-    protected abstract string GenerateReturnWithParameters(T binding, TypeDefinition classDefinition, List<string> parameterNames);
+    protected abstract string GenerateReturnWithParameters(T binding, ClassBuilder classBuilder, List<string> parameterNames);
 
     protected abstract IMethodSymbol[] GetTargetMethodOrConstructor(T binding, INamedTypeSymbol namedType);
 
@@ -96,8 +104,8 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         var methodOrConstructor = methodOrConstructors.FirstOrDefault();
 
         string content = methodOrConstructor is null || methodOrConstructor.Parameters.Length == 0 ?
-            GenerateResolveContent(binding, classBuilder.ClassDefinition) :
-            GenerateResolveContent(binding, classBuilder.ClassDefinition, methodOrConstructor);
+            GenerateResolveContent(binding, classBuilder) :
+            GenerateResolveContent(binding, classBuilder, methodOrConstructor);
 
         StringBuilder builder = new StringBuilder()
             .AppendLine(Code.ResolveMethod)
@@ -199,6 +207,8 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
     {
         string className = classBuilder.ClassDefinition.ClassName;
 
+        classBuilder.AddFields("private ITypeFactoryContainter _container;");
+
         classBuilder.AddConstructor(new StringBuilder()
             .AppendLine(Code.Constructor(className))
             .AppendLine(Code.OpenBrace)
@@ -207,23 +217,22 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
             .ToString());
 
         classBuilder.AddProperty(Code.InfoProperty);
+        classBuilder.AddProperty(Code.ContainerProperty);
+
         ConstructResolve(binding, classBuilder, methodOrConstructors);
         ConstructResolveWithParameters(binding, classBuilder, methodOrConstructors);
         ConstructResolveWithNamedParameters(binding, classBuilder, methodOrConstructors);
-        classBuilder.AddMethod(Code.ResolveParameter);
-        classBuilder.AddMethod(Code.ResolveAllParameter);
     }
 
-    private string GenerateResolveContent(T binding, TypeDefinition classDefinition) => GenerateReturnWithNoParameters(binding, classDefinition);
+    private string GenerateResolveContent(T binding, ClassBuilder classBuilder) => GenerateReturnWithNoParameters(binding, classBuilder);
 
-    private string GenerateResolveContent(T binding, TypeDefinition classDefinition, IMethodSymbol methodOrConstructor)
+    private string GenerateResolveContent(T binding, ClassBuilder classBuilder, IMethodSymbol methodOrConstructor)
     {
         StringBuilder builder = new();
 
         List<string> parameterNames = new();
         if (methodOrConstructor is not null && methodOrConstructor.Parameters.Length > 0)
         {
-            builder.AppendLine(Code.Ioc);
             foreach (var parameter in methodOrConstructor.Parameters)
             {
                 parameterNames.Add(parameter.Name);
@@ -232,14 +241,28 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
 
                 if (parameter.Type.TypeKind == TypeKind.Array)
                 {
-                    resolve = Code.ResolveAll(parameter.Name, ((IArrayTypeSymbol)parameter.Type).ElementType, parameter.Type);
+                    classBuilder.AddFields(Code.TypeResolutionsField(parameter));
+
+                    var name = parameter.Name;
+                    var type = (IArrayTypeSymbol)parameter.Type;
+                    classBuilder.AddProperty(Code.TypeResolutionsProperty(name, type));
+
+                    resolve = Code.ResolveAll(parameter.Name, (IArrayTypeSymbol)parameter.Type);
                 }
                 else if (parameter.Type.AllInterfaces.Any(i => SymbolEqualityComparer.IncludeNullability.Equals(i, _enumerableTypeInfo)))
                 {
-                    resolve = Code.ResolveAll(parameter);
+                    classBuilder.AddFields(Code.TypeResolutionsField(parameter));
+
+                    var name = parameter.Name;
+                    var type = (INamedTypeSymbol)parameter.Type;
+                    classBuilder.AddProperty(Code.TypeResolutionsProperty(name, type));
+
+                    resolve = Code.ResolveAll(parameter.Name, (INamedTypeSymbol)parameter.Type);
                 }
                 else
                 {
+                    classBuilder.AddFields(Code.TypeResolutionField(parameter));
+                    classBuilder.AddProperty(Code.TypeResolutionProperty(parameter));
                     resolve = parameter.Type.IsValueType ? Code.ResolveDefault(parameter.Name, parameter.Type) : Code.Resolve(parameter);
                 }
 
@@ -247,7 +270,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
             }
         }
 
-        builder.Append(GenerateReturnWithParameters(binding, classDefinition, parameterNames));
+        builder.Append(GenerateReturnWithParameters(binding, classBuilder, parameterNames));
 
         return builder.ToString();
     }
@@ -261,7 +284,6 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         StringBuilder resolveMethodBuilder = new StringBuilder()
             .AppendLine(Code.ResolveWithNumberedObjectParametersMethod(methodOrConstructor.Parameters.Length))
             .AppendLine(Code.OpenBrace)
-            .AppendTab(Code.Ioc)
             .AppendLine();
 
         List<string> parameterNames = new();
@@ -273,7 +295,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
             index++;
         }
 
-        resolveMethodBuilder.AppendTab(GenerateReturnWithParameters(binding, classBuilder.ClassDefinition, parameterNames))
+        resolveMethodBuilder.AppendTab(GenerateReturnWithParameters(binding, classBuilder, parameterNames))
             .AppendLine()
             .Append(Code.CloseBrace);
 
@@ -292,7 +314,6 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         StringBuilder resolveMethodBuilder = new StringBuilder()
             .AppendLine(Code.ResolveWithNumberedNamedParametersMethod(methodOrConstructor.Parameters.Length))
             .AppendLine(Code.OpenBrace)
-            .AppendTab(Code.Ioc)
             .AppendLine();
 
         StringBuilder foreachLoopBuilder = new();
@@ -319,7 +340,7 @@ internal abstract class CodeGeneratorBase<T> : ITypeCodeGenerator where T : IRes
         resolveMethodBuilder.AppendLine()
             .AppendTab(foreachLoopBuilder.ToString())
             .AppendLine()
-            .AppendTab(GenerateReturnWithParameters(binding, classBuilder.ClassDefinition, parameterNames))
+            .AppendTab(GenerateReturnWithParameters(binding, classBuilder, parameterNames))
             .AppendLine()
             .AppendLine(Code.CloseBrace);
 

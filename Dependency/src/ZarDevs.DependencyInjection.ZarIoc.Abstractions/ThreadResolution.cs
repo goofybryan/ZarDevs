@@ -6,11 +6,11 @@ namespace ZarDevs.DependencyInjection.ZarIoc
     /// <summary>
     /// Thread type resolution that will remember the value once created.
     /// </summary>
-    public sealed class ThreadResolution : ITypeResolution, IDisposable
+    public sealed class ThreadResolution : IDependencyResolution, IDisposable
     {
         #region Fields
 
-        private readonly ITypeResolution _baseResolution;
+        private readonly IDependencyResolution _baseResolution;
         private bool _disposedValue;
         private readonly ThreadLocal<ThreadResolutionTracker> _threadTracked;
 
@@ -24,7 +24,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         /// <param name="baseResolution">
         /// The type resolution that will be used to initially resolve the value.
         /// </param>
-        public ThreadResolution(ITypeResolution baseResolution)
+        public ThreadResolution(IDependencyResolution baseResolution)
         {
             _baseResolution = baseResolution;
             _threadTracked = new ThreadLocal<ThreadResolutionTracker>(() => new ThreadResolutionTracker(_baseResolution));

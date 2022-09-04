@@ -1,9 +1,8 @@
-﻿using System;
-using ZarDevs.DependencyInjection.Tests;
+﻿using ZarDevs.DependencyInjection.Tests;
 using ZarDevs.DependencyInjection.ZarIoc;
 using ZarDevs.DependencyInjection.Tests.Ioc;
 
-namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
+namespace ZarDevs.DependencyInjection.SourceGenerator.Tests
 {
     public sealed class IocTestFixture : IIocTestFixture, IDisposable
     {

@@ -20,9 +20,9 @@ internal class TypeCodeGenerator : CodeGeneratorBase<BindingTypeBuilder>
 
     protected override TypeDefinition GenerateClassName(BindingTypeBuilder binding, INamedTypeSymbol namedType) => Code.TypeClassName(namedType);
 
-    protected override string GenerateReturnWithNoParameters(BindingTypeBuilder binding, TypeDefinition classDefinition) => Code.ReturnNewType(classDefinition);
+    protected override string GenerateReturnWithNoParameters(BindingTypeBuilder binding, ClassBuilder classBuilder) => Code.ReturnNewType(classBuilder.ClassDefinition);
 
-    protected override string GenerateReturnWithParameters(BindingTypeBuilder binding, TypeDefinition classDefinition, List<string> parameterNames) => Code.ReturnNewType(classDefinition, parameterNames);
+    protected override string GenerateReturnWithParameters(BindingTypeBuilder binding, ClassBuilder classBuilder, List<string> parameterNames) => Code.ReturnNewType(classBuilder.ClassDefinition, parameterNames);
 
     protected override IMethodSymbol[] GetTargetMethodOrConstructor(BindingTypeBuilder binding, INamedTypeSymbol namedType)
     {

@@ -11,7 +11,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
 
         private bool _disposedValue;
 
-        private ITypeResolution _resolution;
+        private IDependencyResolution _resolution;
 
         private object _value;
 
@@ -24,7 +24,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         /// </summary>
         /// <param name="resolution">The resolution to track.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public ThreadResolutionTracker(ITypeResolution resolution)
+        public ThreadResolutionTracker(IDependencyResolution resolution)
         {
             _resolution = resolution ?? throw new ArgumentNullException(nameof(resolution));
         }
@@ -67,7 +67,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         /// </summary>
         /// <param name="resolve">The resolve function.</param>
         /// <returns>The value for the current thread.</returns>
-        public object Resolve(Func<ITypeResolution, object> resolve)
+        public object Resolve(Func<IDependencyResolution, object> resolve)
         {
             return _value ??= resolve(_resolution);
         }

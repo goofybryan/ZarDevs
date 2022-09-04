@@ -8,7 +8,7 @@
         #region Methods
 
         /// <inheritdoc/>
-        public bool TryMap(IDependencyInfo definition, out ITypeResolution resolution)
+        public bool TryMap(IDependencyInfo definition, out IDependencyResolution resolution)
         {
             if (definition is IDependencyInstanceInfo instanceInfo)
             {

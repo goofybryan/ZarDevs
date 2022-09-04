@@ -2,7 +2,7 @@
 using Xunit.Abstractions;
 using ZarDevs.DependencyInjection.Tests;
 
-namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
+namespace ZarDevs.DependencyInjection.SourceGenerator.Tests
 {
     public class IocPerformanceTests : IocPerformanceConstruct<IocPerformanceTestFixture>, IClassFixture<IocPerformanceTestFixture>
     {
@@ -14,12 +14,12 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 
         protected override T PerformanceResolveComparison<T>()
         {
-            return Ioc.Resolve<T>();
+            return (T)Fixture.TypeFactoryContainer.Get(typeof(T)).Resolve();
         }
 
         protected override T PerformanceResolveDirect<T>()
         {
-            return Ioc.Resolve<T>();
+            return (T)Fixture.TypeFactoryContainer.Get(typeof(T)).Resolve();
         }
 
         #endregion Constructors

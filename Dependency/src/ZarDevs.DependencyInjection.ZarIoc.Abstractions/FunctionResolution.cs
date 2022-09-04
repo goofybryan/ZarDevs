@@ -5,7 +5,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
     /// <summary>
     /// Instance type resolution that will remember the value once created.
     /// </summary>
-    public sealed class FunctionResolution : ITypeResolution
+    public sealed class FunctionResolution : IDependencyResolution
     {
         #region Fields
 

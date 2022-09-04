@@ -2,7 +2,7 @@
 using ZarDevs.DependencyInjection.ZarIoc;
 using ZarDevs.DependencyInjection.Tests.Ioc;
 
-namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
+namespace ZarDevs.DependencyInjection.SourceGenerator.Tests
 {
     public sealed class IocPerformanceTestFixture : IIocPerformanceTestFixture
     {
@@ -18,6 +18,8 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
             {
                 builder.ConfigurePerformanceTest();
             });
+
+            TypeFactoryContainer = ((IIocContainer<ITypeFactoryContainter>)Container).Kernel;
         }
 
         #endregion Constructors
@@ -26,7 +28,9 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 
         public IIocContainer Container { get; }
 
-        public bool RunComparisonTests => true;
+        public ITypeFactoryContainter TypeFactoryContainer { get; }
+
+        public bool RunComparisonTests => false;
 
         #endregion Properties
 
