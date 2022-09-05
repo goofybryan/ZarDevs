@@ -19,7 +19,7 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         public void Add(Type type, IDependencyResolution resolution);
 
         /// <summary>
-        /// Find all resolutions for the <paramref name="type"/>. This is essentially a <see cref="TryGet(Type, object, out IDependencyResolutions)"/>
+        /// Find all resolutions for the <paramref name="type"/>. This is essentially a call to <see cref="TryGet(Type, object, out IResolution)"/> and then <seealso cref="TryGet(Type, out IResolution)"/>
         /// </summary>
         /// <param name="type">Specify the type to get a resolution for.</param>
         /// <param name="key">Specify the key for the resolution.</param>
