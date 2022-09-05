@@ -42,9 +42,8 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         /// <inheritdoc/>
         public IResolution Find(Type type, object key)
         {
-            IResolution resolution;
 
-            if (key is not null && TryGet(type, key, out resolution))
+            if (key is not null && TryGet(type, key, out IResolution resolution))
             {
                 return resolution;
             }
@@ -135,20 +134,13 @@ namespace ZarDevs.DependencyInjection.ZarIoc
         {
             var concreateResolution = genericTypeResolution.MakeConcrete(type);
 
-            switch (genericTypeResolution.Info.Scope)
+            return genericTypeResolution.Info.Scope switch
             {
-                case DependyBuilderScopes.Singleton:
-                    return new SingletonResolution(concreateResolution);
-
-                case DependyBuilderScopes.Request:
-                    return new RequestResolution(concreateResolution);
-
-                case DependyBuilderScopes.Thread:
-                    return new ThreadResolution(concreateResolution);
-
-                default:
-                    return concreateResolution;
-            }
+                DependyBuilderScopes.Singleton => new SingletonResolution(concreateResolution),
+                DependyBuilderScopes.Request => new RequestResolution(concreateResolution),
+                DependyBuilderScopes.Thread => new ThreadResolution(concreateResolution),
+                _ => concreateResolution,
+            };
         }
 
         #endregion Methods
