@@ -30,10 +30,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '2.0'
 
 - task: UseDotNet@2
   inputs:
