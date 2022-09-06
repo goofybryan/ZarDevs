@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project contains the Ninject implementation of the [Dependency Injection](..\ZarDevs.DependencyInjection\README.md). The intended use it that you would only add this to your start project. This will then translate the bindings made in the other projects into Ninject native bindings.
+This project contains the Ninject Web implementation of the [Dependency Injection](..\ZarDevs.DependencyInjection\README.md). The intended use is to add Web request Ninject binding.
 
 Keep in mind that to make the generic functionality work, there are additional objects created to translate this accordingly.
 
@@ -10,25 +10,7 @@ This project supports Singleton, transient and thread scope bindings.
 
 ## How To
 
-The implementation can be seen in the [Ninject test implementation](..\..\tests\ZarDevs.DependencyInjection.Ninject.Tests) and [General Test Construct](..\..\tests\ZarDevs.DependencyInjection.Tests) projects. In the example below, I have bindings made in other assemblies and only in the starting assembly do I initialize the Ninject assembly.
-
-    ```c#
-    // Initialization Code
-    var kernel = IocNinject.CreateBuilder();
-
-    Container = Ioc.Initialize(kernel, builder =>
-    {
-        builder.ConfigureDependencyFromAssemblyA();
-        builder.ConfigureDependencyFromAssemblyB();
-    });
-
-    // Where the configure is an extention method
-    public static void ConfigureDependencyFromAssemblyA(this IDependencyBuilder builder)
-    {
-        builder.Bind<INormalClass>().To<NormalClass>().InTransientScope();
-        ...
-    }
-    ```
+To be completed. Test implentation still to be completed
 
 ## Links
 
