@@ -31,5 +31,11 @@ namespace ZarDevs.DependencyInjection
         {
             container.Add(info.ResolvedTypes, new DependencySingletionResolution<IDependencyTypeInfo, IDependencyResolution<IDependencyTypeInfo>>(_resolutionFactory.ResolutionFor(info)));
         }
+
+        /// <inheritdoc/>
+        protected override void OnRegisterThread(IDependencyResolutionConfiguration container, IDependencyTypeInfo info)
+        {
+            container.Add(info.ResolvedTypes, new DependencyThreadResolution<IDependencyTypeInfo, IDependencyResolution<IDependencyTypeInfo>>(_resolutionFactory.ResolutionFor(info)));
+        }
     }
 }

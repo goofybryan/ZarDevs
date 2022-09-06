@@ -35,6 +35,8 @@ namespace ZarDevs.DependencyInjection
 
         public ISet<Type> ResolvedTypes { get; }
 
+        public bool IsGenericType => false;
+
         #endregion Properties
 
         #region Methods

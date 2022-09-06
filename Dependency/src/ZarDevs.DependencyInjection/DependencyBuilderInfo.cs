@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ZarDevs.Runtime;
 
 namespace ZarDevs.DependencyInjection
@@ -20,6 +19,30 @@ namespace ZarDevs.DependencyInjection
         #endregion Properties
 
         #region Methods
+
+        public IDependencyBuilderInfo InRequestScope()
+        {
+            _info.Scope = DependyBuilderScopes.Request;
+            return this;
+        }
+
+        public IDependencyBuilderInfo InSingletonScope()
+        {
+            _info.Scope = DependyBuilderScopes.Singleton;
+            return this;
+        }
+
+        public IDependencyBuilderInfo InThreadScope()
+        {
+            _info.Scope = DependyBuilderScopes.Thread;
+            return this;
+        }
+
+        public IDependencyBuilderInfo InTransientScope()
+        {
+            _info.Scope = DependyBuilderScopes.Transient;
+            return this;
+        }
 
         public IDependencyBuilderBindingResolve Resolve(Type resolvedType)
         {
@@ -43,15 +66,25 @@ namespace ZarDevs.DependencyInjection
             return Resolve(typeof(T));
         }
 
-        public IDependencyBuilderInfo InSingletonScope()
+        public IDependencyBuilderInfo ResolveAll(params Type[] ignoredTypes)
         {
-            _info.Scope = DependyBuilderScopes.Singleton;
-            return this;
-        }
+            if (_info is not IDependencyTypeInfo typeInfo) return this;
 
-        public IDependencyBuilderInfo InTransientScope()
-        {
-            _info.Scope = DependyBuilderScopes.Transient;
+            var resolutionType = typeInfo.ResolutionType;
+            var typesToIgnore = new List<Type>() { typeof(IDisposable), typeof(object) };
+
+            if (ignoredTypes?.Length > 0)
+                typesToIgnore.AddRange(ignoredTypes);
+
+            var implementingTypes = InspectObject.Instance.FindImplementingTypes(resolutionType, typesToIgnore);
+
+            foreach (var implementingType in implementingTypes)
+            {
+                Resolve(implementingType);
+            }
+
+            Resolve(resolutionType);
+
             return this;
         }
 
@@ -93,28 +126,6 @@ namespace ZarDevs.DependencyInjection
         public IDependencyBuilderInfo WithKey(object key)
         {
             _info.Key = key;
-            return this;
-        }
-
-        public IDependencyBuilderBindingResolve ResolveAll(params Type[] ignoredTypes)
-        {
-            if (_info is not IDependencyTypeInfo typeInfo) return this;
-
-            var resolutionType = typeInfo.ResolutionType;
-            var typesToIgnore = new List<Type>() { typeof(IDisposable), typeof(object) };
-
-            if(ignoredTypes?.Length > 0) 
-                typesToIgnore.AddRange(ignoredTypes);
-
-            var implementingTypes = InspectObject.Instance.FindImplementingTypes(resolutionType, typesToIgnore);
-
-            foreach(var implementingType in implementingTypes)
-            {
-                Resolve(implementingType);
-            }
-
-            Resolve(resolutionType);
-
             return this;
         }
 

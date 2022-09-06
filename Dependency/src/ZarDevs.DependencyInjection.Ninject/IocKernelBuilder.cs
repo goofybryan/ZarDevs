@@ -31,9 +31,14 @@ namespace ZarDevs.DependencyInjection
 
         #region Methods
 
+        public void Build(IList<IDependencyInfo> dependencyInfos)
+        {
+            _container.Build(dependencyInfos);
+        }
+
         public IDependencyBuilder CreateDependencyBuilder()
         {
-            var builder = new DependencyBuilder(_container);
+            var builder = new DependencyBuilder();
 
             builder.BindInstance(_container).Resolve<IDependencyContainer>();
 

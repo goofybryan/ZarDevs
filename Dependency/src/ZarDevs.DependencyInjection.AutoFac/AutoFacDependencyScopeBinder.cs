@@ -183,7 +183,7 @@ namespace ZarDevs.DependencyInjection
 
         private static bool TryRegisterTypeGeneric(ContainerBuilder builder, IDependencyTypeInfo info)
         {
-            if (!info.ResolutionType.IsGenericType)
+            if (!info.ResolutionType.IsGenericType || info.ResolutionType.IsConstructedGenericType)
                 return false;
 
             var binding = builder.RegisterGeneric(info.ResolutionType);

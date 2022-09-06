@@ -49,6 +49,9 @@
         <member name="M:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
             <inheritdoc/>
         </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftFactoryDependencyScopeCompiler.OnRegisterThread(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyFactoryInfo)">
+            <inheritdoc/>
+        </member>
         <member name="T:ZarDevs.DependencyInjection.MicrosoftInstanceDependencyScopeCompiler">
             <summary>
             Dependency scope provider that is used to register <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> dependencies for <see cref="T:ZarDevs.DependencyInjection.IDependencyInstanceInfo"/>.
@@ -85,6 +88,9 @@
             <inheritdoc/>
         </member>
         <member name="M:ZarDevs.DependencyInjection.MicrosoftMethodDependencyScopeCompiler.OnRegisterTransient(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:ZarDevs.DependencyInjection.MicrosoftMethodDependencyScopeCompiler.OnRegisterThread(ZarDevs.DependencyInjection.IDependencyResolutionConfiguration,ZarDevs.DependencyInjection.IDependencyMethodInfo)">
             <inheritdoc/>
         </member>
         <member name="T:ZarDevs.DependencyInjection.MicrosoftTypedDependencyScopeCompiler">

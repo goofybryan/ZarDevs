@@ -106,7 +106,7 @@ namespace ZarDevs.DependencyInjection
 
                 buildDependencies?.Invoke(builder);
 
-                builder.Build();
+                container.Build(builder.GetDefinitions());
 
                 _kernel = new PartialIocContainer(container);
             }

@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNamespace>ZarDevs.DependencyInjection.ZarIoc</RootNamespace>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Authors>Bryan Musso</Authors>
+		<Company>ZarsDevs</Company>
+		<PackageProjectUrl>https://github.com/goofybryan/ZarDevs/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/goofybryan/ZarDevs/tree/master/Dependency</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageTags>ZarDevs,Dependency,Injection,Reflection</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Version>0.1.0</Version>
+		<LangVersion>latest</LangVersion>
+		<Product>ZarDevs.DependencyInjection.ZarIoc</Product>
+		<Description>This is my own implementation of Source generatedIOC. This package contains analyzers need to run the IOC.</Description>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<Copyright>Copyright (c) ZarDevs 2021</Copyright>
+		<SignAssembly>true</SignAssembly>
+		<DelaySign>false</DelaySign>
+		<AssemblyOriginatorKeyFile>..\DependencyInjection.snk</AssemblyOriginatorKeyFile>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<IsRoslynComponent>True</IsRoslynComponent>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Core.csproj" PrivateAssets="all" />
+		<ProjectReference Include="..\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" PrivateAssets="all" />
+	</ItemGroup>
+	
+	<PropertyGroup>
+		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+	</PropertyGroup>
+
+	<Target Name="GetDependencyTargetPaths">
+		<ItemGroup>
+			<TargetPathWithTargetPlatformMoniker Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\bin\$(Configuration)\netstandard2.0\ZarDevs.DependencyInjection.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\bin\$(Configuration)\netstandard2.0\ZarDevs.DependencyInjection.ZarIoc.Core.dll" IncludeRuntimeDependency="false" />
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>

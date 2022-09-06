@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZarDevs.DependencyInjection
 {
@@ -29,7 +30,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="bindType">The specified type to bind.</param>
         /// <param name="resolveType">The resolved type.</param>
         /// <returns></returns>
-        IDependencyBuilderBindingResolve Bind(Type bindType, Type resolveType);
+        IDependencyBuilderInfo Bind(Type bindType, Type resolveType);
 
         /// <summary>
         /// Create a new binding with the specified type.
@@ -37,24 +38,7 @@ namespace ZarDevs.DependencyInjection
         /// <typeparam name="TBind">The specified type to Bind.</typeparam>
         /// <typeparam name="TResolve">The specified type to resolve.</typeparam>
         /// <returns></returns>
-        IDependencyBuilderBindingResolve Bind<TBind, TResolve>() where TBind : class where TResolve : class;
-
-        /// <summary>
-        /// Bind the instance that will be resolved. This will be a singleton instance regardless of configuration.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        IDependencyBuilderBindingResolve BindInstance<T>(T instance);
-
-        /// <summary>
-        /// Bind to a method that will be used to reolve the request type.
-        /// </summary>
-        /// <param name="method">
-        /// The function <see cref="Func{T1, TResult}"/> will be executed, if any parameters are
-        /// available, they will be passed in.
-        /// </param>
-        IDependencyBuilderBindingResolve BindFunction(Func<IDependencyContext, object> method);
+        IDependencyBuilderInfo Bind<TBind, TResolve>() where TBind : class where TResolve : class;
 
         /// <summary>
         /// Bind to a factory method that will be used to resolve the request.
@@ -73,10 +57,29 @@ namespace ZarDevs.DependencyInjection
         IDependencyBuilderBindingResolve BindFactory(Type factoryType, string methodName);
 
         /// <summary>
-        /// Build the dependencies.
+        /// Bind to a method that will be used to reolve the request type.
         /// </summary>
-        void Build();
+        /// <param name="method">
+        /// The function <see cref="Func{T1, TResult}"/> will be executed, if any parameters are
+        /// available, they will be passed in.
+        /// </param>
+        IDependencyBuilderBindingResolve BindFunction(Func<IDependencyContext, object> method);
 
-        #endregion Methods
+        /// <summary>
+        /// Bind the instance that will be resolved. This will be a singleton instance regardless of configuration.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        IDependencyBuilderBindingResolve BindInstance<T>(T instance);
+
+        /// <summary>
+        /// Get the definitions that are contained in this builder.
+        /// </summary>
+        /// <returns>A list of the current definitions</returns>
+        IList<IDependencyInfo> GetDefinitions();
+
+
+#endregion Methods
     }
 }

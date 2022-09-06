@@ -19,7 +19,7 @@ namespace ZarDevs.DependencyInjection
         /// <param name="dependencyFactory">An instance of the dependency factory.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public MicrosoftFactoryDependencyScopeCompiler(IServiceCollection services, IDependencyResolutionFactory resolutionFactory, IDependencyFactory dependencyFactory)
-            : base(resolutionFactory, DependyBuilderScopes.Transient | DependyBuilderScopes.Singleton | DependyBuilderScopes.Request)
+            : base(resolutionFactory, DependyBuilderScopes.Transient | DependyBuilderScopes.Singleton)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
             _dependencyFactory = dependencyFactory ?? throw new ArgumentNullException(nameof(dependencyFactory));
@@ -77,6 +77,23 @@ namespace ZarDevs.DependencyInjection
             }
 
             base.OnRegisterTransient(container, info);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnRegisterThread(IDependencyResolutionConfiguration container, IDependencyFactoryInfo info)
+        {
+            if (info.IsFactoryGeneric())
+            {
+            }
+            else
+            {
+                foreach (var resolveType in info.ResolvedTypes)
+                {
+                    _services.AddTransient(resolveType, p => _dependencyFactory.Resolve(info.CreateContext(Ioc.Container)));
+                }
+            }
+
+            base.OnRegisterThread(container, info);
         }
     }
 }

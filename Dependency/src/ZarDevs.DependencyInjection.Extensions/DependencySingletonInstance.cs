@@ -43,6 +43,9 @@ namespace ZarDevs.DependencyInjection
         /// </summary>
         public ISet<Type> ResolvedTypes => _info.ResolvedTypes;
 
+        /// <inheritdoc/>
+        public bool IsGenericType => false;
+
         #endregion Properties
 
         #region Methods

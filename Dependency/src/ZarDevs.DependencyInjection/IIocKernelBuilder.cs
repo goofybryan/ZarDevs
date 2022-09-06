@@ -1,4 +1,6 @@
-﻿namespace ZarDevs.DependencyInjection
+﻿using System.Collections.Generic;
+
+namespace ZarDevs.DependencyInjection
 {
     /// <summary>
     /// Ioc Kernel Builder that will create instances of the underlying IOC technology
@@ -6,6 +8,12 @@
     public interface IIocKernelBuilder
     {
         #region Methods
+
+        /// <summary>
+        /// Build the Kernel from the list of <paramref name="dependencyInfos"/>
+        /// </summary>
+        /// <param name="dependencyInfos">A list of dependency information.</param>
+        void Build(IList<IDependencyInfo> dependencyInfos);
 
         /// <summary>
         /// Create the dependency container that will be used to bind the dependencies and the

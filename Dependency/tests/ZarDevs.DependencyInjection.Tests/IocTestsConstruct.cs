@@ -46,6 +46,7 @@ namespace ZarDevs.DependencyInjection.Tests
             var values = Ioc.ResolveAll<ResolveAllTestBase>()?.ToList();
 
             // Assert
+            Assert.NotNull(values);
             Assert.NotEmpty(values);
             Assert.Equal(2, values.Count);
             Assert.Contains(values, v => v.GetType() == typeof(ResolveAllTest));
@@ -570,6 +571,8 @@ namespace ZarDevs.DependencyInjection.Tests
             ISingletonEnumClass instance4 = Ioc.TryResolveWithKey<ISingletonEnumClass>(Bindings.EnumAsKey.Key);
             ISingletonKeyClass instance5 = Ioc.TryResolveWithKey<ISingletonKeyClass>(typeof(ISingletonKeyClass));
             ISingletonKeyClass instance6 = Ioc.TryResolveWithKey<ISingletonKeyClass>(typeof(ISingletonKeyClass));
+            ISingletonEnumClass instance7 = Ioc.TryResolveWithKey<ISingletonEnumClass>(Bindings.EnumAsKey.Instance);
+            ISingletonEnumClass instance8 = Ioc.TryResolveWithKey<ISingletonEnumClass>(Bindings.EnumAsKey.Instance);
 
             // Assert
             AssertInstanceIsSame(instance1, instance2);

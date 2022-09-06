@@ -6,6 +6,8 @@ This project contains the Ninject implementation of the [Dependency Injection](.
 
 Keep in mind that to make the generic functionality work, there are additional objects created to translate this accordingly.
 
+This project supports Singleton, transient and thread scope bindings.
+
 ## How To
 
 The implementation can be seen in the [Ninject test implementation](..\..\tests\ZarDevs.DependencyInjection.Ninject.Tests) and [General Test Construct](..\..\tests\ZarDevs.DependencyInjection.Tests) projects. In the example below, I have bindings made in other assemblies and only in the starting assembly do I initialize the Ninject assembly.
@@ -39,3 +41,5 @@ The implementation can be seen in the [Ninject test implementation](..\..\tests\
     1. [Runtime Factory Dependency Injection](../ZarDevs.DependencyInjection.RuntimeFactory/README.md)
     1. [Dependency Injection Extensions](../ZarDevs.DependencyInjection.Extensions/README.md)
     1. [Dependency Injection Factory Extensions](../ZarDevs.DependencyInjection.Extensions.Factory/README.md)
+    1. [ZarIoc Source Generation](../ZarDevs.DependencyInjection.ZarIoc/README.md)
+    1. [ZarIoc Dependency Injection](../ZarDevs.DependencyInjection.ZarIoc.Abstractions/README.md)

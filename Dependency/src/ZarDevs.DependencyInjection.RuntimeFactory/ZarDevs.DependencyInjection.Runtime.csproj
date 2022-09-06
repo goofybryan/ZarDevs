@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <RootNamespace>ZarDevs.DependencyInjection</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
@@ -12,7 +12,7 @@
     <PackageTags>ZarDevs,Dependency,Injection,Reflection</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Version>0.1.0</Version>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Product>ZarDevs.DependencyInjection.Runtime</Product>
     <Description>This is my own implementation of IOC. It is a simplified IOC compared to the more matured projects out there.</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -22,12 +22,8 @@
     <AssemblyOriginatorKeyFile>..\DependencyInjection.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>ZarDevs.DependencyInjection.RuntimeFactory.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="ZarDevs.Runtime" Version="0.1.0" />
+    <PackageReference Include="ZarDevs.Runtime" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>
