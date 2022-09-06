@@ -86,12 +86,14 @@ namespace ZarDevs.DependencyInjection.Tests
             double? averageComparisonIoc = iocTests.SubsequentCalls.Average(c => c.Ticks);
             TimeSpan? slowestComparisonIoc = iocTestsComparison?.SubsequentCalls.OrderByDescending(c => c.Ticks).First();
 
+            const string format = "{0, -10} | {1, 7} | {2, 7} | {3, 7}";
+
             StringBuilder builder = new StringBuilder()
-                .AppendLine() 
-                .AppendLine("       \tIOC\tDirect\tComparison")
-                .Append("Fastest\t").Append(fastestIoc.Ticks).Append('\t').Append(fastestDirectIoc.Ticks).Append('\t').AppendLine(fastestComparisonIoc?.Ticks.ToString() ?? "N/A")
-                .Append("Slowest\t").Append(slowestIoc.Ticks).Append('\t').Append(slowestDirectIoc.Ticks).Append('\t').AppendLine(slowestComparisonIoc?.Ticks.ToString() ?? "N/A")
-                .Append("Average\t").Append((long)averageIoc).Append('\t').Append((long)averageDirectIoc).Append('\t').AppendLine(averageComparisonIoc != null ? ((long)averageComparisonIoc).ToString() : "N/A");
+                .AppendLine()
+                .AppendFormat(format, " ", "IOC", "Direct", "Comp").AppendLine()
+                .AppendFormat(format, "Fastest", fastestIoc.TotalMilliseconds, fastestDirectIoc.TotalMilliseconds, fastestComparisonIoc?.TotalMilliseconds.ToString() ?? "N/A").AppendLine()
+                .AppendFormat(format, "Slowest", slowestIoc.TotalMilliseconds, slowestDirectIoc.TotalMilliseconds, slowestComparisonIoc?.TotalMilliseconds.ToString() ?? "N/A").AppendLine()
+                .AppendFormat(format, "Average", TimeSpan.FromTicks((long)averageIoc).TotalMilliseconds, TimeSpan.FromTicks((long)averageDirectIoc).TotalMilliseconds, averageComparisonIoc != null ? TimeSpan.FromTicks((long)averageComparisonIoc).TotalMilliseconds.ToString() : "N/A").AppendLine();
 
             _output.WriteLine(builder.ToString());
         }

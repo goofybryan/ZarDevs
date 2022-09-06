@@ -40,9 +40,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.SourceGenerator.Tests", "tests\ZarDevs.DependencyInjection.SourceGenerator.Tests\ZarDevs.DependencyInjection.SourceGenerator.Tests.csproj", "{08F3E019-6D62-4BD8-8B35-02347BE5115F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.ZarIoc.Abstractions", "src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Abstractions.csproj", "{FFCA2696-26EF-4244-AFBA-0EC858B59671}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.ZarIoc.Core", "src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Core.csproj", "{FFCA2696-26EF-4244-AFBA-0EC858B59671}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.ZarIoc", "src\ZarDevs.DependencyInjection.ZarIoc\ZarDevs.DependencyInjection.ZarIoc.csproj", "{1B74FE50-3E67-4E96-816F-D87CD12DAA26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZarDevs.DependencyInjection.ZarIoc.SourceGen", "src\ZarDevs.DependencyInjection.ZarIoc\ZarDevs.DependencyInjection.ZarIoc.SourceGen.csproj", "{1B74FE50-3E67-4E96-816F-D87CD12DAA26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

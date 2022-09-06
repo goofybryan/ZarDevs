@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Abstractions.csproj">
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Core.csproj">
       <ReferenceOutputAssembly>True</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj">

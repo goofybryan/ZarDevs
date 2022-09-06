@@ -156,18 +156,18 @@ What I like about it is the fact that you allow the infrastructure to give you t
 
 ## What still needs to be done
 
-1. Nuget Packages
-1. Validation of bindings
+1. Nuget Packages - done
+1. Validation of bindings i.e. ensure that the types are valid etc.
 1. Expand on documentation and document all, including build process.
 1. Validation tests construct
 1. Optimizations (look at code and see where I can improve)
 1. Perhaps support `IServiceProvider` explicitly?
 1. Memory load testing (ensure that this is not too much of an overhead)
 1. More tests
-1. Implement a scoped implementation as extension
+1. Implement a scoped implementation as extension - partially implemented, still under construction.
 1. Optimize the Factory dependency expression builder to allow for passed in parameters plans
-1. IAsyncDisposable support
-1. Investigate code source generation for IOC (https://devblogs.microsoft.com/dotnet/using-c-source-generators-to-create-an-external-dsl/)
+1. IAsyncDisposable support?
+1. With source generation implemented, a hybrid container? One that supports one and falls back to the other.
 1. Create examples:
     1. Example web server project
     1. Example Xamarin Forms project with both Android and iOS
