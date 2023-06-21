@@ -13,6 +13,7 @@ internal static class GeneratorExtensions
     #region Fields
 
     public static string Tab = "\t";
+    public static string NewLine = "\r\n";
 
     #endregion Fields
 
@@ -22,9 +23,9 @@ internal static class GeneratorExtensions
 
     public static StringBuilder AppendTab(this StringBuilder builder, int count) => builder.Append(CreateDuplicates(Tab, count));
 
-    public static StringBuilder AppendTab(this StringBuilder builder, string content) => builder.AppendTab().Append(content.Replace(Environment.NewLine, Environment.NewLine + Tab));
+    public static StringBuilder AppendTab(this StringBuilder builder, string content) => builder.AppendTab().Append(content.Replace(NewLine, NewLine + Tab));
 
-    public static StringBuilder AppendTab(this StringBuilder builder, string content, int count) => builder.AppendTab(count).Append(content.Replace(Environment.NewLine, Environment.NewLine + CreateDuplicates(Tab, count)));
+    public static StringBuilder AppendTab(this StringBuilder builder, string content, int count) => builder.AppendTab(count).Append(content.Replace(NewLine, NewLine + CreateDuplicates(Tab, count)));
 
     public static StringBuilder AppendWhen(this StringBuilder builder, Func<bool> check, params string[] values)
     {
@@ -113,9 +114,9 @@ internal static class GeneratorExtensions
 
     public static bool IsNot(this SyntaxToken token, string value) => !token.Is(value);
 
-    public static StringBuilder TabContent(this StringBuilder builder) => builder.AppendTab().Replace(Environment.NewLine, Environment.NewLine + Tab);
+    public static StringBuilder TabContent(this StringBuilder builder) => builder.AppendTab().Replace(NewLine, NewLine + Tab);
 
-    public static StringBuilder TabContent(this StringBuilder builder, int count) => builder.AppendTab(count).Replace(Environment.NewLine, Environment.NewLine + CreateDuplicates(Tab, count));
+    public static StringBuilder TabContent(this StringBuilder builder, int count) => builder.AppendTab(count).Replace(NewLine, NewLine + CreateDuplicates(Tab, count));
 
     public static bool TraverseParentForSyntaxType<TSyntax>(this SyntaxToken token, out TSyntax? syntax) where TSyntax : SyntaxNode
     {

@@ -23,6 +23,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<IsRoslynComponent>True</IsRoslynComponent>
 		<Nullable>enable</Nullable>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 	</PropertyGroup>
 
 	<ItemGroup>
