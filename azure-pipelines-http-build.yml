@@ -1,6 +1,4 @@
 # ASP.NET Core (.NET Framework)
-
-
 # Build and test ASP.NET Core projects targeting the full .NET Framework.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
@@ -32,10 +30,15 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '7.x'
+
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '6.x'
 
 - task: DotNetCoreCLI@2
   inputs:
