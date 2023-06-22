@@ -49,11 +49,13 @@ namespace ZarDevs.Http.Api
         /// Deserialize the content to the expected type <typeparamref name="TContent"/>
         /// </summary>
         /// <param name="content">The Http content to deserialize.</param>
+        /// <param name="cancellationToken">Optionally add a cancellation token to the deserializer.</param>
         /// <typeparam name="TContent">The expected content type</typeparam>
         /// <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
         public async Task<TContent> DeserializeAsync<TContent>(HttpContent content, CancellationToken cancellationToken = default)
         {
-            using var stream = await content.ReadAsStreamAsync(cancellationToken);
+            using var stream = await content.ReadAsStreamAsync();
+            cancellationToken.ThrowIfCancellationRequested();
 
             TContent value = (TContent)new XmlSerializer(typeof(TContent)).Deserialize(stream);
 

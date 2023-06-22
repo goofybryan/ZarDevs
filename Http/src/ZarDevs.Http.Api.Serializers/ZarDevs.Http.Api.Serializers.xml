@@ -37,7 +37,7 @@
         </member>
         <member name="T:ZarDevs.Http.Api.Serializers.IDefaultFormUrlEncodedContentParser">
             <summary>
-            A parser interface that will try and take a <see cref="T:System.Object"/> and cast it to various enumerables of <see cref="T:System.Tuple`2"/> or <see cref="T:System.Collections.Generic.KeyValuePair`2"/> where key and value is a string.
+            A parser that will try and take a <see cref="T:System.Object"/> and cast it to various enumerables of <see cref="T:System.Tuple`2"/>, <see cref="T:System.ValueTuple`2"/> or <see cref="T:System.Collections.Generic.KeyValuePair`2"/> where key and value is a string.
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.Serializers.IDefaultFormUrlEncodedContentParser.TryParse(System.Object,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}}@)">
@@ -50,7 +50,7 @@
         </member>
         <member name="T:ZarDevs.Http.Api.Serializers.DefaultFormUrlEncodedContentParser">
             <summary>
-            A parser that will try and take a <see cref="T:System.Object"/> and cast it to various enumerables of <see cref="T:System.Tuple`2"/> or <see cref="T:System.Collections.Generic.KeyValuePair`2"/> where key and value is a string.
+            A parser that will try and take a <see cref="T:System.Object"/> and cast it to various enumerables of <see cref="T:System.Tuple`2"/>, <see cref="T:System.ValueTuple`2"/> or <see cref="T:System.Collections.Generic.KeyValuePair`2"/> where key and value is a string.
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.Serializers.DefaultFormUrlEncodedContentParser.TryParse(System.Object,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}}@)">
@@ -66,23 +66,23 @@
             Serialize a <see cref="T:ZarDevs.Http.Api.IApiCommandRequest"/> content to HttpContent and deserialize the content of a <see cref="T:System.Net.Http.HttpResponseMessage"/> using the JSON format.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.#ctor(System.Text.Encoding,Newtonsoft.Json.Formatting)">
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.#ctor(System.Text.Json.JsonSerializerOptions)">
             <summary>
             Create a new instance of this class
             </summary>
-            <param name="encoding">Optionally specify the content encoding, otherwise defaults <see cref="P:System.Text.Encoding.Default"/></param>
-            <param name="formatting">Optionally specift the formatting, otherwise defaults to <see cref="F:Newtonsoft.Json.Formatting.None"/></param>
+            <param name="serializerOptions">Optionally specify the json serializer options, otherwise set to null for defaults.</param>
         </member>
         <member name="P:ZarDevs.Http.Api.ApiCommandContentSerializerJson.MediaTypes">
             <summary>
             Get the content type that can be added to the headers or compared to.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.DeserializeAsync``1(System.Net.Http.HttpContent)">
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerJson.DeserializeAsync``1(System.Net.Http.HttpContent,System.Threading.CancellationToken)">
             <summary>
             Deserialize the content to the expected type <typeparamref name="TContent"/>
             </summary>
             <param name="content">The Http content to deserialize.</param>
+            <param name="cancellationToken">Optionally add a cancellation token to the deserializer.</param>
             <typeparam name="TContent">The expected content type</typeparam>
             <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
         </member>
@@ -116,11 +116,12 @@
             Get the content type that can be added to the headers or compared to.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerString.DeserializeAsync``1(System.Net.Http.HttpContent)">
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerString.DeserializeAsync``1(System.Net.Http.HttpContent,System.Threading.CancellationToken)">
             <summary>
             Deserialize the content to the expected type <typeparamref name="TContent"/>
             </summary>
             <param name="content">The Http content to deserialize.</param>
+            <param name="cancellationToken">Optionally add a cancellation token to the deserializer.</param>
             <typeparam name="TContent">The expected content type</typeparam>
             <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
         </member>
@@ -154,11 +155,12 @@
             Get the content type that can be added to the headers or compared to.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerXml.DeserializeAsync``1(System.Net.Http.HttpContent)">
+        <member name="M:ZarDevs.Http.Api.ApiCommandContentSerializerXml.DeserializeAsync``1(System.Net.Http.HttpContent,System.Threading.CancellationToken)">
             <summary>
             Deserialize the content to the expected type <typeparamref name="TContent"/>
             </summary>
             <param name="content">The Http content to deserialize.</param>
+            <param name="cancellationToken">Optionally add a cancellation token to the deserializer.</param>
             <typeparam name="TContent">The expected content type</typeparam>
             <returns>The deserialized content of type <typeparamref name="TContent"/></returns>
         </member>
