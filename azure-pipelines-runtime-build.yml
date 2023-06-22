@@ -37,6 +37,10 @@ steps:
     packageType: 'sdk'
     version: '7.x'
 
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '6.x'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
