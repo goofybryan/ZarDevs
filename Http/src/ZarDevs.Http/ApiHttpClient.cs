@@ -59,7 +59,8 @@ namespace ZarDevs.Http.Client
 
         public Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
         {
-            HttpMethod method = HttpMethod.Patch;
+
+            HttpMethod method = new ("PATCH");
             var request = CreateRequest(method, apiUri, httpContent);
             return SendAsync(request);
         }
