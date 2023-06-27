@@ -13,7 +13,7 @@ namespace ZarDevs.Http.Api.Tests
 
         #region Properties
 
-        protected Uri ApiUri => new("/api/command/send", UriKind.RelativeOrAbsolute);
+        protected static Uri ApiUri => new("/api/command/send", UriKind.RelativeOrAbsolute);
 
         #endregion Properties
 

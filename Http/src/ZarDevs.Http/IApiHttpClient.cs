@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Client
@@ -24,84 +25,95 @@ namespace ZarDevs.Http.Client
         /// Request a delete from the api.
         /// </summary>
         /// <param name="apiUrl">The api uri</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> DeleteAsync(string apiUrl);
+        Task<HttpResponseMessage> DeleteAsync(string apiUrl, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a delete from the api.
         /// </summary>
         /// <param name="apiUri">The api uri</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> DeleteAsync(Uri apiUri);
+        Task<HttpResponseMessage> DeleteAsync(Uri apiUri, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a get from the api.
         /// </summary>
         /// <param name="apiUrl">The api uri</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> GetAsync(string apiUrl);
+        Task<HttpResponseMessage> GetAsync(string apiUrl, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a get from the api.
         /// </summary>
         /// <param name="apiUri">The api uri</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> GetAsync(Uri apiUri);
+        Task<HttpResponseMessage> GetAsync(Uri apiUri, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a patch from the api.
         /// </summary>
         /// <param name="apiUrl">The api uri</param>
         /// <param name="httpContent">The content to patch.</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> PatchAsync(string apiUrl, HttpContent httpContent);
+        Task<HttpResponseMessage> PatchAsync(string apiUrl, HttpContent httpContent, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a patch from the api.
         /// </summary>
         /// <param name="apiUri">The api uri</param>
         /// <param name="httpContent">The content to patch.</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent);
+        Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a post from the api.
         /// </summary>
         /// <param name="apiUrl">The api uri</param>
         /// <param name="httpContent">The content to post.</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent);
+        Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a post from the api.
         /// </summary>
         /// <param name="apiUri">The api uri</param>
         /// <param name="httpContent">The content to post.</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent);
+        Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a put from the api.
         /// </summary>
         /// <param name="apiUrl">The api url</param>
         /// <param name="httpContent">The content to put.</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> PutAsync(string apiUrl, HttpContent httpContent);
+        Task<HttpResponseMessage> PutAsync(string apiUrl, HttpContent httpContent, CancellationToken cancellation = default);
 
         /// <summary>
         /// Request a put from the api.
         /// </summary>
         /// <param name="apiUri">The api uri</param>
         /// <param name="httpContent">The content to put.</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> PutAsync(Uri apiUri, HttpContent httpContent);
+        Task<HttpResponseMessage> PutAsync(Uri apiUri, HttpContent httpContent, CancellationToken cancellation = default);
 
         /// <summary>
         /// Send a request message to the api.
         /// </summary>
         /// <param name="request">The request message.</param>
+        /// <param name="cancellation">Optional cancellation token</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response.</returns>
-        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
+        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellation = default);
 
         #endregion Methods
     }

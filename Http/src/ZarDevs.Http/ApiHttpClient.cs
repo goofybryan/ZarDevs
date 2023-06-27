@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Client
@@ -32,70 +33,74 @@ namespace ZarDevs.Http.Client
                 Content = httpContent
             };
 
-            return message;
+             return message;
         }
 
-        public Task<HttpResponseMessage> DeleteAsync(Uri apiUri)
+       public async Task<HttpResponseMessage> DeleteAsync(Uri apiUri, CancellationToken cancellation = default)
         {
             var request = CreateRequest(HttpMethod.Delete, apiUri);
-            return SendAsync(request);
+             return await SendAsync(request, cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> DeleteAsync(string apiUrl)
+       public async Task<HttpResponseMessage> DeleteAsync(string apiUrl, CancellationToken cancellation = default)
         {
-            return DeleteAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute));
+             return await DeleteAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> GetAsync(Uri apiUri)
+       public async Task<HttpResponseMessage> GetAsync(Uri apiUri, CancellationToken cancellation = default)
         {
             var request = CreateRequest(HttpMethod.Get, apiUri);
-            return SendAsync(request);
+             return await SendAsync(request, cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> GetAsync(string apiUrl)
+       public async Task<HttpResponseMessage> GetAsync(string apiUrl, CancellationToken cancellation = default)
         {
-            return GetAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute));
+             return await GetAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent)
+       public async Task<HttpResponseMessage> PatchAsync(Uri apiUri, HttpContent httpContent, CancellationToken cancellation = default)
         {
 
             HttpMethod method = new ("PATCH");
             var request = CreateRequest(method, apiUri, httpContent);
-            return SendAsync(request);
+             return await SendAsync(request, cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> PatchAsync(string apiUrl, HttpContent httpContent)
+       public async Task<HttpResponseMessage> PatchAsync(string apiUrl, HttpContent httpContent, CancellationToken cancellation = default)
         {
-            return PatchAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
+             return await PatchAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent, cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent)
+       public async Task<HttpResponseMessage> PostAsync(Uri apiUri, HttpContent httpContent, CancellationToken cancellation = default)
         {
             var request = CreateRequest(HttpMethod.Post, apiUri, httpContent);
-            return SendAsync(request);
+             return await SendAsync(request, cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent)
+       public async Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent, CancellationToken cancellation = default)
         {
-            return PostAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
+             return await PostAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent, cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> PutAsync(Uri apiUri, HttpContent httpContent)
+       public async Task<HttpResponseMessage> PutAsync(Uri apiUri, HttpContent httpContent, CancellationToken cancellation = default)
         {
             var request = CreateRequest(HttpMethod.Put, apiUri, httpContent);
-            return SendAsync(request);
+             return await SendAsync(request, cancellation).ConfigureAwait(false);
         }
 
-        public Task<HttpResponseMessage> PutAsync(string apiUrl, HttpContent httpContent)
+       public async Task<HttpResponseMessage> PutAsync(string apiUrl, HttpContent httpContent, CancellationToken cancellation = default)
         {
-            return PutAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent);
+             return await PutAsync(new Uri(apiUrl, UriKind.RelativeOrAbsolute), httpContent, cancellation).ConfigureAwait(false);
         }
 
-        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellation = default)
         {
-            await _requestHandler?.HandleAsync(request);
-            return await _httpClient.SendAsync(request);
+            if (_requestHandler != null)
+            {
+                await _requestHandler.HandleAsync(request).ConfigureAwait(false);
+            }
+
+             return await _httpClient.SendAsync(request, cancellation).ConfigureAwait(false);
         }
 
         #endregion Methods

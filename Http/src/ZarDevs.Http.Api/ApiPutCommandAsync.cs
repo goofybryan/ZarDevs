@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
     /// <summary>
-    /// Command for putting, this will call the <see cref="IApiHttpClient.PatchAsync(Uri, HttpContent)"/>
+    /// Command for putting, this will call the <see cref="IApiHttpClient.PatchAsync(Uri, HttpContent, CancellationToken)"/>
     /// </summary>
     public class ApiPutCommandAsync : ApiContentCommandAsync
     {
@@ -26,15 +27,10 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        /// <summary>
-        /// Call the specific put api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
-        /// </summary>
-        /// <param name="apiUri">The api <see cref="Uri"/>.</param>
-        /// <param name="content">The <see cref="HttpContent"/> to call.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
-        protected override async Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content)
+        /// <inheritdoc/>
+        protected override async Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content, CancellationToken cancellationToken)
         {
-            return await HttpClient.PutAsync(apiUri, content);
+            return await HttpClient.PutAsync(apiUri, content, cancellationToken).ConfigureAwait(false);
         }
 
         #endregion Methods

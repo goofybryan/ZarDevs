@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
@@ -46,7 +47,7 @@ namespace ZarDevs.Http.Api
             throw new ApiCommandException(this, Reason);
         }
 
-        public async Task<TContent> TryGetContent<TContent>()
+        public async Task<TContent> TryGetContentAsync<TContent>(CancellationToken cancellation = default)
         {
             EnsureSuccess();
 
@@ -54,7 +55,7 @@ namespace ZarDevs.Http.Api
                 return default;
 
             var serializer = _responseFactory.GetDeserializer(Response.Content.Headers.ContentType.MediaType);
-            TContent content = await serializer.DeserializeAsync<TContent>(Response.Content);
+            TContent content = await serializer.DeserializeAsync<TContent>(Response.Content, cancellation);
 
             return content;
         }

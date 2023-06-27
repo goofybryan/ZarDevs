@@ -37,7 +37,7 @@ namespace ZarDevs.Http.Security
             var request = new ApiCommandRequest(configuration.TokenEndpoint, parameters);
 
             var response = await _apiCommand.ExecuteAsync(request);
-            var newToken = await response.TryGetContent<LoginToken>();
+            var newToken = await response.TryGetContentAsync<LoginToken>();
 
             _configuration.Update(SecurityTokenConstants.LoginToken, newToken);
 
