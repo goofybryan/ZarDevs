@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ZarDevs.Http.Client;
 
@@ -27,10 +28,11 @@ namespace ZarDevs.Http.Api
         /// Call the specific api call for the specified <paramref name="request"/>
         /// </summary>
         /// <param name="request">The request message that contains the content need for the server call.</param>
+        /// <param name="cancellation">Cancelation Token</param>
         /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
-        protected override Task<HttpResponseMessage> OnApiCall(IApiCommandRequest request)
+        protected override Task<HttpResponseMessage> OnApiCallAsync(IApiCommandRequest request, CancellationToken cancellation)
         {
-            return OnApiCall(request.ApiUri, _serializer.Serialize(request));
+            return OnApiCall(request.ApiUri, _serializer.Serialize(request), cancellation);
         }
 
         /// <summary>
@@ -38,7 +40,8 @@ namespace ZarDevs.Http.Api
         /// </summary>
         /// <param name="apiUri">The api <see cref="Uri"/>.</param>
         /// <param name="content">The <see cref="HttpContent"/> to call.</param>
+        /// <param name="cancellation">Cancelation token</param>
         /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
-        protected abstract Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content);
+        protected abstract Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content, CancellationToken cancellation);
     }
 }

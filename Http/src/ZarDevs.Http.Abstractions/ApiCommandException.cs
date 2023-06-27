@@ -58,7 +58,7 @@ namespace ZarDevs.Http.Api
             if (Response == null)
                 return default;
 
-            return await Response.TryGetContent<TError>();
+            return await Response.TryGetContentAsync<TError>();
         }
 
         /// <summary>

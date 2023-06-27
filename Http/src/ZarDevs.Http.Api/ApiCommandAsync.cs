@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ZarDevs.Http.Client;
 
@@ -37,32 +38,21 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        /// <summary>
-        /// Execute the command asyncronously. The command requires a request, that will be sent and processed and return a response.
-        /// </summary>
-        /// <param name="request">The request that will be sent to the server.</param>
-        /// <returns>The response from the server.</returns>
-        public async Task<IApiCommandResponse> ExecuteAsync(IApiCommandRequest request)
+        /// <inheritdoc/>
+        public async Task<IApiCommandResponse> ExecuteAsync(IApiCommandRequest request, CancellationToken cancellation = default)
         {
-            var responseMessage = await OnApiCall(request);
+            var responseMessage = await OnApiCallAsync(request, cancellation).ConfigureAwait(false);
             return CreateResponse(responseMessage);
         }
 
-        /// <summary>
-        /// Create the <see cref="IApiCommandResponse"/> response from the <paramref name="httpResponseMessage"/>
-        /// </summary>
-        /// <param name="httpResponseMessage">The <see cref="HttpRequestMessage"/> from the server.</param>
+        /// <inheritdoc/>
         protected virtual IApiCommandResponse CreateResponse(HttpResponseMessage httpResponseMessage)
         {
             return _responseFactory.CreateResponse(httpResponseMessage);
         }
 
-        /// <summary>
-        /// Call the specific api call for the specified <paramref name="request"/>
-        /// </summary>
-        /// <param name="request">The request message that contains the content need for the server call.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
-        protected abstract Task<HttpResponseMessage> OnApiCall(IApiCommandRequest request);
+        /// <inheritdoc/>
+        protected abstract Task<HttpResponseMessage> OnApiCallAsync(IApiCommandRequest request, CancellationToken cancellation);
 
         #endregion Methods
     }
