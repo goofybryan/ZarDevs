@@ -32,11 +32,6 @@
             <param name="message">Specify the message.</param>
             <param name="innerException">Add the original exception that occurred.</param>
         </member>
-        <member name="M:ZarDevs.Http.Security.HttpSecurityException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Internal constructor for serialization.
-            </summary>
-        </member>
         <member name="T:ZarDevs.Http.Security.IHttpSecurityFactory">
             <summary>
             Http factory interface that will be used to create the core security handlers.
