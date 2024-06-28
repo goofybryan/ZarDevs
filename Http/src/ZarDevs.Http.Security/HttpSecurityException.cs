@@ -26,13 +26,6 @@ namespace ZarDevs.Http.Security
         {
         }
 
-        /// <summary>
-        /// Internal constructor for serialization.
-        /// </summary>
-        protected HttpSecurityException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-
         #endregion Constructors
     }
 }
