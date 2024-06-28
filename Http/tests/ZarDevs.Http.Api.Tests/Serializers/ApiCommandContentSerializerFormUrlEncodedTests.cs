@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 using ZarDevs.Http.Api.Serializers;
 
@@ -47,7 +48,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
             var parser = Substitute.For<IDefaultFormUrlEncodedContentParser>();
             var parser2 = Substitute.For<IDefaultFormUrlEncodedContentParser>();
             var mediaTypes = new List<string> { "Invalid", "Media", "Types" };
-            var serializer = new ApiCommandContentSerializerFormUrlEncoded(new[] { parser, parser2 });
+            var serializer = new ApiCommandContentSerializerFormUrlEncoded([parser, parser2]);
 
             parser.TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>()).Returns(info => false);
             parser2.TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>()).Returns(info => false);
@@ -67,7 +68,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
         }
 
         [Fact]
-        public async void Serialize_WithParserReturnTrue_ReturnsFormEncodedContent()
+        public async Task Serialize_WithParserReturnTrue_ReturnsFormEncodedContent()
         {
             // Arrange
             object value = "value";
@@ -75,7 +76,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
             var request = Substitute.For<IApiCommandRequest>();
             var parser = Substitute.For<IDefaultFormUrlEncodedContentParser>();
             var mediaTypes = new List<string> { "Invalid", "Media", "Types" };
-            var serializer = new ApiCommandContentSerializerFormUrlEncoded(new[] { parser });
+            var serializer = new ApiCommandContentSerializerFormUrlEncoded([parser]);
 
             parser.TryParse(Arg.Any<object>(), out Arg.Any<IEnumerable<KeyValuePair<string, string>>>()).Returns(info => { info[1] = kv; return true; });
 

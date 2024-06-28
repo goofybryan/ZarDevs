@@ -18,7 +18,7 @@ namespace ZarDevs.DependencyInjection.RuntimeFactory.Tests
 
         protected override T PerformanceResolveComparison<T>()
         {
-            return (T)Fixture.InstanceResolution.GetResolution(typeof(T)).Resolve();
+            return Fixture.Container.Resolve<T>();
         }
 
         protected override T PerformanceResolveDirect<T>()

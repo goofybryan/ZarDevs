@@ -66,7 +66,7 @@ internal class BindParser
 
     private IDictionary<string, SyntaxToken> BuildNextTokenMap(SyntaxToken token)
     {
-        Dictionary<string, SyntaxToken> mapping = new();
+        Dictionary<string, SyntaxToken> mapping = [];
         var currentToken = token.GetNextToken();
         int open = 0;
         int closed = 0;
