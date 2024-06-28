@@ -20,7 +20,7 @@ namespace ZarDevs.Http.Api.Tests
         #region Methods
 
         [Fact]
-        public async void Execute_ApiCommand_ExpectedBehaviour()
+        public async Task Execute_ApiCommand_ExpectedBehaviour()
         {
             // Arrange
             var clientMock = Substitute.For<IApiHttpClient>();

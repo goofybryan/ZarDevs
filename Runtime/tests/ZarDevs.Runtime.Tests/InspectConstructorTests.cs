@@ -19,7 +19,7 @@ namespace ZarDevs.Runtime.Tests
         {
             // Arrange
             const string value = "Value";
-            IList<object> parameters = new List<object>();
+            IList<object> parameters = [];
             int intValue = new Random().Next(1, 100);
             ITestInterface testInterface = new TestClass();
 
@@ -29,7 +29,7 @@ namespace ZarDevs.Runtime.Tests
             if (hasInterface) parameters.Add(testInterface);
 
             // Act
-            IList<(string, object)> namedParameters = InspectConstructor.Instance.FindParameterNames(typeof(TestClass), parameters.ToArray());
+            IList<(string, object)> namedParameters = InspectConstructor.Instance.FindParameterNames(typeof(TestClass), [.. parameters]);
 
             // Assert
             int paramCount = 0;
@@ -53,7 +53,7 @@ namespace ZarDevs.Runtime.Tests
             const string value = "Value";
             int intValue = new Random().Next(1, 100);
             ITestInterface testInterface = new TestClass();
-            IDictionary<string, object> parameters = new Dictionary<string, object>();
+            Dictionary<string, object> parameters = [];
 
             if (hasGeneric) parameters.Add("generic", this);
             if (hasInteger) parameters.Add("integer", intValue);
@@ -79,7 +79,7 @@ namespace ZarDevs.Runtime.Tests
             const string value = "Value";
             int intValue = new Random().Next(1, 100);
             ITestInterface testInterface = new TestClass();
-            IList<(string, object)> parameters = new List<(string, object)>();
+            List<(string, object)> parameters = [];
 
             if (hasGeneric) parameters.Add(ValueTuple.Create("generic", this));
             if (hasInteger) parameters.Add(ValueTuple.Create("integer", intValue));
@@ -105,7 +105,7 @@ namespace ZarDevs.Runtime.Tests
             const string value = "Value";
             int intValue = new Random().Next(1, 100);
             ITestInterface testInterface = new TestClass();
-            IDictionary<string, object> parameters = new Dictionary<string, object>();
+            Dictionary<string, object> parameters = [];
 
             if (hasGeneric) parameters.Add("generic", this);
             if (hasInteger) parameters.Add("integer", intValue);
@@ -131,7 +131,7 @@ namespace ZarDevs.Runtime.Tests
             const string value = "Value";
             int intValue = new Random().Next(1, 100);
             ITestInterface testInterface = new TestClass();
-            IDictionary<string, object> parameters = new Dictionary<string, object>();
+            Dictionary<string, object> parameters = [];
 
             if (hasGeneric) parameters.Add("generic", this);
             if (hasInteger) parameters.Add("integer", intValue);
@@ -145,7 +145,7 @@ namespace ZarDevs.Runtime.Tests
             OrderParametersAssert(hasInteger, hasValue, hasGeneric, hasInterface, value, intValue, testInterface, orderedList);
         }
 
-        private int AssertOrder<T>(T expectedValue, int index, IList<object> orderedParameters)
+        private static int AssertOrder<T>(T expectedValue, int index, IList<object> orderedParameters)
         {
             Assert.InRange(index, 0, orderedParameters.Count - 1);
             Assert.Equal(expectedValue, orderedParameters[index]);
@@ -153,7 +153,7 @@ namespace ZarDevs.Runtime.Tests
             return index + 1;
         }
 
-        private int AssertOrder<T>(T expectedValue, int index, IList<(Type type, object value)> orderedParameters)
+        private static int AssertOrder<T>(T expectedValue, int index, IList<(Type type, object value)> orderedParameters)
         {
             Assert.InRange(index, 0, orderedParameters.Count - 1);
             Assert.IsAssignableFrom(orderedParameters[index].type, expectedValue);
@@ -162,7 +162,7 @@ namespace ZarDevs.Runtime.Tests
             return index + 1;
         }
 
-        private int AssertParam<T>(string expectedName, T expectedValue, IList<(string, object)> namedParameters)
+        private static int AssertParam<T>(string expectedName, T expectedValue, IList<(string, object)> namedParameters)
         {
             Assert.Contains(ValueTuple.Create(expectedName, expectedValue), namedParameters);
             return 1;

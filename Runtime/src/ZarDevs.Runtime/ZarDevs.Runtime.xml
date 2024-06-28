@@ -103,7 +103,7 @@
         </member>
         <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParametersMap(System.Type,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Object}})">
             <summary>
-            Finds a constructor with the same parameters and returns the ordered list of parameter
+            Finds a constructor with the same parameters and returns the ordered list of type/parameter
             objects that have been matched by name and type.
             </summary>
             <param name="target">The target object type.</param>
@@ -114,7 +114,7 @@
         </member>
         <member name="M:ZarDevs.Runtime.IInspectConstructor.OrderParametersMap(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Finds a constructor with the same parameters and returns the ordered list of parameter
+            Finds a constructor with the same parameters and returns the ordered list of type/parameter
             objects that have been matched by name and type.
             </summary>
             <param name="target">The target object type.</param>

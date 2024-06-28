@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ZarDevs.Http.Client.Tests
@@ -9,7 +10,7 @@ namespace ZarDevs.Http.Client.Tests
         #region Methods
 
         [Fact]
-        public async void BaseClassInfrastructure_Test_ExpectedBehaviour()
+        public async Task BaseClassInfrastructure_Test_ExpectedBehaviour()
         {
             // Arrange
             var mock = new ApiHttpRequestHandlerMock();
@@ -19,7 +20,7 @@ namespace ZarDevs.Http.Client.Tests
             var next = Substitute.For<IApiHttpRequestHandler>();
             var ignore = Substitute.For<IApiHttpRequestHandler>();
 
-            HttpRequestMessage message = new HttpRequestMessage();
+            HttpRequestMessage message = new();
 
             // Act
             mock.AppendHandler(append1);

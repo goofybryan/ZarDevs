@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;Net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;Net6.0;Net8.0</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Bryan Musso</Authors>
     <Company>ZarsDevs</Company>

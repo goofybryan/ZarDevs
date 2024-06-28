@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Xunit;
@@ -68,12 +69,12 @@ namespace ZarDevs.DependencyInjection.Tests
         private void AssertPerformance(PerformenceMeasurement iocTests, PerformenceMeasurement iocTestsDirect, PerformenceMeasurement? iocTestsComparison)
         {
             _output.WriteLine("Total objects created per run {0}", _totalRuns);
-            _output.WriteLine("Time taken for IOC {0} ms", iocTests.TotalTime.TotalMilliseconds);
-            _output.WriteLine("Time taken for IOC with generic infrastructure {0} ms", iocTestsDirect.TotalTime.TotalMilliseconds);
+            _output.WriteLine("Time taken for IOC {0} ns", iocTests.TotalTime.TotalNanoseconds);
+            _output.WriteLine("Time taken for IOC with generic infrastructure {0} ns", iocTestsDirect.TotalTime.TotalNanoseconds);
 
             if (iocTestsComparison != null)
             {
-                _output.WriteLine("Time taken for IOC with non-generic infrasturcture {0} ms", iocTestsComparison.TotalTime.TotalMilliseconds);
+                _output.WriteLine("Time taken for IOC with non-generic infrasturcture {0} ns", iocTestsComparison.TotalTime.TotalNanoseconds);
             }
 
             TimeSpan fastestIoc = iocTests.SubsequentCalls.OrderBy(c => c.Ticks).First();
@@ -91,9 +92,9 @@ namespace ZarDevs.DependencyInjection.Tests
             StringBuilder builder = new StringBuilder()
                 .AppendLine()
                 .AppendFormat(format, " ", "IOC", "Direct", "Comp").AppendLine()
-                .AppendFormat(format, "Fastest", fastestIoc.TotalMilliseconds, fastestDirectIoc.TotalMilliseconds, fastestComparisonIoc?.TotalMilliseconds.ToString() ?? "N/A").AppendLine()
-                .AppendFormat(format, "Slowest", slowestIoc.TotalMilliseconds, slowestDirectIoc.TotalMilliseconds, slowestComparisonIoc?.TotalMilliseconds.ToString() ?? "N/A").AppendLine()
-                .AppendFormat(format, "Average", TimeSpan.FromTicks((long)averageIoc).TotalMilliseconds, TimeSpan.FromTicks((long)averageDirectIoc).TotalMilliseconds, averageComparisonIoc != null ? TimeSpan.FromTicks((long)averageComparisonIoc).TotalMilliseconds.ToString() : "N/A").AppendLine();
+                .AppendFormat(format, "Fastest", fastestIoc.TotalNanoseconds, fastestDirectIoc.TotalNanoseconds, fastestComparisonIoc?.TotalNanoseconds.ToString() ?? "N/A").AppendLine()
+                .AppendFormat(format, "Slowest", slowestIoc.TotalNanoseconds, slowestDirectIoc.TotalNanoseconds, slowestComparisonIoc?.TotalNanoseconds.ToString() ?? "N/A").AppendLine()
+                .AppendFormat(format, "Average", TimeSpan.FromTicks((long)averageIoc).TotalNanoseconds, TimeSpan.FromTicks((long)averageDirectIoc).TotalNanoseconds, averageComparisonIoc != null ? TimeSpan.FromTicks((long)averageComparisonIoc).TotalNanoseconds.ToString() : "N/A").AppendLine();
 
             _output.WriteLine(builder.ToString());
         }
