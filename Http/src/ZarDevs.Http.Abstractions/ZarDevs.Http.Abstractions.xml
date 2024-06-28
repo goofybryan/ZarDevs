@@ -16,11 +16,6 @@
             <param name="response"></param>
             <param name="message"></param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandException"/> class with serialized data.
-            </summary>
-        </member>
         <member name="P:ZarDevs.Http.Api.ApiCommandException.Response">
             <summary>
             Get the <see cref="T:ZarDevs.Http.Api.IApiCommandResponse"/> that came from the server.

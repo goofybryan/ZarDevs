@@ -31,11 +31,6 @@ namespace ZarDevs.Http.Api
             MediaType = mediaType;
         }
 
-        /// <summary>
-        /// Creates a new instance of the <see cref="ApiCommandContentTypeNotFoundException"/> exception with serialized data.
-        /// </summary>
-        protected ApiCommandContentTypeNotFoundException( System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-
         #endregion Constructors
 
         #region Properties

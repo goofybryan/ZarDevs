@@ -24,13 +24,6 @@ namespace ZarDevs.Http.Api
             StatusCode = response.StatusCode;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiCommandException"/> class with serialized data.
-        /// </summary>
-        protected ApiCommandException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
         #endregion Constructors
 
         #region Properties

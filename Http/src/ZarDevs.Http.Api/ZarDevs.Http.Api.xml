@@ -96,11 +96,6 @@
             <param name="mediaType">The media type that could not be found.</param>
             <param name="message">The message explaining the exeption.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Creates a new instance of the <see cref="T:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException"/> exception with serialized data.
-            </summary>
-        </member>
         <member name="P:ZarDevs.Http.Api.ApiCommandContentTypeNotFoundException.MediaType">
             <summary>
             The media type the exeption was thrown for.
