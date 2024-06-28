@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace ZarDevs.Http.Api
 {
@@ -13,8 +14,9 @@ namespace ZarDevs.Http.Api
         /// Execute the command asyncronously. The command requires a request, that will be sent and processed and return a response.
         /// </summary>
         /// <param name="request">The request that will be sent to the server.</param>
+        /// <param name="cancellation">Optional cancellation token.</param>
         /// <returns>The response from the server.</returns>
-        Task<IApiCommandResponse> ExecuteAsync(IApiCommandRequest request);
+        Task<IApiCommandResponse> ExecuteAsync(IApiCommandRequest request, CancellationToken cancellation = default);
 
         #endregion Methods
     }

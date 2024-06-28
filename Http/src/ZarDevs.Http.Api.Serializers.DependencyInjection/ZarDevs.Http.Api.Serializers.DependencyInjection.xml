@@ -9,7 +9,7 @@
             Api serialization configuration.
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ConfigureApi(ZarDevs.DependencyInjection.IDependencyBuilder)">
+        <member name="M:ZarDevs.Http.Api.Serializers.ApiSerializerConfiguration.ConfigureApiSerializers(ZarDevs.DependencyInjection.IDependencyBuilder)">
             <summary>
             Configure the <see cref="T:ZarDevs.Http.Api.IApiCommandContentSerializer"/> serializers and <see cref="T:ZarDevs.Http.Api.IApiCommandContentDeserializer"/> deserializers.
             </summary>

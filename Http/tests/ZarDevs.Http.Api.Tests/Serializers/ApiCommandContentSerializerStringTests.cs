@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Xunit;
 
@@ -16,7 +17,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
         [InlineData(1)]
         [InlineData(2.2)]
         [InlineData(true)]
-        public async void Deserialize_TypeString_ReturnsDeserializedObject<T>(T value)
+        public async Task Deserialize_TypeString_ReturnsDeserializedObject<T>(T value)
         {
             // Arrange
             var serializer = new ApiCommandContentSerializerString();
@@ -60,7 +61,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
         }
 
         [Fact]
-        public async void Serialize_WithContant_ReturnsJsonContent()
+        public async Task Serialize_WithContant_ReturnsJsonContent()
         {
             // Arrange
             var serializer = new ApiCommandContentSerializerString();

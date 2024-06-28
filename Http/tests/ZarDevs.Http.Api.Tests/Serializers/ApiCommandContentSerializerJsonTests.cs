@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ZarDevs.Http.Api.Tests.Serializers
@@ -12,7 +13,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
         #region Methods
 
         [Fact]
-        public async void Deserialize_TypeSerializerTestClass_ReturnsDeserializedObject()
+        public async Task Deserialize_TypeSerializerTestClass_ReturnsDeserializedObject()
         {
             // Arrange
             var serializer = new ApiCommandContentSerializerJson(new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web));
@@ -58,7 +59,7 @@ namespace ZarDevs.Http.Api.Tests.Serializers
         }
 
         [Fact]
-        public async void Serialize_WithContant_ReturnsJsonContent()
+        public async Task Serialize_WithContant_ReturnsJsonContent()
         {
             // Arrange
             var serializer = new ApiCommandContentSerializerJson(new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web));

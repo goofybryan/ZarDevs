@@ -53,7 +53,7 @@ namespace ZarDevs.Http.Api.Tests
         [Theory]
         [InlineData("")]
         [InlineData("Content")]
-        public async void TryGetContent_Execute_ExpectedResults(string responseContent)
+        public async Task TryGetContentAsync_Execute_ExpectedResults(string responseContent)
         {
             // Arrange
             var factory = Substitute.For<IHttpResponseFactory>();
@@ -65,7 +65,7 @@ namespace ZarDevs.Http.Api.Tests
             deserializer.DeserializeAsync<string>(httpResponse.Content).Returns(Task.FromResult(responseContent));
 
             // Act
-            var value = await apiResponse.TryGetContent<string>();
+            var value = await apiResponse.TryGetContentAsync<string>();
 
             // Assert
             Assert.Equal(responseContent, value);
@@ -74,7 +74,7 @@ namespace ZarDevs.Http.Api.Tests
         }
 
         [Fact]
-        public async void TryGetContent_WithNotSuccessfullStatusCode_ThrowsException()
+        public async Task TryGetContentAsync_WithNotSuccessfullStatusCode_ThrowsException()
         {
             // Arrange
             const string reason = "Test";
@@ -83,7 +83,7 @@ namespace ZarDevs.Http.Api.Tests
             var apiResponse = new ApiCommandResponse(factory, httpResponse);
 
             // Act
-            var exception = await Assert.ThrowsAsync<ApiCommandException>(async () => await apiResponse.TryGetContent<string>());
+            var exception = await Assert.ThrowsAsync<ApiCommandException>(async () => await apiResponse.TryGetContentAsync<string>());
 
             // Assert
             Assert.Equal(HttpStatusCode.BadGateway, exception.StatusCode);
@@ -97,9 +97,11 @@ namespace ZarDevs.Http.Api.Tests
 
         private static HttpResponseMessage CreateResponse(HttpStatusCode statusCode, string reason, string response)
         {
-            HttpResponseMessage message = new(statusCode) { ReasonPhrase = reason };
-
-            message.Content = new StringContent(response ?? "");
+            HttpResponseMessage message = new(statusCode)
+            {
+                ReasonPhrase = reason,
+                Content = new StringContent(response ?? "")
+            };
 
             return message;
         }

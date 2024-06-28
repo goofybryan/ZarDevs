@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
     /// <summary>
-    /// This command is used when a non-standard call allowing for some customization to the API call, this will call the <see cref="IApiHttpClient.SendAsync(HttpRequestMessage)"/>
+    /// This command is used when a non-standard call allowing for some customization to the API call, this will call the <see cref="IApiHttpClient.SendAsync(HttpRequestMessage, CancellationToken)"/>
     /// </summary>
     public class ApiSendCommandAsync : ApiContentCommandAsync
     {
@@ -24,15 +25,11 @@ namespace ZarDevs.Http.Api
             _httpMethod = httpMethod ?? throw new ArgumentNullException(nameof(httpMethod));
         }
 
-        /// <summary>
-        /// Call the specific send api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
-        /// </summary>
-        /// <param name="apiUri">The api <see cref="Uri"/>.</param>
-        /// <param name="content">The <see cref="HttpContent"/> to call.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
-        protected override Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content)
+
+        /// <inheritdoc/>
+        protected override async Task<HttpResponseMessage> OnApiCall(Uri apiUri, HttpContent content, CancellationToken cancellationToken)
         {
-            return HttpClient.SendAsync(HttpClient.CreateRequest(_httpMethod, apiUri, content));
+            return await HttpClient.SendAsync(HttpClient.CreateRequest(_httpMethod, apiUri, content), cancellationToken).ConfigureAwait(false);
         }
     }
 }

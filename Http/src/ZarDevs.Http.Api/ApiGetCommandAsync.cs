@@ -1,11 +1,12 @@
 ﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using ZarDevs.Http.Client;
 
 namespace ZarDevs.Http.Api
 {
     /// <summary>
-    /// Command for getting, this will call the <see cref="IApiHttpClient.GetAsync(System.Uri)"/>
+    /// Command for getting, this will call the <see cref="IApiHttpClient.GetAsync(System.Uri, CancellationToken)"/>
     /// </summary>
     public class ApiGetCommandAsync : ApiCommandAsync
     {
@@ -24,14 +25,10 @@ namespace ZarDevs.Http.Api
 
         #region Methods
 
-        /// <summary>
-        /// Call the specific get api call for the specified <paramref name="request"/>
-        /// </summary>
-        /// <param name="request">The request message that contains the content need for the server call.</param>
-        /// <returns>The <see cref="HttpResponseMessage"/> from the <see cref="IApiHttpClient"/> call.</returns>
-        protected override async Task<HttpResponseMessage> OnApiCall(IApiCommandRequest request)
+        /// <inheritdoc/>
+        protected override async Task<HttpResponseMessage> OnApiCallAsync(IApiCommandRequest request, CancellationToken cancellationToken)
         {
-            return await HttpClient.GetAsync(request.ApiUri);
+            return await HttpClient.GetAsync(request.ApiUri, cancellationToken).ConfigureAwait(false);
         }
 
         #endregion Methods

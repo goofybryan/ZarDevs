@@ -21,25 +21,14 @@
             The http client
             </summary>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandAsync.ExecuteAsync(ZarDevs.Http.Api.IApiCommandRequest)">
-            <summary>
-            Execute the command asyncronously. The command requires a request, that will be sent and processed and return a response.
-            </summary>
-            <param name="request">The request that will be sent to the server.</param>
-            <returns>The response from the server.</returns>
+        <member name="M:ZarDevs.Http.Api.ApiCommandAsync.ExecuteAsync(ZarDevs.Http.Api.IApiCommandRequest,System.Threading.CancellationToken)">
+            <inheritdoc/>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiCommandAsync.CreateResponse(System.Net.Http.HttpResponseMessage)">
-            <summary>
-            Create the <see cref="T:ZarDevs.Http.Api.IApiCommandResponse"/> response from the <paramref name="httpResponseMessage"/>
-            </summary>
-            <param name="httpResponseMessage">The <see cref="T:System.Net.Http.HttpRequestMessage"/> from the server.</param>
+            <inheritdoc/>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandAsync.OnApiCall(ZarDevs.Http.Api.IApiCommandRequest)">
-            <summary>
-            Call the specific api call for the specified <paramref name="request"/>
-            </summary>
-            <param name="request">The request message that contains the content need for the server call.</param>
-            <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
+        <member name="M:ZarDevs.Http.Api.ApiCommandAsync.OnApiCallAsync(ZarDevs.Http.Api.IApiCommandRequest,System.Threading.CancellationToken)">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.Http.Api.IApiCommandContentTypeMap`1">
             <summary>
@@ -178,40 +167,6 @@
             <param name="sendMethod">Specify the <see cref="T:System.Net.Http.HttpMethod"/> that the command with use.</param>
             <param name="apiClientKey">An option api client key that will be used to resolve the ApiHttpClient. Default is no key (null)</param>
         </member>
-        <member name="T:ZarDevs.Http.Api.ApiCommandRequest">
-            <summary>
-            API command request
-            </summary>
-        </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandRequest.#ctor(System.String,System.Object)">
-            <summary>
-            Create a new instance with the <paramref name="apiPath"/> and optional <paramref name="content"/>
-            </summary>
-            <param name="apiPath">The url path, can be relative or absolute.</param>
-            <param name="content">Optionally specify the content.</param>
-        </member>
-        <member name="M:ZarDevs.Http.Api.ApiCommandRequest.#ctor(System.Uri,System.Object)">
-            <summary>
-            Create a new instance with the <paramref name="apiUri"/> and optional <paramref name="content"/>
-            </summary>
-            <param name="apiUri">Specify the uri path.</param>
-            <param name="content">Optionally specify the content.</param>
-        </member>
-        <member name="P:ZarDevs.Http.Api.ApiCommandRequest.ApiUri">
-            <summary>
-            The API url the request is for. By default, if not specified, url can be set to <see cref="F:System.UriKind.RelativeOrAbsolute"/>.
-            </summary>
-        </member>
-        <member name="P:ZarDevs.Http.Api.ApiCommandRequest.Content">
-            <summary>
-            And optional content that will be serialized and added to the content.
-            </summary>
-        </member>
-        <member name="P:ZarDevs.Http.Api.ApiCommandRequest.HasContent">
-            <summary>
-            Returns a value if there is content specified.
-            </summary>
-        </member>
         <member name="T:ZarDevs.Http.Api.ApiContentCommandAsync">
             <summary>
             Api abstract command for content that implements the base construct of the API Command infrastructure.
@@ -225,24 +180,26 @@
             <param name="serializer">The serializer that is used to serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to <see cref="T:System.Net.Http.HttpContent"/>.</param>
             <param name="responseFactory">The <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> factory used for creating the response.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiContentCommandAsync.OnApiCall(ZarDevs.Http.Api.IApiCommandRequest)">
+        <member name="M:ZarDevs.Http.Api.ApiContentCommandAsync.OnApiCallAsync(ZarDevs.Http.Api.IApiCommandRequest,System.Threading.CancellationToken)">
             <summary>
             Call the specific api call for the specified <paramref name="request"/>
             </summary>
             <param name="request">The request message that contains the content need for the server call.</param>
+            <param name="cancellation">Cancelation Token</param>
             <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiContentCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent)">
+        <member name="M:ZarDevs.Http.Api.ApiContentCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
             <summary>
             Call the specific api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
             </summary>
             <param name="apiUri">The api <see cref="T:System.Uri"/>.</param>
             <param name="content">The <see cref="T:System.Net.Http.HttpContent"/> to call.</param>
+            <param name="cancellation">Cancelation token</param>
             <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
         </member>
         <member name="T:ZarDevs.Http.Api.ApiDeleteCommandAsync">
             <summary>
-            Command for deleting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.DeleteAsync(System.Uri)"/>
+            Command for deleting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.DeleteAsync(System.Uri,System.Threading.CancellationToken)"/>
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiDeleteCommandAsync.#ctor(ZarDevs.Http.Client.IApiHttpClient,ZarDevs.Http.Api.IHttpResponseFactory)">
@@ -252,16 +209,12 @@
             <param name="httpClient">The <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> client used for sending the delete request.</param>
             <param name="responseFactory">The <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> factory used for creating the response.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiDeleteCommandAsync.OnApiCall(ZarDevs.Http.Api.IApiCommandRequest)">
-            <summary>
-            Call the specific delete api call for the specified <paramref name="request"/>
-            </summary>
-            <param name="request">The request message that contains the content need for the server call.</param>
-            <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
+        <member name="M:ZarDevs.Http.Api.ApiDeleteCommandAsync.OnApiCallAsync(ZarDevs.Http.Api.IApiCommandRequest,System.Threading.CancellationToken)">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.Http.Api.ApiGetCommandAsync">
             <summary>
-            Command for getting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.GetAsync(System.Uri)"/>
+            Command for getting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.GetAsync(System.Uri,System.Threading.CancellationToken)"/>
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiGetCommandAsync.#ctor(ZarDevs.Http.Client.IApiHttpClient,ZarDevs.Http.Api.IHttpResponseFactory)">
@@ -271,16 +224,12 @@
             <param name="httpClient">The <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> client used for sending the delete request.</param>
             <param name="responseFactory">The <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> factory used for creating the response.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiGetCommandAsync.OnApiCall(ZarDevs.Http.Api.IApiCommandRequest)">
-            <summary>
-            Call the specific get api call for the specified <paramref name="request"/>
-            </summary>
-            <param name="request">The request message that contains the content need for the server call.</param>
-            <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
+        <member name="M:ZarDevs.Http.Api.ApiGetCommandAsync.OnApiCallAsync(ZarDevs.Http.Api.IApiCommandRequest,System.Threading.CancellationToken)">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.Http.Api.ApiPatchCommandAsync">
             <summary>
-            Command for patching, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent)"/>
+            Command for patching, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)"/>
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiPatchCommandAsync.#ctor(ZarDevs.Http.Client.IApiHttpClient,ZarDevs.Http.Api.IApiCommandContentSerializer,ZarDevs.Http.Api.IHttpResponseFactory)">
@@ -291,17 +240,12 @@
             <param name="serializer">The serializer that is used to serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to <see cref="T:System.Net.Http.HttpContent"/>.</param>
             <param name="responseFactory">The <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> factory used for creating the response.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiPatchCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent)">
-            <summary>
-            Call the specific patch api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
-            </summary>
-            <param name="apiUri">The api <see cref="T:System.Uri"/>.</param>
-            <param name="content">The <see cref="T:System.Net.Http.HttpContent"/> to call.</param>
-            <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
+        <member name="M:ZarDevs.Http.Api.ApiPatchCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.Http.Api.ApiPostCommandAsync">
             <summary>
-            Command for posting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent)"/>
+            Command for posting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)"/>
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiPostCommandAsync.#ctor(ZarDevs.Http.Client.IApiHttpClient,ZarDevs.Http.Api.IApiCommandContentSerializer,ZarDevs.Http.Api.IHttpResponseFactory)">
@@ -312,17 +256,18 @@
             <param name="serializer">The serializer that is used to serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to <see cref="T:System.Net.Http.HttpContent"/>.</param>
             <param name="responseFactory">The <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> factory used for creating the response.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiPostCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent)">
+        <member name="M:ZarDevs.Http.Api.ApiPostCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
             <summary>
-            Call the specific post api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
+            Call the specific api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
             </summary>
             <param name="apiUri">The api <see cref="T:System.Uri"/>.</param>
             <param name="content">The <see cref="T:System.Net.Http.HttpContent"/> to call.</param>
+            <param name="cancellation">Cancelation token</param>
             <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
         </member>
         <member name="T:ZarDevs.Http.Api.ApiPutCommandAsync">
             <summary>
-            Command for putting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent)"/>
+            Command for putting, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)"/>
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiPutCommandAsync.#ctor(ZarDevs.Http.Client.IApiHttpClient,ZarDevs.Http.Api.IApiCommandContentSerializer,ZarDevs.Http.Api.IHttpResponseFactory)">
@@ -333,17 +278,12 @@
             <param name="serializer">The serializer that is used to serialize the <see cref="P:ZarDevs.Http.Api.IApiCommandRequest.Content"/> to <see cref="T:System.Net.Http.HttpContent"/>.</param>
             <param name="responseFactory">The <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> factory used for creating the response.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiPutCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent)">
-            <summary>
-            Call the specific put api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
-            </summary>
-            <param name="apiUri">The api <see cref="T:System.Uri"/>.</param>
-            <param name="content">The <see cref="T:System.Net.Http.HttpContent"/> to call.</param>
-            <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
+        <member name="M:ZarDevs.Http.Api.ApiPutCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.Http.Api.ApiSendCommandAsync">
             <summary>
-            This command is used when a non-standard call allowing for some customization to the API call, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.SendAsync(System.Net.Http.HttpRequestMessage)"/>
+            This command is used when a non-standard call allowing for some customization to the API call, this will call the <see cref="M:ZarDevs.Http.Client.IApiHttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)"/>
             </summary>
         </member>
         <member name="M:ZarDevs.Http.Api.ApiSendCommandAsync.#ctor(ZarDevs.Http.Client.IApiHttpClient,ZarDevs.Http.Api.IApiCommandContentSerializer,ZarDevs.Http.Api.IHttpResponseFactory,System.Net.Http.HttpMethod)">
@@ -355,13 +295,8 @@
             <param name="responseFactory">The <see cref="T:ZarDevs.Http.Api.IHttpResponseFactory"/> factory used for creating the response.</param>
             <param name="httpMethod">The <see cref="T:System.Net.Http.HttpMethod"/> that will be used for the API call.</param>
         </member>
-        <member name="M:ZarDevs.Http.Api.ApiSendCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent)">
-            <summary>
-            Call the specific send api call to the specified <paramref name="apiUri"/> with the <paramref name="content"/> content.
-            </summary>
-            <param name="apiUri">The api <see cref="T:System.Uri"/>.</param>
-            <param name="content">The <see cref="T:System.Net.Http.HttpContent"/> to call.</param>
-            <returns>The <see cref="T:System.Net.Http.HttpResponseMessage"/> from the <see cref="T:ZarDevs.Http.Client.IApiHttpClient"/> call.</returns>
+        <member name="M:ZarDevs.Http.Api.ApiSendCommandAsync.OnApiCall(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
+            <inheritdoc/>
         </member>
         <member name="T:ZarDevs.Http.Api.IHttpResponseFactory">
             <summary>
