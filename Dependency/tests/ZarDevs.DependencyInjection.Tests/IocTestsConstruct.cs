@@ -376,7 +376,7 @@ namespace ZarDevs.DependencyInjection.Tests
 
             // Assert
             Assert.NotNull(constructorClass);
-            Assert.Equal(0, constructorClass.Args.Count);
+            Assert.Empty(constructorClass.Args);
         }
 
         [Theory]
@@ -467,7 +467,7 @@ namespace ZarDevs.DependencyInjection.Tests
 
             // Assert
             Assert.NotNull(constructorClass);
-            Assert.Equal(0, constructorClass.Args.Count);
+            Assert.Empty(constructorClass.Args);
         }
 
         [Theory]
@@ -622,7 +622,7 @@ namespace ZarDevs.DependencyInjection.Tests
 
             // Assert
             Assert.NotNull(constructorClass);
-            Assert.Equal(0, constructorClass.Args.Count);
+            Assert.Empty(constructorClass.Args);
         }
 
         [Theory]
@@ -713,7 +713,7 @@ namespace ZarDevs.DependencyInjection.Tests
 
             // Assert
             Assert.NotNull(constructorClass);
-            Assert.Equal(0, constructorClass.Args.Count);
+            Assert.Empty(constructorClass.Args);
         }
 
         [Theory]

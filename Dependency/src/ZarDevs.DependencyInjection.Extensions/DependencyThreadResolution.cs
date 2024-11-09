@@ -19,7 +19,7 @@ namespace ZarDevs.DependencyInjection
 
         private readonly TResolution _resolution;
         private bool _isDisposed;
-        private ThreadLocal<DependencyThreadResolutionTracker> _threadResolution;
+        private readonly ThreadLocal<DependencyThreadResolutionTracker> _threadResolution;
 
         #endregion Fields
 

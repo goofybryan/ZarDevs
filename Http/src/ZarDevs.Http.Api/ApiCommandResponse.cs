@@ -54,8 +54,17 @@ namespace ZarDevs.Http.Api
             if (!HasContentType)
                 return default;
 
-            var serializer = _responseFactory.GetDeserializer(Response.Content.Headers.ContentType.MediaType);
-            TContent content = await serializer.DeserializeAsync<TContent>(Response.Content, cancellation);
+            string mediaType = Response.Content.Headers.ContentType.MediaType;
+
+            return await TryGetContentAsync<TContent>(mediaType, cancellation).ConfigureAwait(false);
+        }
+
+        private async Task<TContent> TryGetContentAsync<TContent>(string mediaType, CancellationToken cancellation)
+        {
+            EnsureSuccess();
+
+            var serializer = _responseFactory.GetDeserializer(mediaType) ?? _responseFactory.GetDefaultDeserializer();
+            TContent content = await serializer.DeserializeAsync<TContent>(Response.Content, cancellation).ConfigureAwait(false);
 
             return content;
         }

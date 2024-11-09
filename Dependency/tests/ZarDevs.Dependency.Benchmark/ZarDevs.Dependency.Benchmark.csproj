@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.AutoFac\ZarDevs.DependencyInjection.AutoFac.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.Extensions.Factory\ZarDevs.DependencyInjection.Extensions.Factory.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.Extensions\ZarDevs.DependencyInjection.Extensions.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.Microsoft\ZarDevs.DependencyInjection.Microsoft.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.Ninject.Web\ZarDevs.DependencyInjection.Ninject.Web.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.Ninject\ZarDevs.DependencyInjection.Ninject.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.RuntimeFactory\ZarDevs.DependencyInjection.Runtime.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc.Abstractions\ZarDevs.DependencyInjection.ZarIoc.Core.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection.ZarIoc\ZarDevs.DependencyInjection.ZarIoc.SourceGen.csproj" />
+    <ProjectReference Include="..\..\src\ZarDevs.DependencyInjection\ZarDevs.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.AutoFac.Tests\ZarDevs.DependencyInjection.AutoFac.Tests.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.Microsoft.Tests\ZarDevs.DependencyInjection.Microsoft.Tests.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.Ninject.Tests\ZarDevs.DependencyInjection.Ninject.Tests.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.RuntimeFactory.Tests\ZarDevs.DependencyInjection.RuntimeFactory.Tests.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.SourceGenerator.Tests\ZarDevs.DependencyInjection.SourceGenerator.Tests.csproj" />
+    <ProjectReference Include="..\ZarDevs.DependencyInjection.Tests\ZarDevs.DependencyInjection.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

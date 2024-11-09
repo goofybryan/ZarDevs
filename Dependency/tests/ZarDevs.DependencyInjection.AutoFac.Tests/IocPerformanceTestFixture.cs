@@ -41,7 +41,7 @@ namespace ZarDevs.DependencyInjection.AutoFac.Tests
             Ioc.Instance.Dispose();
         }
 
-        private IContainer CreateComparison()
+        private static IContainer CreateComparison()
         {
             var builder = new ContainerBuilder();
 

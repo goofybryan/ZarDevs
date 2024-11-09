@@ -42,7 +42,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+=======
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+>>>>>>> edf3b3b (Updated packages, added benchmark test)
     <PackageReference Include="ZarDevs.Runtime" Version="0.2.1" />
   </ItemGroup>
 
